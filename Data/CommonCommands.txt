@@ -1,0 +1,3 @@
+﻿Add-Migration -Context OasisContext -o Data\OASISMigrations Initial
+Update-Database -Context OasisContext 
+Update-Database -Context ApplicationDbContext
