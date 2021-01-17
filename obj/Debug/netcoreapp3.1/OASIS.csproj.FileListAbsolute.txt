@@ -193,3 +193,8 @@ C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Employees\Delete.cshtml.g.cs
 C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Employees\Details.cshtml.g.cs
 C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Employees\Edit.cshtml.g.cs
 C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Employees\Index.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Roles\Create.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Roles\Delete.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Roles\Details.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Roles\Edit.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Roles\Index.cshtml.g.cs
