@@ -84,5 +84,13 @@ namespace OASIS.Models
         [StringLength(255)]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+
+        [Required(ErrorMessage = "You must select a Role.")]
+        [Display(Name = "Designated Role")]
+        public int RoleID { get; set; }
+
+        public Role Role { get; set; }
+
     }
 }

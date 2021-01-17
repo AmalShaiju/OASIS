@@ -8,7 +8,7 @@ using OASIS.Data;
 namespace OASIS.Data.OASISMigrations
 {
     [DbContext(typeof(OasisContext))]
-    [Migration("20210117070101_Initial")]
+    [Migration("20210117073015_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -144,9 +144,44 @@ namespace OASIS.Data.OASISMigrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(100);
 
+                    b.Property<int>("RoleID")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("ID");
 
+                    b.HasIndex("RoleID");
+
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("OASIS.Models.Role", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("LabourCostPerHr")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("LabourPricePerHr")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Role");
+                });
+
+            modelBuilder.Entity("OASIS.Models.Employee", b =>
+                {
+                    b.HasOne("OASIS.Models.Role", "Role")
+                        .WithMany("Employees")
+                        .HasForeignKey("RoleID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

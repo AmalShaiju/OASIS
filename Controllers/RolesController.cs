@@ -10,23 +10,22 @@ using OASIS.Models;
 
 namespace OASIS.Controllers
 {
-    public class EmployeesController : Controller
+    public class RolesController : Controller
     {
         private readonly OasisContext _context;
 
-        public EmployeesController(OasisContext context)
+        public RolesController(OasisContext context)
         {
             _context = context;
         }
 
-        // GET: Employees
+        // GET: Roles
         public async Task<IActionResult> Index()
         {
-            var oasisContext = _context.Employees.Include(e => e.Role);
-            return View(await oasisContext.ToListAsync());
+            return View(await _context.Role.ToListAsync());
         }
 
-        // GET: Employees/Details/5
+        // GET: Roles/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +33,39 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees
-                .Include(e => e.Role)
+            var role = await _context.Role
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (employee == null)
+            if (role == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
+            return View(role);
         }
 
-        // GET: Employees/Create
+        // GET: Roles/Create
         public IActionResult Create()
         {
-            ViewData["RoleID"] = new SelectList(_context.Set<Role>(), "ID", "Name");
             return View();
         }
 
-        // POST: Employees/Create
+        // POST: Roles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,MiddleName,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email,RoleID")] Employee employee)
+        public async Task<IActionResult> Create([Bind("ID,Name,LabourCostPerHr,LabourPricePerHr")] Role role)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
+                _context.Add(role);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleID"] = new SelectList(_context.Set<Role>(), "ID", "Name", employee.RoleID);
-            return View(employee);
+            return View(role);
         }
 
-        // GET: Employees/Edit/5
+        // GET: Roles/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +73,22 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null)
+            var role = await _context.Role.FindAsync(id);
+            if (role == null)
             {
                 return NotFound();
             }
-            ViewData["RoleID"] = new SelectList(_context.Set<Role>(), "ID", "Name", employee.RoleID);
-            return View(employee);
+            return View(role);
         }
 
-        // POST: Employees/Edit/5
+        // POST: Roles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,FirstName,LastName,MiddleName,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email,RoleID")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,LabourCostPerHr,LabourPricePerHr")] Role role)
         {
-            if (id != employee.ID)
+            if (id != role.ID)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace OASIS.Controllers
             {
                 try
                 {
-                    _context.Update(employee);
+                    _context.Update(role);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeExists(employee.ID))
+                    if (!RoleExists(role.ID))
                     {
                         return NotFound();
                     }
@@ -118,11 +113,10 @@ namespace OASIS.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleID"] = new SelectList(_context.Set<Role>(), "ID", "Name", employee.RoleID);
-            return View(employee);
+            return View(role);
         }
 
-        // GET: Employees/Delete/5
+        // GET: Roles/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +124,30 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees
-                .Include(e => e.Role)
+            var role = await _context.Role
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (employee == null)
+            if (role == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
+            return View(role);
         }
 
-        // POST: Employees/Delete/5
+        // POST: Roles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            _context.Employees.Remove(employee);
+            var role = await _context.Role.FindAsync(id);
+            _context.Role.Remove(role);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EmployeeExists(int id)
+        private bool RoleExists(int id)
         {
-            return _context.Employees.Any(e => e.ID == id);
+            return _context.Role.Any(e => e.ID == id);
         }
     }
 }

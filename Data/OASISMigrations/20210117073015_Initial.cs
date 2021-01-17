@@ -36,6 +36,22 @@ namespace OASIS.Data.OASISMigrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Role",
+                schema: "OA",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(nullable: false),
+                    LabourCostPerHr = table.Column<decimal>(nullable: false),
+                    LabourPricePerHr = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Role", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Employees",
                 schema: "OA",
                 columns: table => new
@@ -52,12 +68,26 @@ namespace OASIS.Data.OASISMigrations
                     Province = table.Column<string>(maxLength: 100, nullable: false),
                     Country = table.Column<string>(maxLength: 100, nullable: false),
                     Phone = table.Column<long>(nullable: false),
-                    Email = table.Column<string>(maxLength: 255, nullable: false)
+                    Email = table.Column<string>(maxLength: 255, nullable: false),
+                    RoleID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employees", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Employees_Role_RoleID",
+                        column: x => x.RoleID,
+                        principalSchema: "OA",
+                        principalTable: "Role",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_RoleID",
+                schema: "OA",
+                table: "Employees",
+                column: "RoleID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -68,6 +98,10 @@ namespace OASIS.Data.OASISMigrations
 
             migrationBuilder.DropTable(
                 name: "Employees",
+                schema: "OA");
+
+            migrationBuilder.DropTable(
+                name: "Role",
                 schema: "OA");
         }
     }
