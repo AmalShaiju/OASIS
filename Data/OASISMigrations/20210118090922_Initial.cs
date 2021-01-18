@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OASIS.Data.OASISMigrations
 {
@@ -36,20 +37,45 @@ namespace OASIS.Data.OASISMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Role",
+                name: "Roles",
                 schema: "OA",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: true),
+                    UpdatedBy = table.Column<string>(maxLength: 256, nullable: true),
+                    UpdatedOn = table.Column<DateTime>(nullable: true),
+                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
                     Name = table.Column<string>(nullable: false),
                     LabourCostPerHr = table.Column<decimal>(nullable: false),
                     LabourPricePerHr = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Role", x => x.ID);
+                    table.PrimaryKey("PK_Roles", x => x.ID);
                 });
+                migrationBuilder.Sql(
+                  @"
+                    CREATE TRIGGER SetRoleTimestampOnUpdate
+                    AFTER UPDATE ON Roles
+                    BEGIN
+                        UPDATE Roles
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                    END
+                ");
+                migrationBuilder.Sql(
+                   @"
+                    CREATE TRIGGER SetRoleTimestampOnInsert
+                    AFTER INSERT ON Roles
+                    BEGIN
+                        UPDATE Roles
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                   END
+               ");
 
             migrationBuilder.CreateTable(
                 name: "Employees",
@@ -75,10 +101,10 @@ namespace OASIS.Data.OASISMigrations
                 {
                     table.PrimaryKey("PK_Employees", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Employees_Role_RoleID",
+                        name: "FK_Employees_Roles_RoleID",
                         column: x => x.RoleID,
                         principalSchema: "OA",
-                        principalTable: "Role",
+                        principalTable: "Roles",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -88,6 +114,13 @@ namespace OASIS.Data.OASISMigrations
                 schema: "OA",
                 table: "Employees",
                 column: "RoleID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Roles_Name",
+                schema: "OA",
+                table: "Roles",
+                column: "Name",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -101,7 +134,7 @@ namespace OASIS.Data.OASISMigrations
                 schema: "OA");
 
             migrationBuilder.DropTable(
-                name: "Role",
+                name: "Roles",
                 schema: "OA");
         }
     }
