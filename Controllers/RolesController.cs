@@ -22,7 +22,7 @@ namespace OASIS.Controllers
         // GET: Roles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Role.ToListAsync());
+            return View(await _context.Roles.ToListAsync());
         }
 
         // GET: Roles/Details/5
@@ -33,7 +33,7 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
-            var role = await _context.Role
+            var role = await _context.Roles
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (role == null)
             {
@@ -56,11 +56,25 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name,LabourCostPerHr,LabourPricePerHr")] Role role)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(role);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(role);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Role.Name"))
+                {
+                    ModelState.AddModelError("Name", "Unable to save changes.You cannot have duplicate Role Names.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
             }
             return View(role);
         }
@@ -73,7 +87,7 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
-            var role = await _context.Role.FindAsync(id);
+            var role = await _context.Roles.FindAsync(id);
             if (role == null)
             {
                 return NotFound();
@@ -86,34 +100,75 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,LabourCostPerHr,LabourPricePerHr")] Role role)
+        public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
         {
-            if (id != role.ID)
+            //Role to update
+            var roleToUpdate = await _context.Roles.SingleOrDefaultAsync(p => p.ID == id);
+
+            if (roleToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            _context.Entry(roleToUpdate).Property("RowVersion").OriginalValue = RowVersion;
+
+            if (await TryUpdateModelAsync<Role>(roleToUpdate, "",
+                p => p.Name, p => p.LabourCostPerHr, p => p.LabourPricePerHr))
             {
                 try
                 {
-                    _context.Update(role);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+               
+                catch (DbUpdateConcurrencyException ex)// Added for concurrency
                 {
-                    if (!RoleExists(role.ID))
+                    var exceptionEntry = ex.Entries.Single();
+                    var clientValues = (Role)exceptionEntry.Entity;
+                    var databaseEntry = exceptionEntry.GetDatabaseValues();
+                    if (databaseEntry == null)
                     {
-                        return NotFound();
+                        ModelState.AddModelError("",
+                            "Unable to save changes. The Role was deleted by another user.");
                     }
                     else
                     {
-                        throw;
+                        var databaseValues = (Role)databaseEntry.ToObject();
+                        if (databaseValues.Name != clientValues.Name)
+                            ModelState.AddModelError("Name", "Current value: "
+                                + databaseValues.Name);
+                        if (databaseValues.LabourCostPerHr != clientValues.LabourCostPerHr)
+                            ModelState.AddModelError("LabourCostPerHr", "Current value: "
+                                + databaseValues.LabourCostPerHr);
+                        if (databaseValues.LabourPricePerHr != clientValues.LabourPricePerHr)
+                            ModelState.AddModelError("LabourPricePerHr", "Current value: "
+                                + databaseValues.LabourPricePerHr);
+                        
+
+                        ModelState.AddModelError(string.Empty, "The record you attempted to edit "
+                                + "was modified by another user after you received your values. The "
+                                + "edit operation was canceled and the current values in the database "
+                                + "have been displayed. If you still want to save your version of this record, click "
+                                + "the Save button again. Otherwise click the 'Back to List' hyperlink.");
+                        roleToUpdate.RowVersion = (byte[])databaseValues.RowVersion;
+                        ModelState.Remove("RowVersion");
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException dex)
+                {
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Role.Name"))
+                    {
+                        ModelState.AddModelError("Name", "Unable to save changes.You cannot have duplicate Role Names.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    }
+                }
+               
+             
             }
-            return View(role);
+            return View(roleToUpdate);
         }
 
         // GET: Roles/Delete/5
@@ -124,7 +179,7 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
-            var role = await _context.Role
+            var role = await _context.Roles
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (role == null)
             {
@@ -139,15 +194,31 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var role = await _context.Role.FindAsync(id);
-            _context.Role.Remove(role);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var role = await _context.Roles.FindAsync(id);
+            try
+            {
+                _context.Roles.Remove(role);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
+                {
+                    ModelState.AddModelError("", "Unable to Delete Role. You cannot delete a Role that has Employees assigned.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+            return View(role);
+
         }
 
         private bool RoleExists(int id)
         {
-            return _context.Role.Any(e => e.ID == id);
+            return _context.Roles.Any(e => e.ID == id);
         }
     }
 }

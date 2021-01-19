@@ -1,3 +1,26 @@
 ﻿Add-Migration -Context OasisContext -o Data\OASISMigrations Initial
 Update-Database -Context OasisContext 
 Update-Database -Context ApplicationDbContext
+
+
+// Role Auditing Fields Updation
+ migrationBuilder.Sql(
+               @"
+                CREATE TRIGGER SetRoleTimestampOnUpdate
+                AFTER UPDATE ON Roles
+                BEGIN
+                    UPDATE Roles
+                    SET RowVersion = randomblob(8)
+                    WHERE rowid = NEW.rowid;
+                END
+            ");
+            migrationBuilder.Sql(
+               @"
+                CREATE TRIGGER SetRoleTimestampOnInsert
+                AFTER INSERT ON Roles
+                BEGIN
+                    UPDATE Roles
+                    SET RowVersion = randomblob(8)
+                    WHERE rowid = NEW.rowid;
+               END
+           ");
