@@ -97,5 +97,7 @@ namespace OASIS.Models
         [StringLength(255)]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        public ICollection<Project> Projects { get; set; }
     }
 }

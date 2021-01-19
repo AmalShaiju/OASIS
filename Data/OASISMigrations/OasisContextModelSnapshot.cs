@@ -84,6 +84,9 @@ namespace OASIS.Data.OASISMigrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Customers");
                 });
 
@@ -148,9 +151,60 @@ namespace OASIS.Data.OASISMigrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.HasIndex("RoleID");
 
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("OASIS.Models.Project", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("CustomerID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("Province")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("SiteAddressLineOne")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("SiteAddressLineTwo")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CustomerID");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Project");
                 });
 
             modelBuilder.Entity("OASIS.Models.Role", b =>
@@ -201,6 +255,15 @@ namespace OASIS.Data.OASISMigrations
                     b.HasOne("OASIS.Models.Role", "Role")
                         .WithMany("Employees")
                         .HasForeignKey("RoleID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("OASIS.Models.Project", b =>
+                {
+                    b.HasOne("OASIS.Models.Customer", "Customer")
+                        .WithMany("Projects")
+                        .HasForeignKey("CustomerID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

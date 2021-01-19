@@ -56,6 +56,7 @@ namespace OASIS.Data.OASISMigrations
                 {
                     table.PrimaryKey("PK_Roles", x => x.ID);
                 });
+
                 migrationBuilder.Sql(
                   @"
                     CREATE TRIGGER SetRoleTimestampOnUpdate
@@ -76,6 +77,34 @@ namespace OASIS.Data.OASISMigrations
                         WHERE rowid = NEW.rowid;
                    END
                ");
+
+
+            migrationBuilder.CreateTable(
+                name: "Project",
+                schema: "OA",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(maxLength: 20, nullable: false),
+                    SiteAddressLineOne = table.Column<string>(maxLength: 50, nullable: false),
+                    SiteAddressLineTwo = table.Column<string>(maxLength: 100, nullable: true),
+                    City = table.Column<string>(maxLength: 100, nullable: false),
+                    Province = table.Column<string>(maxLength: 100, nullable: false),
+                    Country = table.Column<string>(maxLength: 100, nullable: false),
+                    CustomerID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Project", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Project_Customers_CustomerID",
+                        column: x => x.CustomerID,
+                        principalSchema: "OA",
+                        principalTable: "Customers",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Employees",
@@ -110,10 +139,37 @@ namespace OASIS.Data.OASISMigrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Customers_Email",
+                schema: "OA",
+                table: "Customers",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_Email",
+                schema: "OA",
+                table: "Employees",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Employees_RoleID",
                 schema: "OA",
                 table: "Employees",
                 column: "RoleID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Project_CustomerID",
+                schema: "OA",
+                table: "Project",
+                column: "CustomerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Project_Name",
+                schema: "OA",
+                table: "Project",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Roles_Name",
@@ -126,15 +182,19 @@ namespace OASIS.Data.OASISMigrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Customers",
-                schema: "OA");
-
-            migrationBuilder.DropTable(
                 name: "Employees",
                 schema: "OA");
 
             migrationBuilder.DropTable(
+                name: "Project",
+                schema: "OA");
+
+            migrationBuilder.DropTable(
                 name: "Roles",
+                schema: "OA");
+
+            migrationBuilder.DropTable(
+                name: "Customers",
                 schema: "OA");
         }
     }

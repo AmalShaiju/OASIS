@@ -40,9 +40,9 @@ namespace OASIS.Data
                      },
                      new Role
                      {
-                           Name = "Botanist",
-                           LabourCostPerHr = Convert.ToDecimal(50.0),
-                           LabourPricePerHr = Convert.ToDecimal(75.0)
+                         Name = "Botanist",
+                         LabourCostPerHr = Convert.ToDecimal(50.0),
+                         LabourPricePerHr = Convert.ToDecimal(75.0)
                      }
                 );
                     context.SaveChanges();
@@ -57,17 +57,17 @@ namespace OASIS.Data
                         MiddleName = "E",
                         LastName = "Shaiju",
                         AddressLineOne = "586 First Ave",
-                        City="Welland",
-                        Province="Ontario",
-                        Country="Canada",
+                        City = "Welland",
+                        Province = "Ontario",
+                        Country = "Canada",
                         Phone = 9055551212,
                         Email = "Ashaiju1@outlook.com",
                         RoleID = context.Roles.FirstOrDefault(d => d.Name == "Designer").ID
-                    }, 
+                    },
                     new Employee
                     {
                         FirstName = "Jesline",
-                       
+
                         LastName = "Stanly",
                         AddressLineOne = "596",
                         AddressLineTwo = "First Ave",
@@ -90,7 +90,7 @@ namespace OASIS.Data
                         Phone = 9055551215,
                         Email = "val1@outlook.com",
                         RoleID = context.Roles.FirstOrDefault(d => d.Name == "Equipment Operator").ID
-                    }, 
+                    },
                     new Employee
                     {
                         FirstName = "Yasmeen",
@@ -102,7 +102,7 @@ namespace OASIS.Data
                         Phone = 9055554213,
                         Email = "Yasmmen1@outlook.com",
                         RoleID = context.Roles.FirstOrDefault(d => d.Name == "Botanist").ID
-                    }, 
+                    },
                     new Employee
                     {
                         FirstName = "Rufaro",
@@ -113,7 +113,7 @@ namespace OASIS.Data
                         Country = "Canada",
                         Phone = 9255554213,
                         Email = "Rgonz1@outlook.com",
-                        RoleID = context.Roles.FirstOrDefault(d => d.Name == "Botanist").ID  
+                        RoleID = context.Roles.FirstOrDefault(d => d.Name == "Botanist").ID
                     });
                     context.SaveChanges();
                 }
@@ -124,11 +124,11 @@ namespace OASIS.Data
                     context.Customers.AddRange(
                     new Customer
                     {
-                        OrgName="Wonderboy Media",
+                        OrgName = "Wonderboy Media",
                         FirstName = "Amal",
                         MiddleName = "E",
                         LastName = "Shaiju",
-                        Position="CEO",
+                        Position = "CEO",
                         AddressLineOne = "586 First Ave",
                         City = "Welland",
                         Province = "Ontario",
@@ -141,7 +141,7 @@ namespace OASIS.Data
                         OrgName = "Weiner Media",
                         FirstName = "Jesline",
                         LastName = "Stanly",
-                        Position="CTO",
+                        Position = "CTO",
                         AddressLineOne = "596",
                         AddressLineTwo = "First Ave",
                         ApartmentNumber = "Flat 96",
@@ -192,6 +192,60 @@ namespace OASIS.Data
                     });
                     context.SaveChanges();
                 }
+
+
+                if (!context.Project.Any())
+                {
+                    context.Project.AddRange(
+                    new Project
+                    {
+                        Name = "Alpha",
+                        SiteAddressLineOne = "586 First Ave",
+                        City = "Welland",
+                        Province = "Ontario",
+                        Country = "Canada",
+                        CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Amal").ID
+                    },
+                    new Project
+                    {
+                        Name = "Beta",
+                        SiteAddressLineOne = "586",
+                        SiteAddressLineTwo = "First Ave",
+                        City = "Welland",
+                        Province = "Ontario",
+                        Country = "Canada",
+                        CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Jesline").ID
+                    },
+                     new Project
+                     {
+                         Name = "Mall",
+                         SiteAddressLineOne = "586 First Ave",
+                         City = "Welland",
+                         Province = "Ontario",
+                         Country = "Canada",
+                         CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Yasmeen").ID
+                     },
+                     new Project
+                     {
+                         Name = "Seaway Mall",
+                         SiteAddressLineOne = "586 First Ave",
+                         City = "Welland",
+                         Province = "Ontario",
+                         Country = "Canada",
+                         CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Val").ID
+                     },
+                      new Project
+                      {
+                          Name = "Start up",
+                          SiteAddressLineOne = "586 First Ave",
+                          City = "Welland",
+                          Province = "Ontario",
+                          Country = "Canada",
+                          CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Rufaro").ID
+                      });
+                    context.SaveChanges();
+                }
+
             }
         }
     }

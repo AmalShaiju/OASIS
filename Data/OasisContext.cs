@@ -94,11 +94,40 @@ namespace OASIS.Data
                 .HasForeignKey(p => p.RoleID)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            //Prevent Cascade Delete from Customer to Project
+            //so we are prevented from deleting a customer with
+            //project assigned
+            modelBuilder.Entity<Customer>()
+                .HasMany<Project>(d => d.Projects)
+                .WithOne(p => p.Customer)
+                .HasForeignKey(p => p.CustomerID)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // Name of the Role is Unique
             modelBuilder.Entity<Role>()
                 .HasIndex(p => p.Name)
                 .IsUnique();
+
+
+            // Email of the Employee is Unique
+            modelBuilder.Entity<Employee>()
+                .HasIndex(p => p.Email)
+                .IsUnique();
+
+
+            // Name of the Customer is Unique
+            modelBuilder.Entity<Customer>()
+                .HasIndex(p => p.Email)
+                .IsUnique();
+
+            // Name of the Project is Unique
+            modelBuilder.Entity<Project>()
+                .HasIndex(p => p.Name)
+                .IsUnique();
         }
+
+
+        public DbSet<OASIS.Models.Project> Project { get; set; }
 
 
     }
