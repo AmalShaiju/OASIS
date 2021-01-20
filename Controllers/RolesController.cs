@@ -67,7 +67,7 @@ namespace OASIS.Controllers
             }
             catch (DbUpdateException dex)
             {
-                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Role.Name"))
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Roles.Name"))
                 {
                     ModelState.AddModelError("Name", "Unable to save changes.You cannot have duplicate Role Names.");
                 }
@@ -156,7 +156,7 @@ namespace OASIS.Controllers
                 }
                 catch (DbUpdateException dex)
                 {
-                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Role.Name"))
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Roles.Name"))
                     {
                         ModelState.AddModelError("Name", "Unable to save changes.You cannot have duplicate Role Names.");
                     }

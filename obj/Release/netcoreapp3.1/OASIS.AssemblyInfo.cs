@@ -11,6 +11,7 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.AspNetCore.Identity.UI.UIFrameworkAttribute("Bootstrap4")]
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("aspnet-OASIS-5BD28F99-4686-4070-B33E-E9A5F7061D8E")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("OASIS")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]

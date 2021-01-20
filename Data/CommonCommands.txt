@@ -24,3 +24,25 @@ Update-Database -Context ApplicationDbContext
                     WHERE rowid = NEW.rowid;
                END
            ");
+
+// Employee Auditing Fields Updation
+             migrationBuilder.Sql(
+                   @"
+                    CREATE TRIGGER SetEmployeeTimestampOnUpdate
+                    AFTER UPDATE ON Employees
+                    BEGIN
+                        UPDATE Employees
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                    END
+                ");
+                migrationBuilder.Sql(
+                   @"
+                    CREATE TRIGGER SetEmployeeTimestampOnInsert
+                    AFTER INSERT ON Employees
+                    BEGIN
+                        UPDATE Employees
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                   END
+               ");

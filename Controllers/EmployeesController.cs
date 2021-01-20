@@ -48,7 +48,8 @@ namespace OASIS.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
-            ViewData["RoleID"] = new SelectList(_context.Set<Role>(), "ID", "Name");
+            Employee employee = new Employee();
+            PopulateDropDownLists(employee);
             return View();
         }
 
@@ -59,13 +60,28 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,MiddleName,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email,RoleID")] Employee employee)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(employee);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(employee);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+               
             }
-            ViewData["RoleID"] = new SelectList(_context.Set<Role>(), "ID", "Name", employee.RoleID);
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Employees.Email"))
+                {
+                    ModelState.AddModelError("Email", "Unable to save changes.You cannot have same email address as another employee .");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+            PopulateDropDownLists(employee);
             return View(employee);
         }
 
@@ -82,7 +98,7 @@ namespace OASIS.Controllers
             {
                 return NotFound();
             }
-            ViewData["RoleID"] = new SelectList(_context.Set<Role>(), "ID", "Name", employee.RoleID);
+            PopulateDropDownLists(employee);
             return View(employee);
         }
 
@@ -91,35 +107,99 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,FirstName,LastName,MiddleName,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email,RoleID")] Employee employee)
+        public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
         {
-            if (id != employee.ID)
+            var employeeToUpdate = _context.Employees.SingleOrDefault(p => p.ID == id);
+
+            if (employeeToUpdate == null)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            _context.Entry(employeeToUpdate).Property("RowVersion").OriginalValue = RowVersion;
+            if (await TryUpdateModelAsync<Employee>(employeeToUpdate, "", p => p.FirstName, p => p.LastName, p => p.MiddleName, p =>
+                 p.AddressLineOne, p => p.AddressLineTwo, p => p.Province, p => p.Country, p => p.City, p => p.Phone, p => p.Email, p => p.RoleID))
             {
                 try
                 {
-                    _context.Update(employee);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)// Added for concurrency
                 {
-                    if (!EmployeeExists(employee.ID))
+                    var exceptionEntry = ex.Entries.Single();
+                    var clientValues = (Employee)exceptionEntry.Entity;
+                    var databaseEntry = exceptionEntry.GetDatabaseValues();
+                    if (databaseEntry == null)
                     {
-                        return NotFound();
+                        ModelState.AddModelError("",
+                            "Unable to save changes. The Role was deleted by another user.");
                     }
                     else
                     {
-                        throw;
+                        var databaseValues = (Employee)databaseEntry.ToObject();
+                        if (databaseValues.FirstName != clientValues.FirstName)
+                            ModelState.AddModelError("FirstName", "Current value: "
+                                + databaseValues.FirstName);
+                        if (databaseValues.LastName != clientValues.LastName)
+                            ModelState.AddModelError("LastName", "Current value: "
+                                + databaseValues.LastName);
+                        if (databaseValues.MiddleName != clientValues.LastName)
+                            ModelState.AddModelError("MiddleName", "Current value: "
+                                + databaseValues.MiddleName);
+                        if (databaseValues.AddressLineOne != clientValues.AddressLineOne)
+                            ModelState.AddModelError("AddressLineOne", "Current value: "
+                                + databaseValues.AddressLineOne);
+                        if (databaseValues.AddressLineTwo != clientValues.AddressLineTwo)
+                            ModelState.AddModelError("AddressLineTwo", "Current value: "
+                                + databaseValues.AddressLineTwo);
+                        if (databaseValues.City != clientValues.City)
+                            ModelState.AddModelError("City", "Current value: "
+                                + databaseValues.City);
+                        if (databaseValues.Province != clientValues.Province)
+                            ModelState.AddModelError("Province", "Current value: "
+                                + databaseValues.Province);
+                        if (databaseValues.Country != clientValues.Country)
+                            ModelState.AddModelError("Country", "Current value: "
+                                + databaseValues.Country);
+                        if (databaseValues.Phone != clientValues.Phone)
+                            ModelState.AddModelError("Phone", "Current value: "
+                                + databaseValues.Phone);
+                        if (databaseValues.Email != clientValues.Email)
+                            ModelState.AddModelError("Email", "Current value: "
+                                + databaseValues.Email);
+                        if (databaseValues.RoleID != clientValues.RoleID)
+                        {
+                            Role databaseRole = await _context.Roles.SingleOrDefaultAsync(i => i.ID == databaseValues.RoleID);
+                            ModelState.AddModelError("RoleID", $"Current value: {databaseRole?.Name}");
+                        }
+
+
+                        ModelState.AddModelError(string.Empty, "The record you attempted to edit "
+                                + "was modified by another user after you received your values. The "
+                                + "edit operation was canceled and the current values in the database "
+                                + "have been displayed. If you still want to save your version of this record, click "
+                                + "the Save button again. Otherwise click the 'Back to List' hyperlink.");
+                        employeeToUpdate.RowVersion = (byte[])databaseValues.RowVersion;
+                        ModelState.Remove("RowVersion");
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException dex)
+                {
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Employees.Email"))
+                    {
+                        ModelState.AddModelError("Email", "Unable to save changes.You cannot have same email address as another employee .");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    }
+                }
+
+             
             }
-            ViewData["RoleID"] = new SelectList(_context.Set<Role>(), "ID", "Name", employee.RoleID);
-            return View(employee);
+            PopulateDropDownLists(employeeToUpdate);
+            return View(employeeToUpdate);
         }
 
         // GET: Employees/Delete/5
@@ -146,9 +226,24 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
+            try
+            {
+                var employee = await _context.Employees.FindAsync(id);
+                _context.Employees.Remove(employee);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
+                {
+                    ModelState.AddModelError("", "Unable to Delete Employee. You cannot delete an employees assigned to a team.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+         
             return RedirectToAction(nameof(Index));
         }
 
@@ -156,5 +251,15 @@ namespace OASIS.Controllers
         {
             return _context.Employees.Any(e => e.ID == id);
         }
+
+        // Order Role drop down list by name
+        private void PopulateDropDownLists(Employee employee = null)
+        {
+            var dQuery = from d in _context.Roles
+                         orderby  d.Name
+                         select d;
+            ViewData["RoleID"] = new SelectList(dQuery, "ID", "Name", employee?.RoleID);
+        }
+
     }
 }
