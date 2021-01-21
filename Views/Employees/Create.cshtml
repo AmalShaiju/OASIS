@@ -85,13 +85,12 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-        <script type="text/javascript">
+    <script type="text/javascript">
 
-        var homeSideBar = document.getElementById("employee-side-bar");
-        var home = document.getElementById("employee");
-
-
-        home.style.backgroundColor = "#b8aff7";
-        homeSideBar.style.backgroundColor = "#7460ee";
-        </script>
+        var homeSideBar = document.getElementById("employee-side-bar").style.backgroundColor = "#7460ee";;
+        var home = document.getElementById("employee").style.backgroundColor = "#b8aff7";;
+        var employeeLogo = document.getElementById("employeeLogo").src = "resources/employee-alt.png";
+        var text = document.getElementById("v-pills-employee-tab").style.color = "#7460ee";
+        text.fontweight = "700";
+    </script>
 }
