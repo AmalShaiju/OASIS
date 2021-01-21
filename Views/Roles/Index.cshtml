@@ -25,23 +25,36 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LabourCostPerHr)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LabourPricePerHr)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LabourCostPerHr)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LabourPricePerHr)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        var homeSideBar = document.getElementById("role-side-bar");
+        var home = document.getElementById("role");
+
+
+        home.style.backgroundColor = "#b8aff7";
+        homeSideBar.style.backgroundColor = "#7460ee";
+    </script>
+}
