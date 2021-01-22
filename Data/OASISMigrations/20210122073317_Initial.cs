@@ -80,12 +80,17 @@ namespace OASIS.Data.OASISMigrations
 
 
             migrationBuilder.CreateTable(
-                name: "Project",
+                name: "Projects",
                 schema: "OA",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: true),
+                    UpdatedBy = table.Column<string>(maxLength: 256, nullable: true),
+                    UpdatedOn = table.Column<DateTime>(nullable: true),
+                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
                     Name = table.Column<string>(maxLength: 20, nullable: false),
                     SiteAddressLineOne = table.Column<string>(maxLength: 50, nullable: false),
                     SiteAddressLineTwo = table.Column<string>(maxLength: 100, nullable: true),
@@ -96,15 +101,36 @@ namespace OASIS.Data.OASISMigrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Project", x => x.ID);
+                    table.PrimaryKey("PK_Projects", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Project_Customers_CustomerID",
+                        name: "FK_Projects_Customers_CustomerID",
                         column: x => x.CustomerID,
                         principalSchema: "OA",
                         principalTable: "Customers",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+                migrationBuilder.Sql(
+                 @"
+                    CREATE TRIGGER SetProjectTimestampOnUpdate
+                    AFTER UPDATE ON Projects
+                    BEGIN
+                        UPDATE Projects
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                    END
+                ");
+                migrationBuilder.Sql(
+                   @"
+                    CREATE TRIGGER SetProjectTimestampOnInsert
+                    AFTER INSERT ON Projects
+                    BEGIN
+                        UPDATE Projects
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                   END
+               ");
 
             migrationBuilder.CreateTable(
                 name: "Employees",
@@ -159,15 +185,15 @@ namespace OASIS.Data.OASISMigrations
                 column: "RoleID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Project_CustomerID",
+                name: "IX_Projects_CustomerID",
                 schema: "OA",
-                table: "Project",
+                table: "Projects",
                 column: "CustomerID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Project_Name",
+                name: "IX_Projects_Name",
                 schema: "OA",
-                table: "Project",
+                table: "Projects",
                 column: "Name",
                 unique: true);
 
@@ -186,7 +212,7 @@ namespace OASIS.Data.OASISMigrations
                 schema: "OA");
 
             migrationBuilder.DropTable(
-                name: "Project",
+                name: "Projects",
                 schema: "OA");
 
             migrationBuilder.DropTable(
