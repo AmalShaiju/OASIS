@@ -87,15 +87,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <script type="text/javascript">
-        var homeSideBar = document.getElementById("customer-side-bar").style.backgroundColor = "#7460ee";;
-        var home = document.getElementById("customer").style.backgroundColor = "rgb(116, 96, 238, 0.2)";
-        var CustomerLogo = document.getElementById("customerLogo").src = "resources/user-alt.png";
-        var text = document.getElementById("v-pills-customer-tab").style.color = "#7460ee";
-        text.fontweight = "700";
-    </script>
-}

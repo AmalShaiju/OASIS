@@ -37,17 +37,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <script type="text/javascript">
-
-
-        var homeSideBar = document.getElementById("role-side-bar").style.backgroundColor = "#7460ee";
-        var home = document.getElementById("role").style.backgroundColor = "rgb(116, 96, 238, 0.2)";
-        var roleLogo = document.getElementById("roleLogo").src = "resources/roles-alt.png"
-        var text = document.getElementById("v-pills-role-tab").style.color = "#7460ee";
-        text.fontweight = "700";
-    </script>
-}

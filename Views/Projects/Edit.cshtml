@@ -58,17 +58,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <script type="text/javascript">
-
-        var homeSideBar = document.getElementById("project-side-bar").style.backgroundColor = "#7460ee";;
-        var home = document.getElementById("project").style.backgroundColor = "rgb(116, 96, 238, 0.2)";
-        var projectLogo = document.getElementById("projectLogo").src = "resources/project-alt.png"
-        var text = document.getElementById("v-pills-projct-tab").style.color = "#7460ee";
-        text.style.fontWeight = "700";
-    </script>
-
-}
