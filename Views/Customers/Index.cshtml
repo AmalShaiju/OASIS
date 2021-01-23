@@ -56,38 +56,25 @@
             <div class="form-row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Applied for:</label>
-                        @*@Html.DropDownList("PostingID", null, "All Postings", htmlAttributes: new { @class = "form-control" })*@
-                        <select class="form-control">
-                            <option value="#">Option</option>
-                            <option value="#">Option</option>
-                            <option value="#">Option</option>
-                            <option value="#">Option</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Filter by Skill:</label>
-                        @*@Html.DropDownList("SkillID", null, "All Skills", htmlAttributes: new { @class = "form-control" })*@
-                        <select class="form-control">
-                            >
-                            <option value="#">Option</option>
-                            <option value="#">Option</option>
-                            <option value="#">Option</option>
-                            <option value="#">Option</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Search Applicant Name:</label>
+                        <label class="control-label">Customer Name:</label>
                         @Html.TextBox("SearchName", null, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">eMail Address:</label>
+                        <label class="control-label">Project Name:</label>
+                        @Html.TextBox("SearchName", null, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Phone:</label>
+                        @Html.TextBox("SearchName", null, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Email Address:</label>
                         @Html.TextBox("SearchEmail", null, new { @class = "form-control" })
                     </div>
                 </div>
@@ -155,7 +142,7 @@
                 </td>
 
                 <td style="padding-top:0px; position:relative" class="table-row-img">
-                    <img id="@item.ID" src="~/resources/moreOptions.png" onclick="divVisibility(@item.ID)" alt="Alternate Text" />
+                    <img id="@item.ID" src="~/resources/moreOptions.png" class="ddl-icon" onclick="divVisibility(@item.ID)" alt="Alternate Text" />
                     <div  id="@item.ID-ddl" class="index-drop-down-menu">
                         <a asp-action="Edit" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
                             <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/settings.png" alt="Alternate Text" /></div>
