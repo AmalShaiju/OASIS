@@ -111,6 +111,7 @@ table {
 .table > tbody > tr > td,
 .table > tbody > tr > th {
     border:none;
+    vertical-align:inherit;
 }
 
 .table-row-img {
@@ -126,21 +127,30 @@ table {
     }
 
 .index-drop-down-menu {
-    background-color:orangered;
-    z-index:9;
-    position:absolute;
-    width:70px; 
+    z-index: 9;
+    background: rgba(39,169,248,0.4);
+    position: absolute;
+    width: 95px;
     height: 140px;
-    right:14%;
-    top:60%;
-    margin-bottom:100px;
-
+    right: 14%;
+    top: 55%;
+    margin-bottom: 100px;
+    display:none;
 }
+
+.index-drop-down-menu a{
+    text-decoration:none;
+    color:ghostwhite;
+}
+
+    .index-drop-down-menu a:hover {
+        color: #7460ee;
+    }
 
 .index-drop-down-menu-flex-container {
     display: flex;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 27px;
     margin-top: 10px;
     justify-content: space-around;
     align-items: center;

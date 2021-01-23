@@ -42,7 +42,7 @@
                 </div>
             </a>
 
-            <div class="inner-flex-container-right-items" style="width:10%; background-color:#b8aff7;">
+            <div class="inner-flex-container-right-items" style="width:10%;background-color: rgba(39,169,248,0.25)">
                 <div style="width:100%">
                     <img style="width:100%" ;height="100%" src="~/resources/moreOptions.png" alt="Alternate Text" />
                 </div>
@@ -155,23 +155,23 @@
                 </td>
 
                 <td style="padding-top:0px; position:relative" class="table-row-img">
-                    <img src="~/resources/moreOptions.png" alt="Alternate Text" />
-                    @*<div class="index-drop-down-menu">
-                        <div class="index-drop-down-menu-flex-container">
+                    <img id="@item.ID" src="~/resources/moreOptions.png" onclick="divVisibility(@item.ID)" alt="Alternate Text" />
+                    <div  id="@item.ID-ddl" class="index-drop-down-menu">
+                        <a asp-action="Edit" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
                             <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/settings.png" alt="Alternate Text" /></div>
                             <p>Edit</p>
-                        </div>
+                        </a>
 
-                        <div class="index-drop-down-menu-flex-container">
+                        <a asp-action="Details" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
                             <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/search.png" alt="Alternate Text" /></div>
                             <p>Details</p>
-                        </div>
+                        </a>
 
-                        <div class="index-drop-down-menu-flex-container">
+                        <a asp-action="Delete" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
                             <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/trash-bin.png" alt="Alternate Text" /></div>
                             <p>Delete</p>
-                        </div>
-                    </div>*@
+                        </a>
+                    </div>
                     </td>
                 @*<td>
                     <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
