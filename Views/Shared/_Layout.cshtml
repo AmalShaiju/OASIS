@@ -80,10 +80,23 @@
                 </li>
             </ul>
         </header>
-        <div class="container" style="height:100%">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
+        <div class="body">
+            <div class="body-top">
+                <h1 id="page-msg"></h1>
+                <div class="search-bar">
+                    <div class="search-bar-inner-one">
+                        <img src="~/resources/search.png" alt="Alternate Text" />
+                    </div>
+                    <div class="search-bar-inner-two">
+                        <input type="text" placeholder="Search..." name="name" value="" />
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
         </div>
     </div>
 

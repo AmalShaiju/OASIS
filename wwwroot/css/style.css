@@ -1,8 +1,48 @@
-﻿body {
+﻿:root {
+    --primary: #7460ee;
+    --primary-light: rgba(116,96,238,0.2);
+    --secondary: rgba(184,175,247,0.2);
+    --alternative: #b8aff7;
+    --alternative-light: rgba(39,169,248,0.2);
+    --bodyBackground: f4f8f9;
+    --backgroundShade: #a2b3bb;
+    --backgroundShade-light: rgba(162,179,187,0.2);
+    --darkslateGrey: #2a2626;
+    --ghostwhite: #f9fafa;
+}
+
+body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
+.body {
+    background-color: #f9fafa;
+    width: 100%;
+    border-left: 1px solid rgba(116,96,238,0.2)
+}
+
+
+
+::-webkit-input-placeholder { /* Edge */
+    font-size: 13px;
+    --backgroundShade-light: rgba(162,179,187,0.2);
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    font-size: 12px;
+    --backgroundShade-light: rgba(162,179,187,0.2);
+}
+
+/* Change the white to any color ;) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
 
 /* NAVIGATION */
 .layout-flex {
@@ -38,14 +78,14 @@ header {
 
 header a {
     color: grey;
-    float:left;
+    float: left;
 }
 
     header a:hover {
         color: #7460ee;
     }
 
-   
+
 
 .nav-pills .nav-link {
     border-radius: 0px;
@@ -66,16 +106,118 @@ header a {
 }
 
 .inner-nav-flex {
-  display:flex;
-  align-items:center;
+    display: flex;
+    align-items: center;
 }
 
-.nav-img{
+.nav-img {
     height: 85%;
     width: 39%;
     float: right;
-    margin:10px;
-    
+    margin: 10px;
 }
 
+.body-top {
+    height: 80px;
+    background: white;
+    width: 100%;
+    margin-top: 0px;
+    display: flex;
+    align-items: center;
+}
+
+.search-bar {
+    display: flex;
+    width: 31%;
+    height: 50%;
+    margin-left: 4%;
+    border-radius: 18px;
+    margin-top: 0.35%;
+    border: 2px solid rgba(116,96,238,0.2);
+}
+
+.body-top h1 {
+    margin-left: 1.5%;
+    /*background: rgb(116,96,238);
+    background: radial-gradient(circle, rgba(116,96,238,1) 29%, rgba(95,201,216,1) 100%);*/
+    background: rgb(95,201,216);
+    background: radial-gradient(circle, rgba(95,201,216,1) 29%, rgba(116,96,238,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    width: 19%;
+}
+
+
+
+.search-bar-inner-one {
+    width: 21px;
+    margin-left: 2%;
+    margin-top: 0.5%;
+    height: 100%;
+}
+
+    .search-bar-inner-one img {
+        width: 100%;
+        height: 54%;
+    }
+
+.search-bar-inner-two {
+    width: 100%;
+}
+
+    .search-bar-inner-two input[type=text] {
+        width: 100%;
+        height: 100%;
+        border: none;
+        padding-left: 2%;
+        text-decoration: none;
+        border-radius: 18px;
+    }
+
+        .search-bar-inner-two input[type=text]:focus {
+            outline: none;
+        }
 /* NAVIGATION */
+/*CREATE*/
+.col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9,
+.col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4,
+col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10,
+.col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8,
+.col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3,
+.col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10,
+.col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9,
+.col-xl-auto {
+    padding-left: 0px;
+    margin-top: 1%;
+}
+
+.container {
+    margin-left: 4%;
+}
+
+.form-control {
+    background: var(--backgroundShade-light);
+    border: none;
+    margin-top: 2.5%;
+}
+
+    .form-control input[type=text]:-webkit-autofill {
+        -webkit-text-fill-color: yellow !important;
+    }
+
+}
+
+.form-row > .col, .form-row > [class*=col-] {
+    padding-right: 31px;
+    padding-left: 5px;
+    margin-right: 4%;
+}
+
+    .form-row > .col, .form-row > [class*=col-] h3 {
+        color: var(--darkslateGrey);
+    }
+
+form-group col-6{
+    margin-left:20px
+}
+/*CREATE*/
