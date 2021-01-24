@@ -125,6 +125,7 @@ header a {
     display: flex;
     align-items: center;
 }
+
     .body-top h1 {
         margin-left: 1.5%;
         /*background: rgb(116,96,238);
@@ -227,4 +228,53 @@ col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .co
 }
 
 
-    /*CREATE*/
+/*CREATE*/
+
+/*DELETE*/
+.details-container {
+}
+
+.inner-details-container-one, .inner-details-container-two {
+    padding: 3%;
+}
+
+    .inner-details-container-two .container .col {
+        margin-bottom: 5%;
+    }
+
+.inner-details-container-one {
+    background-color: white
+}
+
+.inner-details-container-two .row {
+    margin-bottom: 6%;
+}
+
+.inner-details-container-two {
+    margin-left: 30px;
+    background-color: white
+}
+
+.details-headings {
+    justify-content: start;
+    width: 100%;
+    display: flex;
+}
+
+    .details-headings h3 {
+        margin-left: 12px;
+    }
+
+    .details-headings img {
+        width: 100%;
+        height: 100%;
+    }
+
+.details-headings-img-container {
+    width: 30px;
+    height: 30px;
+}
+
+
+
+/*DELETE*/
