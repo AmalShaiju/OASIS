@@ -125,6 +125,17 @@ header a {
     display: flex;
     align-items: center;
 }
+    .body-top h1 {
+        margin-left: 1.5%;
+        /*background: rgb(116,96,238);
+         background: radial-gradient(circle, rgba(116,96,238,1) 29%, rgba(95,201,216,1) 100%);*/
+        background: rgb(95,201,216);
+        background: radial-gradient(circle, rgba(95,201,216,1) 29%, rgba(116,96,238,1) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        width: 37%;
+    }
+
 
 .search-bar {
     display: flex;
@@ -136,16 +147,6 @@ header a {
     border: 2px solid rgba(116,96,238,0.2);
 }
 
-.body-top h1 {
-    margin-left: 1.5%;
-    /*background: rgb(116,96,238);
-    background: radial-gradient(circle, rgba(116,96,238,1) 29%, rgba(95,201,216,1) 100%);*/
-    background: rgb(95,201,216);
-    background: radial-gradient(circle, rgba(95,201,216,1) 29%, rgba(116,96,238,1) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    width: 19%;
-}
 
 
 
@@ -191,6 +192,8 @@ col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .co
     margin-top: 1%;
 }
 
+
+
 .container {
     margin-left: 4%;
 }
@@ -217,7 +220,11 @@ col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .co
         color: var(--darkslateGrey);
     }
 
-form-group col-6{
-    margin-left:20px
+.form-row > .col, .form-row > [class*=col-6] {
+    padding-right: 5px;
+    padding-left: 5px;
+    margin-left: 5%;
 }
-/*CREATE*/
+
+
+    /*CREATE*/
