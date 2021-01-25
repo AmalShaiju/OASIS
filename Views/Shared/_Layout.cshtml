@@ -10,76 +10,78 @@
 </head>
 <body>
     <div class="layout-flex">
-        <header>
-            <div class="logo"><img src="~/resources/logo.png" alt="Alternate Text" /></div>
-            <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <li class="nav-item-flex">
-                    <div class="nav-item-box-one" id="home-side-bar"></div>
-                    <div class="inner-nav-flex" id="home">
-                        <div style=" width: 60%;">
-                            <img class="nav-img" src="/resources/dash.png" id="homeLogo" alt="Alternate Text" />
-                        </div>
-                        <div class="nav-item-box-two">
-                            <a class="nav-link" id="v-pills-home-tab" asp-controller="Home" asp-action="Index">Dashboard</a>
+        <div style="width:18%; background-color:white;">
+            <header>
+                <div class="logo"><img src="~/resources/logo.png" alt="Alternate Text" /></div>
+                <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <li class="nav-item-flex">
+                        <div class="nav-item-box-one" id="home-side-bar"></div>
+                        <div class="inner-nav-flex" id="home">
+                            <div style=" width: 60%;">
+                                <img class="nav-img" src="/resources/dash.png" id="homeLogo" alt="Alternate Text" />
+                            </div>
+                            <div class="nav-item-box-two">
+                                <a class="nav-link" id="v-pills-home-tab" asp-controller="Home" asp-action="Index">Dashboard</a>
+                            </div>
+
                         </div>
 
-                    </div>
+                    </li>
 
-                </li>
+                    <li class="nav-item-flex">
+                        <div class="nav-item-box-one" id="employee-side-bar"></div>
 
-                <li class="nav-item-flex">
-                    <div class="nav-item-box-one" id="employee-side-bar"></div>
+                        <div class="inner-nav-flex" id="employee">
+                            <div style=" width: 60%;">
+                                <img class="nav-img" src="/resources/employees.png" id="employeeLogo" alt="Alternate Text" />
+                            </div>
+                            <div class="nav-item-box-two">
 
-                    <div class="inner-nav-flex" id="employee">
-                        <div style=" width: 60%;">
-                            <img class="nav-img" src="/resources/employees.png" id="employeeLogo" alt="Alternate Text" />
+                                <a class="nav-link " id="v-pills-employee-tab" asp-controller="Employees" asp-action="Index">Employees</a>
+                            </div>
                         </div>
-                        <div class="nav-item-box-two">
 
-                            <a class="nav-link " id="v-pills-employee-tab" asp-controller="Employees" asp-action="Index">Employees</a>
-                        </div>
-                    </div>
+                    </li>
+                    <li class="nav-item-flex">
+                        <div class="nav-item-box-one" id="customer-side-bar"></div>
 
-                </li>
-                <li class="nav-item-flex">
-                    <div class="nav-item-box-one" id="customer-side-bar"></div>
+                        <div class="inner-nav-flex" id="customer">
+                            <div style=" width: 60%;">
+                                <img class="nav-img" src="/resources/users.png" id="customerLogo" alt="Alternate Text" />
+                            </div>
+                            <div class="nav-item-box-two">
+                                <a class="nav-link" id="v-pills-customer-tab" asp-controller="Customers" asp-action="Index">Customers</a>
+                            </div>
+                        </div>
 
-                    <div class="inner-nav-flex" id="customer">
-                        <div style=" width: 60%;">
-                            <img class="nav-img" src="/resources/users.png" id="customerLogo" alt="Alternate Text" />
+                    </li>
+                    <li class="nav-item-flex">
+                        <div class="nav-item-box-one" id="project-side-bar"></div>
+                        <div class="inner-nav-flex" id="project">
+                            <div style=" width: 60%;">
+                                <img class="nav-img" src="/resources/projects.png" id="projectLogo" alt="Alternate Text" />
+                            </div>
+                            <div class="nav-item-box-two" id="project">
+                                <a class="nav-link" id="v-pills-projct-tab" asp-controller="Projects" asp-action="Index">Projects</a>
+                            </div>
                         </div>
-                        <div class="nav-item-box-two">
-                            <a class="nav-link" id="v-pills-customer-tab" asp-controller="Customers" asp-action="Index">Customers</a>
-                        </div>
-                    </div>
 
-                </li>
-                <li class="nav-item-flex">
-                    <div class="nav-item-box-one" id="project-side-bar"></div>
-                    <div class="inner-nav-flex" id="project">
-                        <div style=" width: 60%;">
-                            <img class="nav-img" src="/resources/projects.png" id="projectLogo" alt="Alternate Text" />
+                    </li>
+                    <li class="nav-item-flex">
+                        <div class="nav-item-box-one" id="role-side-bar"></div>
+                        <div class="inner-nav-flex" id="role">
+                            <div style=" width: 60%;">
+                                <img class="nav-img" src="~/resources/employeeRoles.png" id="roleLogo" alt="Alternate Text" />
+                            </div>
+                            <div class="nav-item-box-two" id="project">
+                                <a class="nav-link" id="v-pills-role-tab" asp-controller="roles" asp-action="Index">Roles</a>
+                            </div>
                         </div>
-                        <div class="nav-item-box-two" id="project">
-                            <a class="nav-link" id="v-pills-projct-tab" asp-controller="Projects" asp-action="Index">Projects</a>
-                        </div>
-                    </div>
 
-                </li>
-                <li class="nav-item-flex">
-                    <div class="nav-item-box-one" id="role-side-bar"></div>
-                    <div class="inner-nav-flex" id="role">
-                        <div style=" width: 60%;">
-                            <img class="nav-img" src="~/resources/employeeRoles.png" id="roleLogo" alt="Alternate Text" />
-                        </div>
-                        <div class="nav-item-box-two" id="project">
-                            <a class="nav-link" id="v-pills-role-tab" asp-controller="roles" asp-action="Index">Roles</a>
-                        </div>
-                    </div>
-
-                </li>
-            </ul>
-        </header>
+                    </li>
+                </ul>
+            </header>
+        </div>
         <div class="body">
             <div class="body-top">
                 <h1 id="page-msg"></h1>
@@ -92,7 +94,7 @@
                     </div>
                 </div>
             </div>
-            <div class="container">
+            <div class="container-fluid">
                 <main role="main" class="pb-3">
                     @RenderBody()
                 </main>

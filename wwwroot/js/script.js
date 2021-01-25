@@ -31,7 +31,7 @@ var url = window.location.href.toString().toLowerCase();
 console.log(url)
 
 
-
+//Determines the page and adds it to the status msg
 if (url.includes("employees")) {
     var homeSideBar = document.getElementById("employee-side-bar").style.backgroundColor = "#7460ee";;
     var home = document.getElementById("employee").style.backgroundColor = "rgb(116, 96, 238, 0.2)";
@@ -72,6 +72,7 @@ else {
 
 }
 
+//Adds Method Name to Status Msg
 if (url.includes("create") || url.includes("edit") || url.includes("details") || url.includes("delete")) {
     if (url.includes("create")) {
         var pagemsg = document.getElementById("page-msg").innerHTML;
