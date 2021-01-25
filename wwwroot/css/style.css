@@ -15,7 +15,176 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background-color: #f4f8f9;
 }
+button:focus{
+    outline:none;
+}
+
+a{
+    text-decoration:none;
+}
+.flex-container {
+    display: flex;
+    height: 15%;
+    width: 100%;
+    align-items: center;
+    margin-bottom:30px;
+}
+
+.inner-flex-container-left {
+    display: flex;
+    width: 60%;
+    justify-content: space-around;
+}
+
+    .inner-flex-container-left-items {
+        width: 50%;
+    }
+        .inner-flex-container-left-items h1,p {
+            font-size: 15px;
+            line-height: 0px;
+            margin: 0;
+        }
+        .inner-flex-container-left-items h1 {
+            font-size: 30px;
+            color: #7460ee;
+        }
+
+        .inner-flex-container-left-items  p{
+            margin-top:1%;
+        }
+
+.inner-flex-container-right{
+    width:50%;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+
+}
+    .inner-flex-container-right a {
+        text-decoration: none;
+    }
+
+    .inner-flex-container-right-items {
+        width: 30%;
+        height:20%;
+        display: flex;
+        align-items: center;
+        padding: 7px;
+        justify-content: space-around;
+        border: 1px solid rgba(0,0,0,0);
+        border-radius: 15px;
+    }
+
+    .inner-flex-container-right-items {
+        width: 30%;
+        height: 20%;
+        display: flex;
+        align-items: center;
+        padding: 7px;
+        justify-content: space-around;
+        border: 1px solid rgba(0,0,0,0);
+        border-radius: 15px;
+    }
+
+
+
+        .inner-flex-container-right-items collapsed {
+            text-decoration: none;
+            outline: none;
+        }
+
+
+tr {
+    background-color: white;
+    border: 0;
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+}
+
+thead tr {
+    background-color: rgba(0,0,0,0);
+    margin: 50px;
+    color: #616265;
+}
+ 
+table {
+    border-collapse: separate;
+    border-spacing: 0 1em;
+}
+
+.table > thead > tr > th {
+    border-top: none;
+    border: none;
+}
+
+.table > tbody > tr > td,
+.table > tbody > tr > th {
+    border:none;
+    vertical-align:inherit;
+}
+
+.table-row-img {
+    width: 70px;
+    height:60px;
+    padding-top:0px;
+    margin-right:10px;
+}
+
+    .table-row-img img {
+        width: 100%;
+        height: 100%;
+    }
+
+.index-drop-down-menu {
+    z-index: 9;
+    background: rgba(39,169,248,0.4);
+    position: absolute;
+    width: 95px;
+    height: 140px;
+    right: 14%;
+    top: 55%;
+    margin-bottom: 100px;
+    display:none;
+}
+
+.index-drop-down-menu a{
+    text-decoration:none;
+    color:ghostwhite;
+}
+
+    .index-drop-down-menu a:hover {
+        color: #7460ee;
+    }
+
+.index-drop-down-menu-flex-container {
+    display: flex;
+    width: 100%;
+    margin-bottom: 27px;
+    margin-top: 10px;
+    justify-content: space-around;
+    align-items: center;
+}
+.index-drop-down-menu-flex-container-img{
+    width:20px;
+    height:20px;
+}
+
+    .index-drop-down-menu-flex-container-img img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .index-drop-down-menu-flex-container-img p {
+        display: flex;
+        align-items: center;
+        padding-top: 14px;
+        padding-left: 5px;
+    }
+
 
 .body {
     background-color: #f9fafa;
@@ -124,6 +293,7 @@ header a {
     margin-top: 0px;
     display: flex;
     align-items: center;
+    margin-bottom: 2%;
 }
 
     .body-top h1 {
@@ -209,7 +379,6 @@ col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .co
         -webkit-text-fill-color: yellow !important;
     }
 
-}
 
 .form-row > .col, .form-row > [class*=col-] {
     padding-right: 31px;
@@ -224,13 +393,17 @@ col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .co
 .form-row > .col, .form-row > [class*=col-6] {
     padding-right: 5px;
     padding-left: 5px;
-    margin-left: 5%;
 }
 
 
 /*CREATE*/
 
-/*DELETE*/
+/*DETAILS*/
+
+hr{
+    margin-bottom:1.5rem;
+}
+
 .details-container {
 }
 
@@ -277,4 +450,4 @@ col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .co
 
 
 
-/*DELETE*/
+/*DETAILS*/
