@@ -247,24 +247,33 @@
             </div>
         </div>
     </div>
-
     <div style="display:flex; margin-top:50px; margin-bottom:20px;">
-        <div style="width:10%; margin-right:0%" class="form-group">
-            <a asp-action="Edit" asp-route-id="@Model.ID" style=" width:100%;" class="btn btn-primary">
-                Edit
-            </a>
+        <div style="width:12%; margin-right:3.5%; " class="button-menu form-group btn btn-primary">
+            <div style="width:20px; height:22px;">
+                <img src="~/resources/editIcon.png" alt="Alternate Text" />
+            </div>
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model.ID" style=" width:100%;">
+                    Edit
+                </a>
+            </div>
+           
         </div>
 
-        <div style="width:10%; margin-left:3%" class="form-group">
-            <form asp-action="Delete">
-                <input type="hidden" asp-for="ID" />
-                <input type="submit" value="Delete" style=" width:100%;" class="btn btn-danger">
-            </form>
+        <div style="width:17%" class="button-menu form-group btn btn-danger">
+            <div style="width:22px; height:25px;">
+                <img src="~/resources/delet-fill-white.png" alt="Alternate Text" />
+            </div>
+            <div>
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="ID" />
+                    <input type="submit" value="Delete" style=" width:100%;">
+                </form>
+            </div>
+          
         </div>
-
-        <div style="width:80%;">
-            <a asp-action="Index" style="float:right; width:17%;" class="btn btn-info">
-
+        <div style="width:75%;">
+            <a asp-action="Index" style="float:right; width:19%;" class="btn btn-info">
                 &#8592; Back To List
             </a>
         </div>
