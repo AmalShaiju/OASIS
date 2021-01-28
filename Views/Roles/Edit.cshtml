@@ -3,43 +3,90 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<form asp-action="Edit">
+    <input type="hidden" asp-for="RowVersion" />
+    <div class="row">
+        <div class="form-row col-10">
+            <div style="width:35px; height:37px; align-self:center;">
+                <img style="width:100%; height:100%;" src="~/resources/add-user-full-fill.png" alt="Alternate Text" />
+            </div>
+            <h2 style="margin-left: 14px; margin-top:5px; color:#7460ee">Add Role</h2>
 
-<h1>Edit</h1>
-
-<h4>Role</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+        </div>
+        <div class="col-md-12">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ID" />
-            <input type="hidden" asp-for="RowVersion" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="form-row col-10">
+
+                <div style=" padding-left: 1px;" class="form-group col-5">
+                    <h3> Role Information</h3>
+                </div>
+                <div style=" padding-left: 1px;" class="form-group col-6">
+                    <h3> Labour Information</h3>
+                </div>
+
             </div>
-            <div class="form-group">
-                <label asp-for="LabourCostPerHr" class="control-label"></label>
-                <input asp-for="LabourCostPerHr" class="form-control" />
-                <span asp-validation-for="LabourCostPerHr" class="text-danger"></span>
+            <div style="margin-top:0px;" class="col-md-12">
+                <div style="margin-top:0px;" class="form-row col-10">
+
+                    <div class="form-group col-5">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-6">
+                        <label asp-for="LabourCostPerHr" class="control-label"></label>
+                        <input asp-for="LabourCostPerHr" class="form-control" />
+                        <span asp-validation-for="LabourCostPerHr" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-row col-10">
+                    <div class="form-group col-5">
+
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label asp-for="LabourPricePerHr" class="control-label"></label>
+                        <input asp-for="LabourPricePerHr" class="form-control" />
+                        <span asp-validation-for="LabourPricePerHr" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+
             </div>
-            <div class="form-group">
-                <label asp-for="LabourPricePerHr" class="control-label"></label>
-                <input asp-for="LabourPricePerHr" class="form-control" />
-                <span asp-validation-for="LabourPricePerHr" class="text-danger"></span>
+
+
+
+
+            <div style="display:flex; margin-top:50px; margin-bottom:20px;">
+                <div style="width:12%; margin-right:3.5%; " class="button-menu form-group btn btn-success">
+                    <div style="width:20px; height:22px;">
+                        <img src="~/resources/save.png" alt="Alternate Text" />
+                    </div>
+                    <div>
+                        <input type="submit" value="Save" />
+                    </div>
+                </div>
+
+                <div style="width:17%" class="button-menu form-group btn btn-dark">
+                    <div style="width:20px; height:22px;">
+                        <img src="~/resources/undo.png" alt="Alternate Text" />
+                    </div>
+                    <div>
+                        <input type="reset" name="name" value="Revert Changes" />
+                    </div>
+                </div>
+                <div style="width:75%;">
+                    <a asp-action="Index" style="float:right; width:19%;" class="btn btn-info">
+                        &#8592; Back To List
+                    </a>
+                </div>
+
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+
+        </div>
     </div>
-</div>
+</form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

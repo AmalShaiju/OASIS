@@ -9,7 +9,7 @@ using OASIS.Data;
 namespace OASIS.Data.OASISMigrations
 {
     [DbContext(typeof(OasisContext))]
-    [Migration("20210122073317_Initial")]
+    [Migration("20210128050937_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -4,6 +4,168 @@
     ViewData["Title"] = "Index";
 }
 
+<form asp-action="Index" method="get">
+    <div class="flex-container">
+
+        <div class="inner-flex-container-left">
+            <div class="inner-flex-container-left-items">
+                <strong>Total Employee : 5</strong>
+            </div>
+            <div class="inner-flex-container-left-items">
+                <strong>Sorted by : Date Created</strong>
+            </div>
+        </div>
+
+        <div class="inner-flex-container-right">
+
+            <button type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" class="inner-flex-container-right-items" style=" width:30%; background-color:white">
+
+                <div style="width:60%;text-align:center">
+                    <p>Filter</p>
+                </div>
+                <div style="width:40%;">
+                    <img style="width:50%" ;height="50%" src="~/resources/filterBtn.png" alt="Alternate Text" />
+                </div>
+
+            </button>
+
+            <a asp-action="Create" class="inner-flex-container-right-items" style=" width:48%; background-color:#27a9f8">
+                <div style="width:40%;text-align:right">
+                    <img style="width:50%" ;height="50%" src="~/resources/addUser.png" alt="Alternate Text" />
+                </div>
+
+                <div style="width:100%;text-align:center">
+                    <p>Add Employee</p>
+                </div>
+            </a>
+
+            <div class="inner-flex-container-right-items" style="width:10%;background-color: rgba(39,169,248,0.25)">
+                <div style="width:100%">
+                    <img style="width:100%" ;height="100%" src="~/resources/moreOptions.png" alt="Alternate Text" />
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="collapse @(ViewData["Filtering"])" id="collapseFilter">
+        <div style="background-color:white!important; border: 1px solid rgba(39,169,248,0.3)" class="card card-body bg-light">
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Customer Name:</label>
+                        @Html.TextBox("SearchName", null, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Project Name:</label>
+                        @Html.TextBox("SearchName", null, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Phone:</label>
+                        @Html.TextBox("SearchName", null, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Email Address:</label>
+                        @Html.TextBox("SearchEmail", null, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6  align-self-end">
+                    <div class="form-group">
+                        <input style="width:20%;" type="submit" name="actionButton" value="Filter" class="btn btn-primary" />
+                        <a style="width:20%; margin-left:2%;" asp-action="Index" class="btn btn-dark ">Clear</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FullName)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Phone)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Role)
+                </th>
+
+               
+
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+
+                    <td>
+                        <div style="display:flex; align-items:center">
+                            @Html.DisplayFor(modelItem => item.FullName)
+
+                        </div>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.Email)
+
+                        </div>
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Role.Name)   
+                    </td>
+                  
+
+                    <td style="padding-top:0px; position:relative" class="table-row-img">
+                        <img id="@item.ID" src="~/resources/moreOptions.png" class="ddl-icon" onclick="divVisibility(@item.ID)" alt="Alternate Text" />
+                        <div id="@item.ID-ddl" class="index-drop-down-menu">
+                            <a asp-action="Edit" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
+                                <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/settings.png" alt="Alternate Text" /></div>
+                                <p>Edit</p>
+                            </a>
+
+                            <a asp-action="Details" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
+                                <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/search.png" alt="Alternate Text" /></div>
+                                <p>Details</p>
+                            </a>
+
+                            <a asp-action="Delete" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
+                                <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/trash-bin.png" alt="Alternate Text" /></div>
+                                <p>Delete</p>
+                            </a>
+                        </div>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+
+
+
+@*@{
+    ViewData["Title"] = "Index";
+}
+
 <h1>Index</h1>
 
 <p>
@@ -52,50 +214,52 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MiddleName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddressLineOne)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddressLineTwo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApartmentNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Province)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Country)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Role.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MiddleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AddressLineOne)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AddressLineTwo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApartmentNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Province)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
-</table>
+</table>*@
+

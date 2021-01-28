@@ -57,27 +57,26 @@ namespace OASIS.Data.OASISMigrations
                     table.PrimaryKey("PK_Roles", x => x.ID);
                 });
 
-                migrationBuilder.Sql(
-                  @"
-                    CREATE TRIGGER SetRoleTimestampOnUpdate
-                    AFTER UPDATE ON Roles
-                    BEGIN
-                        UPDATE Roles
-                        SET RowVersion = randomblob(8)
-                        WHERE rowid = NEW.rowid;
-                    END
-                ");
-                migrationBuilder.Sql(
-                   @"
-                    CREATE TRIGGER SetRoleTimestampOnInsert
-                    AFTER INSERT ON Roles
-                    BEGIN
-                        UPDATE Roles
-                        SET RowVersion = randomblob(8)
-                        WHERE rowid = NEW.rowid;
-                   END
-               ");
-
+            migrationBuilder.Sql(
+              @"
+                CREATE TRIGGER SetRoleTimestampOnUpdate
+                AFTER UPDATE ON Roles
+                BEGIN
+                    UPDATE Roles
+                    SET RowVersion = randomblob(8)
+                    WHERE rowid = NEW.rowid;
+                END
+            ");
+            migrationBuilder.Sql(
+               @"
+                CREATE TRIGGER SetRoleTimestampOnInsert
+                AFTER INSERT ON Roles
+                BEGIN
+                    UPDATE Roles
+                    SET RowVersion = randomblob(8)
+                    WHERE rowid = NEW.rowid;
+               END
+           ");
 
             migrationBuilder.CreateTable(
                 name: "Projects",
@@ -111,8 +110,9 @@ namespace OASIS.Data.OASISMigrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-                migrationBuilder.Sql(
-                 @"
+            // Project Auditing Field Updation
+            migrationBuilder.Sql(
+             @"
                     CREATE TRIGGER SetProjectTimestampOnUpdate
                     AFTER UPDATE ON Projects
                     BEGIN
@@ -121,8 +121,8 @@ namespace OASIS.Data.OASISMigrations
                         WHERE rowid = NEW.rowid;
                     END
                 ");
-                migrationBuilder.Sql(
-                   @"
+            migrationBuilder.Sql(
+               @"
                     CREATE TRIGGER SetProjectTimestampOnInsert
                     AFTER INSERT ON Projects
                     BEGIN
