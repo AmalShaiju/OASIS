@@ -28,13 +28,15 @@ namespace OASIS.Controllers
         // GET: Roles/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var role = await _context.Roles
+                        .Include(p => p.Employees)
+                        .FirstOrDefaultAsync(m => m.ID == id);
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var role = await _context.Roles
-                .FirstOrDefaultAsync(m => m.ID == id);
             if (role == null)
             {
                 return NotFound();
@@ -180,7 +182,8 @@ namespace OASIS.Controllers
             }
 
             var role = await _context.Roles
-                .FirstOrDefaultAsync(m => m.ID == id);
+                         .Include(p => p.Employees)
+                         .FirstOrDefaultAsync(m => m.ID == id);
             if (role == null)
             {
                 return NotFound();
