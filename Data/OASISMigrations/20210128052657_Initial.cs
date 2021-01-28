@@ -59,24 +59,25 @@ namespace OASIS.Data.OASISMigrations
 
             migrationBuilder.Sql(
               @"
-                CREATE TRIGGER SetRoleTimestampOnUpdate
-                AFTER UPDATE ON Roles
-                BEGIN
-                    UPDATE Roles
-                    SET RowVersion = randomblob(8)
-                    WHERE rowid = NEW.rowid;
-                END
-            ");
+                    CREATE TRIGGER SetRoleTimestampOnUpdate
+                    AFTER UPDATE ON Roles
+                    BEGIN
+                        UPDATE Roles
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                    END
+                ");
             migrationBuilder.Sql(
                @"
-                CREATE TRIGGER SetRoleTimestampOnInsert
-                AFTER INSERT ON Roles
-                BEGIN
-                    UPDATE Roles
-                    SET RowVersion = randomblob(8)
-                    WHERE rowid = NEW.rowid;
-               END
-           ");
+                    CREATE TRIGGER SetRoleTimestampOnInsert
+                    AFTER INSERT ON Roles
+                    BEGIN
+                        UPDATE Roles
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                   END
+               ");
+
 
             migrationBuilder.CreateTable(
                 name: "Projects",
@@ -110,27 +111,26 @@ namespace OASIS.Data.OASISMigrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            // Project Auditing Field Updation
-            migrationBuilder.Sql(
-             @"
-                    CREATE TRIGGER SetProjectTimestampOnUpdate
-                    AFTER UPDATE ON Projects
-                    BEGIN
-                        UPDATE Projects
-                        SET RowVersion = randomblob(8)
-                        WHERE rowid = NEW.rowid;
-                    END
-                ");
-            migrationBuilder.Sql(
-               @"
-                    CREATE TRIGGER SetProjectTimestampOnInsert
-                    AFTER INSERT ON Projects
-                    BEGIN
-                        UPDATE Projects
-                        SET RowVersion = randomblob(8)
-                        WHERE rowid = NEW.rowid;
-                   END
-               ");
+                migrationBuilder.Sql(
+                 @"
+                        CREATE TRIGGER SetProjectTimestampOnUpdate
+                        AFTER UPDATE ON Projects
+                        BEGIN
+                            UPDATE Projects
+                            SET RowVersion = randomblob(8)
+                            WHERE rowid = NEW.rowid;
+                        END
+                    ");
+                migrationBuilder.Sql(
+                   @"
+                        CREATE TRIGGER SetProjectTimestampOnInsert
+                        AFTER INSERT ON Projects
+                        BEGIN
+                            UPDATE Projects
+                            SET RowVersion = randomblob(8)
+                            WHERE rowid = NEW.rowid;
+                       END
+                   ");
 
             migrationBuilder.CreateTable(
                 name: "Employees",
@@ -139,6 +139,11 @@ namespace OASIS.Data.OASISMigrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: true),
+                    UpdatedBy = table.Column<string>(maxLength: 256, nullable: true),
+                    UpdatedOn = table.Column<DateTime>(nullable: true),
+                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
                     FirstName = table.Column<string>(maxLength: 50, nullable: false),
                     LastName = table.Column<string>(maxLength: 50, nullable: false),
                     MiddleName = table.Column<string>(maxLength: 50, nullable: true),
@@ -163,6 +168,28 @@ namespace OASIS.Data.OASISMigrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+                migrationBuilder.Sql(
+                @"
+                        CREATE TRIGGER SetEmployeeTimestampOnUpdate
+                        AFTER UPDATE ON Employees
+                        BEGIN
+                            UPDATE Employees
+                            SET RowVersion = randomblob(8)
+                            WHERE rowid = NEW.rowid;
+                        END
+                    ");
+                migrationBuilder.Sql(
+                   @"
+                        CREATE TRIGGER SetEmployeeTimestampOnInsert
+                        AFTER INSERT ON Employees
+                        BEGIN
+                            UPDATE Employees
+                            SET RowVersion = randomblob(8)
+                            WHERE rowid = NEW.rowid;
+                       END
+                   ");
+
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customers_Email",
