@@ -175,6 +175,13 @@ namespace OASIS.Data.OASISMigrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(100);
 
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("CustomerID")
                         .HasColumnType("INTEGER");
 
@@ -188,6 +195,11 @@ namespace OASIS.Data.OASISMigrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(100);
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("BLOB");
+
                     b.Property<string>("SiteAddressLineOne")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -197,6 +209,13 @@ namespace OASIS.Data.OASISMigrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(100);
 
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ID");
 
                     b.HasIndex("CustomerID");
@@ -204,7 +223,7 @@ namespace OASIS.Data.OASISMigrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Project");
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("OASIS.Models.Role", b =>

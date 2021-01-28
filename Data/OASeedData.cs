@@ -194,9 +194,9 @@ namespace OASIS.Data
                 }
 
 
-                if (!context.Project.Any())
+                if (!context.Projects.Any())
                 {
-                    context.Project.AddRange(
+                    context.Projects.AddRange(
                     new Project
                     {
                         Name = "Alpha",
