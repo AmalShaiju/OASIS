@@ -79,6 +79,7 @@ namespace OASIS.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Project> Projects { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -127,7 +128,6 @@ namespace OASIS.Data
         }
 
 
-        public DbSet<OASIS.Models.Project> Project { get; set; }
 
 
     }

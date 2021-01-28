@@ -4,33 +4,140 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
 
-<div>
-    <h4>Role</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LabourCostPerHr)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LabourCostPerHr)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LabourPricePerHr)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LabourPricePerHr)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div style="padding: 0% 10% 0% 3%;">
+    <div class="details-headings row" style="margin-bottom:2%;">
+        <div style="width:50px;height:50px; margin-top: 0.8%;">
+            <img src="~/resources/details.png" alt="Alternate Text" />
+        </div>
+        <div style="margin-left:1.8%;margin-left: 1.8%;display: flex;align-self: center;">
+            <h2 style="color:#7460ee">@Model.Name</h2>
+        </div>
+
+    </div>
+
+    <div>
+
+        <div class="row details-container">
+            <div class="col-6 col-md-4 row inner-details-container-one">
+                <div class="container">
+                    <div class="details-headings" style="justify-content: center;">
+                        <div class="details-headings-img-container">
+                            <img src="/resources/project-alt.png" alt="Alternate Text" />
+                        </div>
+                        <div>
+                            <h3>Employees</h3>
+                        </div>
+                    </div>
+
+                    <div class="row" style=" text-align: center; margin-top: 8%; height:90%; display:block;">
+                        @*For loop through project and display project names*@
+                        @foreach (var item in Model.Employees)
+                        {
+                            <div style="width:100%; height:11%;">
+                                <p>
+
+                                    @Html.DisplayFor(model => item.FormalName)
+
+
+                                </p>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="col-12 col-md-8 row inner-details-container-two">
+
+                <div class="container">
+
+                    <div class="details-headings row" style="margin-bottom:0px;">
+                        <div class="details-headings-img-container">
+                            <img src="~/resources/user-full-fill.png" alt="Alternate Text" />
+                        </div>
+                        <div>
+                            <h3>Role Information</h3>
+                        </div>
+                    </div>
+                    <hr />
+
+
+                    <div class="row">
+                        <div class="col">
+                            <label>
+                                @Html.DisplayNameFor(model => model.Name)
+
+                            </label>
+                        </div>
+                        <div class="col">
+                            <p>
+                                @Html.DisplayFor(model => model.Name)
+                            </p>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            <label>
+                                @Html.DisplayNameFor(model => model.LabourCostPerHr)
+
+                            </label>
+                        </div>
+                        <div class="col">
+                            <p>
+                                @Html.DisplayFor(model => model.LabourCostPerHr)
+                            </p>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            <label>
+                                @Html.DisplayNameFor(model => model.LabourPricePerHr)
+
+                            </label>
+                        </div>
+                        <div class="col">
+                            <p>
+                                @Html.DisplayFor(model => model.LabourPricePerHr)
+                            </p>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="display:flex; margin-top:50px; margin-bottom:20px;">
+        <div style="width:12%; margin-right:3.5%; " class="button-menu form-group btn btn-primary">
+            <div style="width:20px; height:22px;">
+                <img src="~/resources/editIcon.png" alt="Alternate Text" />
+            </div>
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model.ID" style=" width:100%;">
+                    Edit
+                </a>
+            </div>
+
+        </div>
+
+        <div style="width:17%" class="button-menu form-group btn btn-danger">
+            <div style="width:22px; height:25px;">
+                <img src="~/resources/delet-fill-white.png" alt="Alternate Text" />
+            </div>
+            <div>
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="ID" />
+                    <input type="submit" value="Delete" style=" width:100%;">
+                </form>
+            </div>
+
+        </div>
+        <div style="width:75%;">
+            <a asp-action="Index" style="float:right; width:19%;" class="btn btn-info">
+                &#8592; Back To List
+            </a>
+        </div>
+
+    </div>
+
 </div>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OASIS.Models
 {
-    public class Project
+    public class Project : Auditable
     {
         public int ID { get; set; }
 
