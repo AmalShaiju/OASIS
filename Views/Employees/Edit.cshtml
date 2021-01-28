@@ -1,87 +1,157 @@
 ﻿@model OASIS.Models.Employee
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
 }
+<form asp-action="Edit">
 
-<h1>Edit</h1>
+    <div class="row">
+        <div class="form-row col-10">
+            <div style="width:35px; height:37px; align-self:center;">
+                <img style="width:100%; height:100%;" src="~/resources/add-user-full-fill.png" alt="Alternate Text" />
+            </div>
+            <h2 style="margin-left: 14px; margin-top:5px; color:#7460ee">Add Employee</h2>
 
-<h4>Employee</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+        </div>
+        <div class="col-md-12">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ID" />
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MiddleName" class="control-label"></label>
-                <input asp-for="MiddleName" class="form-control" />
-                <span asp-validation-for="MiddleName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AddressLineOne" class="control-label"></label>
-                <input asp-for="AddressLineOne" class="form-control" />
-                <span asp-validation-for="AddressLineOne" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AddressLineTwo" class="control-label"></label>
-                <input asp-for="AddressLineTwo" class="form-control" />
-                <span asp-validation-for="AddressLineTwo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ApartmentNumber" class="control-label"></label>
-                <input asp-for="ApartmentNumber" class="form-control" />
-                <span asp-validation-for="ApartmentNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Province" class="control-label"></label>
-                <input asp-for="Province" class="form-control" />
-                <span asp-validation-for="Province" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Country" class="control-label"></label>
-                <input asp-for="Country" class="form-control" />
-                <span asp-validation-for="Country" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RoleID" class="control-label"></label>
-                <select asp-for="RoleID" class="form-control" asp-items="ViewBag.RoleID"></select>
-                <span asp-validation-for="RoleID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+            <div class="form-row col-10">
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+                <div style=" padding-left: 1px;" class="form-group col-5">
+                    <h3> Personal Information</h3>
+                </div>
+                <div style=" padding-left: 1px;" class="form-group col-6">
+                    <h3> Address Information</h3>
+                </div>
+
+            </div>
+            <div style="margin-top:0px;" class="col-md-12">
+                <div style="margin-top:0px;" class="form-row col-10">
+
+                    <div class="form-group col-5">
+                        <label asp-for="FirstName" class="control-label"></label>
+                        <input asp-for="FirstName" placeholder="Please Enter The First Name" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-6">
+                        <label asp-for="AddressLineOne" class="control-label"></label>
+                        <input asp-for="AddressLineOne" placeholder="Please Enter The Address Line 1" class="form-control" />
+                        <span asp-validation-for="AddressLineOne" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-row col-10">
+                    <div class="form-group col-5">
+                        <label asp-for="MiddleName" class="control-label"></label>
+                        <input asp-for="MiddleName" placeholder="Please Enter The Middle Name" class="form-control" />
+                        <span asp-validation-for="MiddleName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label asp-for="AddressLineTwo" class="control-label"></label>
+                        <input asp-for="AddressLineTwo" placeholder="Please Enter The Address Line 2" class="form-control" />
+                        <span asp-validation-for="AddressLineTwo" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-row col-10">
+
+                    <div class="form-group col-5">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" placeholder="Please Enter The Last Name" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label asp-for="ApartmentNumber" class="control-label"></label>
+                        <input asp-for="ApartmentNumber" placeholder=" Please Enter The Apartment / Suite Number " class="form-control" />
+                        <span asp-validation-for="ApartmentNumber" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-row col-10">
+
+                    <div class="form-group col-5">
+                        <label asp-for="RoleID" class="control-label"></label>
+                        <select asp-for="RoleID" class="form-control" asp-items="ViewBag.RoleID"></select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label asp-for="City" class="control-label"></label>
+                        <input asp-for="City" placeholder="Please Enter The City Name" class="form-control" />
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+
+
+                </div>
+
+                <div class="form-row col-10">
+
+                    <div class="form-group col-5">
+                        <label asp-for="Phone" class="control-label"></label>
+                        <input asp-for="Phone" placeholder="Please Enter The Phone Number" class="form-control" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-6">
+                        <label asp-for="Province" class="control-label"></label>
+                        <input asp-for="Province" placeholder="Please Enter The Province Name" class="form-control" />
+                        <span asp-validation-for="Province" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-row col-10">
+
+                    <div class="form-group col-5">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" placeholder="Please Enter The Email Address" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-6">
+                        <label asp-for="Country" class="control-label"></label>
+                        <input asp-for="Country" placeholder="Please Enter The Country Name" class="form-control" />
+                        <span asp-validation-for="Country" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+
+            <div style="display:flex; margin-top:50px; margin-bottom:20px;">
+                <div style="width:12%; margin-right:3.5%; " class="button-menu form-group btn btn-success">
+                    <div style="width:20px; height:22px;">
+                        <img src="~/resources/save.png" alt="Alternate Text" />
+                    </div>
+                    <div>
+                        <input type="submit" value="Save" />
+                    </div>
+                </div>
+
+                <div style="width:17%" class="button-menu form-group btn btn-dark">
+                    <div style="width:20px; height:22px;">
+                        <img src="~/resources/undo.png" alt="Alternate Text" />
+                    </div>
+                    <div>
+                        <input type="reset" name="name" value="Revert Changes" />
+                    </div>
+                </div>
+                <div style="width:75%;">
+                    <a asp-action="Index" style="float:right; width:19%;" class="btn btn-info">
+                        &#8592; Back To List
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</form>
+
+
 
 
