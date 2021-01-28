@@ -16,6 +16,7 @@
         </div>
 
     </div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div>
 
@@ -249,7 +250,7 @@
     </div>
 
     <div style="display:flex; margin-top:50px; margin-bottom:20px;">
-         <div style="width:10%" class="button-menu form-group btn btn-danger">
+        <div style="width:10%" class="button-menu form-group btn btn-danger">
             <div style="width:22px; height:25px;">
                 <img src="~/resources/delet-fill-white.png" alt="Alternate Text" />
             </div>
@@ -259,7 +260,7 @@
                     <input type="submit" value="Delete" style=" width:100%;">
                 </form>
             </div>
-          
+
         </div>
         <div style="width:90%;">
             <a asp-action="Index" style="float:right; width:17%;" class="btn btn-info">
