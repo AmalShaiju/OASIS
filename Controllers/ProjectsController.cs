@@ -20,10 +20,97 @@ namespace OASIS.Controllers
         }
 
         // GET: Projects
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchProjectName, string SearchCustomerName, string SearchOrg, string SearchCity,
+            string actionButton, string sortDirection = "asc", string sortField = "Project")
         {
-            var oasisContext = _context.Projects.Include(p => p.Customer);
-            return View(await oasisContext.ToListAsync());
+            var project = from p in _context.Projects
+              .Include(p => p.Customer)
+                            select p;
+
+            ViewData["Filtering"] = "";
+
+            if (!String.IsNullOrEmpty(SearchProjectName))
+            {
+                project = project.Where(p => p.Name.ToUpper().Contains(SearchProjectName.ToUpper()));
+                ViewData["Filtering"] = " show";
+            }
+
+            if (!String.IsNullOrEmpty(SearchCity))
+            {
+                project = project.Where(p => p.City.ToUpper().Contains(SearchCity.ToUpper()));
+                ViewData["Filtering"] = "show";
+            }
+
+            if (!String.IsNullOrEmpty(SearchOrg))
+            {
+                project = project.Where(p=>p.Customer.OrgName.ToUpper().Contains(SearchOrg.ToUpper()));
+                ViewData["Filtering"] = "show";
+            }
+
+            if (!String.IsNullOrEmpty(SearchCustomerName))
+            {
+                project = project.Where(p => p.Customer.LastName.ToUpper().Contains(SearchCustomerName.ToUpper())
+                                        || p.Customer.FirstName.ToUpper().Contains(SearchCustomerName.ToUpper()));
+                ViewData["Filtering"] = "show";
+            }
+
+            if (!String.IsNullOrEmpty(actionButton))
+            {
+                if (actionButton != "Filter")
+                {
+                    if (actionButton == sortField)
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;
+                }
+            }
+
+            if (sortField == "Project")
+            {
+                if (sortDirection == "asc")
+                {
+                    project = project
+                        .OrderByDescending(p => p.Name);
+                }
+                else
+                {
+                    project = project
+                         .OrderBy(p => p.Name);
+                }
+            }
+            else if (sortField == "Organization")
+            {
+                if (sortDirection == "asc")
+                {
+                    project = project
+                        .OrderBy(p => p.Customer.OrgName);
+                }
+                else
+                {
+                    project = project
+                        .OrderByDescending(p => p.Customer.OrgName);
+                }
+            }
+            else //Sorting by Patient Name
+            {
+                if (sortDirection == "asc")
+                {
+                    project = project
+                        .OrderBy(p => p.City);
+                }
+                else
+                {
+                    project = project
+                        .OrderByDescending(p => p.City);
+                }
+            }
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+
+            return View(await project.ToListAsync());
+
         }
 
         // GET: Projects/Details/5

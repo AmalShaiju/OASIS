@@ -21,7 +21,7 @@ namespace OASIS.Controllers
 
         // GET: Customers
         public async Task<IActionResult> Index(string SearchName, string SearchProject, string SearchOrg, string SearchEmail,
-            string actionButton, string sortDirection = "asc", string sortField = "Customer")
+            string actionButton, string sortDirection = "asc", string sortField = "project")
         {
             var customers = from p in _context.Customers
                 .Include(p => p.Projects)
@@ -33,25 +33,25 @@ namespace OASIS.Controllers
             {
                 customers = customers.Where(p => p.LastName.ToUpper().Contains(SearchName.ToUpper())
                                        || p.FirstName.ToUpper().Contains(SearchName.ToUpper()));
-                ViewData["Filtering"] = " show";
+                ViewData["Filtering"] = "show";
             }
 
             if (!String.IsNullOrEmpty(SearchOrg))
             {
                 customers = customers.Where(p => p.OrgName.ToUpper().Contains(SearchOrg.ToUpper()));
-                ViewData["Filtering"] = " show";
+                ViewData["Filtering"] = "show";
             }
 
             if (!String.IsNullOrEmpty(SearchEmail))
             {
                 customers = customers.Where(p => p.Email.ToUpper().Contains(SearchEmail.ToUpper()));
-                ViewData["Filtering"] = " show";
+                ViewData["Filtering"] = "show";
             }
 
             if (!String.IsNullOrEmpty(SearchProject))
             {
                 customers = customers.Where(p => p.Projects.Any( m => m.Name.ToLower().Contains(SearchProject.ToLower())));
-                ViewData["Filtering"] = " show";
+                ViewData["Filtering"] = "show";
             }
 
             if (!String.IsNullOrEmpty(actionButton)) 
