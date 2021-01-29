@@ -5,6 +5,7 @@
 }
 
 <form asp-action="Edit">
+    <input type="hidden" asp-for="RowVersion" />
     <div class="row">
         <div class="form-row col-10">
             <div style="width:30px; height:30px; align-self:center;">
@@ -144,7 +145,7 @@
                         <img src="~/resources/undo.png" alt="Alternate Text" />
                     </div>
                     <div>
-                        <input type="reset" name="name" value="Revert Changes"/>
+                        <input type="reset" name="name" value="Revert Changes" />
                     </div>
                 </div>
                 <div style="width:75%;">

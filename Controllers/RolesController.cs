@@ -197,12 +197,25 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var role = await _context.Roles.FindAsync(id);
+            var role = await _context.Roles
+                         .Include(p => p.Employees)
+                         .FirstOrDefaultAsync(m => m.ID == id);
             try
             {
                 _context.Roles.Remove(role);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            catch (InvalidOperationException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("foreign key"))
+                {
+                    ModelState.AddModelError("", "Unable to Delete Role. You cannot delete a Role that has Employees assigned.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
             }
             catch (DbUpdateException dex)
             {

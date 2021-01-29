@@ -2,6 +2,28 @@
 Update-Database -Context OasisContext 
 Update-Database -Context ApplicationDbContext
 
+// Customer Auditing Fields Updation
+             migrationBuilder.Sql(
+                   @"
+                    CREATE TRIGGER SetCustomerTimestampOnUpdate
+                    AFTER UPDATE ON Customers
+                    BEGIN
+                        UPDATE Customers
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                    END
+                ");
+                migrationBuilder.Sql(
+                   @"
+                    CREATE TRIGGER SetCustomerTimestampOnInsert
+                    AFTER INSERT ON Customers
+                    BEGIN
+                        UPDATE Customers
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                   END
+               ");
+
 
 // Role Auditing Fields Updation
  migrationBuilder.Sql(
@@ -68,3 +90,4 @@ Update-Database -Context ApplicationDbContext
                         WHERE rowid = NEW.rowid;
                    END
                ");
+
