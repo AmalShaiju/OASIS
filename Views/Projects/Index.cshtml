@@ -5,14 +5,16 @@
 }
 
 <form asp-action="Index" method="get">
+    <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+    <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
     <div class="flex-container">
 
         <div class="inner-flex-container-left">
             <div class="inner-flex-container-left-items">
-                <strong>Total Customers : 5</strong>
+                <strong>Total Customers : <span>@Model.Count()</span></strong>
             </div>
             <div class="inner-flex-container-left-items">
-                <strong>Sorted by : Date Created</strong>
+                <strong>Sorted by : <span>@ViewData["sortField"]</span></strong>
             </div>
         </div>
 
@@ -53,33 +55,34 @@
             <div class="form-row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Customer Name:</label>
-                        @Html.TextBox("SearchName", null, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
                         <label class="control-label">Project Name:</label>
-                        @Html.TextBox("SearchName", null, new { @class = "form-control" })
+                        @Html.TextBox("SearchProjectName", null, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Phone:</label>
-                        @Html.TextBox("SearchName", null, new { @class = "form-control" })
+                        <label class="control-label">Customer Name:</label>
+                        @Html.TextBox("SearchCustomerName", null, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Email Address:</label>
-                        @Html.TextBox("SearchEmail", null, new { @class = "form-control" })
+                        <label class="control-label">Organization Name:</label>
+                        @Html.TextBox("SearchOrg", null, new { @class = "form-control" })
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">City:</label>
+                        @Html.TextBox("SearchCity", null, new { @class = "form-control" })
+                    </div>
+                </div>
+
             </div>
             <div class="form-row">
                 <div class="col-md-6  align-self-end">
                     <div class="form-group">
-                        <input style="width:20%;" type="submit" name="actionButton" value="Filter" class="btn btn-primary" />
+                        <input style="width:20%;" type="submit" name="actionButton" value="Filter" class="btn btn-warning" />
                         <a style="width:20%; margin-left:2%;" asp-action="Index" class="btn btn-dark ">Clear</a>
                     </div>
                 </div>
@@ -91,69 +94,66 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Name)
+                    <input type="submit" name="actionButton" value="Project" class="btn btn-link" />
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.City)
+                    <input type="submit" name="actionButton" value="Organization" class="btn btn-link" />
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Customer.OrgName)
+                    <input type="submit" name="actionButton" value="City" class="btn btn-link" />
                 </th>
 
-
-
-                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
+                <tr>
 
 
-                <td>
-                    <div>
-                        @Html.DisplayFor(modelItem => item.Name)
+                    <td>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.Name)
 
-                    </div>
-                </td>
+                        </div>
+                    </td>
 
-                <td>
-                    <div style="display:flex; align-items:center">
-                        @Html.DisplayFor(modelItem => item.City)
+                    <td>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.Customer.OrgName)
 
-                    </div>
-                </td>
+                        </div>
+                    </td>
 
 
-                <td>
-                    <div style="display:flex; align-items:center">
-                        @Html.DisplayFor(modelItem => item.Customer.OrgName)
+                    <td>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.City)
 
-                    </div>
-                </td>
+                        </div>
+                    </td>
 
-                <td style="padding-top:0px; position:relative" class="table-row-img">
-                    <img id="@item.ID" src="~/resources/moreOptions.png" class="ddl-icon" onclick="divVisibility(@item.ID)" alt="Alternate Text" />
-                    <div id="@item.ID-ddl" class="index-drop-down-menu">
-                        <a asp-action="Edit" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
-                            <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/settings.png" alt="Alternate Text" /></div>
-                            <p>Edit</p>
-                        </a>
+                    <td style="padding-top:0px; position:relative" class="table-row-img">
+                        <img id="@item.ID" src="~/resources/moreOptions.png" class="ddl-icon" onclick="divVisibility(@item.ID)" alt="Alternate Text" />
+                        <div id="@item.ID-ddl" class="index-drop-down-menu">
+                            <a asp-action="Edit" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
+                                <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/settings.png" alt="Alternate Text" /></div>
+                                <p>Edit</p>
+                            </a>
 
-                        <a asp-action="Details" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
-                            <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/search.png" alt="Alternate Text" /></div>
-                            <p>Details</p>
-                        </a>
+                            <a asp-action="Details" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
+                                <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/search.png" alt="Alternate Text" /></div>
+                                <p>Details</p>
+                            </a>
 
-                        <a asp-action="Delete" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
-                            <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/trash-bin.png" alt="Alternate Text" /></div>
-                            <p>Delete</p>
-                        </a>
-                    </div>
-                </td>
+                            <a asp-action="Delete" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
+                                <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/trash-bin.png" alt="Alternate Text" /></div>
+                                <p>Delete</p>
+                            </a>
+                        </div>
+                    </td>
 
-            </tr>
+                </tr>
             }
         </tbody>
     </table>
