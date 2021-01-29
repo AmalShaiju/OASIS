@@ -20,21 +20,115 @@ namespace OASIS.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchName, string SearchProject, string SearchOrg, string SearchEmail,
+            string actionButton, string sortDirection = "asc", string sortField = "Customer")
         {
-            return View(await _context.Customers.ToListAsync());
+            var customers = from p in _context.Customers
+                .Include(p => p.Projects)
+                           select p;
+
+            ViewData["Filtering"] = "";
+
+            if (!String.IsNullOrEmpty(SearchName))
+            {
+                customers = customers.Where(p => p.LastName.ToUpper().Contains(SearchName.ToUpper())
+                                       || p.FirstName.ToUpper().Contains(SearchName.ToUpper()));
+                ViewData["Filtering"] = " show";
+            }
+
+            if (!String.IsNullOrEmpty(SearchOrg))
+            {
+                customers = customers.Where(p => p.OrgName.ToUpper().Contains(SearchOrg.ToUpper()));
+                ViewData["Filtering"] = " show";
+            }
+
+            if (!String.IsNullOrEmpty(SearchEmail))
+            {
+                customers = customers.Where(p => p.Email.ToUpper().Contains(SearchEmail.ToUpper()));
+                ViewData["Filtering"] = " show";
+            }
+
+            if (!String.IsNullOrEmpty(SearchProject))
+            {
+                customers = customers.Where(p => p.Projects.Any( m => m.Name.ToLower().Contains(SearchProject.ToLower())));
+                ViewData["Filtering"] = " show";
+            }
+
+            if (!String.IsNullOrEmpty(actionButton)) 
+            {
+                if (actionButton != "Filter")
+                {
+                    if (actionButton == sortField) 
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;
+                }
+            }
+
+            if (sortField == "Projects")
+            {
+                if (sortDirection == "asc")
+                {
+                    customers = customers
+                        .OrderByDescending(p => p.Projects.FirstOrDefault(m=> m.CustomerID == p.ID));
+                }
+                else
+                {
+                    customers = customers
+                        .OrderBy(p => p.Projects.FirstOrDefault(m => m.CustomerID == p.ID));
+                }
+            }
+            else if (sortField == "Customer")
+            {
+                if (sortDirection == "asc")
+                {
+                    customers = customers
+                        .OrderBy(p => p.LastName)
+                        .ThenBy(p => p.FirstName);
+                }
+                else
+                {
+                    customers = customers
+                        .OrderByDescending(p => p.LastName)
+                        .ThenByDescending(p => p.FirstName);
+                }
+            }
+            else //Sorting by Patient Name
+            {
+                if (sortDirection == "asc")
+                {
+                    customers = customers
+                        .OrderBy(p => p.OrgName);
+                }
+                else
+                {
+                    customers = customers
+                        .OrderByDescending(p => p.OrgName);
+                }
+            }
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+
+
+            return View(await customers.ToListAsync());
         }
 
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+           
+            var customer = await _context.Customers
+                        .Include(p => p.Projects)
+                        .FirstOrDefaultAsync(m => m.ID == id);
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.ID == id);
+           
             if (customer == null)
             {
                 return NotFound();
