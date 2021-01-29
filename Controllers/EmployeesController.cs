@@ -20,10 +20,88 @@ namespace OASIS.Controllers
         }
 
         // GET: Employees
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchName, string SearchEmail, int? RoleID,
+            string actionButton, string sortDirection = "asc", string sortField = "Employee")
         {
-            var oasisContext = _context.Employees.Include(e => e.Role);
-            return View(await oasisContext.ToListAsync());
+            var employee = from p in _context.Employees
+                           .Include(p=> p.Role)
+                          select p;
+
+            ViewData["RoleID"] = new SelectList(_context
+                 .Roles
+                 .OrderBy(c => c.Name), "ID", "Name");
+
+            ViewData["Filtering"] = "";
+
+            if (RoleID.HasValue)
+            {
+                employee = employee.Where(p => p.RoleID == RoleID);
+                ViewData["Filtering"] = " show";
+            }
+
+
+            if (!String.IsNullOrEmpty(SearchEmail))
+            {
+                employee = employee.Where(p => p.Email.ToUpper().Contains(SearchEmail.ToUpper()));
+                ViewData["Filtering"] = "show";
+            }
+
+
+            if (!String.IsNullOrEmpty(SearchName))
+            {
+                employee = employee.Where(p => p.LastName.ToUpper().Contains(SearchName.ToUpper())
+                                        || p.FirstName.ToUpper().Contains(SearchName.ToUpper()));
+                ViewData["Filtering"] = "show";
+            }
+
+            if (!String.IsNullOrEmpty(actionButton))
+            {
+                if (actionButton != "Filter")
+                {
+                    if (actionButton == sortField)
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;
+                }
+            }
+
+            if (sortField == "Employee")
+            {
+                if (sortDirection == "asc")
+                {
+                    employee = employee
+                       .OrderBy(p => p.LastName)
+                       .ThenBy(p => p.FirstName);
+                }
+                else
+                {
+                    employee = employee
+                        .OrderByDescending(p => p.LastName)
+                        .ThenByDescending(p => p.FirstName);
+                }
+            }
+           
+            else //Sorting by Patient Name
+            {
+                if (sortDirection == "asc")
+                {
+                    employee = employee
+                        .OrderBy(p => p.Role.Name);
+                }
+                else
+                {
+                    employee = employee
+                        .OrderByDescending(p => p.Role.Name);
+                }
+            }
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+
+          
+
+            return View(await employee.ToListAsync());
         }
 
         // GET: Employees/Details/5
