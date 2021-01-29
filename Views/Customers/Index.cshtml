@@ -5,14 +5,17 @@
 }
 
 <form asp-action="Index" method="get">
+    <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+    <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
+
     <div class="flex-container">
 
         <div class="inner-flex-container-left">
             <div class="inner-flex-container-left-items">
-                <strong>Total Customers : 5</strong>
+                <strong>Total Customers : <span> @Model.Count()</span></strong>
             </div>
             <div class="inner-flex-container-left-items">
-                <strong>Sorted by : Date Created</strong>
+                <strong>Sorted by : <span>@ViewData["sortField"]</span> </strong>
             </div>
         </div>
 
@@ -60,13 +63,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Project Name:</label>
-                        @Html.TextBox("SearchName", null, new { @class = "form-control" })
+                        @Html.TextBox("SearchProjects", null, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Phone:</label>
-                        @Html.TextBox("SearchName", null, new { @class = "form-control" })
+                        <label class="control-label">Organization Name:</label>
+                        @Html.TextBox("SearchOrg", null, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -79,7 +82,7 @@
             <div class="form-row">
                 <div class="col-md-6  align-self-end">
                     <div class="form-group">
-                        <input style="width:20%;" type="submit" name="actionButton" value="Filter" class="btn btn-primary" />
+                        <input style="width:20%;" type="submit" name="actionButton" value="Filter" class="btn btn-warning" />
                         <a style="width:20%; margin-left:2%;" asp-action="Index" class="btn btn-dark ">Clear</a>
                     </div>
                 </div>
@@ -91,79 +94,103 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.FullName)
+                    <input type="submit" name="actionButton" value="Customer" class="btn btn-link" />
                 </th>
-
                 <th>
-                    @Html.DisplayNameFor(model => model.OrgName)
+                    <input type="submit" name="actionButton" value="Organization" class="btn btn-link" />
                 </th>
-
                 <th>
-                    @Html.DisplayNameFor(model => model.Position)
+                    <input type="submit" disabled="disabled" value="Position" class="btn btn-link" />
                 </th>
-
                 <th>
-                    @Html.DisplayNameFor(model => model.Phone)
+                    <input type="submit" name="actionButton" value="Projects" class="btn btn-link" />
                 </th>
-
-
                 <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
+                <tr>
 
 
-                <td>
-                    <div style="display:flex; align-items:center">
-                        @Html.DisplayFor(modelItem => item.FullName)
+                    <td>
+                        <div style="display:flex; align-items:center">
+                            @Html.DisplayFor(modelItem => item.FullName)
 
-                    </div>
-                    <div>
-                        @Html.DisplayFor(modelItem => item.Email)
+                        </div>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.Email)
 
-                    </div>
+                        </div>
 
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrgName)
-
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Position)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Phone)
-                </td>
-
-                <td style="padding-top:0px; position:relative" class="table-row-img">
-                    <img id="@item.ID" src="~/resources/moreOptions.png" class="ddl-icon" onclick="divVisibility(@item.ID)" alt="Alternate Text" />
-                    <div  id="@item.ID-ddl" class="index-drop-down-menu">
-                        <a asp-action="Edit" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
-                            <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/settings.png" alt="Alternate Text" /></div>
-                            <p>Edit</p>
-                        </a>
-
-                        <a asp-action="Details" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
-                            <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/search.png" alt="Alternate Text" /></div>
-                            <p>Details</p>
-                        </a>
-
-                        <a asp-action="Delete" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
-                            <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/trash-bin.png" alt="Alternate Text" /></div>
-                            <p>Delete</p>
-                        </a>
-                    </div>
                     </td>
-                @*<td>
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                </td>*@
-            </tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrgName)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Position)
+                    </td>
+                    <td>
+                        @{
+                            int projectCount = item.Projects.Count;
+                            if (projectCount > 0)
+                            {
+                                string firstSkill = item.Projects.FirstOrDefault().Name;
+                                if (projectCount > 1)
+                                {
+                                    string skillList = firstSkill;
+                                    var c = item.Projects.ToList();
+                                    for (int i = 1; i < projectCount; i++)
+                                    {
+                                        skillList += ", " + c[i].Name;
+                                    }
+                                    <a tabindex="0" class="" role="button" data-toggle="popover"
+                                       data-trigger="focus" title="Projects" data-placement="bottom" data-content="@skillList">@firstSkill... <span class="badge badge-info">@projectCount</span></a>
+                                }
+                                else
+                                {
+                                    @firstSkill
+                                }
+                            }
+                        }
+                    </td>
+
+                    <td style="padding-top:0px; position:relative" class="table-row-img">
+                        <img id="@item.ID" src="~/resources/moreOptions.png" class="ddl-icon" onclick="divVisibility(@item.ID)" alt="Alternate Text" />
+                        <div id="@item.ID-ddl" class="index-drop-down-menu">
+                            <a asp-action="Edit" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
+                                <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/settings.png" alt="Alternate Text" /></div>
+                                <p>Edit</p>
+                            </a>
+
+                            <a asp-action="Details" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
+                                <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/search.png" alt="Alternate Text" /></div>
+                                <p>Details</p>
+                            </a>
+
+                            <a asp-action="Delete" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
+                                <div class="index-drop-down-menu-flex-container-img"><img src="~/resources/trash-bin.png" alt="Alternate Text" /></div>
+                                <p>Delete</p>
+                            </a>
+                        </div>
+                    </td>
+                    @*<td>
+                            <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                        </td>*@
+                </tr>
             }
         </tbody>
     </table>
 </form>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="popover"]').popover();
+        });
+    </script>
+}

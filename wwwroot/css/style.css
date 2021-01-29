@@ -32,6 +32,7 @@ button:focus {
 
 a {
     text-decoration: none;
+    color: #007bff;
 }
 
 .flex-container {
@@ -52,16 +53,24 @@ a {
     width: 50%;
 }
 
-    .inner-flex-container-left-items h1, p {
-        font-size: 15px;
-        line-height: 0px;
-        margin: 0;
+    .inner-flex-container-left-items b, strong {
+        color: #27a9f8;
     }
 
-    .inner-flex-container-left-items h1 {
-        font-size: 30px;
+    .inner-flex-container-left-items span {
         color: #7460ee;
     }
+
+.inner-flex-container-left-items h1, p {
+    font-size: 15px;
+    line-height: 0px;
+    margin: 0;
+}
+
+.inner-flex-container-left-items h1 {
+    font-size: 30px;
+    color: #7460ee;
+}
 
 a p {
     margin-top: 1%;
@@ -139,6 +148,20 @@ table {
     border: none;
     vertical-align: inherit;
 }
+
+td a {
+    color: #007bff;
+}
+.btn-link {
+    color: #7460ee;
+    font-weight:600;
+}
+    .btn-link:hover {
+        color: #ffc107;
+        font-weight: 600;
+    }
+
+
 
 .table-row-img {
     width: 70px;
@@ -467,18 +490,17 @@ hr {
     align-items: center;
 }
 
-.button-menu img{
-    width:100%;
-    height:100%;
-}
+    .button-menu img {
+        width: 100%;
+        height: 100%;
+    }
 
-    .button-menu input,a {
+    .button-menu input, a {
         width: 100%;
         background-color: transparent;
         outline: none;
         color: white;
         outline: none;
-        border:none
-        
+        border: none
     }
 /*DETAILS*/
