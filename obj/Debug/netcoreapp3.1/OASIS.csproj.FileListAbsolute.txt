@@ -81,7 +81,6 @@ C:\OASIS\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\e_sqlite3.dll
 C:\OASIS\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\OASIS\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\OASIS\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-C:\OASIS\obj\Debug\netcoreapp3.1\OASIS.csprojAssemblyReference.cache
 C:\OASIS\obj\Debug\netcoreapp3.1\OASIS.AssemblyInfoInputs.cache
 C:\OASIS\obj\Debug\netcoreapp3.1\OASIS.AssemblyInfo.cs
 C:\OASIS\obj\Debug\netcoreapp3.1\OASIS.csproj.CoreCompileInputs.cache
@@ -91,7 +90,6 @@ C:\OASIS\obj\Debug\netcoreapp3.1\OASIS.RazorAssemblyInfo.cache
 C:\OASIS\obj\Debug\netcoreapp3.1\OASIS.RazorAssemblyInfo.cs
 C:\OASIS\obj\Debug\netcoreapp3.1\staticwebassets\OASIS.StaticWebAssets.Manifest.cache
 C:\OASIS\obj\Debug\netcoreapp3.1\staticwebassets\OASIS.StaticWebAssets.xml
-C:\OASIS\obj\Debug\netcoreapp3.1\scopedcss\bundle\OASIS.styles.css
 C:\OASIS\obj\Debug\netcoreapp3.1\OASIS.TagHelpers.input.cache
 C:\OASIS\obj\Debug\netcoreapp3.1\OASIS.TagHelpers.output.cache
 C:\OASIS\obj\Debug\netcoreapp3.1\OASIS.RazorCoreGenerate.cache
@@ -410,3 +408,9 @@ C:\Users\jesli\Desktop\OASIS\obj\Debug\netcoreapp3.1\staticwebassets\OASIS.Stati
 C:\Users\jesli\Desktop\OASIS\obj\Debug\netcoreapp3.1\OASIS.dll
 C:\Users\jesli\Desktop\OASIS\obj\Debug\netcoreapp3.1\OASIS.pdb
 C:\Users\jesli\Desktop\OASIS\obj\Debug\netcoreapp3.1\OASIS.genruntimeconfig.cache
+C:\OASIS\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
+C:\OASIS\bin\Debug\netcoreapp3.1\Properties\serviceDependencies.json
+C:\OASIS\bin\Debug\netcoreapp3.1\Properties\serviceDependencies.local.json
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_PageSizeModal.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\OASIS.csprojAssemblyReference.cache
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_PagingNavBar.cshtml.g.cs

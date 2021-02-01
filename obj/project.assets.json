@@ -9188,7 +9188,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Amals\\.nuget\\packages\\": {},
+    "C:\\Users\\Yasmeen\\.nuget\\packages\\": {},
     "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
@@ -9197,14 +9197,14 @@
       "projectUniqueName": "C:\\OASIS\\OASIS.csproj",
       "projectName": "OASIS",
       "projectPath": "C:\\OASIS\\OASIS.csproj",
-      "packagesPath": "C:\\Users\\Amals\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\Yasmeen\\.nuget\\packages\\",
       "outputPath": "C:\\OASIS\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\Amals\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Yasmeen\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -9217,7 +9217,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "projectReferences": {}
         }
       },
@@ -9229,7 +9228,6 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
-        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
             "target": "Package",
@@ -9278,7 +9276,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.405\\RuntimeIdentifierGraph.json"
       }
     }
   }

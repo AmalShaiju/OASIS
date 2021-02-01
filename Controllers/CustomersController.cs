@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OASIS.Data;
 using OASIS.Models;
+using OASIS.Utilities;
 
 namespace OASIS.Controllers
 {
@@ -21,7 +22,7 @@ namespace OASIS.Controllers
 
         // GET: Customers
         public async Task<IActionResult> Index(string SearchName, string SearchProject, string SearchOrg, string SearchEmail,
-            string actionButton, string sortDirection = "asc", string sortField = "project")
+            int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "project")
         {
             var customers = from p in _context.Customers
                 .Include(p => p.Projects)
@@ -111,8 +112,26 @@ namespace OASIS.Controllers
             ViewData["sortField"] = sortField;
             ViewData["sortDirection"] = sortDirection;
 
+            //For Paging
+            int pageSize;
+            if (pageSizeID.HasValue)
+            {
+                //Value selected from DDL so use and save it to Cookie
+                pageSize = pageSizeID.GetValueOrDefault();
+                CookieHelper.CookieSet(HttpContext, "pageSizeValue", pageSize.ToString(), 30);
+            }
+            else
+            {
+                //Not selected so see if it is in Cookie
+                pageSize = Convert.ToInt32(HttpContext.Request.Cookies["pageSizeValue"]);
+            }
+            pageSize = (pageSize == 0) ? 3 : pageSize;
+            ViewData["pageSizeID"] =
+                new SelectList(new[] { "3", "5", "10", "20", "30", "40", "50", "100", "500" }, pageSize.ToString());
+            var pagedData = await PaginatedList<Customer>.CreateAsync(customers.AsNoTracking(), page ?? 1, pageSize);
 
-            return View(await customers.ToListAsync());
+            return View(pagedData);
+
         }
 
         // GET: Customers/Details/5
