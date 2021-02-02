@@ -95,7 +95,7 @@ namespace OASIS.Controllers
                         .ThenByDescending(p => p.FirstName);
                 }
             }
-            else //Sorting by Patient Name
+            else 
             {
                 if (sortDirection == "asc")
                 {
@@ -125,7 +125,7 @@ namespace OASIS.Controllers
                 //Not selected so see if it is in Cookie
                 pageSize = Convert.ToInt32(HttpContext.Request.Cookies["pageSizeValue"]);
             }
-            pageSize = (pageSize == 0) ? 3 : pageSize;
+            pageSize = (pageSize == 0) ?5 : pageSize;
             ViewData["pageSizeID"] =
                 new SelectList(new[] { "3", "5", "10", "20", "30", "40", "50", "100", "500" }, pageSize.ToString());
             var pagedData = await PaginatedList<Customer>.CreateAsync(customers.AsNoTracking(), page ?? 1, pageSize);

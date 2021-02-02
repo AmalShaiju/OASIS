@@ -408,9 +408,7 @@ C:\Users\jesli\Desktop\OASIS\obj\Debug\netcoreapp3.1\staticwebassets\OASIS.Stati
 C:\Users\jesli\Desktop\OASIS\obj\Debug\netcoreapp3.1\OASIS.dll
 C:\Users\jesli\Desktop\OASIS\obj\Debug\netcoreapp3.1\OASIS.pdb
 C:\Users\jesli\Desktop\OASIS\obj\Debug\netcoreapp3.1\OASIS.genruntimeconfig.cache
-C:\OASIS\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
-C:\OASIS\bin\Debug\netcoreapp3.1\Properties\serviceDependencies.json
-C:\OASIS\bin\Debug\netcoreapp3.1\Properties\serviceDependencies.local.json
 C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_PageSizeModal.cshtml.g.cs
 C:\OASIS\obj\Debug\netcoreapp3.1\OASIS.csprojAssemblyReference.cache
 C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_PagingNavBar.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\scopedcss\bundle\OASIS.styles.css
