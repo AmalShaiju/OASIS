@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OASIS.Data;
 using OASIS.Models;
+using OASIS.Utilities;
 
 namespace OASIS.Controllers
 {
@@ -32,6 +33,9 @@ namespace OASIS.Controllers
                  .OrderBy(c => c.Name), "ID", "Name");
 
             ViewData["Filtering"] = "";
+
+            CookieHelper.CookieSet(HttpContext, "CustomersURL", "", -1);
+
 
             if (RoleID.HasValue)
             {
@@ -115,6 +119,9 @@ namespace OASIS.Controllers
             var employee = await _context.Employees
                 .Include(e => e.Role)
                 .FirstOrDefaultAsync(m => m.ID == id);
+
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             if (employee == null)
             {
                 return NotFound();
@@ -126,6 +133,8 @@ namespace OASIS.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             Employee employee = new Employee();
             PopulateDropDownLists(employee);
             return View();
@@ -138,15 +147,19 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,MiddleName,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email,RoleID")] Employee employee)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             try
             {
                 if (ModelState.IsValid)
                 {
                     _context.Add(employee);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { employee.ID });
+
                 }
-               
+
             }
             catch (DbUpdateException dex)
             {
@@ -170,6 +183,8 @@ namespace OASIS.Controllers
             {
                 return NotFound();
             }
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
 
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
@@ -187,6 +202,8 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             var employeeToUpdate = _context.Employees.SingleOrDefault(p => p.ID == id);
 
             if (employeeToUpdate == null)
@@ -200,7 +217,9 @@ namespace OASIS.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { employeeToUpdate.ID });
+
 
                 }
                 catch (DbUpdateConcurrencyException ex)// Added for concurrency
@@ -287,6 +306,8 @@ namespace OASIS.Controllers
             {
                 return NotFound();
             }
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
 
             var employee = await _context.Employees
                 .Include(e => e.Role)
@@ -304,11 +325,15 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             try
             {
                 var employee = await _context.Employees.FindAsync(id);
                 _context.Employees.Remove(employee);
                 await _context.SaveChangesAsync();
+                return Redirect(ViewData["returnURL"].ToString());
+
             }
             catch (DbUpdateException dex)
             {
