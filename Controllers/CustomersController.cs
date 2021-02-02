@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OASIS.Data;
 using OASIS.Models;
+using OASIS.Utilities;
 
 namespace OASIS.Controllers
 {
@@ -28,6 +29,9 @@ namespace OASIS.Controllers
                            select p;
 
             ViewData["Filtering"] = "";
+
+            CookieHelper.CookieSet(HttpContext, "CustomersURL", "", -1);
+
 
             if (!String.IsNullOrEmpty(SearchName))
             {
@@ -123,6 +127,9 @@ namespace OASIS.Controllers
                         .Include(p => p.Projects)
                         .FirstOrDefaultAsync(m => m.ID == id);
 
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
+
+
             if (id == null)
             {
                 return NotFound();
@@ -140,6 +147,8 @@ namespace OASIS.Controllers
         // GET: Customers/Create
         public IActionResult Create()
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
+
             return View();
         }
 
@@ -150,13 +159,18 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,OrgName,FirstName,LastName,MiddleName,Position,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email")] Customer customer)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
             try
             {
                 if (ModelState.IsValid)
                 {
+                  
+
                     _context.Add(customer);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { customer.ID });
+
                 }
             }
             catch (DbUpdateException dex)
@@ -182,6 +196,9 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
+
+
             var customer = await _context.Customers.FindAsync(id);
             if (customer == null)
             {
@@ -197,6 +214,8 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
+
             var customerToUpdate = _context.Customers.SingleOrDefault(p => p.ID == id);
 
             if (customerToUpdate == null)
@@ -213,7 +232,9 @@ namespace OASIS.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction(nameof(Index)); 
+                    return RedirectToAction("Details", new { customerToUpdate.ID });
+
 
                 }
                 catch (DbUpdateConcurrencyException ex)// Added for concurrency
@@ -297,6 +318,8 @@ namespace OASIS.Controllers
             {
                 return NotFound();
             }
+            
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
 
             var customer = await _context.Customers
                 .FirstOrDefaultAsync(m => m.ID == id);
@@ -313,13 +336,17 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
+
             var customer = await _context.Customers.FindAsync(id);
 
             try
             {
                 _context.Customers.Remove(customer);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index)); 
+                return Redirect(ViewData["returnURL"].ToString());
+
             }
             catch (DbUpdateException dex)
             {
