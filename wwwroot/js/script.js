@@ -129,7 +129,7 @@ var functions = {
 
     // Increase Text size
     1: function () {
-        if (accesiblityBtn != false) {
+        if (accesiblityBtn) {
             for (var i = 0; i < pEL.length; i++) {
                 var style = window.getComputedStyle(pEL[i], null).getPropertyValue('font-size');
                 var fontSize = parseFloat(style);
@@ -186,7 +186,7 @@ var functions = {
 
     // decrease Text size
     2: function () {
-        if (accesiblityBtn != false) {
+        if (accesiblityBtn) {
             for (var i = 0; i < pEL.length; i++) {
                 var style = window.getComputedStyle(pEL[i], null).getPropertyValue('font-size');
                 var fontSize = parseFloat(style);
@@ -237,10 +237,23 @@ var functions = {
             }
         }
     },
-    3: function () { console.log("3"); },
+    3: function () {
+        if (accesiblityFuncControl) {
+            console.log(document.querySelector("HTML").getAttribute("style"));
+
+            if (document.querySelector("HTML").getAttribute("style") != " -moz-filter: grayscale(100%); - webkit-filter: grayscale(100%); filter: gray; /* IE6-9 */ filter: grayscale(100%)" ) {
+                document.querySelector("HTML").setAttribute("style", " -moz-filter: grayscale(100%); - webkit-filter: grayscale(100%); filter: gray; /* IE6-9 */ filter: grayscale(100%)");
+            }
+            else {
+                document.querySelector("HTML").setAttribute("style", null);
+            }
+            
+         }
+    },
     4: function () { console.log("4"); },
     5: function () { console.log("5"); },
-    6: function () { console.log("6"); }
+    6: function () { console.log("6"); },
+    7: function () { window.location.reload(); }
 };
 
 // Loop Through the accesiblity links and add the event listner

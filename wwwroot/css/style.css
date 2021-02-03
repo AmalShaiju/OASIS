@@ -34,6 +34,7 @@ button:focus {
 a {
     text-decoration: none;
     color: #007bff;
+    cursor:pointer;
 }
 
 
