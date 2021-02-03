@@ -242,7 +242,61 @@ namespace OASIS.Data
                           Province = "Ontario",
                           Country = "Canada",
                           CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Rufaro").ID
-                      });
+                      }, new Project
+                      {
+                          Name = "Walmart",
+                          SiteAddressLineOne = "786 First Ave",
+                          City = "Niagara",
+                          Province = "Ontario",
+                          Country = "Canada",
+                          CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Amal").ID
+                      },
+                        new Project
+                        {
+                            Name = "BestBuy",
+                            SiteAddressLineOne = "5096 First Ave",
+                            City = "Hamilton",
+                            Province = "Ontario",
+                            Country = "Canada",
+                            CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Jesline").ID
+                        },
+                         new Project
+                         {
+                             Name = "Staples",
+                             SiteAddressLineOne = "596 First Ave",
+                             City = "St Chatehrines",
+                             Province = "Ontario",
+                             Country = "Canada",
+                             CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Val").ID
+                         },
+                          new Project
+                          {
+                              Name = "Burger King",
+                              SiteAddressLineOne = "176 First Ave",
+                              City = "Toronto",
+                              Province = "Ontario",
+                              Country = "Canada",
+                              CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Yasmeen").ID
+                          },
+                           new Project
+                           {
+                               Name = "Tim Hortons",
+                               SiteAddressLineOne = "586 First Ave",
+                               City = "Welland",
+                               Province = "Ontario",
+                               Country = "Canada",
+                               CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Rufaro").ID
+                           },
+                            new Project
+                            {
+                                Name = "A&W Canada",
+                                SiteAddressLineOne = "586 First Ave",
+                                City = "Welland",
+                                Province = "Ontario",
+                                Country = "Canada",
+                                CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Amal").ID
+                            }
+                      );
                     context.SaveChanges();
                 }
 
