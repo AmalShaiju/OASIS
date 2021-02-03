@@ -63,7 +63,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Project Name:</label>
-                        @Html.TextBox("SearchProjects", null, new { @class = "form-control" })
+                        @Html.TextBox("SearchProject", null, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -185,6 +185,7 @@
             }
         </tbody>
     </table>
+    <partial name="_PagingNavBar" />
 </form>
 
 @section Scripts {

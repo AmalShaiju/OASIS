@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OASIS.Data;
 using OASIS.Models;
+using OASIS.Utilities;
 
 namespace OASIS.Controllers
 {
@@ -21,13 +22,16 @@ namespace OASIS.Controllers
 
         // GET: Customers
         public async Task<IActionResult> Index(string SearchName, string SearchProject, string SearchOrg, string SearchEmail,
-            string actionButton, string sortDirection = "asc", string sortField = "project")
+            int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "project")
         {
             var customers = from p in _context.Customers
                 .Include(p => p.Projects)
                            select p;
 
             ViewData["Filtering"] = "";
+
+            CookieHelper.CookieSet(HttpContext, "CustomersURL", "", -1);
+
 
             if (!String.IsNullOrEmpty(SearchName))
             {
@@ -94,7 +98,7 @@ namespace OASIS.Controllers
                         .ThenByDescending(p => p.FirstName);
                 }
             }
-            else //Sorting by Patient Name
+            else 
             {
                 if (sortDirection == "asc")
                 {
@@ -111,8 +115,26 @@ namespace OASIS.Controllers
             ViewData["sortField"] = sortField;
             ViewData["sortDirection"] = sortDirection;
 
+            //For Paging
+            int pageSize;
+            if (pageSizeID.HasValue)
+            {
+                //Value selected from DDL so use and save it to Cookie
+                pageSize = pageSizeID.GetValueOrDefault();
+                CookieHelper.CookieSet(HttpContext, "pageSizeValue", pageSize.ToString(), 30);
+            }
+            else
+            {
+                //Not selected so see if it is in Cookie
+                pageSize = Convert.ToInt32(HttpContext.Request.Cookies["pageSizeValue"]);
+            }
+            pageSize = (pageSize == 0) ?5 : pageSize;
+            ViewData["pageSizeID"] =
+                new SelectList(new[] { "3", "5", "10", "20", "30", "40", "50", "100", "500" }, pageSize.ToString());
+            var pagedData = await PaginatedList<Customer>.CreateAsync(customers.AsNoTracking(), page ?? 1, pageSize);
 
-            return View(await customers.ToListAsync());
+            return View(pagedData);
+
         }
 
         // GET: Customers/Details/5
@@ -122,6 +144,9 @@ namespace OASIS.Controllers
             var customer = await _context.Customers
                         .Include(p => p.Projects)
                         .FirstOrDefaultAsync(m => m.ID == id);
+
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
+
 
             if (id == null)
             {
@@ -140,6 +165,8 @@ namespace OASIS.Controllers
         // GET: Customers/Create
         public IActionResult Create()
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
+
             return View();
         }
 
@@ -150,13 +177,18 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,OrgName,FirstName,LastName,MiddleName,Position,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email")] Customer customer)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
             try
             {
                 if (ModelState.IsValid)
                 {
+                  
+
                     _context.Add(customer);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { customer.ID });
+
                 }
             }
             catch (DbUpdateException dex)
@@ -182,6 +214,9 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
+
+
             var customer = await _context.Customers.FindAsync(id);
             if (customer == null)
             {
@@ -197,6 +232,8 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
+
             var customerToUpdate = _context.Customers.SingleOrDefault(p => p.ID == id);
 
             if (customerToUpdate == null)
@@ -213,7 +250,9 @@ namespace OASIS.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction(nameof(Index)); 
+                    return RedirectToAction("Details", new { customerToUpdate.ID });
+
 
                 }
                 catch (DbUpdateConcurrencyException ex)// Added for concurrency
@@ -297,6 +336,8 @@ namespace OASIS.Controllers
             {
                 return NotFound();
             }
+            
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
 
             var customer = await _context.Customers
                 .FirstOrDefaultAsync(m => m.ID == id);
@@ -313,13 +354,17 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
+
             var customer = await _context.Customers.FindAsync(id);
 
             try
             {
                 _context.Customers.Remove(customer);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index)); 
+                return Redirect(ViewData["returnURL"].ToString());
+
             }
             catch (DbUpdateException dex)
             {

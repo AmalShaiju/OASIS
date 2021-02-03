@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OASIS.Data;
 using OASIS.Models;
+using OASIS.Utilities;
 
 namespace OASIS.Controllers
 {
@@ -21,7 +22,7 @@ namespace OASIS.Controllers
 
         // GET: Employees
         public async Task<IActionResult> Index(string SearchName, string SearchEmail, int? RoleID,
-            string actionButton, string sortDirection = "asc", string sortField = "Employee")
+            string actionButton, int? page, int? pageSizeID, string sortDirection = "asc", string sortField = "Employee")
         {
             var employee = from p in _context.Employees
                            .Include(p=> p.Role)
@@ -32,6 +33,9 @@ namespace OASIS.Controllers
                  .OrderBy(c => c.Name), "ID", "Name");
 
             ViewData["Filtering"] = "";
+
+            CookieHelper.CookieSet(HttpContext, "CustomersURL", "", -1);
+
 
             if (RoleID.HasValue)
             {
@@ -99,9 +103,28 @@ namespace OASIS.Controllers
             ViewData["sortField"] = sortField;
             ViewData["sortDirection"] = sortDirection;
 
-          
 
-            return View(await employee.ToListAsync());
+            //For Paging
+            int pageSize;
+            if (pageSizeID.HasValue)
+            {
+                //Value selected from DDL so use and save it to Cookie
+                pageSize = pageSizeID.GetValueOrDefault();
+                CookieHelper.CookieSet(HttpContext, "pageSizeValue", pageSize.ToString(), 30);
+            }
+            else
+            {
+                //Not selected so see if it is in Cookie
+                pageSize = Convert.ToInt32(HttpContext.Request.Cookies["pageSizeValue"]);
+            }
+            pageSize = (pageSize == 0) ? 5 : pageSize;
+            ViewData["pageSizeID"] =
+                new SelectList(new[] { "3", "5", "10", "20", "30", "40", "50", "100", "500" }, pageSize.ToString());
+            var pagedData = await PaginatedList<Employee>.CreateAsync(employee.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
+
+        
         }
 
         // GET: Employees/Details/5
@@ -115,6 +138,9 @@ namespace OASIS.Controllers
             var employee = await _context.Employees
                 .Include(e => e.Role)
                 .FirstOrDefaultAsync(m => m.ID == id);
+
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             if (employee == null)
             {
                 return NotFound();
@@ -126,6 +152,8 @@ namespace OASIS.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             Employee employee = new Employee();
             PopulateDropDownLists(employee);
             return View();
@@ -138,15 +166,19 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,MiddleName,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email,RoleID")] Employee employee)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             try
             {
                 if (ModelState.IsValid)
                 {
                     _context.Add(employee);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { employee.ID });
+
                 }
-               
+
             }
             catch (DbUpdateException dex)
             {
@@ -170,6 +202,8 @@ namespace OASIS.Controllers
             {
                 return NotFound();
             }
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
 
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
@@ -187,6 +221,8 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             var employeeToUpdate = _context.Employees.SingleOrDefault(p => p.ID == id);
 
             if (employeeToUpdate == null)
@@ -200,7 +236,9 @@ namespace OASIS.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { employeeToUpdate.ID });
+
 
                 }
                 catch (DbUpdateConcurrencyException ex)// Added for concurrency
@@ -287,6 +325,8 @@ namespace OASIS.Controllers
             {
                 return NotFound();
             }
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
 
             var employee = await _context.Employees
                 .Include(e => e.Role)
@@ -304,11 +344,15 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             try
             {
                 var employee = await _context.Employees.FindAsync(id);
                 _context.Employees.Remove(employee);
                 await _context.SaveChangesAsync();
+                return Redirect(ViewData["returnURL"].ToString());
+
             }
             catch (DbUpdateException dex)
             {

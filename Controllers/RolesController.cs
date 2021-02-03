@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OASIS.Data;
 using OASIS.Models;
+using OASIS.Utilities;
 
 namespace OASIS.Controllers
 {
@@ -20,9 +21,29 @@ namespace OASIS.Controllers
         }
 
         // GET: Roles
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? pageSizeID)
         {
-            return View(await _context.Roles.ToListAsync());
+            var role = from r in _context.Roles
+                       select r; 
+            //For Paging
+            int pageSize;
+            if (pageSizeID.HasValue)
+            {
+                //Value selected from DDL so use and save it to Cookie
+                pageSize = pageSizeID.GetValueOrDefault();
+                CookieHelper.CookieSet(HttpContext, "pageSizeValue", pageSize.ToString(), 30);
+            }
+            else
+            {
+                //Not selected so see if it is in Cookie
+                pageSize = Convert.ToInt32(HttpContext.Request.Cookies["pageSizeValue"]);
+            }
+            pageSize = (pageSize == 0) ? 5 : pageSize;
+            ViewData["pageSizeID"] =
+                new SelectList(new[] { "3", "5", "10", "20", "30", "40", "50", "100", "500" }, pageSize.ToString());
+            var pagedData = await PaginatedList<Role>.CreateAsync(role.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
         }
 
         // GET: Roles/Details/5
