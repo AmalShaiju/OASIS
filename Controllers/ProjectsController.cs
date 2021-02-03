@@ -17,7 +17,7 @@ namespace OASIS.Controllers
 
         public ProjectsController(OasisContext context)
         {
-            _context = context;
+            _context = context; 
         }
 
         // GET: Projects
@@ -29,6 +29,8 @@ namespace OASIS.Controllers
                             select p;
 
             ViewData["Filtering"] = "";
+
+            CookieHelper.CookieSet(HttpContext, "ProjectsURL", "", -1);
 
             if (!String.IsNullOrEmpty(SearchProjectName))
             {
@@ -140,6 +142,8 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
+
             var project = await _context.Projects
                 .Include(p => p.Customer)
                 .FirstOrDefaultAsync(m => m.ID == id);
@@ -154,6 +158,8 @@ namespace OASIS.Controllers
         // GET: Projects/Create
         public IActionResult Create()
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
+
             Project project = new Project();
             PopulateDropDownLists(project);
             return View();
@@ -166,13 +172,16 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name,SiteAddressLineOne,SiteAddressLineTwo,City,Province,Country,CustomerID")] Project project)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
+
             try
             {
                 if (ModelState.IsValid)
                 {
                     _context.Add(project);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { project.ID });
                 }
             }
             catch (DbUpdateException dex)
@@ -199,6 +208,8 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
+
             var project = await _context.Projects.FindAsync(id);
             if (project == null)
             {
@@ -215,7 +226,9 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
         {
-          var  projectToUpdate = await _context.Projects.SingleOrDefaultAsync(p => p.ID == id);
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
+
+            var  projectToUpdate = await _context.Projects.SingleOrDefaultAsync(p => p.ID == id);
 
             if (projectToUpdate == null)
             {
@@ -229,8 +242,10 @@ namespace OASIS.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { projectToUpdate.ID });
                 }
+
                 catch (DbUpdateConcurrencyException ex)// Added for concurrency
                 {
                     var exceptionEntry = ex.Entries.Single();
@@ -304,6 +319,8 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
+
             var project = await _context.Projects
                 .Include(p => p.Customer)
                 .FirstOrDefaultAsync(m => m.ID == id);
@@ -320,13 +337,16 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
+
             var project = await _context.Projects.FindAsync(id);
 
             try
             {
                 _context.Projects.Remove(project);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return Redirect(ViewData["returnURL"].ToString());
             }
             catch (DbUpdateException dex)
             {

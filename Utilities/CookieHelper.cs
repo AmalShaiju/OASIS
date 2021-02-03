@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OASIS.Utilities
 {
-    public class CookieHelper
+    public static class CookieHelper
     {
         /// <summary>  
         /// set the cookie  
