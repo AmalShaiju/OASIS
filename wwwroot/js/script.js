@@ -24,7 +24,7 @@ function divVisibility(i) {
     }
 }
 
-﻿//Amal shaiju 2021-01-23
+//Amal shaiju 2021-01-23
 
 // Change image based on URL
 var url = window.location.href.toString().toLowerCase();
@@ -76,18 +76,183 @@ else {
 if (url.includes("create") || url.includes("edit") || url.includes("details") || url.includes("delete")) {
     if (url.includes("create")) {
         var pagemsg = document.getElementById("page-msg").innerHTML;
-        document.getElementById("page-msg").innerHTML = pagemsg +" " + "Create";
+        document.getElementById("page-msg").innerHTML = pagemsg + " " + "Create";
     }
     else if (url.includes("details")) {
         var pagemsg = document.getElementById("page-msg").innerHTML;
-        document.getElementById("page-msg").innerHTML = pagemsg +" " + "Details";
+        document.getElementById("page-msg").innerHTML = pagemsg + " " + "Details";
     }
     else if (url.includes("edit")) {
         var pagemsg = document.getElementById("page-msg").innerHTML;
-        document.getElementById("page-msg").innerHTML = pagemsg + " " +"Edit";
+        document.getElementById("page-msg").innerHTML = pagemsg + " " + "Edit";
     }
-    else{
+    else {
         var pagemsg = document.getElementById("page-msg").innerHTML;
-        document.getElementById("page-msg").innerHTML = pagemsg + " " +"Delete";
+        document.getElementById("page-msg").innerHTML = pagemsg + " " + "Delete";
     }
 }
+
+//Amal shaiju 2021-02-02
+
+// Accesiblity tab slider
+var accesiblityBtn = document.querySelector(".accesiblity-tab");
+document.querySelector(".accesiblity-controller").addEventListener("click", () => {
+    if (accesiblityBtn.style.transform == "translateX(0%)") {
+        accesiblityBtn.style.transform = "translateX(79%)";
+    }
+    else {
+        accesiblityBtn.style.transform = "translateX(0%)";
+    }
+})
+
+
+// Accesiblity Items *
+
+//Accesiblity funtion call controller
+var accesiblityFuncControl = false;
+
+// All type elements
+var pEL = document.querySelectorAll("p");
+var aEl = document.querySelectorAll("a");
+var hoEl = document.querySelectorAll("h1");
+var htEl = document.querySelectorAll("h2");
+var hthEl = document.querySelectorAll("h3");
+var thEl = document.querySelectorAll("th");
+var tdEl = document.querySelectorAll("td");
+var strongEl = document.querySelectorAll("strong");
+var labelEl = document.querySelectorAll("label");
+
+
+// Accesiblity Items functions
+var functions = {
+
+
+    // Increase Text size
+    1: function () {
+        if (accesiblityBtn != false) {
+            for (var i = 0; i < pEL.length; i++) {
+                var style = window.getComputedStyle(pEL[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                pEL[i].style.fontSize = (fontSize + 2) + "px";
+            }
+
+            for (var i = 0; i < aEl.length; i++) {
+                var style = window.getComputedStyle(aEl[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                aEl[i].style.fontSize = (fontSize + 2) + "px";
+            }
+            for (var i = 0; i < hoEl.length; i++) {
+                var style = window.getComputedStyle(hoEl[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                hoEl[i].style.fontSize = (fontSize + 2) + "px";
+            }
+            for (var i = 0; i < htEl.length; i++) {
+                var style = window.getComputedStyle(htEl[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                htEl[i].style.fontSize = (fontSize + 2) + "px";
+            }
+
+            for (var i = 0; i < thEl.length; i++) {
+                var style = window.getComputedStyle(thEl[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                thEl[i].style.fontSize = (fontSize + 2) + "px";
+            }
+
+            for (var i = 0; i < tdEl.length; i++) {
+                var style = window.getComputedStyle(tdEl[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                tdEl[i].style.fontSize = (fontSize + 2) + "px";
+            }
+            for (var i = 0; i < strongEl.length; i++) {
+                var style = window.getComputedStyle(strongEl[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                strongEl[i].style.fontSize = (fontSize + 2) + "px";
+            }
+            for (var i = 0; i < labelEl.length; i++) {
+                var style = window.getComputedStyle(labelEl[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                labelEl[i].style.fontSize = (fontSize + 2) + "px";
+            }
+            for (var i = 0; i < hthEl.length; i++) {
+                var style = window.getComputedStyle(hthEl[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                hthEl[i].style.fontSize = (fontSize + 2) + "px";
+            }
+        }
+
+        //document.querySelectorAll("p").style.fontSize = "2" ;
+    },
+
+
+    // decrease Text size
+    2: function () {
+        if (accesiblityBtn != false) {
+            for (var i = 0; i < pEL.length; i++) {
+                var style = window.getComputedStyle(pEL[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                pEL[i].style.fontSize = (fontSize - 2) + "px";
+            }
+
+            for (var i = 0; i < aEl.length; i++) {
+                var style = window.getComputedStyle(aEl[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                aEl[i].style.fontSize = (fontSize - 2) + "px";
+            }
+            for (var i = 0; i < hoEl.length; i++) {
+                var style = window.getComputedStyle(hoEl[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                hoEl[i].style.fontSize = (fontSize - 2) + "px";
+            }
+            for (var i = 0; i < htEl.length; i++) {
+                var style = window.getComputedStyle(htEl[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                htEl[i].style.fontSize = (fontSize - 2) + "px";
+            }
+
+            for (var i = 0; i < thEl.length; i++) {
+                var style = window.getComputedStyle(thEl[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                thEl[i].style.fontSize = (fontSize - 2) + "px";
+            }
+
+            for (var i = 0; i < tdEl.length; i++) {
+                var style = window.getComputedStyle(tdEl[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                tdEl[i].style.fontSize = (fontSize - 2) + "px";
+            }
+            for (var i = 0; i < strongEl.length; i++) {
+                var style = window.getComputedStyle(strongEl[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                strongEl[i].style.fontSize = (fontSize - 2) + "px";
+            }
+            for (var i = 0; i < labelEl.length; i++) {
+                var style = window.getComputedStyle(labelEl[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                labelEl[i].style.fontSize = (fontSize - 2) + "px";
+            }
+            for (var i = 0; i < hthEl.length; i++) {
+                var style = window.getComputedStyle(hthEl[i], null).getPropertyValue('font-size');
+                var fontSize = parseFloat(style);
+                hthEl[i].style.fontSize = (fontSize - 2) + "px";
+            }
+        }
+    },
+    3: function () { console.log("3"); },
+    4: function () { console.log("4"); },
+    5: function () { console.log("5"); },
+    6: function () { console.log("6"); }
+};
+
+// Loop Through the accesiblity links and add the event listner
+var accesiblitytabs = document.querySelectorAll(".accesiblity-body > ul > li")
+var counter = 1;
+accesiblitytabs.forEach((link) => {
+    link.addEventListener("click", functions[`${counter}`])
+    counter++;
+})
+
+accesiblityFuncControl = true;
+
+
+
+
