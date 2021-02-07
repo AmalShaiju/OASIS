@@ -615,3 +615,6 @@ C:\Users\rufar\OneDrive\Documents\OASIS\obj\Debug\netcoreapp3.1\OASIS.csproj.Cop
 C:\Users\rufar\OneDrive\Documents\OASIS\obj\Debug\netcoreapp3.1\OASIS.dll
 C:\Users\rufar\OneDrive\Documents\OASIS\obj\Debug\netcoreapp3.1\OASIS.pdb
 C:\Users\rufar\OneDrive\Documents\OASIS\obj\Debug\netcoreapp3.1\OASIS.genruntimeconfig.cache
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Wcag.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_NavBar.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_StatusBar.cshtml.g.cs
