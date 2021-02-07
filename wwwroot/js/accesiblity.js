@@ -125,7 +125,6 @@ var functions = {
 
                 //table 
                 $("td").css({ "color": "white", "border-bottom":"1px solid rgba(249,250,250,0.5)" });
-                $("th input").css({ "color": "" });
                 $("tr").css({ "background": "black"});
 
                 //Buttons & links
@@ -149,6 +148,7 @@ var functions = {
                 $("label").css({ "color": "yellow" });
                 $("label").css({ "color": "yellow" });
                 $("hr").css({ "background": "white" });
+                $("th input").css({ "color": "#27a9f8" });
 
                     
                 //Svg
