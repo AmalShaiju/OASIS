@@ -134,12 +134,16 @@ a p {
     transition: 0.4s ease-in;
     transform: translateX(79%);
 }
+quickLink-tab {
+    position: absolute;
+   
+}
 
 .accesiblity-controller {
     width: 27%;
     height: 20%;
     color: blue;
-    margin-right:5px;
+    margin-right: 5px;
 }
 
     .accesiblity-controller svg {
@@ -383,7 +387,7 @@ header a {
     align-items: center;
 }
 
-.nav-img {
+.nav-svg {
     height: 85%;
     width: 39%;
     float: right;
