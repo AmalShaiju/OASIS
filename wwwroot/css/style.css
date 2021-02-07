@@ -20,6 +20,7 @@ body {
     padding: 0;
     box-sizing: border-box;
     background-color: #f4f8f9;
+    overflow-x:hidden;
 }
 
 button:focus {
@@ -33,7 +34,11 @@ button:focus {
 a {
     text-decoration: none;
     color: #007bff;
+    cursor:pointer;
 }
+
+
+/*NAVIGATION*/
 
 .flex-container {
     display: flex;
@@ -42,6 +47,7 @@ a {
     align-items: center;
     margin-bottom: 10px;
 }
+
 
 .inner-flex-container-left {
     display: flex;
@@ -61,16 +67,16 @@ a {
         color: #7460ee;
     }
 
-.inner-flex-container-left-items h1, p {
-    font-size: 15px;
-    line-height: 0px;
-    margin: 0;
-}
+    .inner-flex-container-left-items h1, p {
+        font-size: 15px;
+        line-height: 0px;
+        margin: 0;
+    }
 
-.inner-flex-container-left-items h1 {
-    font-size: 30px;
-    color: #7460ee;
-}
+    .inner-flex-container-left-items h1 {
+        font-size: 30px;
+        color: #7460ee;
+    }
 
 a p {
     margin-top: 1%;
@@ -117,13 +123,72 @@ a p {
         outline: none;
     }
 
+
+.accesiblity-tab {
+    position: absolute;
+    display: flex;
+    width: 16%;
+    height: 35%;
+    right: 0;
+    bottom: 30%;
+    transition: 0.4s ease-in;
+    transform: translateX(79%);
+}
+
+.accesiblity-controller {
+    width: 27%;
+    height: 20%;
+    color: blue;
+    margin-right:5px;
+}
+
+    .accesiblity-controller svg {
+        width: 100%;
+        height: 100%;
+        cursor:pointer;
+        
+    }
+
+.accesiblity-body {
+    width: 100%;
+    height: 100%;
+    color: black;
+    border: 1px solid rgba(0,0,0,0.3);
+    background-color: white;
+}
+
+    .accesiblity-body ul {
+        width: 100%;
+        height: 100%;
+        text-decoration: none;
+        list-style: none;
+        display: flex;
+        padding:0px 20px 0px 20px;
+        justify-content: space-around;
+        flex-direction: column !important;
+    }
+
+        .accesiblity-body ul li {
+            text-decoration: none;
+            list-style: none;
+            display: flex;
+            padding-left:5px;
+            align-items: center;
+            cursor:pointer;
+        }
+
+            .accesiblity-body ul li span {
+                margin-left: 10px;
+                font-size:13px;
+            }
+
+/*NAVIGATION*/
 /*INDEX*/
 tr {
     background-color: white;
     border: 0;
     margin: auto;
     width: 50%;
-    border: 3px solid green;
     padding: 10px;
 }
 
@@ -152,10 +217,12 @@ table {
 td a {
     color: #007bff;
 }
+
 .btn-link {
     color: #7460ee;
-    font-weight:600;
+    font-weight: 600;
 }
+
     .btn-link:hover {
         color: #ffc107;
         font-weight: 600;
@@ -210,7 +277,7 @@ td a {
     height: 20px;
 }
 
-    .index-drop-down-menu-flex-container-img img {
+    .index-drop-down-menu-flex-container-img svg {
         width: 100%;
         height: 100%;
     }
@@ -302,12 +369,13 @@ header a {
 }
 
 .nav-item-box-one {
-    background-color: white;
+    background-color: rgba(0,0,0,0);
     width: 10.5%;
 }
 
 .nav-item-box-two {
     width: 98%;
+    color: grey;
 }
 
 .inner-nav-flex {
@@ -364,7 +432,7 @@ header a {
     height: 100%;
 }
 
-    .search-bar-inner-one img {
+    .search-bar-inner-one svg {
         width: 100%;
         height: 54%;
     }
@@ -438,7 +506,11 @@ col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .co
 hr {
     margin-bottom: 1.5rem;
 }
-
+.details-menu {
+    display: flex;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
 .details-container {
 }
 
@@ -490,7 +562,7 @@ hr {
     align-items: center;
 }
 
-    .button-menu img {
+    .button-menu svg {
         width: 100%;
         height: 100%;
     }
@@ -504,3 +576,7 @@ hr {
         border: none
     }
 /*DETAILS*/
+focusedin {
+    background-color: yellow;
+}
+

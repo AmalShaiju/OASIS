@@ -1,29 +1,3 @@
-﻿// Amal Shaiju 2021-01-23
-function divVisibility(i) {
-
-    var menu = document.getElementsByClassName("index-drop-down-menu");
-
-    // Closes the div that are shown except the ones that's clicked
-    for (var j = 0; j < menu.length; j++) {
-
-        console.log(menu[j].id, i)
-        if (menu[j].id != i + "-ddl") {
-
-            menu[j].style.display = "None";
-
-        }
-    }
-
-    // If the clicked div is hidden show it
-    if (document.getElementById(i + "-ddl").style.display != "block") {
-        document.getElementById(i + "-ddl").style.display = "block";
-    }
-
-    else {
-        document.getElementById(i + "-ddl").style.display = "None";
-    }
-}
-
 ﻿//Amal shaiju 2021-01-23
 
 // Change image based on URL
@@ -76,18 +50,18 @@ else {
 if (url.includes("create") || url.includes("edit") || url.includes("details") || url.includes("delete")) {
     if (url.includes("create")) {
         var pagemsg = document.getElementById("page-msg").innerHTML;
-        document.getElementById("page-msg").innerHTML = pagemsg +" " + "Create";
+        document.getElementById("page-msg").innerHTML = pagemsg + " " + "Create";
     }
     else if (url.includes("details")) {
         var pagemsg = document.getElementById("page-msg").innerHTML;
-        document.getElementById("page-msg").innerHTML = pagemsg +" " + "Details";
+        document.getElementById("page-msg").innerHTML = pagemsg + " " + "Details";
     }
     else if (url.includes("edit")) {
         var pagemsg = document.getElementById("page-msg").innerHTML;
-        document.getElementById("page-msg").innerHTML = pagemsg + " " +"Edit";
+        document.getElementById("page-msg").innerHTML = pagemsg + " " + "Edit";
     }
-    else{
+    else {
         var pagemsg = document.getElementById("page-msg").innerHTML;
-        document.getElementById("page-msg").innerHTML = pagemsg + " " +"Delete";
+        document.getElementById("page-msg").innerHTML = pagemsg + " " + "Delete";
     }
 }
