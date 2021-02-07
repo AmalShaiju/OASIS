@@ -124,7 +124,7 @@ var functions = {
                 }
 
                 //table 
-                $("td").css({ "color": "white" });
+                $("td").css({ "color": "white", "border-bottom":"1px solid rgba(249,250,250,0.5)" });
                 $("th input").css({ "color": "" });
                 $("tr").css({ "background": "black"});
 
@@ -205,7 +205,7 @@ var functions = {
                 }
 
                 //table 
-                $("td").css({ "color": "black" });
+                $("td").css({ "color": "black","border":"none" });
                 $("th input").removeAttr("style");
                 $("tr").removeAttr("style");
 
