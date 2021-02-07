@@ -24,7 +24,7 @@ namespace OASIS.Controllers
         public async Task<IActionResult> Index(int? page, int? pageSizeID)
         {
             var role = from r in _context.Roles
-                       select r; 
+                       select r;
             //For Paging
             int pageSize;
             if (pageSizeID.HasValue)
@@ -53,6 +53,8 @@ namespace OASIS.Controllers
                         .Include(p => p.Employees)
                         .FirstOrDefaultAsync(m => m.ID == id);
 
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Roles");
+
             if (id == null)
             {
                 return NotFound();
@@ -69,6 +71,8 @@ namespace OASIS.Controllers
         // GET: Roles/Create
         public IActionResult Create()
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Roles");
+
             return View();
         }
 
@@ -79,13 +83,16 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name,LabourCostPerHr,LabourPricePerHr")] Role role)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Roles");
+
             try
             {
                 if (ModelState.IsValid)
                 {
                     _context.Add(role);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { role.ID });
                 }
             }
             catch (DbUpdateException dex)
@@ -109,6 +116,7 @@ namespace OASIS.Controllers
             {
                 return NotFound();
             }
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Roles");
 
             var role = await _context.Roles.FindAsync(id);
             if (role == null)
@@ -125,6 +133,8 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Roles");
+
             //Role to update
             var roleToUpdate = await _context.Roles.SingleOrDefaultAsync(p => p.ID == id);
 
@@ -141,9 +151,11 @@ namespace OASIS.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { roleToUpdate.ID });
+
                 }
-               
+
                 catch (DbUpdateConcurrencyException ex)// Added for concurrency
                 {
                     var exceptionEntry = ex.Entries.Single();
@@ -166,7 +178,7 @@ namespace OASIS.Controllers
                         if (databaseValues.LabourPricePerHr != clientValues.LabourPricePerHr)
                             ModelState.AddModelError("LabourPricePerHr", "Current value: "
                                 + databaseValues.LabourPricePerHr);
-                        
+
 
                         ModelState.AddModelError(string.Empty, "The record you attempted to edit "
                                 + "was modified by another user after you received your values. The "
@@ -188,8 +200,8 @@ namespace OASIS.Controllers
                         ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                     }
                 }
-               
-             
+
+
             }
             return View(roleToUpdate);
         }
@@ -201,6 +213,8 @@ namespace OASIS.Controllers
             {
                 return NotFound();
             }
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
+
 
             var role = await _context.Roles
                          .Include(p => p.Employees)
@@ -218,6 +232,8 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
+
             var role = await _context.Roles
                          .Include(p => p.Employees)
                          .FirstOrDefaultAsync(m => m.ID == id);
@@ -225,7 +241,9 @@ namespace OASIS.Controllers
             {
                 _context.Roles.Remove(role);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));\
+                return Redirect(ViewData["returnURL"].ToString());
+
             }
             catch (InvalidOperationException dex)
             {
