@@ -19,5 +19,8 @@ namespace OASIS.Models
         public int DesignerStatusID { get; set; }
         public virtual ApprovalStatus DesignerStatus { get; set; }
 
+        public int BidID { get; set; }
+        public Bid Bid { get; set; }
+
     }
 }
