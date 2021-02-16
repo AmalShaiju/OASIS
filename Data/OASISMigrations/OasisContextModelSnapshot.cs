@@ -15,7 +15,54 @@ namespace OASIS.Data.OASISMigrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("OA")
-                .HasAnnotation("ProductVersion", "3.1.10");
+                .HasAnnotation("ProductVersion", "3.1.11");
+
+            modelBuilder.Entity("OASIS.Models.Bid", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DesignerID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("EstAmount")
+                        .HasColumnType("decimal(9,2)");
+
+                    b.Property<DateTime>("EstBidEndDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("EstBidStartDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ProjectEndDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ProjectID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("ProjectStartDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("SalesAsscociateID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("comments")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("DesignerID");
+
+                    b.HasIndex("ProjectID");
+
+                    b.HasIndex("SalesAsscociateID");
+
+                    b.ToTable("Bid");
+                });
 
             modelBuilder.Entity("OASIS.Models.Customer", b =>
                 {
@@ -305,6 +352,27 @@ namespace OASIS.Data.OASISMigrations
                         .IsUnique();
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("OASIS.Models.Bid", b =>
+                {
+                    b.HasOne("OASIS.Models.Employee", "Designer")
+                        .WithMany()
+                        .HasForeignKey("DesignerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OASIS.Models.Project", "project")
+                        .WithMany("Bids")
+                        .HasForeignKey("ProjectID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OASIS.Models.Employee", "SalesAsscociate")
+                        .WithMany()
+                        .HasForeignKey("SalesAsscociateID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("OASIS.Models.Employee", b =>

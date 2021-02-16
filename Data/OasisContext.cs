@@ -128,6 +128,9 @@ namespace OASIS.Data
         }
 
 
+        public DbSet<OASIS.Models.Bid> Bid { get; set; }
+
+
 
 
     }
