@@ -105,36 +105,6 @@ namespace OASIS.Data.OASISMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Approvals",
-                schema: "OA",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Comments = table.Column<string>(nullable: true),
-                    ClientStatusID = table.Column<int>(nullable: false),
-                    DesignerStatusID = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Approvals", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Approvals_ApprovalStatuses_ClientStatusID",
-                        column: x => x.ClientStatusID,
-                        principalSchema: "OA",
-                        principalTable: "ApprovalStatuses",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Approvals_ApprovalStatuses_DesignerStatusID",
-                        column: x => x.DesignerStatusID,
-                        principalSchema: "OA",
-                        principalTable: "ApprovalStatuses",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Projects",
                 schema: "OA",
                 columns: table => new
@@ -177,18 +147,18 @@ namespace OASIS.Data.OASISMigrations
                     Description = table.Column<string>(maxLength: 50, nullable: false),
                     size = table.Column<string>(maxLength: 15, nullable: false),
                     Price = table.Column<double>(nullable: false),
-                    ProductTypeId = table.Column<int>(nullable: false)
+                    ProductTypeID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Products_ProductTypes_ProductTypeId",
-                        column: x => x.ProductTypeId,
+                        name: "FK_Products_ProductTypes_ProductTypeID",
+                        column: x => x.ProductTypeID,
                         principalSchema: "OA",
                         principalTable: "ProductTypes",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -245,7 +215,6 @@ namespace OASIS.Data.OASISMigrations
                     DesignerID = table.Column<int>(nullable: false),
                     SalesAsscociateID = table.Column<int>(nullable: false),
                     ProjectID = table.Column<int>(nullable: false),
-                    StatusID = table.Column<int>(nullable: true),
                     BidStatusID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -271,12 +240,50 @@ namespace OASIS.Data.OASISMigrations
                         principalSchema: "OA",
                         principalTable: "Projects",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Bids_Employees_SalesAsscociateID",
                         column: x => x.SalesAsscociateID,
                         principalSchema: "OA",
                         principalTable: "Employees",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Approvals",
+                schema: "OA",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Comments = table.Column<string>(nullable: true),
+                    ClientStatusID = table.Column<int>(nullable: false),
+                    DesignerStatusID = table.Column<int>(nullable: false),
+                    BidID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Approvals", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Approvals_Bids_BidID",
+                        column: x => x.BidID,
+                        principalSchema: "OA",
+                        principalTable: "Bids",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Approvals_ApprovalStatuses_ClientStatusID",
+                        column: x => x.ClientStatusID,
+                        principalSchema: "OA",
+                        principalTable: "ApprovalStatuses",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Approvals_ApprovalStatuses_DesignerStatusID",
+                        column: x => x.DesignerStatusID,
+                        principalSchema: "OA",
+                        principalTable: "ApprovalStatuses",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -343,6 +350,13 @@ namespace OASIS.Data.OASISMigrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Approvals_BidID",
+                schema: "OA",
+                table: "Approvals",
+                column: "BidID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Approvals_ClientStatusID",
                 schema: "OA",
                 table: "Approvals",
@@ -353,6 +367,13 @@ namespace OASIS.Data.OASISMigrations
                 schema: "OA",
                 table: "Approvals",
                 column: "DesignerStatusID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApprovalStatuses_Name",
+                schema: "OA",
+                table: "ApprovalStatuses",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_BidLabours_BidID",
@@ -403,6 +424,13 @@ namespace OASIS.Data.OASISMigrations
                 column: "SalesAsscociateID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BidStatuses_Name",
+                schema: "OA",
+                table: "BidStatuses",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Customers_Email",
                 schema: "OA",
                 table: "Customers",
@@ -423,10 +451,24 @@ namespace OASIS.Data.OASISMigrations
                 column: "RoleID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_ProductTypeId",
+                name: "IX_Products_Code",
                 schema: "OA",
                 table: "Products",
-                column: "ProductTypeId");
+                column: "Code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_ProductTypeID",
+                schema: "OA",
+                table: "Products",
+                column: "ProductTypeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductTypes_Name",
+                schema: "OA",
+                table: "ProductTypes",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_CustomerID",
