@@ -22,5 +22,6 @@ namespace OASIS.Models
         public Decimal LabourPricePerHr { get; set; }
 
         public ICollection<Employee> Employees { get; set; }
+        public ICollection<BidLabour> BidLabours { get; set; }
     }
 }

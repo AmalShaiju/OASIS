@@ -22,7 +22,7 @@ namespace OASIS.Controllers
         // GET: Bids
         public async Task<IActionResult> Index()
         {
-            var oasisContext = _context.Bid.Include(b => b.Designer).Include(b => b.SalesAsscociate).Include(b => b.project);
+            var oasisContext = _context.Bids.Include(b => b.BidStatus).Include(b => b.Designer).Include(b => b.SalesAsscociate).Include(b => b.project);
             return View(await oasisContext.ToListAsync());
         }
 
@@ -34,7 +34,8 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
-            var bid = await _context.Bid
+            var bid = await _context.Bids
+                .Include(b => b.BidStatus)
                 .Include(b => b.Designer)
                 .Include(b => b.SalesAsscociate)
                 .Include(b => b.project)
@@ -50,6 +51,7 @@ namespace OASIS.Controllers
         // GET: Bids/Create
         public IActionResult Create()
         {
+            ViewData["BidStatusID"] = new SelectList(_context.BidStatuses, "ID", "Name");
             ViewData["DesignerID"] = new SelectList(_context.Employees, "ID", "AddressLineOne");
             ViewData["SalesAsscociateID"] = new SelectList(_context.Employees, "ID", "AddressLineOne");
             ViewData["ProjectID"] = new SelectList(_context.Projects, "ID", "City");
@@ -61,7 +63,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,DateCreated,EstAmount,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID")] Bid bid)
+        public async Task<IActionResult> Create([Bind("ID,DateCreated,EstAmount,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID")] Bid bid)
         {
             if (ModelState.IsValid)
             {
@@ -69,6 +71,7 @@ namespace OASIS.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["BidStatusID"] = new SelectList(_context.BidStatuses, "ID", "Name", bid.BidStatusID);
             ViewData["DesignerID"] = new SelectList(_context.Employees, "ID", "AddressLineOne", bid.DesignerID);
             ViewData["SalesAsscociateID"] = new SelectList(_context.Employees, "ID", "AddressLineOne", bid.SalesAsscociateID);
             ViewData["ProjectID"] = new SelectList(_context.Projects, "ID", "City", bid.ProjectID);
@@ -83,11 +86,12 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
-            var bid = await _context.Bid.FindAsync(id);
+            var bid = await _context.Bids.FindAsync(id);
             if (bid == null)
             {
                 return NotFound();
             }
+            ViewData["BidStatusID"] = new SelectList(_context.BidStatuses, "ID", "Name", bid.BidStatusID);
             ViewData["DesignerID"] = new SelectList(_context.Employees, "ID", "AddressLineOne", bid.DesignerID);
             ViewData["SalesAsscociateID"] = new SelectList(_context.Employees, "ID", "AddressLineOne", bid.SalesAsscociateID);
             ViewData["ProjectID"] = new SelectList(_context.Projects, "ID", "City", bid.ProjectID);
@@ -99,7 +103,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,DateCreated,EstAmount,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID")] Bid bid)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,DateCreated,EstAmount,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID")] Bid bid)
         {
             if (id != bid.ID)
             {
@@ -126,6 +130,7 @@ namespace OASIS.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["BidStatusID"] = new SelectList(_context.BidStatuses, "ID", "Name", bid.BidStatusID);
             ViewData["DesignerID"] = new SelectList(_context.Employees, "ID", "AddressLineOne", bid.DesignerID);
             ViewData["SalesAsscociateID"] = new SelectList(_context.Employees, "ID", "AddressLineOne", bid.SalesAsscociateID);
             ViewData["ProjectID"] = new SelectList(_context.Projects, "ID", "City", bid.ProjectID);
@@ -140,7 +145,8 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
-            var bid = await _context.Bid
+            var bid = await _context.Bids
+                .Include(b => b.BidStatus)
                 .Include(b => b.Designer)
                 .Include(b => b.SalesAsscociate)
                 .Include(b => b.project)
@@ -158,15 +164,15 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var bid = await _context.Bid.FindAsync(id);
-            _context.Bid.Remove(bid);
+            var bid = await _context.Bids.FindAsync(id);
+            _context.Bids.Remove(bid);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BidExists(int id)
         {
-            return _context.Bid.Any(e => e.ID == id);
+            return _context.Bids.Any(e => e.ID == id);
         }
     }
 }

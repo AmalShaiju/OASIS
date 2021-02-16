@@ -17,10 +17,52 @@ namespace OASIS.Data.OASISMigrations
                 .HasDefaultSchema("OA")
                 .HasAnnotation("ProductVersion", "3.1.11");
 
+            modelBuilder.Entity("OASIS.Models.Approval", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ClientStatusID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DesignerStatusID")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ClientStatusID");
+
+                    b.HasIndex("DesignerStatusID");
+
+                    b.ToTable("Approvals");
+                });
+
+            modelBuilder.Entity("OASIS.Models.ApprovalStatus", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ApprovalStatuses");
+                });
+
             modelBuilder.Entity("OASIS.Models.Bid", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("BidStatusID")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("DateCreated")
@@ -50,10 +92,15 @@ namespace OASIS.Data.OASISMigrations
                     b.Property<int>("SalesAsscociateID")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("StatusID")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("comments")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("BidStatusID");
 
                     b.HasIndex("DesignerID");
 
@@ -61,7 +108,75 @@ namespace OASIS.Data.OASISMigrations
 
                     b.HasIndex("SalesAsscociateID");
 
-                    b.ToTable("Bid");
+                    b.ToTable("Bids");
+                });
+
+            modelBuilder.Entity("OASIS.Models.BidLabour", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BidID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
+
+                    b.Property<double>("Hours")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("RoleID")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("BidID");
+
+                    b.HasIndex("RoleID");
+
+                    b.ToTable("BidLabours");
+                });
+
+            modelBuilder.Entity("OASIS.Models.BidProduct", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BidID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("BidID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("BidProducts");
+                });
+
+            modelBuilder.Entity("OASIS.Models.BidStatus", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("BidStatuses");
                 });
 
             modelBuilder.Entity("OASIS.Models.Customer", b =>
@@ -244,6 +359,56 @@ namespace OASIS.Data.OASISMigrations
                     b.ToTable("Employees");
                 });
 
+            modelBuilder.Entity("OASIS.Models.Product", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(8);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(50);
+
+                    b.Property<double>("Price")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("ProductTypeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("size")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(15);
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ProductTypeId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("OASIS.Models.ProductType", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(50);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ProductTypes");
+                });
+
             modelBuilder.Entity("OASIS.Models.Project", b =>
                 {
                     b.Property<int>("ID")
@@ -354,8 +519,27 @@ namespace OASIS.Data.OASISMigrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("OASIS.Models.Approval", b =>
+                {
+                    b.HasOne("OASIS.Models.ApprovalStatus", "ClientStatus")
+                        .WithMany()
+                        .HasForeignKey("ClientStatusID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OASIS.Models.ApprovalStatus", "DesignerStatus")
+                        .WithMany()
+                        .HasForeignKey("DesignerStatusID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("OASIS.Models.Bid", b =>
                 {
+                    b.HasOne("OASIS.Models.BidStatus", "BidStatus")
+                        .WithMany("Bids")
+                        .HasForeignKey("BidStatusID");
+
                     b.HasOne("OASIS.Models.Employee", "Designer")
                         .WithMany()
                         .HasForeignKey("DesignerID")
@@ -375,12 +559,51 @@ namespace OASIS.Data.OASISMigrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("OASIS.Models.BidLabour", b =>
+                {
+                    b.HasOne("OASIS.Models.Bid", "Bid")
+                        .WithMany("BidLabours")
+                        .HasForeignKey("BidID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OASIS.Models.Role", "Role")
+                        .WithMany("BidLabours")
+                        .HasForeignKey("RoleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("OASIS.Models.BidProduct", b =>
+                {
+                    b.HasOne("OASIS.Models.Bid", "Bid")
+                        .WithMany("BidProducts")
+                        .HasForeignKey("BidID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OASIS.Models.Product", "Product")
+                        .WithMany("BidProducts")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("OASIS.Models.Employee", b =>
                 {
                     b.HasOne("OASIS.Models.Role", "Role")
                         .WithMany("Employees")
                         .HasForeignKey("RoleID")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("OASIS.Models.Product", b =>
+                {
+                    b.HasOne("OASIS.Models.ProductType", "ProductType")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

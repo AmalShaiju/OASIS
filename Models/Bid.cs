@@ -49,7 +49,7 @@ namespace OASIS.Models
 
         [Display(Name = "Notes")]
         [DataType(DataType.MultilineText)]
-        public string? comments { get; set; }
+        public string comments { get; set; }
 
         [Required(ErrorMessage = "Please select a designer")]
         [Display(Name = "Designer")]
@@ -66,5 +66,12 @@ namespace OASIS.Models
         [Display(Name = "Project")]
         public int ProjectID { get; set; }
         public Project project { get; set; }
+
+        public int? BidStatusID { get; set; }
+        public BidStatus BidStatus { get; set; }
+
+
+        public ICollection<BidProduct> BidProducts { get; set; }
+        public ICollection<BidLabour> BidLabours { get; set; }
     }
 }

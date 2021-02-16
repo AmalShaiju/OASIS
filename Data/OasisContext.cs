@@ -80,6 +80,17 @@ namespace OASIS.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<BidStatus> BidStatuses { get; set; }
+        public DbSet<Bid> Bids { get; set; }
+        public DbSet<ApprovalStatus> ApprovalStatuses { get; set; }
+        public DbSet<Approval> Approvals { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<BidProduct> BidProducts { get; set; }
+        public DbSet<BidLabour> BidLabours { get; set; }
+    
+
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -128,7 +139,6 @@ namespace OASIS.Data
         }
 
 
-        public DbSet<OASIS.Models.Bid> Bid { get; set; }
 
 
 
