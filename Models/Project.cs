@@ -39,5 +39,7 @@ namespace OASIS.Models
 
         public int CustomerID { get; set; }
         public Customer Customer { get; set; }
+
+        public ICollection<Bid> Bids { get; set; }
     }
 }
