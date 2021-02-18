@@ -23,6 +23,9 @@ namespace OASIS.Data.OASISMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("BidID")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("ClientStatusID")
                         .HasColumnType("INTEGER");
 
@@ -33,6 +36,9 @@ namespace OASIS.Data.OASISMigrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("BidID")
+                        .IsUnique();
 
                     b.HasIndex("ClientStatusID");
 
@@ -47,11 +53,19 @@ namespace OASIS.Data.OASISMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("ApprovalID")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ApprovalID");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("ApprovalStatuses");
                 });
@@ -90,9 +104,6 @@ namespace OASIS.Data.OASISMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("SalesAsscociateID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("StatusID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("comments")
@@ -175,6 +186,9 @@ namespace OASIS.Data.OASISMigrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("BidStatuses");
                 });
@@ -378,7 +392,7 @@ namespace OASIS.Data.OASISMigrations
                     b.Property<double>("Price")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("ProductTypeId")
+                    b.Property<int>("ProductTypeID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("size")
@@ -388,7 +402,10 @@ namespace OASIS.Data.OASISMigrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ProductTypeId");
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("ProductTypeID");
 
                     b.ToTable("Products");
                 });
@@ -405,6 +422,9 @@ namespace OASIS.Data.OASISMigrations
                         .HasMaxLength(50);
 
                     b.HasKey("ID");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("ProductTypes");
                 });
@@ -521,6 +541,12 @@ namespace OASIS.Data.OASISMigrations
 
             modelBuilder.Entity("OASIS.Models.Approval", b =>
                 {
+                    b.HasOne("OASIS.Models.Bid", "Bid")
+                        .WithOne("Approval")
+                        .HasForeignKey("OASIS.Models.Approval", "BidID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("OASIS.Models.ApprovalStatus", "ClientStatus")
                         .WithMany()
                         .HasForeignKey("ClientStatusID")
@@ -534,11 +560,19 @@ namespace OASIS.Data.OASISMigrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("OASIS.Models.ApprovalStatus", b =>
+                {
+                    b.HasOne("OASIS.Models.Approval", null)
+                        .WithMany("ApprovalStatuses")
+                        .HasForeignKey("ApprovalID");
+                });
+
             modelBuilder.Entity("OASIS.Models.Bid", b =>
                 {
                     b.HasOne("OASIS.Models.BidStatus", "BidStatus")
                         .WithMany("Bids")
-                        .HasForeignKey("BidStatusID");
+                        .HasForeignKey("BidStatusID")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("OASIS.Models.Employee", "Designer")
                         .WithMany()
@@ -549,7 +583,7 @@ namespace OASIS.Data.OASISMigrations
                     b.HasOne("OASIS.Models.Project", "project")
                         .WithMany("Bids")
                         .HasForeignKey("ProjectID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("OASIS.Models.Employee", "SalesAsscociate")
@@ -602,8 +636,8 @@ namespace OASIS.Data.OASISMigrations
                 {
                     b.HasOne("OASIS.Models.ProductType", "ProductType")
                         .WithMany("Products")
-                        .HasForeignKey("ProductTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("ProductTypeID")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

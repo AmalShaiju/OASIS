@@ -67,9 +67,10 @@ namespace OASIS.Models
         public int ProjectID { get; set; }
         public Project project { get; set; }
 
+        [Display(Name = "Status")]
         public int? BidStatusID { get; set; }
         public BidStatus BidStatus { get; set; }
-
+        public Approval Approval { get; set; }
 
         public ICollection<BidProduct> BidProducts { get; set; }
         public ICollection<BidLabour> BidLabours { get; set; }

@@ -18,6 +18,9 @@ namespace OASIS.Models
         public virtual ApprovalStatus ClientStatus { get; set; }
         public int DesignerStatusID { get; set; }
         public virtual ApprovalStatus DesignerStatus { get; set; }
+        public ICollection<ApprovalStatus> ApprovalStatuses { get; set; }
+        public int BidID { get; set; }
+        public Bid Bid { get; set; }
 
     }
 }

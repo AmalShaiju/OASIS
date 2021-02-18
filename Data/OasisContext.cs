@@ -88,13 +88,18 @@ namespace OASIS.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<BidProduct> BidProducts { get; set; }
         public DbSet<BidLabour> BidLabours { get; set; }
-    
+
 
 
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Bid>()
+            .HasOne<Approval>(s => s.Approval)
+            .WithOne(ad => ad.Bid)
+            .HasForeignKey<Approval>(ad => ad.BidID);
+
             modelBuilder.HasDefaultSchema("OA");
 
             //Prevent Cascade Delete from Role to Employee
@@ -144,5 +149,5 @@ namespace OASIS.Data
 
 
     }
-    
+
 }
