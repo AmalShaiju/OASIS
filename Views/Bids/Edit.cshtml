@@ -77,6 +77,11 @@
                 <select name="DesignerStatusID" class="form-control" asp-items="ViewBag.DesignerStatusID"></select>
             </div>
             <div class="form-group">
+                <label for="approvalComment" class="control-label">Approval Comments</label>
+                <textarea name="approvalComment" class="form-control">@ViewData["approvalComment"]</textarea>
+                <span asp-validation-for="Approval.Comments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
