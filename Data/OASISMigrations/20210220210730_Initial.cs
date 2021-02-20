@@ -11,20 +11,6 @@ namespace OASIS.Data.OASISMigrations
                 name: "OA");
 
             migrationBuilder.CreateTable(
-                name: "ApprovalStatuses",
-                schema: "OA",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApprovalStatuses", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "BidStatuses",
                 schema: "OA",
                 columns: table => new
@@ -251,44 +237,6 @@ namespace OASIS.Data.OASISMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Approvals",
-                schema: "OA",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Comments = table.Column<string>(nullable: true),
-                    ClientStatusID = table.Column<int>(nullable: false),
-                    DesignerStatusID = table.Column<int>(nullable: false),
-                    BidID = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Approvals", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Approvals_Bids_BidID",
-                        column: x => x.BidID,
-                        principalSchema: "OA",
-                        principalTable: "Bids",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Approvals_ApprovalStatuses_ClientStatusID",
-                        column: x => x.ClientStatusID,
-                        principalSchema: "OA",
-                        principalTable: "ApprovalStatuses",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Approvals_ApprovalStatuses_DesignerStatusID",
-                        column: x => x.DesignerStatusID,
-                        principalSchema: "OA",
-                        principalTable: "ApprovalStatuses",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "BidLabours",
                 schema: "OA",
                 columns: table => new
@@ -349,6 +297,59 @@ namespace OASIS.Data.OASISMigrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ApprovalStatuses",
+                schema: "OA",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(nullable: false),
+                    ApprovalID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApprovalStatuses", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Approvals",
+                schema: "OA",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Comments = table.Column<string>(nullable: true),
+                    ClientStatusID = table.Column<int>(nullable: false),
+                    DesignerStatusID = table.Column<int>(nullable: false),
+                    BidID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Approvals", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Approvals_Bids_BidID",
+                        column: x => x.BidID,
+                        principalSchema: "OA",
+                        principalTable: "Bids",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Approvals_ApprovalStatuses_ClientStatusID",
+                        column: x => x.ClientStatusID,
+                        principalSchema: "OA",
+                        principalTable: "ApprovalStatuses",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Approvals_ApprovalStatuses_DesignerStatusID",
+                        column: x => x.DesignerStatusID,
+                        principalSchema: "OA",
+                        principalTable: "ApprovalStatuses",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Approvals_BidID",
                 schema: "OA",
@@ -367,6 +368,12 @@ namespace OASIS.Data.OASISMigrations
                 schema: "OA",
                 table: "Approvals",
                 column: "DesignerStatusID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApprovalStatuses_ApprovalID",
+                schema: "OA",
+                table: "ApprovalStatuses",
+                column: "ApprovalID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApprovalStatuses_Name",
@@ -489,13 +496,34 @@ namespace OASIS.Data.OASISMigrations
                 table: "Roles",
                 column: "Name",
                 unique: true);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_ApprovalStatuses_Approvals_ApprovalID",
+                schema: "OA",
+                table: "ApprovalStatuses",
+                column: "ApprovalID",
+                principalSchema: "OA",
+                principalTable: "Approvals",
+                principalColumn: "ID",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Approvals",
-                schema: "OA");
+            migrationBuilder.DropForeignKey(
+                name: "FK_Approvals_Bids_BidID",
+                schema: "OA",
+                table: "Approvals");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Approvals_ApprovalStatuses_ClientStatusID",
+                schema: "OA",
+                table: "Approvals");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Approvals_ApprovalStatuses_DesignerStatusID",
+                schema: "OA",
+                table: "Approvals");
 
             migrationBuilder.DropTable(
                 name: "BidLabours",
@@ -506,15 +534,15 @@ namespace OASIS.Data.OASISMigrations
                 schema: "OA");
 
             migrationBuilder.DropTable(
-                name: "ApprovalStatuses",
+                name: "Products",
+                schema: "OA");
+
+            migrationBuilder.DropTable(
+                name: "ProductTypes",
                 schema: "OA");
 
             migrationBuilder.DropTable(
                 name: "Bids",
-                schema: "OA");
-
-            migrationBuilder.DropTable(
-                name: "Products",
                 schema: "OA");
 
             migrationBuilder.DropTable(
@@ -530,15 +558,19 @@ namespace OASIS.Data.OASISMigrations
                 schema: "OA");
 
             migrationBuilder.DropTable(
-                name: "ProductTypes",
-                schema: "OA");
-
-            migrationBuilder.DropTable(
                 name: "Roles",
                 schema: "OA");
 
             migrationBuilder.DropTable(
                 name: "Customers",
+                schema: "OA");
+
+            migrationBuilder.DropTable(
+                name: "ApprovalStatuses",
+                schema: "OA");
+
+            migrationBuilder.DropTable(
+                name: "Approvals",
                 schema: "OA");
         }
     }

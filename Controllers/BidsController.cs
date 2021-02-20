@@ -51,10 +51,9 @@ namespace OASIS.Controllers
         // GET: Bids/Create
         public IActionResult Create()
         {
-            ViewData["BidStatusID"] = new SelectList(_context.BidStatuses, "ID", "Name");
-            ViewData["DesignerID"] = new SelectList(_context.Employees, "ID", "AddressLineOne");
-            ViewData["SalesAsscociateID"] = new SelectList(_context.Employees, "ID", "AddressLineOne");
-            ViewData["ProjectID"] = new SelectList(_context.Projects, "ID", "City");
+            var bid = new Bid();
+
+            PopulateDropDownLists(bid);
             return View();
         }
 
@@ -63,38 +62,45 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,DateCreated,EstAmount,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID")] Bid bid)
+        public async Task<IActionResult> Create([Bind("ID,DateCreated,EstAmount,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid, int DesignerStatusID, int ClientStatusID, string approvalComment)
         {
+
+
             if (ModelState.IsValid)
             {
                 _context.Add(bid);
                 await _context.SaveChangesAsync();
+                updateApprovalStatus(bid, DesignerStatusID, ClientStatusID, approvalComment);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BidStatusID"] = new SelectList(_context.BidStatuses, "ID", "Name", bid.BidStatusID);
-            ViewData["DesignerID"] = new SelectList(_context.Employees, "ID", "AddressLineOne", bid.DesignerID);
-            ViewData["SalesAsscociateID"] = new SelectList(_context.Employees, "ID", "AddressLineOne", bid.SalesAsscociateID);
-            ViewData["ProjectID"] = new SelectList(_context.Projects, "ID", "City", bid.ProjectID);
+
+
+            PopulateDropDownLists(bid, DesignerStatusID, ClientStatusID, approvalComment);
+
             return View(bid);
         }
 
         // GET: Bids/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var bid = await _context.Bids.FindAsync(id);
+            var bid = await _context.Bids
+                .Include(a => a.Approval)
+                .ThenInclude(d => d.ApprovalStatuses)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(a => a.ID == id);
+
             if (bid == null)
             {
                 return NotFound();
             }
-            ViewData["BidStatusID"] = new SelectList(_context.BidStatuses, "ID", "Name", bid.BidStatusID);
-            ViewData["DesignerID"] = new SelectList(_context.Employees, "ID", "AddressLineOne", bid.DesignerID);
-            ViewData["SalesAsscociateID"] = new SelectList(_context.Employees, "ID", "AddressLineOne", bid.SalesAsscociateID);
-            ViewData["ProjectID"] = new SelectList(_context.Projects, "ID", "City", bid.ProjectID);
+
+            PopulateDropDownLists(bid, bid.Approval.DesignerStatusID, bid.Approval.ClientStatusID, bid.Approval.Comments);
             return View(bid);
         }
 
@@ -103,23 +109,35 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,DateCreated,EstAmount,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID")] Bid bid)
+        public async Task<IActionResult> Edit(int id, int DesignerStatusID, int ClientStatusID, string approvalComment)
         {
-            if (id != bid.ID)
+            var bidToUpdate = await _context.Bids
+            .Include(a => a.Approval)
+            .ThenInclude(d => d.ApprovalStatuses)
+            .FirstOrDefaultAsync(a => a.ID == id);
+
+            if (bidToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+
+            if (await TryUpdateModelAsync<Bid>(bidToUpdate, "", p => p.DateCreated, p => p.EstAmount, p => p.ProjectStartDate, p => p.ProjectEndDate, p => p.EstBidEndDate, p => p.EstBidStartDate, p => p.comments
+           , p => p.DesignerID, p => p.SalesAsscociateID, p => p.BidStatusID, p => p.ProjectID))
             {
+
                 try
                 {
-                    _context.Update(bid);
                     await _context.SaveChangesAsync();
+                    updateApprovalStatus(bidToUpdate, DesignerStatusID, ClientStatusID, approvalComment);
+                    //return RedirectToAction(nameof(Index)); 
+                    return RedirectToAction("Details", new { bidToUpdate.ID });
+
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BidExists(bid.ID))
+                    if (!BidExists(bidToUpdate.ID))
                     {
                         return NotFound();
                     }
@@ -128,13 +146,9 @@ namespace OASIS.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["BidStatusID"] = new SelectList(_context.BidStatuses, "ID", "Name", bid.BidStatusID);
-            ViewData["DesignerID"] = new SelectList(_context.Employees, "ID", "AddressLineOne", bid.DesignerID);
-            ViewData["SalesAsscociateID"] = new SelectList(_context.Employees, "ID", "AddressLineOne", bid.SalesAsscociateID);
-            ViewData["ProjectID"] = new SelectList(_context.Projects, "ID", "City", bid.ProjectID);
-            return View(bid);
+            PopulateDropDownLists(bidToUpdate, DesignerStatusID, ClientStatusID, approvalComment);
+            return View(bidToUpdate);
         }
 
         // GET: Bids/Delete/5
@@ -174,5 +188,71 @@ namespace OASIS.Controllers
         {
             return _context.Bids.Any(e => e.ID == id);
         }
+
+        private void PopulateDropDownLists(Bid bid = null, int designerStatusID = 1, int clientStatusID = 1, string note = "No Comment")
+        {
+            // Bid Status
+            var bidStatusQuery = from d in _context.BidStatuses
+                                 orderby d.Name
+                                 select d;
+            ViewData["BidStatusID"] = new SelectList(bidStatusQuery, "ID", "Name", bid?.BidStatusID);
+
+            // Project
+            var projectQuery = from d in _context.Projects
+                               orderby d.Name
+                               select d;
+            ViewData["ProjectID"] = new SelectList(projectQuery, "ID", "Name", bid?.ProjectID);
+
+            //Designer & Sales Associate
+            var designerQuery = from d in _context.Employees.Where(p => p.Role.Name == "Designer")
+                                orderby d.LastName, d.FirstName
+                                select d;
+            var SalesAssociateQuery = from d in _context.Employees.Where(p => p.Role.Name == "Botanist")
+                                      orderby d.LastName, d.FirstName
+                                      select d;
+            ViewData["DesignerID"] = new SelectList(designerQuery, "ID", "FormalName", bid?.DesignerID);
+
+            ViewData["SalesAsscociateID"] = new SelectList(SalesAssociateQuery, "ID", "FormalName", bid.SalesAsscociateID);
+
+            // Approvals
+            var approvalStatusQuery = from d in _context.ApprovalStatuses
+                                      orderby d.Name
+                                      select d;
+
+            ViewData["ClientStatusID"] = new SelectList(approvalStatusQuery, "ID", "Name", (bid != null && bid.Approval.ClientStatusID != clientStatusID) ? clientStatusID : bid.Approval.ClientStatusID);
+
+            ViewData["DesignerStatusID"] = new SelectList(approvalStatusQuery, "ID", "Name", (bid != null && bid.Approval.DesignerStatusID != clientStatusID) ? designerStatusID : bid.Approval.DesignerStatusID);
+
+            ViewData["approvalComment"] = (bid != null && bid.Approval.Comments == note) ? bid.Approval.Comments : note;
+
+        }
+
+        private void updateApprovalStatus(Bid bid, int designerID, int clientID, string comments)
+        {
+            var approval = _context.Approvals.SingleOrDefault(p => p.BidID == bid.ID);
+
+            if (designerID != bid.Approval.DesignerStatusID)
+            {
+
+                approval.DesignerStatusID = designerID;
+            }
+
+            if (clientID != bid.Approval.ClientStatusID)
+            {
+                approval.ClientStatusID = clientID;
+
+            }
+
+            if (comments != bid.Approval.Comments)
+            {
+                approval.Comments = comments;
+            }
+
+            _context.SaveChangesAsync();
+
+        }
+
     }
+
+
 }

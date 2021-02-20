@@ -9,7 +9,7 @@ using OASIS.Data;
 namespace OASIS.Data.OASISMigrations
 {
     [DbContext(typeof(OasisContext))]
-    [Migration("20210216202715_Initial")]
+    [Migration("20210220210730_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,11 +55,16 @@ namespace OASIS.Data.OASISMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("ApprovalID")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ApprovalID");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -557,6 +562,13 @@ namespace OASIS.Data.OASISMigrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("OASIS.Models.ApprovalStatus", b =>
+                {
+                    b.HasOne("OASIS.Models.Approval", null)
+                        .WithMany("ApprovalStatuses")
+                        .HasForeignKey("ApprovalID");
+                });
+
             modelBuilder.Entity("OASIS.Models.Bid", b =>
                 {
                     b.HasOne("OASIS.Models.BidStatus", "BidStatus")
@@ -607,7 +619,7 @@ namespace OASIS.Data.OASISMigrations
                         .IsRequired();
 
                     b.HasOne("OASIS.Models.Product", "Product")
-                        .WithMany("BidProducts")
+                        .WithMany()
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

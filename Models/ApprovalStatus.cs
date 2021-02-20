@@ -14,5 +14,7 @@ namespace OASIS.Models
         [Required(ErrorMessage = "You must enter the estimated amount.")]
         public string Name { get; set; }
 
+
+
     }
 }

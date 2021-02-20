@@ -9,13 +9,21 @@ namespace OASIS.Models
 {
     public class Bid
     {
-      
+       public Bid()
+        {
+            Approval = new Approval();
+            Approval.ClientStatusID = 1;
+            Approval.DesignerStatusID = 1;
+            Approval.Comments = "No Comment";
+            DateCreated = DateTime.Now;
+
+        }
         public int ID { get; set; }
 
         [Display(Name = "Estimated End Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime DateCreated { get; set; } = DateTime.Now;
+        public DateTime DateCreated { get; set; }
 
         [Display(Name = "Estimated Amount")]
         [Required(ErrorMessage = "You must enter the estimated amount.")]
@@ -70,8 +78,8 @@ namespace OASIS.Models
         [Display(Name = "Status")]
         public int? BidStatusID { get; set; }
         public BidStatus BidStatus { get; set; }
-
         public Approval Approval { get; set; }
+
         public ICollection<BidProduct> BidProducts { get; set; }
         public ICollection<BidLabour> BidLabours { get; set; }
     }
