@@ -48,7 +48,7 @@ namespace OASIS.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "ID", "Name");
+            ViewData["ProductTypeID"] = new SelectList(_context.ProductTypes, "ID", "Name");
             return View();
         }
 
@@ -57,7 +57,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Code,Description,size,Price,ProductTypeId")] Product product)
+        public async Task<IActionResult> Create([Bind("ID,Code,Description,size,Price,ProductTypeID")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace OASIS.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "ID", "Name", product.ProductTypeId);
+            ViewData["ProductTypeID"] = new SelectList(_context.ProductTypes, "ID", "Name", product.ProductTypeID);
             return View(product);
         }
 
@@ -82,7 +82,7 @@ namespace OASIS.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "ID", "Name", product.ProductTypeId);
+            ViewData["ProductTypeID"] = new SelectList(_context.ProductTypes, "ID", "Name", product.ProductTypeID);
             return View(product);
         }
 
@@ -91,7 +91,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Code,Description,size,Price,ProductTypeId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Code,Description,size,Price,ProductTypeID")] Product product)
         {
             if (id != product.ID)
             {
@@ -118,7 +118,7 @@ namespace OASIS.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "ID", "Name", product.ProductTypeId);
+            ViewData["ProductTypeID"] = new SelectList(_context.ProductTypes, "ID", "Name", product.ProductTypeID);
             return View(product);
         }
 

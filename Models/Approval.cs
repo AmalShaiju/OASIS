@@ -21,5 +21,8 @@ namespace OASIS.Models
         public int BidID { get; set; }
         public Bid Bid { get; set; }
 
+        public int BidID { get; set; }
+        public Bid Bid { get; set; }
+
     }
 }

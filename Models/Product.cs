@@ -34,7 +34,7 @@ namespace OASIS.Models
 
 
         [Required(ErrorMessage = "You must select a product type.")]
-        public int ProductTypeId { get; set; }
+        public int ProductTypeID { get; set; }
         public ProductType ProductType { get; set; }
 
         public ICollection<BidProduct> BidProducts { get; set; }

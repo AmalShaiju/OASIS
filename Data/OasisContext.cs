@@ -80,10 +80,10 @@ namespace OASIS.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public DbSet<BidStatus> BidStatuses { get; set; }
-        public DbSet<Bid> Bids { get; set; }
         public DbSet<ApprovalStatus> ApprovalStatuses { get; set; }
         public DbSet<Approval> Approvals { get; set; }
+        public DbSet<BidStatus> BidStatuses { get; set; }
+        public DbSet<Bid> Bids { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<BidProduct> BidProducts { get; set; }
@@ -120,6 +120,34 @@ namespace OASIS.Data
                 .HasForeignKey(p => p.CustomerID)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            //Prevent Cascade Delete from Project to Bid
+            //so we are prevented from deleting a customer with
+            //project assigned
+            modelBuilder.Entity<Project>()
+                .HasMany<Bid>(d => d.Bids)
+                .WithOne(p => p.project)
+                .HasForeignKey(p => p.ProjectID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //Prevent Cascade Delete from ProductType to product
+            //so we are prevented from deleting a customer with
+            //project assigned
+            modelBuilder.Entity<ProductType>()
+                .HasMany<Product>(d => d.Products)
+                .WithOne(p => p.ProductType)
+                .HasForeignKey(p => p.ProductTypeID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //Prevent Cascade Delete from BidStatus to Bid
+            //so we are prevented from deleting a customer with
+            //project assigned
+            modelBuilder.Entity<BidStatus>()
+                .HasMany<Bid>(d => d.Bids)
+                .WithOne(p => p.BidStatus)
+                .HasForeignKey(p => p.BidStatusID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             // Name of the Role is Unique
             modelBuilder.Entity<Role>()
                 .HasIndex(p => p.Name)
@@ -141,6 +169,31 @@ namespace OASIS.Data
             modelBuilder.Entity<Project>()
                 .HasIndex(p => p.Name)
                 .IsUnique();
+
+            // Name of the productType is Unique
+            modelBuilder.Entity<ProductType>()
+                .HasIndex(p => p.Name)
+                .IsUnique();
+
+            // code of the product is Unique
+            modelBuilder.Entity<Product>()
+                .HasIndex(p => p.Code)
+                .IsUnique();
+
+
+            // Name of the ApprovalStatus is Unique
+            modelBuilder.Entity<ApprovalStatus>()
+                .HasIndex(p => p.Name)
+                .IsUnique();
+
+            // Name of the BidStatus is Unique
+            modelBuilder.Entity<BidStatus>()
+                .HasIndex(p => p.Name)
+                .IsUnique();
+
+
+
+
         }
 
 
