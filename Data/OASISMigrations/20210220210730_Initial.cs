@@ -133,18 +133,18 @@ namespace OASIS.Data.OASISMigrations
                     Description = table.Column<string>(maxLength: 50, nullable: false),
                     size = table.Column<string>(maxLength: 15, nullable: false),
                     Price = table.Column<double>(nullable: false),
-                    ProductTypeId = table.Column<int>(nullable: false)
+                    ProductTypeID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Products_ProductTypes_ProductTypeId",
-                        column: x => x.ProductTypeId,
+                        name: "FK_Products_ProductTypes_ProductTypeID",
+                        column: x => x.ProductTypeID,
                         principalSchema: "OA",
                         principalTable: "ProductTypes",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -226,7 +226,7 @@ namespace OASIS.Data.OASISMigrations
                         principalSchema: "OA",
                         principalTable: "Projects",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Bids_Employees_SalesAsscociateID",
                         column: x => x.SalesAsscociateID,
@@ -376,6 +376,13 @@ namespace OASIS.Data.OASISMigrations
                 column: "ApprovalID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ApprovalStatuses_Name",
+                schema: "OA",
+                table: "ApprovalStatuses",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BidLabours_BidID",
                 schema: "OA",
                 table: "BidLabours",
@@ -424,6 +431,13 @@ namespace OASIS.Data.OASISMigrations
                 column: "SalesAsscociateID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BidStatuses_Name",
+                schema: "OA",
+                table: "BidStatuses",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Customers_Email",
                 schema: "OA",
                 table: "Customers",
@@ -444,10 +458,24 @@ namespace OASIS.Data.OASISMigrations
                 column: "RoleID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_ProductTypeId",
+                name: "IX_Products_Code",
                 schema: "OA",
                 table: "Products",
-                column: "ProductTypeId");
+                column: "Code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_ProductTypeID",
+                schema: "OA",
+                table: "Products",
+                column: "ProductTypeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductTypes_Name",
+                schema: "OA",
+                table: "ProductTypes",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_CustomerID",
