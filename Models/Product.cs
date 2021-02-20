@@ -32,11 +32,9 @@ namespace OASIS.Models
         [Range(0, 9999999.99, ErrorMessage = "Invalid price.")]
         public double Price { get; set; }
 
-
         [Required(ErrorMessage = "You must select a product type.")]
         public int ProductTypeID { get; set; }
         public ProductType ProductType { get; set; }
 
-        public ICollection<BidProduct> BidProducts { get; set; }
     }
 }
