@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OASIS.Data;
 using OASIS.Models;
+using OASIS.ViewModels;
 
 namespace OASIS.Controllers
 {
@@ -22,7 +23,12 @@ namespace OASIS.Controllers
         // GET: Bids
         public async Task<IActionResult> Index()
         {
-            var oasisContext = _context.Bids.Include(b => b.BidStatus).Include(b => b.Designer).Include(b => b.SalesAsscociate).Include(b => b.project);
+            var oasisContext = _context.Bids.Include(b => b.BidStatus)
+                .Include(b => b.Designer).
+                Include(b => b.SalesAsscociate)
+                .Include(b => b.project)
+                .Include(b => b.BidProducts)
+                .Include(b => b.BidLabours);
             return View(await oasisContext.ToListAsync());
         }
 
@@ -54,6 +60,7 @@ namespace OASIS.Controllers
             var bid = new Bid();
 
             PopulateDropDownLists(bid);
+            PopulateAssignedProducts(bid);
             return View();
         }
 
@@ -62,10 +69,11 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,DateCreated,EstAmount,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid, int DesignerStatusID, int ClientStatusID, string approvalComment)
+        public async Task<IActionResult> Create([Bind("ID,DateCreated,EstAmount,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid, 
+            int DesignerStatusID, int ClientStatusID, string approvalComment, string[] selectedOptions)
         {
 
-
+            updateBidProducts(selectedOptions, bid);
             if (ModelState.IsValid)
             {
                 _context.Add(bid);
@@ -76,7 +84,7 @@ namespace OASIS.Controllers
 
 
             PopulateDropDownLists(bid, DesignerStatusID, ClientStatusID, approvalComment);
-
+            PopulateAssignedProducts(bid);
             return View(bid);
         }
 
@@ -92,6 +100,8 @@ namespace OASIS.Controllers
             var bid = await _context.Bids
                 .Include(a => a.Approval)
                 .ThenInclude(d => d.ApprovalStatuses)
+                .Include(a => a.BidProducts)
+                .Include(a => a.BidLabours)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(a => a.ID == id);
 
@@ -101,6 +111,7 @@ namespace OASIS.Controllers
             }
 
             PopulateDropDownLists(bid, bid.Approval.DesignerStatusID, bid.Approval.ClientStatusID, bid.Approval.Comments);
+            PopulateAssignedProducts(bid);
             return View(bid);
         }
 
@@ -109,11 +120,13 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, int DesignerStatusID, int ClientStatusID, string approvalComment)
+        public async Task<IActionResult> Edit(int id, int DesignerStatusID, int ClientStatusID, string approvalComment, string[] selectedOptions)
         {
             var bidToUpdate = await _context.Bids
             .Include(a => a.Approval)
             .ThenInclude(d => d.ApprovalStatuses)
+            .Include(a => a.BidProducts)
+             .Include(a => a.BidLabours)
             .FirstOrDefaultAsync(a => a.ID == id);
 
             if (bidToUpdate == null)
@@ -121,6 +134,7 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
+            updateBidProducts(selectedOptions ,bidToUpdate);
 
             if (await TryUpdateModelAsync<Bid>(bidToUpdate, "", p => p.DateCreated, p => p.EstAmount, p => p.ProjectStartDate, p => p.ProjectEndDate, p => p.EstBidEndDate, p => p.EstBidStartDate, p => p.comments
            , p => p.DesignerID, p => p.SalesAsscociateID, p => p.BidStatusID, p => p.ProjectID))
@@ -148,6 +162,7 @@ namespace OASIS.Controllers
                 }
             }
             PopulateDropDownLists(bidToUpdate, DesignerStatusID, ClientStatusID, approvalComment);
+            PopulateAssignedProducts(bidToUpdate);
             return View(bidToUpdate);
         }
 
@@ -250,6 +265,70 @@ namespace OASIS.Controllers
 
             _context.SaveChangesAsync();
 
+        }
+
+        private void PopulateAssignedProducts(Bid bid)
+        {
+            var allOptions = _context.Products;
+            var currentOptionsHS = new HashSet<int>(bid.BidProducts.Select(b => b.ProductID));
+            var selected = new List<ListOptionVM>();
+            var available = new List<ListOptionVM>();
+            foreach (var s in allOptions)
+            {
+                if (currentOptionsHS.Contains(s.ID))
+                {
+                    selected.Add(new ListOptionVM
+                    {
+                        ID = s.ID,
+                        DisplayText = s.Code
+                    });
+                }
+                else
+                {
+                    available.Add(new ListOptionVM
+                    {
+                        ID = s.ID,
+                        DisplayText = s.Code
+                    });
+                }
+            }
+
+            ViewData["selOpts"] = new MultiSelectList(selected.OrderBy(s => s.DisplayText), "ID", "DisplayText");
+            ViewData["availOpts"] = new MultiSelectList(available.OrderBy(s => s.DisplayText), "ID", "DisplayText");
+        }
+
+        private void updateBidProducts(string[] selectedOptions, Bid bidToUpdate)
+        {
+            if (selectedOptions == null)
+            {
+                bidToUpdate.BidProducts = new List<BidProduct>();
+                return;
+            }
+
+            var selectedOptionsHS = new HashSet<string>(selectedOptions);
+            var currentOptionsHS = new HashSet<int>(bidToUpdate.BidProducts.Select(b => b.ProductID));
+            foreach (var s in _context.Products)
+            {
+                if (selectedOptionsHS.Contains(s.ID.ToString()))
+                {
+                    if (!currentOptionsHS.Contains(s.ID))
+                    {
+                        bidToUpdate.BidProducts.Add(new BidProduct
+                        {
+                            ProductID = s.ID,
+                            BidID = bidToUpdate.ID
+                        });
+                    }
+                }
+                else
+                {
+                    if (currentOptionsHS.Contains(s.ID))
+                    {
+                        BidProduct specToRemove = bidToUpdate.BidProducts.SingleOrDefault(d => d.ProductID == s.ID);
+                        _context.Remove(specToRemove);
+                    }
+                }
+            }
         }
 
     }

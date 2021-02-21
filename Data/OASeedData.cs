@@ -322,6 +322,21 @@ namespace OASIS.Data
                     context.SaveChanges();
                 }
 
+                string[] approvalStatus = new string[] {  "Approved", "Disapproved", "RequiresApproval" };
+                if (!context.ProductTypes.Any())
+                {
+                    foreach (string i in approvalStatus)
+                    {
+                        ApprovalStatus a = new ApprovalStatus()
+                        {
+                            Name = i
+                        };
+                        context.Add(a);
+                    }
+                    context.SaveChanges();
+
+                }
+
 
                 string[] productTypes = new string[] { "Plant Inventory", "Pottery Inventory", "Materials Inventory"};
                 if (!context.ProductTypes.Any())
@@ -371,7 +386,7 @@ namespace OASIS.Data
                     context.SaveChanges();
                 }
 
-                string[] bidStatus = new string[] { "Requires Approval", "Approved", "Disapproved" };
+                string[] bidStatus = new string[] { "In Progress", "Stoped Due To Weather", "Completed", "Not Started" };
                 if (!context.BidStatuses.Any())
                 {
                     foreach (string i in bidStatus)
@@ -383,6 +398,7 @@ namespace OASIS.Data
                         context.Add(a);
                     }
                     context.SaveChanges();
+
                 }
 
                 int[] projectID = context.Projects.Select(s => s.ID).ToArray();
@@ -408,7 +424,7 @@ namespace OASIS.Data
                             DesignerID = designerID[random.Next(designerCount)],
                             SalesAsscociateID = salesAssociateID[random.Next(salesAssociateCount)],
                             ProjectID = projectID[random.Next(ProjectCount)],
-                            BidStatusID = bidStatusID[random.Next(bidStatusCount)],
+                            BidStatusID = bidStatusID[random.Next(bidStatusCount)], 
                             
 
                         };
@@ -455,6 +471,60 @@ namespace OASIS.Data
 
                     }
                     context.SaveChanges();
+                }
+
+                //Bid Products
+                if (!context.BidProducts.Any())
+                {
+                    foreach (int i in bidID)
+                    {
+                        int howMany = random.Next(1, 4);
+                        howMany = (howMany > productID.Count()) ? productID.Count() : howMany;
+                        for (int j = 1; j <= howMany; j++)
+                        {
+                            BidProduct bidProduct = new BidProduct()
+                            {
+                                BidID = i,
+                                ProductID = productID[random.Next(productID.Count())]
+                            };
+                            context.BidProducts.Add(bidProduct);
+                            try
+                            {
+                                context.SaveChanges();
+                            }
+                            catch (Exception)
+                            {
+                                //Go on to next in case you randomly chose the same SpecialtyID twice
+                            }
+                        }
+                    }
+                }
+
+                //Bid labours
+                if (!context.BidLabours.Any())
+                {
+                    foreach (int i in bidID)
+                    {
+                        int howMany = random.Next(1, 4);
+                        howMany = (howMany > roleID.Count()) ? roleID.Count() : howMany;
+                        for (int j = 1; j <= howMany; j++)
+                        {
+                            BidLabour bidLabour = new BidLabour()
+                            {
+                                BidID = i,
+                                RoleID = roleID[random.Next(roleID.Count())]
+                            };
+                            context.BidLabours.Add(bidLabour);
+                            try
+                            {
+                                context.SaveChanges();
+                            }
+                            catch (Exception)
+                            {
+                                //Go on to next in case you randomly chose the same SpecialtyID twice
+                            }
+                        }
+                    }
                 }
             }
 

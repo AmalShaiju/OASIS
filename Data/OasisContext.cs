@@ -100,7 +100,15 @@ namespace OASIS.Data
             .WithOne(ad => ad.Bid)
             .HasForeignKey<Approval>(ad => ad.BidID);
 
-            modelBuilder.HasDefaultSchema("OA");
+            //Set primary key for bid product as BidID
+            modelBuilder.Entity<BidProduct>()
+            .HasKey(t => new { t.BidID, t.ProductID });
+
+            //Set primary key for bidLabour as BidID
+            modelBuilder.Entity<BidLabour>()
+            .HasKey(t => new { t.BidID, t.RoleID });
+
+
 
             //Prevent Cascade Delete from Role to Employee
             //so we are prevented from deleting a Role with
@@ -146,6 +154,23 @@ namespace OASIS.Data
                 .WithOne(p => p.BidStatus)
                 .HasForeignKey(p => p.BidStatusID)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            //Prevent Cascade Delete from product to BidProduct
+            //so we are prevented from deleting a product assigned to a bid
+            modelBuilder.Entity<Product>()
+               .HasMany<BidProduct>(p => p.BidProducts)
+               .WithOne(c => c.Product)
+               .HasForeignKey(c => c.ProductID)
+               .OnDelete(DeleteBehavior.Restrict);
+
+
+            //Prevent Cascade Delete from product to BidProduct
+            //so we are prevented from deleting a product assigned to a bid
+            modelBuilder.Entity<Role>()
+               .HasMany<BidLabour>(p => p.BidLabours)
+               .WithOne(c => c.Role)
+               .HasForeignKey(c => c.RoleID)
+               .OnDelete(DeleteBehavior.Restrict);
 
 
             // Name of the Role is Unique

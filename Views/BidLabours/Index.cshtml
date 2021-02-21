@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Bid)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
@@ -21,15 +24,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.Role)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Bid)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bid.ID)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
@@ -40,12 +43,9 @@
                 @Html.DisplayFor(modelItem => item.Role.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Bid.ID)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>
 }

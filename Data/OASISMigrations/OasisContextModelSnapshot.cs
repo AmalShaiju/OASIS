@@ -14,8 +14,7 @@ namespace OASIS.Data.OASISMigrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("OA")
-                .HasAnnotation("ProductVersion", "3.1.11");
+                .HasAnnotation("ProductVersion", "3.1.12");
 
             modelBuilder.Entity("OASIS.Models.Approval", b =>
                 {
@@ -124,11 +123,10 @@ namespace OASIS.Data.OASISMigrations
 
             modelBuilder.Entity("OASIS.Models.BidLabour", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("BidID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("BidID")
+                    b.Property<int>("RoleID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
@@ -139,12 +137,7 @@ namespace OASIS.Data.OASISMigrations
                     b.Property<double>("Hours")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("RoleID")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("BidID");
+                    b.HasKey("BidID", "RoleID");
 
                     b.HasIndex("RoleID");
 
@@ -153,10 +146,6 @@ namespace OASIS.Data.OASISMigrations
 
             modelBuilder.Entity("OASIS.Models.BidProduct", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("BidID")
                         .HasColumnType("INTEGER");
 
@@ -166,9 +155,7 @@ namespace OASIS.Data.OASISMigrations
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ID");
-
-                    b.HasIndex("BidID");
+                    b.HasKey("BidID", "ProductID");
 
                     b.HasIndex("ProductID");
 
@@ -604,7 +591,7 @@ namespace OASIS.Data.OASISMigrations
                     b.HasOne("OASIS.Models.Role", "Role")
                         .WithMany("BidLabours")
                         .HasForeignKey("RoleID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -617,9 +604,9 @@ namespace OASIS.Data.OASISMigrations
                         .IsRequired();
 
                     b.HasOne("OASIS.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("BidProducts")
                         .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

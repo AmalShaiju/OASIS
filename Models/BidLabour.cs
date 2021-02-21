@@ -8,8 +8,9 @@ namespace OASIS.Models
 {
     public class BidLabour
     {
-
-        public int ID { get; set; }
+        //PK?FK
+        public int BidID { get; set; }
+        public Bid Bid { get; set; }
 
         [Display(Name = "Estimated Amount")]
         [Required(ErrorMessage = "You must enter the description.")]
@@ -26,9 +27,6 @@ namespace OASIS.Models
         public int RoleID { get; set; }
         public Role Role { get; set; }
 
-        [Required(ErrorMessage = "You must select a bid.")]
 
-        public int BidID { get; set; }
-        public Bid Bid { get; set; }
     }
 }

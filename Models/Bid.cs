@@ -17,6 +17,9 @@ namespace OASIS.Models
             Approval.Comments = "No Comment";
             DateCreated = DateTime.Now;
 
+            BidLabours = new HashSet<BidLabour>();
+            BidProducts = new HashSet<BidProduct>();
+
         }
         public int ID { get; set; }
 
