@@ -85,25 +85,58 @@
                 <input type="submit" id="btnSubmit" value="Save" class="btn btn-primary" />
             </div>
 
-            <div class="col-md-8">
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label class="control-label"> Products Required</label> <button type="button" id="btnRight" class="btn btn-danger btn-sm">
-                            <strong>-</strong>
-                        </button>
-                        @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control" })
-                    </div>
+            @*<div class="col-md-8">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="control-label"> Products Required</label> <button type="button" id="btnRight" class="btn btn-danger btn-sm">
+                                <strong>-</strong>
+                            </button>
+                            @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control" })
+                        </div>
 
-                    <div class="form-group col-md-6">
-                        <label class="control-label"> Choose Products</label> <button type="button" id="btnLeft" class="btn btn-success btn-sm">
-                            <strong>+</strong>
-                        </button>
-                        @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control" })
+                        <div class="form-group col-md-6">
+                            <label class="control-label"> Choose Products</label> <button type="button" id="btnLeft" class="btn btn-success btn-sm">
+                                <strong>+</strong>
+                            </button>
+                            @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control" })
+                        </div>
                     </div>
-                </div>
+                </div>*@
+
+            <label class="control-label">Choose Products</label> <button type="button" id="btnRemove" class="btn btn-success btn-sm">
+            </button>
+            <div class="form-group col-md-6" style="display:flex">
+
+                @Html.ListBox("selectedProducts", (MultiSelectList)ViewBag.selOpts, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;" })
+
+
+                @Html.ListBox("selectedQuantity", (MultiSelectList)ViewBag.qntyOpts, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;" })
             </div>
-    </form>
-</div>
+
+
+
+
+            <div class="input-group mb-3" style="margin-bottom:60px;">
+                <div class="input-group-prepend">
+                    <select class="btn btn-outline-secondary" id="ProductTypeID" name="ProductTypeID" asp-items="ViewBag.ProductTypeID">
+                        <option value="">All Product Types</option>
+                    </select>
+                </div>
+
+                <div class="input-group mb-3" style="width:80%; margin:0px!important;">
+                    <select style="margin:0" class="form-control" id="ProductID" name="ProductID" asp-items="ViewBag.ProductID">
+                        <option value="">select a Product</option>
+                    </select>
+                    <div class="input-group-append">
+                        <label class="input-group-text" for="inputGroupSelect02">Quantity</label>
+                    </div>
+                    <input style="margin:0" id="ProductQuantity" type="text" class="form-control" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1">
+                    <button id="btnAddProduct" class="btn btn-outline-secondary" type="button">+</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
 </div>
 
 <div>
@@ -112,5 +145,14 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/js/multiselect.js"></script>
+    @*<script src="~/js/multiselect.js"></script>*@
+    <script src="~/js/addProducts.js"></script>
+    <script src="~/js/refreshDDL.js"></script>
+    <script type="text/javascript">
+        $('#ProductTypeID').change(function () {
+            var selectedProduct = $("#ProductTypeID").val();
+            var URL = "/Bids/GetProducts/" + selectedProduct;
+            refreshDDL('ProductID', URL, true);
+        });
+    </script>
 }

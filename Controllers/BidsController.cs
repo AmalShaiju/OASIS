@@ -60,7 +60,8 @@ namespace OASIS.Controllers
             var bid = new Bid();
 
             PopulateDropDownLists(bid);
-            PopulateAssignedProducts(bid);
+            PopuateSelectedProducts(bid);
+            //PopulateAssignedProducts(bid);
             return View();
         }
 
@@ -69,22 +70,24 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,DateCreated,EstAmount,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid, 
-            int DesignerStatusID, int ClientStatusID, string approvalComment, string[] selectedOptions)
+        public async Task<IActionResult> Create([Bind("ID,DateCreated,EstAmount,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
+            int DesignerStatusID, int ClientStatusID, string approvalComment, string[] selectedProducts, string[] selectedQuantity)  //string[] selectedOptions)
         {
 
-            updateBidProducts(selectedOptions, bid);
+            updateBidProducts(selectedProducts, selectedQuantity, bid);
+
             if (ModelState.IsValid)
             {
                 _context.Add(bid);
                 await _context.SaveChangesAsync();
-                updateApprovalStatus(bid, DesignerStatusID, ClientStatusID, approvalComment);
+                UpdateApprovalStatus(bid, DesignerStatusID, ClientStatusID, approvalComment);
                 return RedirectToAction(nameof(Index));
             }
 
 
             PopulateDropDownLists(bid, DesignerStatusID, ClientStatusID, approvalComment);
-            PopulateAssignedProducts(bid);
+            PopuateSelectedProducts(bid);
+            //PopulateAssignedProducts(bid);
             return View(bid);
         }
 
@@ -111,7 +114,8 @@ namespace OASIS.Controllers
             }
 
             PopulateDropDownLists(bid, bid.Approval.DesignerStatusID, bid.Approval.ClientStatusID, bid.Approval.Comments);
-            PopulateAssignedProducts(bid);
+            PopuateSelectedProducts(bid);
+            //PopulateAssignedProducts(bid);
             return View(bid);
         }
 
@@ -120,7 +124,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, int DesignerStatusID, int ClientStatusID, string approvalComment, string[] selectedOptions)
+        public async Task<IActionResult> Edit(int id, int DesignerStatusID, int ClientStatusID, string approvalComment, string[] selectedProducts, string[] selectedQuantity)//string[] selectedOptions)
         {
             var bidToUpdate = await _context.Bids
             .Include(a => a.Approval)
@@ -129,21 +133,21 @@ namespace OASIS.Controllers
              .Include(a => a.BidLabours)
             .FirstOrDefaultAsync(a => a.ID == id);
 
+            updateBidProducts(selectedProducts, selectedQuantity, bidToUpdate);
+
+
             if (bidToUpdate == null)
             {
                 return NotFound();
             }
 
-            updateBidProducts(selectedOptions ,bidToUpdate);
-
             if (await TryUpdateModelAsync<Bid>(bidToUpdate, "", p => p.DateCreated, p => p.EstAmount, p => p.ProjectStartDate, p => p.ProjectEndDate, p => p.EstBidEndDate, p => p.EstBidStartDate, p => p.comments
            , p => p.DesignerID, p => p.SalesAsscociateID, p => p.BidStatusID, p => p.ProjectID))
             {
-
                 try
                 {
                     await _context.SaveChangesAsync();
-                    updateApprovalStatus(bidToUpdate, DesignerStatusID, ClientStatusID, approvalComment);
+                    UpdateApprovalStatus(bidToUpdate, DesignerStatusID, ClientStatusID, approvalComment);
                     //return RedirectToAction(nameof(Index)); 
                     return RedirectToAction("Details", new { bidToUpdate.ID });
 
@@ -162,7 +166,8 @@ namespace OASIS.Controllers
                 }
             }
             PopulateDropDownLists(bidToUpdate, DesignerStatusID, ClientStatusID, approvalComment);
-            PopulateAssignedProducts(bidToUpdate);
+            PopuateSelectedProducts(bidToUpdate);
+            //PopulateAssignedProducts(bidToUpdate);
             return View(bidToUpdate);
         }
 
@@ -199,10 +204,32 @@ namespace OASIS.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public JsonResult GetProducts(int? ID)
+        {
+            return Json(ProductSelectList(ID, null));
+        }
+
         private bool BidExists(int id)
         {
             return _context.Bids.Any(e => e.ID == id);
         }
+        private SelectList ProductTypeSelectList(int? selectedId)
+        {
+            return new SelectList(_context.ProductTypes
+                .OrderBy(d => d.Name), "ID", "Name", selectedId);
+        }
+        private SelectList ProductSelectList(int? ProductTypeID, int? selectedId)
+        {
+            var query = from c in _context.Products.Include(c => c.ProductType)
+                        select c;
+            if (ProductTypeID.HasValue)
+            {
+                query = query.Where(p => p.ProductTypeID == ProductTypeID);
+            }
+            return new SelectList(query.OrderBy(p => p.Code), "ID", "Code", selectedId);
+        }
+
 
         private void PopulateDropDownLists(Bid bid = null, int designerStatusID = 1, int clientStatusID = 1, string note = "No Comment")
         {
@@ -225,9 +252,19 @@ namespace OASIS.Controllers
             var SalesAssociateQuery = from d in _context.Employees.Where(p => p.Role.Name == "Botanist")
                                       orderby d.LastName, d.FirstName
                                       select d;
+
+            //var ProductQuery = from d in _context.Products
+            //                          orderby d.Code
+            //                          select d;
+
+            //var ProductTypeQuery = from d in _context.ProductTypes
+            //                   orderby d.Name
+            //                   select d;
+
             ViewData["DesignerID"] = new SelectList(designerQuery, "ID", "FormalName", bid?.DesignerID);
 
             ViewData["SalesAsscociateID"] = new SelectList(SalesAssociateQuery, "ID", "FormalName", bid.SalesAsscociateID);
+
 
             // Approvals
             var approvalStatusQuery = from d in _context.ApprovalStatuses
@@ -240,9 +277,15 @@ namespace OASIS.Controllers
 
             ViewData["approvalComment"] = (bid != null && bid.Approval.Comments == note) ? bid.Approval.Comments : note;
 
+            //Product and product Types
+            ViewData["ProductTypeID"] = ProductTypeSelectList(null);
+            ViewData["ProductID"] = ProductSelectList(null, null);
+
         }
 
-        private void updateApprovalStatus(Bid bid, int designerID, int clientID, string comments)
+
+
+        private void UpdateApprovalStatus(Bid bid, int designerID, int clientID, string comments)
         {
             var approval = _context.Approvals.SingleOrDefault(p => p.BidID == bid.ID);
 
@@ -267,71 +310,139 @@ namespace OASIS.Controllers
 
         }
 
-        private void PopulateAssignedProducts(Bid bid)
+        private void PopuateSelectedProducts(Bid bid)
         {
-            var allOptions = _context.Products;
-            var currentOptionsHS = new HashSet<int>(bid.BidProducts.Select(b => b.ProductID));
-            var selected = new List<ListOptionVM>();
-            var available = new List<ListOptionVM>();
-            foreach (var s in allOptions)
+           var allBidProducts = new HashSet<BidProduct>(_context.BidProducts.Where(p => p.BidID == bid.ID)); // All BidProduct Model
+            var AssignedProducts = new List<ListOptionVM>();
+            var AssignedQuantity = new List<ListOptionVM>();
+
+            foreach (var s in allBidProducts)
             {
-                if (currentOptionsHS.Contains(s.ID))
+                AssignedProducts.Add(new ListOptionVM
                 {
-                    selected.Add(new ListOptionVM
-                    {
-                        ID = s.ID,
-                        DisplayText = s.Code
-                    });
-                }
-                else
+                    ID = s.ProductID,
+                    DisplayText = _context.Products.SingleOrDefault(p => p.ID == s.ProductID).Code
+                });
+
+                AssignedQuantity.Add(new ListOptionVM
                 {
-                    available.Add(new ListOptionVM
-                    {
-                        ID = s.ID,
-                        DisplayText = s.Code
-                    });
-                }
+                    ID = s.Quantity,
+                    DisplayText = s.Quantity.ToString()
+                });
             }
 
-            ViewData["selOpts"] = new MultiSelectList(selected.OrderBy(s => s.DisplayText), "ID", "DisplayText");
-            ViewData["availOpts"] = new MultiSelectList(available.OrderBy(s => s.DisplayText), "ID", "DisplayText");
+
+
+            ViewData["selOpts"] = new MultiSelectList(AssignedProducts, "ID", "DisplayText");
+            ViewData["qntyOpts"] = new MultiSelectList(AssignedQuantity, "ID", "DisplayText");
         }
 
-        private void updateBidProducts(string[] selectedOptions, Bid bidToUpdate)
+        private void updateBidProducts(string[] selectedOptions, string[] selectedQuantity, Bid bidToUpdate)
         {
-            if (selectedOptions == null)
+            var allProducts = _context.Products.Select(p => p.ID); // All product ID's
+
+            var allBidProducts = new HashSet<BidProduct>(_context.BidProducts.Where(p => p.BidID == bidToUpdate.ID)); // All BidProduct Model
+
+            if (selectedOptions == null || selectedQuantity == null)
             {
                 bidToUpdate.BidProducts = new List<BidProduct>();
                 return;
             }
-
-            var selectedOptionsHS = new HashSet<string>(selectedOptions);
-            var currentOptionsHS = new HashSet<int>(bidToUpdate.BidProducts.Select(b => b.ProductID));
-            foreach (var s in _context.Products)
+            
+            if(allBidProducts.Count != 0)
             {
-                if (selectedOptionsHS.Contains(s.ID.ToString()))
+                foreach (var i in allBidProducts)
                 {
-                    if (!currentOptionsHS.Contains(s.ID))
-                    {
-                        bidToUpdate.BidProducts.Add(new BidProduct
-                        {
-                            ProductID = s.ID,
-                            BidID = bidToUpdate.ID
-                        });
-                    }
+                    _context.Remove(i);
+
                 }
-                else
+                _context.SaveChangesAsync();
+
+            }
+
+
+
+            for (var i = 0; i < selectedOptions.Length; i++)
+            {
+                bidToUpdate.BidProducts.Add(new BidProduct
                 {
-                    if (currentOptionsHS.Contains(s.ID))
-                    {
-                        BidProduct specToRemove = bidToUpdate.BidProducts.SingleOrDefault(d => d.ProductID == s.ID);
-                        _context.Remove(specToRemove);
-                    }
-                }
+                    ProductID = Convert.ToInt32(selectedOptions[i]),
+                    BidID = bidToUpdate.ID,
+                    Quantity = Convert.ToInt32(selectedQuantity[i])
+
+                });
             }
         }
 
+
+
+            //private void PopulateAssignedProducts(Bid bid)
+            //{
+            //    var allOptions = _context.Products;
+            //    var currentOptionsHS = new HashSet<int>(bid.BidProducts.Select(b => b.ProductID));
+            //    var selected = new List<ListOptionVM>();
+            //    var available = new List<ListOptionVM>();
+            //    foreach (var s in allOptions)
+            //    {
+            //        if (currentOptionsHS.Contains(s.ID))
+            //        {
+            //            selected.Add(new ListOptionVM
+            //            {
+            //                ID = s.ID,
+            //                DisplayText = s.Code
+            //            });
+            //        }
+            //        else
+            //        {
+            //            available.Add(new ListOptionVM
+            //            {
+            //                ID = s.ID,
+            //                DisplayText = s.Code
+            //            });
+            //        }
+            //    }
+
+
+
+            //    ViewData["selOpts"] = new MultiSelectList(selected.OrderBy(s => s.DisplayText), "ID", "DisplayText");
+            //    ViewData["availOpts"] = new MultiSelectList(available.OrderBy(s => s.DisplayText), "ID", "DisplayText");
+            //}
+
+            //private void updateBidProducts(string[] selectedOptions, Bid bidToUpdate)
+            //{
+            //    if (selectedOptions == null)
+            //    {
+            //        bidToUpdate.BidProducts = new List<BidProduct>();
+            //        return;
+            //    }
+
+            //    var selectedOptionsHS = new HashSet<string>(selectedOptions);
+            //    var currentOptionsHS = new HashSet<int>(bidToUpdate.BidProducts.Select(b => b.ProductID));
+            //    foreach (var s in _context.Products)
+            //    {
+            //        if (selectedOptionsHS.Contains(s.ID.ToString()))
+            //        {
+            //            if (!currentOptionsHS.Contains(s.ID))
+            //            {
+            //                bidToUpdate.BidProducts.Add(new BidProduct
+            //                {
+            //                    ProductID = s.ID,
+            //                    BidID = bidToUpdate.ID
+            //                });
+            //            }
+            //        }
+            //        else
+            //        {
+            //            if (currentOptionsHS.Contains(s.ID))
+            //            {
+            //                BidProduct specToRemove = bidToUpdate.BidProducts.SingleOrDefault(d => d.ProductID == s.ID);
+            //                _context.Remove(specToRemove);
+            //            }
+            //        }
+            //    }
+            //}
+
+        }
+
+
     }
-
-
-}
