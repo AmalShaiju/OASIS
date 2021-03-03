@@ -59,7 +59,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BidID,Description,Hours,RoleID")] BidLabour bidLabour)
+        public async Task<IActionResult> Create([Bind("BidID,Hours,RoleID")] BidLabour bidLabour)
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +95,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BidID,Description,Hours,RoleID")] BidLabour bidLabour)
+        public async Task<IActionResult> Edit(int id, [Bind("BidID,Hours,RoleID")] BidLabour bidLabour)
         {
             if (id != bidLabour.BidID)
             {

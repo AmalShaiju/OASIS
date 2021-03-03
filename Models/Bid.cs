@@ -35,7 +35,6 @@ namespace OASIS.Models
         [Range(0, 9999999.99, ErrorMessage = "Invalid Amount.")]
         public double EstAmount { get; set; }
 
-
         [Display(Name = "Actual Start Date (Optional)")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

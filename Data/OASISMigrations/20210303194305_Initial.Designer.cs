@@ -9,7 +9,7 @@ using OASIS.Data;
 namespace OASIS.Data.OASISMigrations
 {
     [DbContext(typeof(OasisContext))]
-    [Migration("20210221041016_Initial")]
+    [Migration("20210303194305_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -130,11 +130,6 @@ namespace OASIS.Data.OASISMigrations
 
                     b.Property<int>("RoleID")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(100);
 
                     b.Property<double>("Hours")
                         .HasColumnType("REAL");

@@ -462,7 +462,6 @@ namespace OASIS.Data
                         BidLabour a = new BidLabour()
                         {
                             Hours = random.Next(1, 8),
-                            Description = baconNotes[random.Next(5)],
                             RoleID = roleID[random.Next(roleID.Count())],
                             BidID = bidID[random.Next(bidID.Count())]
 
@@ -494,7 +493,7 @@ namespace OASIS.Data
                             }
                             catch (Exception)
                             {
-                                //Go on to next in case you randomly chose the same SpecialtyID twice
+                                //Go on to next in case you randomly chose the same ProductID twice
                             }
                         }
                     }
@@ -521,7 +520,7 @@ namespace OASIS.Data
                             }
                             catch (Exception)
                             {
-                                //Go on to next in case you randomly chose the same SpecialtyID twice
+                                //Go on to next in case you randomly chose the same RoleID twice
                             }
                         }
                     }

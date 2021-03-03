@@ -129,11 +129,6 @@ namespace OASIS.Data.OASISMigrations
                     b.Property<int>("RoleID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(100);
-
                     b.Property<double>("Hours")
                         .HasColumnType("REAL");
 

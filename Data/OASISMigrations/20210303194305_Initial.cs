@@ -224,7 +224,6 @@ namespace OASIS.Data.OASISMigrations
                 {
                     BidID = table.Column<int>(nullable: false),
                     RoleID = table.Column<int>(nullable: false),
-                    Description = table.Column<string>(maxLength: 100, nullable: false),
                     Hours = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
