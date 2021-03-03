@@ -14,11 +14,11 @@ namespace OASIS.Models
         [Range(0, 9999999, ErrorMessage = "Invalid Quantity.")]
         public int Quantity { get; set; }
 
-        [Required(ErrorMessage = "You must select a product type.")]
+        [Required(ErrorMessage = "You must select a Bid.")]
         public int BidID { get; set; }
         public Bid Bid { get; set; }
 
-        [Required(ErrorMessage = "You must select a product type.")]
+        [Required(ErrorMessage = "You must select a product.")]
         public int ProductID { get; set; }
         public Product Product { get; set; }
     }

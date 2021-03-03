@@ -9,7 +9,7 @@ using OASIS.Data;
 namespace OASIS.Data.OASISMigrations
 {
     [DbContext(typeof(OasisContext))]
-    [Migration("20210220210730_Initial")]
+    [Migration("20210303021317_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,7 +17,7 @@ namespace OASIS.Data.OASISMigrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("OA")
-                .HasAnnotation("ProductVersion", "3.1.11");
+                .HasAnnotation("ProductVersion", "3.1.12");
 
             modelBuilder.Entity("OASIS.Models.Approval", b =>
                 {
@@ -386,6 +386,13 @@ namespace OASIS.Data.OASISMigrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(8);
 
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -396,6 +403,18 @@ namespace OASIS.Data.OASISMigrations
 
                     b.Property<int>("ProductTypeID")
                         .HasColumnType("INTEGER");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("BLOB");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("size")
                         .IsRequired()
@@ -418,10 +437,29 @@ namespace OASIS.Data.OASISMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(50);
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("BLOB");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ID");
 

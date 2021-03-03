@@ -56,12 +56,28 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name")] BidStatus bidStatus)
         {
-            if (ModelState.IsValid)
+           try
             {
-                _context.Add(bidStatus);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(bidStatus);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Details", new { bidStatus.ID });
+                }
             }
+            catch (DbUpdateException dex)
+            {
+
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: BidStatus.Name"))
+                {
+                    ModelState.AddModelError("Name", "Unable to save changes.You cannot have duplicate Bid Status Name.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes.Try again,and if the problem persists see your system administrator.");
+                }
+            }
+
             return View(bidStatus);
         }
 
@@ -111,6 +127,19 @@ namespace OASIS.Controllers
                         throw;
                     }
                 }
+                catch (DbUpdateException dex)
+                {
+
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: BidStatus.Name"))
+                    {
+                        ModelState.AddModelError("Name", "Unable to save changes.You cannot have duplicate Bid Status Name.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to save changes.Try again,and if the problem persists see your system administrator.");
+                    }
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(bidStatus);
@@ -139,10 +168,40 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var bidStatus = await _context.BidStatuses.FindAsync(id);
-            _context.BidStatuses.Remove(bidStatus);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var bidStatus = await _context.BidStatuses
+                            .Include(p => p.Bids)
+                         .FirstOrDefaultAsync(m => m.ID == id);
+            try
+            {
+                _context.BidStatuses.Remove(bidStatus);
+                await _context.SaveChangesAsync();
+                //  return RedirectToAction(nameof(Index));
+                return Redirect(ViewData["returnURL"].ToString());
+
+            }
+            catch (InvalidOperationException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("foreign key"))
+                {
+                    ModelState.AddModelError("", "Unable to Delete Bid Status. You cannot delete a Bid Status that has Bids assigned.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
+                {
+                    ModelState.AddModelError("", "Unable to Delete Bid Status. You cannot delete a Role that has Bids assigned.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+            return View(bidStatus);
         }
 
         private bool BidStatusExists(int id)

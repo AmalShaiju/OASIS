@@ -56,13 +56,30 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name")] ApprovalStatus approvalStatus)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(approvalStatus);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(approvalStatus);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Details", new { approvalStatus.ID });
+                }
             }
+            catch (DbUpdateException dex)
+            {
+
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: ApprovalStatus.Name"))
+                {
+                    ModelState.AddModelError("Name", "Unable to save changes.You cannot have duplicate Approval Status Name.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes.Try again,and if the problem persists see your system administrator.");
+                }
+            }
+
             return View(approvalStatus);
+
         }
 
         // GET: ApprovalStatus/Edit/5
@@ -111,6 +128,19 @@ namespace OASIS.Controllers
                         throw;
                     }
                 }
+                catch (DbUpdateException dex)
+                {
+
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: ApprovalStatus.Name"))
+                    {
+                        ModelState.AddModelError("Name", "Unable to save changes.You cannot have duplicate Approval Status Name.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to save changes.Try again,and if the problem persists see your system administrator.");
+                    }
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(approvalStatus);

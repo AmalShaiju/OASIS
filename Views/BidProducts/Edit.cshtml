@@ -12,6 +12,7 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="returnURL" value="@ViewData["returnURL"]" />
             <input type="hidden" asp-for="ID" />
             <div class="form-group">
                 <label asp-for="Quantity" class="control-label"></label>
@@ -36,6 +37,15 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <div>
+        @if (String.IsNullOrEmpty(ViewData["returnURL"]?.ToString()))
+        {
+            <a asp-action="Index">Back to List of Bid Products</a>
+        }
+        else
+        {
+            <a href='@ViewData["returnURL"]'>Back to List of Bid Products</a>
+        }
+    </div>
 </div>
 

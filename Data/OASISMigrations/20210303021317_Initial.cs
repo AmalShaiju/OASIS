@@ -62,6 +62,11 @@ namespace OASIS.Data.OASISMigrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: true),
+                    UpdatedBy = table.Column<string>(maxLength: 256, nullable: true),
+                    UpdatedOn = table.Column<DateTime>(nullable: true),
+                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
                     Name = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
@@ -129,6 +134,11 @@ namespace OASIS.Data.OASISMigrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: true),
+                    UpdatedBy = table.Column<string>(maxLength: 256, nullable: true),
+                    UpdatedOn = table.Column<DateTime>(nullable: true),
+                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
                     Code = table.Column<string>(maxLength: 8, nullable: false),
                     Description = table.Column<string>(maxLength: 50, nullable: false),
                     size = table.Column<string>(maxLength: 15, nullable: false),
@@ -203,6 +213,8 @@ namespace OASIS.Data.OASISMigrations
                     ProjectID = table.Column<int>(nullable: false),
                     BidStatusID = table.Column<int>(nullable: true)
                 },
+
+
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bids", x => x.ID);
@@ -349,6 +361,143 @@ namespace OASIS.Data.OASISMigrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            // Customer Auditing Fields Updation
+            migrationBuilder.Sql(
+                  @"
+                    CREATE TRIGGER SetCustomerTimestampOnUpdate
+                    AFTER UPDATE ON Customers
+                    BEGIN
+                        UPDATE Customers
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                    END
+                ");
+            migrationBuilder.Sql(
+               @"
+                    CREATE TRIGGER SetCustomerTimestampOnInsert
+                    AFTER INSERT ON Customers
+                    BEGIN
+                        UPDATE Customers
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                   END
+               ");
+
+
+            // Role Auditing Fields Updation
+            migrationBuilder.Sql(
+                          @"
+                CREATE TRIGGER SetRoleTimestampOnUpdate
+                AFTER UPDATE ON Roles
+                BEGIN
+                    UPDATE Roles
+                    SET RowVersion = randomblob(8)
+                    WHERE rowid = NEW.rowid;
+                END
+            ");
+            migrationBuilder.Sql(
+               @"
+                CREATE TRIGGER SetRoleTimestampOnInsert
+                AFTER INSERT ON Roles
+                BEGIN
+                    UPDATE Roles
+                    SET RowVersion = randomblob(8)
+                    WHERE rowid = NEW.rowid;
+               END
+           ");
+
+            // Project Auditing Field Updation
+            migrationBuilder.Sql(
+             @"
+                    CREATE TRIGGER SetProjectTimestampOnUpdate
+                    AFTER UPDATE ON Projects
+                    BEGIN
+                        UPDATE Projects
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                    END
+                ");
+            migrationBuilder.Sql(
+               @"
+                    CREATE TRIGGER SetProjectTimestampOnInsert
+                    AFTER INSERT ON Projects
+                    BEGIN
+                        UPDATE Projects
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                   END
+               ");
+
+            // Employee Auditing Fields Updation
+            migrationBuilder.Sql(
+                  @"
+                    CREATE TRIGGER SetEmployeeTimestampOnUpdate
+                    AFTER UPDATE ON Employees
+                    BEGIN
+                        UPDATE Employees
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                    END
+                ");
+            migrationBuilder.Sql(
+               @"
+                    CREATE TRIGGER SetEmployeeTimestampOnInsert
+                    AFTER INSERT ON Employees
+                    BEGIN
+                        UPDATE Employees
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                   END
+               ");
+
+            //  Product  Auditing Fields Updation .
+
+            migrationBuilder.Sql(
+                                 @"
+                        CREATE TRIGGER SetProductTimestampOnUpdate
+                        AFTER UPDATE ON Products
+                        BEGIN
+                            UPDATE Products
+                            SET RowVersion = randomblob(8)
+                            WHERE rowid = NEW.rowid;
+                        END
+                    ");
+            migrationBuilder.Sql(
+                        @"
+                        CREATE TRIGGER SetProductTimestampOnInsert
+                        AFTER INSERT ON Products
+                        BEGIN
+                            UPDATE Products
+                            SET RowVersion = randomblob(8)
+                            WHERE rowid = NEW.rowid;
+                        END
+                ");
+
+            //  ProductType  Auditing Fields Updation .
+
+            migrationBuilder.Sql(
+                      @"
+                        CREATE TRIGGER SetProductTypeTimestampOnUpdate
+                        AFTER UPDATE ON ProductTypes
+                        BEGIN
+                            UPDATE ProductTypes
+                            SET RowVersion = randomblob(8)
+                            WHERE rowid = NEW.rowid;
+                        END
+                    ");
+            migrationBuilder.Sql(
+                        @"
+                        CREATE TRIGGER SetProductTypeTimestampOnInsert
+                        AFTER INSERT ON ProductTypes
+                        BEGIN
+                            UPDATE ProductTypes
+                            SET RowVersion = randomblob(8)
+                            WHERE rowid = NEW.rowid;
+                        END
+                ");
+
+
 
             migrationBuilder.CreateIndex(
                 name: "IX_Approvals_BidID",

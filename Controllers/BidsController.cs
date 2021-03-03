@@ -65,7 +65,6 @@ namespace OASIS.Controllers
         public async Task<IActionResult> Create([Bind("ID,DateCreated,EstAmount,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid, int DesignerStatusID, int ClientStatusID, string approvalComment)
         {
 
-
             if (ModelState.IsValid)
             {
                 _context.Add(bid);
