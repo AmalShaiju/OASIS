@@ -94,8 +94,8 @@ namespace OASIS.Data.OASISMigrations
                     UpdatedBy = table.Column<string>(maxLength: 256, nullable: true),
                     UpdatedOn = table.Column<DateTime>(nullable: true),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    Name = table.Column<string>(maxLength: 20, nullable: false),
-                    SiteAddressLineOne = table.Column<string>(maxLength: 50, nullable: false),
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    SiteAddressLineOne = table.Column<string>(maxLength: 100, nullable: false),
                     SiteAddressLineTwo = table.Column<string>(maxLength: 100, nullable: true),
                     City = table.Column<string>(maxLength: 100, nullable: false),
                     Province = table.Column<string>(maxLength: 100, nullable: false),
@@ -177,13 +177,18 @@ namespace OASIS.Data.OASISMigrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: true),
+                    UpdatedBy = table.Column<string>(maxLength: 256, nullable: true),
+                    UpdatedOn = table.Column<DateTime>(nullable: true),
+                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
                     DateCreated = table.Column<DateTime>(nullable: false),
                     EstAmount = table.Column<double>(type: "decimal(9,2)", nullable: false),
                     ProjectStartDate = table.Column<DateTime>(nullable: true),
                     ProjectEndDate = table.Column<DateTime>(nullable: true),
                     EstBidStartDate = table.Column<DateTime>(nullable: false),
                     EstBidEndDate = table.Column<DateTime>(nullable: false),
-                    comments = table.Column<string>(nullable: true),
+                    Comments = table.Column<string>(nullable: true),
                     DesignerID = table.Column<int>(nullable: false),
                     SalesAsscociateID = table.Column<int>(nullable: false),
                     ProjectID = table.Column<int>(nullable: false),
@@ -437,6 +442,8 @@ namespace OASIS.Data.OASISMigrations
                 principalTable: "Approvals",
                 principalColumn: "ID",
                 onDelete: ReferentialAction.Restrict);
+
+            ExtraMigration.Steps(migrationBuilder);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

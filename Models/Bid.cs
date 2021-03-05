@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OASIS.Models
 {
-    public class Bid
+    public class Bid : Auditable
     {
        public Bid()
         {
@@ -59,7 +59,7 @@ namespace OASIS.Models
 
         [Display(Name = "Notes")]
         [DataType(DataType.MultilineText)]
-        public string comments { get; set; }
+        public string Comments { get; set; }
 
         [Required(ErrorMessage = "Please select a designer")]
         [Display(Name = "Designer")]
@@ -75,7 +75,7 @@ namespace OASIS.Models
         [Required(ErrorMessage = "Please select a project")]
         [Display(Name = "Project")]
         public int ProjectID { get; set; }
-        public Project project { get; set; }
+        public Project Project { get; set; }
 
         [Display(Name = "Status")]
         public int? BidStatusID { get; set; }

@@ -9,7 +9,7 @@ using OASIS.Data;
 namespace OASIS.Data.OASISMigrations
 {
     [DbContext(typeof(OasisContext))]
-    [Migration("20210303194305_Initial")]
+    [Migration("20210305221637_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,6 +80,16 @@ namespace OASIS.Data.OASISMigrations
                     b.Property<int?>("BidStatusID")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Comments")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("TEXT");
 
@@ -104,10 +114,19 @@ namespace OASIS.Data.OASISMigrations
                     b.Property<DateTime?>("ProjectStartDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("BLOB");
+
                     b.Property<int>("SalesAsscociateID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("comments")
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -442,7 +461,7 @@ namespace OASIS.Data.OASISMigrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT")
-                        .HasMaxLength(20);
+                        .HasMaxLength(100);
 
                     b.Property<string>("Province")
                         .IsRequired()
@@ -457,7 +476,7 @@ namespace OASIS.Data.OASISMigrations
                     b.Property<string>("SiteAddressLineOne")
                         .IsRequired()
                         .HasColumnType("TEXT")
-                        .HasMaxLength(50);
+                        .HasMaxLength(100);
 
                     b.Property<string>("SiteAddressLineTwo")
                         .HasColumnType("TEXT")
@@ -564,7 +583,7 @@ namespace OASIS.Data.OASISMigrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OASIS.Models.Project", "project")
+                    b.HasOne("OASIS.Models.Project", "Project")
                         .WithMany("Bids")
                         .HasForeignKey("ProjectID")
                         .OnDelete(DeleteBehavior.Restrict)

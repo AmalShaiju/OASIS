@@ -12,12 +12,12 @@ namespace OASIS.Models
 
         [Display(Name = "Project Name")]
         [Required(ErrorMessage = "You cannot leave the Project Name blank.")]
-        [StringLength(20, ErrorMessage = "Project Name cannot be more than 20 characters long.")]
+        [StringLength(100, ErrorMessage = "Project Name cannot be more than 20 characters long.")]
         public string Name { get; set; }
 
         [Display(Name = "Address Line 1")]
         [Required(ErrorMessage = "You cannot leave the Address Line blank.")]
-        [StringLength(50, ErrorMessage = "Address Line 1 cannot be more than 50 characters long.")]
+        [StringLength(100, ErrorMessage = "Address Line 1 cannot be more than 50 characters long.")]
         public string SiteAddressLineOne { get; set; }
 
         //Optional
