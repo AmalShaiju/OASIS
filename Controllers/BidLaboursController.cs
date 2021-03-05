@@ -37,7 +37,7 @@ namespace OASIS.Controllers
             var bidLabour = await _context.BidLabours
                 .Include(b => b.Bid)
                 .Include(b => b.Role)
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .FirstOrDefaultAsync(m => m.BidID == id);
             if (bidLabour == null)
             {
                 return NotFound();
@@ -59,7 +59,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Description,Hours,RoleID,BidID")] BidLabour bidLabour)
+        public async Task<IActionResult> Create([Bind("BidID,Hours,RoleID")] BidLabour bidLabour)
         {
             if (ModelState.IsValid)
             {
@@ -95,9 +95,9 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Description,Hours,RoleID,BidID")] BidLabour bidLabour)
+        public async Task<IActionResult> Edit(int id, [Bind("BidID,Hours,RoleID")] BidLabour bidLabour)
         {
-            if (id != bidLabour.ID)
+            if (id != bidLabour.BidID)
             {
                 return NotFound();
             }
@@ -111,7 +111,7 @@ namespace OASIS.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BidLabourExists(bidLabour.ID))
+                    if (!BidLabourExists(bidLabour.BidID))
                     {
                         return NotFound();
                     }
@@ -138,7 +138,7 @@ namespace OASIS.Controllers
             var bidLabour = await _context.BidLabours
                 .Include(b => b.Bid)
                 .Include(b => b.Role)
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .FirstOrDefaultAsync(m => m.BidID == id);
             if (bidLabour == null)
             {
                 return NotFound();
@@ -160,7 +160,7 @@ namespace OASIS.Controllers
 
         private bool BidLabourExists(int id)
         {
-            return _context.BidLabours.Any(e => e.ID == id);
+            return _context.BidLabours.Any(e => e.BidID == id);
         }
     }
 }

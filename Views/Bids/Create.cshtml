@@ -9,7 +9,7 @@
 <h4>Bid</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -43,9 +43,9 @@
                 <span asp-validation-for="EstBidEndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="comments" class="control-label">Notes</label>
-                <textarea asp-for="comments" class="form-control"></textarea>
-                <span asp-validation-for="comments" class="text-danger"></span>
+                <label asp-for="Comments" class="control-label">Notes</label>
+                <textarea asp-for="Comments" class="form-control"></textarea>
+                <span asp-validation-for="Comments" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DesignerID" class="control-label"></label>
@@ -77,8 +77,63 @@
                 <span asp-validation-for="Approval.Comments" class="text-danger"></span>
             </div>
 
+            <label class="control-label">Choose Products</label> <button type="button" id="btnProductRemove" class="btn btn-success btn-sm">
+            </button>
+            <div class="form-group col-md-6" style="display:flex">
+
+                @Html.ListBox("selectedProducts", (MultiSelectList)ViewBag.selOpts, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;" })
+
+
+                @Html.ListBox("selectedQuantity", (MultiSelectList)ViewBag.qntyOpts, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;" })
+            </div>
+
+            <div class="input-group mb-3" style="margin-bottom:60px;">
+                <div class="input-group-prepend">
+                    <select class="btn btn-outline-secondary" id="ProductTypeID" name="ProductTypeID" asp-items="ViewBag.ProductTypeID">
+                        <option value="">All Product Types</option>
+                    </select>
+                </div>
+
+                <div class="input-group mb-3" style="width:80%; margin:0px!important;">
+                    <select style="margin:0" class="form-control" id="ProductID" name="ProductID" asp-items="ViewBag.ProductID">
+                        <option value="">select a Product</option>
+                    </select>
+                    <div class="input-group-append">
+                        <label class="input-group-text" for="inputGroupSelect02">Quantity</label>
+                    </div>
+                    <input style="margin:0" id="ProductQuantity" type="number" class="form-control" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1">
+                    <button id="btnAddProduct" class="btn btn-outline-secondary" type="button">+</button>
+                </div>
+
+            </div>
+
+            <label class="control-label">Choose Roles</label> <button type="button" id="btnRoleRemove" class="btn btn-success btn-sm">
+            </button>
+            <div class="form-group col-md-6" style="display:flex">
+
+                @Html.ListBox("selectedRoles", (MultiSelectList)ViewBag.selRoles, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;" })
+
+
+                @Html.ListBox("requiredHours", (MultiSelectList)ViewBag.reqHrs, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;" })
+            </div>
+
+            <div class="input-group mb-3" style="margin-bottom:60px;">
+             
+                <div class="input-group mb-3" style="width:80%; margin:0px!important;">
+                    <select style="margin:0" class="form-control" id="RoleID" name="RoleID" asp-items="ViewBag.RoleID">
+                        <option value="">select a Role</option>
+                    </select>
+                    <div class="input-group-append">
+                        <label class="input-group-text" for="inputGroupSelect02">Quantity</label>
+                    </div>
+                    <input style="margin:0" id="roleHours" type="number" class="form-control" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1">
+                    <button id="btnAddRole" class="btn btn-outline-secondary" type="button">+</button>
+                </div>
+
+            </div>
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" id="btnSubmit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -88,3 +143,15 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/addProducts.js"></script>
+    <script src="~/js/refreshDDL.js"></script>
+    <script type="text/javascript">
+        $('#ProductTypeID').change(function () {
+            var selectedProduct = $("#ProductTypeID").val();
+            var URL = "/Bids/GetProducts/" + selectedProduct;
+            refreshDDL('ProductID', URL, true);
+        });
+    </script>
+}

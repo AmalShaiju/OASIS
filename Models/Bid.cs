@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OASIS.Models
 {
-    public class Bid
+    public class Bid : Auditable
     {
        public Bid()
         {
@@ -16,6 +16,9 @@ namespace OASIS.Models
             Approval.DesignerStatusID = 1;
             Approval.Comments = "No Comment";
             DateCreated = DateTime.Now;
+
+            BidLabours = new HashSet<BidLabour>();
+            BidProducts = new HashSet<BidProduct>();
 
         }
         public int ID { get; set; }
@@ -31,7 +34,6 @@ namespace OASIS.Models
         [Column(TypeName = "decimal(9,2)")]
         [Range(0, 9999999.99, ErrorMessage = "Invalid Amount.")]
         public double EstAmount { get; set; }
-
 
         [Display(Name = "Actual Start Date (Optional)")]
         [DataType(DataType.Date)]
@@ -57,7 +59,7 @@ namespace OASIS.Models
 
         [Display(Name = "Notes")]
         [DataType(DataType.MultilineText)]
-        public string comments { get; set; }
+        public string Comments { get; set; }
 
         [Required(ErrorMessage = "Please select a designer")]
         [Display(Name = "Designer")]
@@ -73,7 +75,7 @@ namespace OASIS.Models
         [Required(ErrorMessage = "Please select a project")]
         [Display(Name = "Project")]
         public int ProjectID { get; set; }
-        public Project project { get; set; }
+        public Project Project { get; set; }
 
         [Display(Name = "Status")]
         public int? BidStatusID { get; set; }

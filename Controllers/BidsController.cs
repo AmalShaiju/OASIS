@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OASIS.Data;
 using OASIS.Models;
+using OASIS.ViewModels;
 
 namespace OASIS.Controllers
 {
@@ -22,7 +23,12 @@ namespace OASIS.Controllers
         // GET: Bids
         public async Task<IActionResult> Index()
         {
-            var oasisContext = _context.Bids.Include(b => b.BidStatus).Include(b => b.Designer).Include(b => b.SalesAsscociate).Include(b => b.project);
+            var oasisContext = _context.Bids.Include(b => b.BidStatus)
+                .Include(b => b.Designer).
+                Include(b => b.SalesAsscociate)
+                .Include(b => b.Project)
+                .Include(b => b.BidProducts)
+                .Include(b => b.BidLabours);
             return View(await oasisContext.ToListAsync());
         }
 
@@ -38,7 +44,7 @@ namespace OASIS.Controllers
                 .Include(b => b.BidStatus)
                 .Include(b => b.Designer)
                 .Include(b => b.SalesAsscociate)
-                .Include(b => b.project)
+                .Include(b => b.Project)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (bid == null)
             {
@@ -54,6 +60,8 @@ namespace OASIS.Controllers
             var bid = new Bid();
 
             PopulateDropDownLists(bid);
+            PopuateSelectedProducts(bid);
+            PopuateSelectedRoles(bid);
             return View();
         }
 
@@ -62,7 +70,8 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,DateCreated,EstAmount,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid, int DesignerStatusID, int ClientStatusID, string approvalComment)
+        public async Task<IActionResult> Create([Bind("ID,DateCreated,EstAmount,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
+            int DesignerStatusID, int ClientStatusID, string approvalComment, string[] selectedProducts, string[] selectedQuantity, string[] selectedRoles, string[] requiredHours)
         {
 
 
@@ -70,13 +79,19 @@ namespace OASIS.Controllers
             {
                 _context.Add(bid);
                 await _context.SaveChangesAsync();
-                updateApprovalStatus(bid, DesignerStatusID, ClientStatusID, approvalComment);
+                UpdateBidProducts(selectedProducts, selectedQuantity, bid);
+                UpdateApprovalStatus(bid, DesignerStatusID, ClientStatusID, approvalComment);
+                UpdateBidProducts(selectedProducts, selectedQuantity, bid);
+                //UpdateBidLabours(selectedRoles, requiredHours, bid);
+
+
                 return RedirectToAction(nameof(Index));
             }
 
 
             PopulateDropDownLists(bid, DesignerStatusID, ClientStatusID, approvalComment);
-
+            PopuateSelectedProducts(bid);
+            PopuateSelectedRoles(bid);
             return View(bid);
         }
 
@@ -92,6 +107,8 @@ namespace OASIS.Controllers
             var bid = await _context.Bids
                 .Include(a => a.Approval)
                 .ThenInclude(d => d.ApprovalStatuses)
+                .Include(a => a.BidProducts)
+                .Include(a => a.BidLabours)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(a => a.ID == id);
 
@@ -101,6 +118,8 @@ namespace OASIS.Controllers
             }
 
             PopulateDropDownLists(bid, bid.Approval.DesignerStatusID, bid.Approval.ClientStatusID, bid.Approval.Comments);
+            PopuateSelectedProducts(bid);
+            PopuateSelectedRoles(bid);
             return View(bid);
         }
 
@@ -109,45 +128,155 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, int DesignerStatusID, int ClientStatusID, string approvalComment)
+        public async Task<IActionResult> Edit(int id, int DesignerStatusID, int ClientStatusID, string approvalComment, string[] selectedProducts, string[] selectedQuantity,
+            string[] selectedRoles, string[] requiredHours, Byte[] RowVersion)
         {
             var bidToUpdate = await _context.Bids
             .Include(a => a.Approval)
             .ThenInclude(d => d.ApprovalStatuses)
+            .Include(a => a.BidProducts).ThenInclude(p => p.Product)
+            .Include(a => a.BidLabours)
             .FirstOrDefaultAsync(a => a.ID == id);
+
 
             if (bidToUpdate == null)
             {
                 return NotFound();
             }
+            _context.Entry(bidToUpdate).Property("RowVersion").OriginalValue = RowVersion;
 
+            UpdateBidProducts(selectedProducts, selectedQuantity, bidToUpdate);
+            UpdateBidLabours(selectedRoles, requiredHours, bidToUpdate);
 
-            if (await TryUpdateModelAsync<Bid>(bidToUpdate, "", p => p.DateCreated, p => p.EstAmount, p => p.ProjectStartDate, p => p.ProjectEndDate, p => p.EstBidEndDate, p => p.EstBidStartDate, p => p.comments
+            if (await TryUpdateModelAsync<Bid>(bidToUpdate, "", p => p.DateCreated, p => p.EstAmount, p => p.ProjectStartDate, p => p.ProjectEndDate, p => p.EstBidEndDate, p => p.EstBidStartDate, p => p.Comments
            , p => p.DesignerID, p => p.SalesAsscociateID, p => p.BidStatusID, p => p.ProjectID))
-            {
 
+            {
                 try
                 {
                     await _context.SaveChangesAsync();
-                    updateApprovalStatus(bidToUpdate, DesignerStatusID, ClientStatusID, approvalComment);
+                    UpdateApprovalStatus(bidToUpdate, DesignerStatusID, ClientStatusID, approvalComment);
                     //return RedirectToAction(nameof(Index)); 
                     return RedirectToAction("Details", new { bidToUpdate.ID });
 
 
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)// Added for concurrency
                 {
-                    if (!BidExists(bidToUpdate.ID))
+                    var exceptionEntry = ex.Entries.Single();
+                    var clientValues = (Bid)exceptionEntry.Entity;
+                    var databaseEntry = exceptionEntry.GetDatabaseValues();
+                    if (databaseEntry == null)
                     {
-                        return NotFound();
+                        ModelState.AddModelError("",
+                            "Unable to save changes. The Bid was deleted by another user.");
                     }
                     else
                     {
-                        throw;
+                        var databaseValues = (Bid)databaseEntry.ToObject();
+                        if (databaseValues.EstAmount != clientValues.EstAmount)
+                            ModelState.AddModelError("EstAmount", "Current value: "
+                                + databaseValues.EstAmount);
+                        if (databaseValues.ProjectStartDate != clientValues.ProjectStartDate)
+                            ModelState.AddModelError("ProjectStartDate", "Current value: "
+                                + databaseValues.ProjectStartDate?.ToShortDateString());
+                        if (databaseValues.ProjectEndDate != clientValues.ProjectEndDate)
+                            ModelState.AddModelError("ProjectEndDate", "Current value: "
+                                + databaseValues.ProjectEndDate?.ToShortDateString());
+                        if (databaseValues.EstBidStartDate != clientValues.EstBidStartDate)
+                            ModelState.AddModelError("EstBidStartDate", "Current value: "
+                                + databaseValues.EstBidStartDate.ToShortDateString());
+                        if (databaseValues.EstBidEndDate != clientValues.EstBidEndDate)
+                            ModelState.AddModelError("EstBidEndDate", "Current value: "
+                                + databaseValues.EstBidEndDate.ToShortDateString());
+                        if (databaseValues.Comments != clientValues.Comments)
+                            ModelState.AddModelError("comments", "Current value: "
+                                + databaseValues.Comments);
+
+                        //For the foreign key, we need to go to the database to get the information to show
+                        if (databaseValues.ProjectID != clientValues.ProjectID)
+                        {
+                            Project databaseProject = await _context.Projects.SingleOrDefaultAsync(i => i.ID == databaseValues.ProjectID);
+                            ModelState.AddModelError("ProjectID", $"Current value: {databaseProject?.Name}");
+                        }
+                        if (databaseValues.DesignerID != clientValues.DesignerID)
+                        {
+                            Employee databaseEmployee = await _context.Employees.SingleOrDefaultAsync(i => i.ID == databaseValues.DesignerID);
+                            ModelState.AddModelError("DesignerID", $"Current value: {databaseEmployee?.FormalName}");
+                        }
+
+                        if (databaseValues.SalesAsscociateID != clientValues.SalesAsscociateID)
+                        {
+                            Employee databaseEmployee = await _context.Employees.SingleOrDefaultAsync(i => i.ID == databaseValues.SalesAsscociateID);
+                            ModelState.AddModelError("SalesAsscociateID", $"Current value: {databaseEmployee?.FormalName}");
+                        }
+
+                        if (databaseValues.BidStatusID != clientValues.BidStatusID)
+                        {
+                            BidStatus databaseBidStatus = await _context.BidStatuses.SingleOrDefaultAsync(i => i.ID == databaseValues.BidStatusID);
+                            ModelState.AddModelError("BidStatusID", $"Current value: {databaseBidStatus?.Name}");
+                        }
+
+                        if (databaseValues.Approval.ClientStatusID != clientValues.Approval.ClientStatusID) //fail
+                        {
+                            ApprovalStatus databaseApprovalStatus = await _context.ApprovalStatuses.SingleOrDefaultAsync(i => i.ID == databaseValues.Approval.ClientStatusID);
+                            ModelState.AddModelError("Approval.ClientStatusID", $"Current value: {databaseApprovalStatus?.Name}");
+                        }
+
+                        if (databaseValues.Approval.DesignerStatusID != clientValues.Approval.DesignerStatusID) // fail
+                        {
+                            ApprovalStatus databaseApprovalStatus = await _context.ApprovalStatuses.SingleOrDefaultAsync(i => i.ID == databaseValues.Approval.DesignerStatusID);
+                            ModelState.AddModelError("Approval.DesignerStatusID", $"Current value: {databaseApprovalStatus?.Name}");
+                        }
+
+                        if (databaseValues.Approval.Comments != clientValues.Approval.Comments) // pass
+                        {
+                            Approval databaseApproval = await _context.Approvals.SingleOrDefaultAsync(i => i.BidID == databaseValues.ID);
+                            ModelState.AddModelError("Approval.Comments", $"Current value: {databaseApproval?.Comments}");
+                        }
+
+
+                        //// Get all the Bidproduct.productID in db and client input
+                        //var dbBidProudct = _context.BidProducts.Where(p => p.BidID == bidToUpdate.ID);
+                        //List<int> dbBidproductIds = new List<int>();
+
+                        //foreach (var i in dbBidProudct)
+                        //{
+                        //    dbBidproductIds.Add(i.ProductID);
+                        //}
+                        //var ClientProducIds = clientValues.BidProducts.Select(p => p.ProductID).ToList();
+
+                        //// if the two arrays match dont match the values were upated throw errror with values in db
+                        //if (!dbBidproductIds.Equals(ClientProducIds))
+                        //{
+                        //    string returnValue = "";
+                        //    var AllBidProducts = _context.BidProducts.Where(p => p.BidID == bidToUpdate.ID); // related bidProducts
+
+
+                        //    foreach (var item in AllBidProducts)
+                        //    {
+                        //        returnValue += "/n" + item.Product.Code + " - " + item.Quantity;
+                        //    }
+
+                        //    ModelState.AddModelError("BidProducts", $"Current value: {returnValue}");
+
+                        //}
+
+                        ModelState.AddModelError(string.Empty, "The record you attempted to edit "
+                                + "was modified by another user after you received your values. The "
+                                + "edit operation was canceled and the current values in the database "
+                                + "have been displayed. If you still want to save your version of this record, click "
+                                + "the Save button again. Otherwise click the 'Back to List' hyperlink.");
+
+                        bidToUpdate.RowVersion = (byte[])databaseValues.RowVersion;
+                        ModelState.Remove("RowVersion");
                     }
                 }
+
             }
             PopulateDropDownLists(bidToUpdate, DesignerStatusID, ClientStatusID, approvalComment);
+            PopuateSelectedProducts(bidToUpdate);
+            PopuateSelectedRoles(bidToUpdate);
             return View(bidToUpdate);
         }
 
@@ -163,7 +292,7 @@ namespace OASIS.Controllers
                 .Include(b => b.BidStatus)
                 .Include(b => b.Designer)
                 .Include(b => b.SalesAsscociate)
-                .Include(b => b.project)
+                .Include(b => b.Project)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (bid == null)
             {
@@ -184,10 +313,32 @@ namespace OASIS.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public JsonResult GetProducts(int? ID)
+        {
+            return Json(ProductSelectList(ID, null));
+        }
+
         private bool BidExists(int id)
         {
             return _context.Bids.Any(e => e.ID == id);
         }
+        private SelectList ProductTypeSelectList(int? selectedId)
+        {
+            return new SelectList(_context.ProductTypes
+                .OrderBy(d => d.Name), "ID", "Name", selectedId);
+        }
+        private SelectList ProductSelectList(int? ProductTypeID, int? selectedId)
+        {
+            var query = from c in _context.Products.Include(c => c.ProductType)
+                        select c;
+            if (ProductTypeID.HasValue)
+            {
+                query = query.Where(p => p.ProductTypeID == ProductTypeID);
+            }
+            return new SelectList(query.OrderBy(p => p.Code), "ID", "Code", selectedId);
+        }
+
 
         private void PopulateDropDownLists(Bid bid = null, int designerStatusID = 1, int clientStatusID = 1, string note = "No Comment")
         {
@@ -210,14 +361,21 @@ namespace OASIS.Controllers
             var SalesAssociateQuery = from d in _context.Employees.Where(p => p.Role.Name == "Botanist")
                                       orderby d.LastName, d.FirstName
                                       select d;
+
             ViewData["DesignerID"] = new SelectList(designerQuery, "ID", "FormalName", bid?.DesignerID);
 
             ViewData["SalesAsscociateID"] = new SelectList(SalesAssociateQuery, "ID", "FormalName", bid.SalesAsscociateID);
+
 
             // Approvals
             var approvalStatusQuery = from d in _context.ApprovalStatuses
                                       orderby d.Name
                                       select d;
+
+            //Roles
+            var roleQuery = from d in _context.Roles
+                            orderby d.Name
+                            select d;
 
             ViewData["ClientStatusID"] = new SelectList(approvalStatusQuery, "ID", "Name", (bid != null && bid.Approval.ClientStatusID != clientStatusID) ? clientStatusID : bid.Approval.ClientStatusID);
 
@@ -225,9 +383,18 @@ namespace OASIS.Controllers
 
             ViewData["approvalComment"] = (bid != null && bid.Approval.Comments == note) ? bid.Approval.Comments : note;
 
+            //Product and product Types
+            ViewData["ProductTypeID"] = ProductTypeSelectList(null);
+            ViewData["ProductID"] = ProductSelectList(null, null);
+
+            //Roles
+            ViewData["RoleID"] = new SelectList(roleQuery, "ID", "Name");
+
         }
 
-        private void updateApprovalStatus(Bid bid, int designerID, int clientID, string comments)
+
+
+        private void UpdateApprovalStatus(Bid bid, int designerID, int clientID, string comments)
         {
             var approval = _context.Approvals.SingleOrDefault(p => p.BidID == bid.ID);
 
@@ -252,7 +419,197 @@ namespace OASIS.Controllers
 
         }
 
+        private void PopuateSelectedProducts(Bid bid)
+        {
+            var allBidProducts = new HashSet<BidProduct>(_context.BidProducts.Where(p => p.BidID == bid.ID)); // All BidProduct Model
+            var AssignedProducts = new List<ListOptionVM>();
+            var AssignedQuantity = new List<ListOptionVM>();
+
+            foreach (var s in allBidProducts)
+            {
+                AssignedProducts.Add(new ListOptionVM
+                {
+                    ID = s.ProductID,
+                    DisplayText = _context.Products.SingleOrDefault(p => p.ID == s.ProductID).Code
+                });
+
+                AssignedQuantity.Add(new ListOptionVM
+                {
+                    ID = s.Quantity,
+                    DisplayText = s.Quantity.ToString()
+                });
+            }
+
+
+
+            ViewData["selOpts"] = new MultiSelectList(AssignedProducts, "ID", "DisplayText");
+            ViewData["qntyOpts"] = new MultiSelectList(AssignedQuantity, "ID", "DisplayText");
+        }
+
+        private void UpdateBidProducts(string[] selectedOptions, string[] selectedQuantity, Bid bidToUpdate)
+        {
+            var allProducts = _context.Products.Select(p => p.ID); // All product ID's
+
+            if (selectedOptions.Length < 1 || selectedQuantity.Length < 1)
+            {
+                bidToUpdate.BidProducts = new List<BidProduct>();
+                return;
+            }
+
+
+            foreach (var product in allProducts)
+            {
+                //if input array contains this product
+                if (selectedOptions.Contains(product.ToString()))
+                {
+                    var selctedOptionIndex = Array.IndexOf(selectedOptions, product.ToString()); // index of product in selectedOptions
+                    var inputQnty = Convert.ToInt32(selectedQuantity[selctedOptionIndex]); //  input Qnty
+
+                    var bidproductrow = bidToUpdate.BidProducts.SingleOrDefault(p => p.ProductID == product); // bid product row
+
+                    //if product is alreay assigned to the bid
+                    if (bidproductrow != null)
+                    {
+                        // check if the qnty is not same as inputed qnty
+                        if (bidproductrow.Quantity != Convert.ToDecimal(selectedQuantity[selctedOptionIndex]))
+                        {
+                            //change the quantity to input qnty
+                            bidproductrow.Quantity = (int)inputQnty;
+                        }
+                    }
+                    else // assign the produc to bid
+                    {
+
+                        var specToAdd = new BidProduct
+                        {
+                            BidID = bidToUpdate.ID,
+                            ProductID = product,
+                            Quantity = (int)inputQnty
+                        };
+
+                        _context.BidProducts.Add(specToAdd);
+                    }
+
+
+                }
+                //else not delete the row 
+                else
+                {
+                    // try to delete if the product actually is assigned to the bid
+                    try
+                    {
+                        var specToRemove = bidToUpdate.BidProducts.SingleOrDefault(p => p.ProductID == product);
+                        _context.Remove(specToRemove);
+                    }
+                    catch
+                    {
+                        // Do nothing and loop
+                    }
+
+
+                }
+
+            }
+
+        }
+        private void PopuateSelectedRoles(Bid bid)
+        {
+            var allBidLabours = new HashSet<BidLabour>(_context.BidLabours.Where(p => p.BidID == bid.ID)); // All BidLabour Model
+            var AssignedLabours = new List<ListOptionVM>();
+            var AssignedHours = new List<ListOptionVM>();
+
+            foreach (var s in allBidLabours)
+            {
+                AssignedLabours.Add(new ListOptionVM
+                {
+                    ID = s.RoleID,
+                    DisplayText = _context.Roles.SingleOrDefault(p => p.ID == s.RoleID).Name
+                });
+
+                AssignedHours.Add(new ListOptionVM
+                {
+                    ID = (int)s.Hours,
+                    DisplayText = s.Hours.ToString()
+                });
+            }
+
+
+
+            ViewData["selRoles"] = new MultiSelectList(AssignedLabours, "ID", "DisplayText");
+            ViewData["reqHrs"] = new MultiSelectList(AssignedHours, "ID", "DisplayText");
+        }
+
+        private void UpdateBidLabours(string[] selectedRoles, string[] requiredHours, Bid bidToUpdate)
+        {
+            var allRoles = _context.Roles.Select(p => p.ID); // All product ID's
+
+            if (selectedRoles.Length < 1 || requiredHours.Length < 1)
+            {
+                bidToUpdate.BidProducts = new List<BidProduct>();
+                return;
+            }
+
+
+            foreach (var role in allRoles)
+            {
+                //if input array contains this product
+                if (selectedRoles.Contains(role.ToString()))
+                {
+                    var selctedOptionIndex = Array.IndexOf(selectedRoles, role.ToString()); // index of product in selectedRoles
+                    var inputHrs = Convert.ToDecimal(requiredHours[selctedOptionIndex]); //  input hrs
+
+                    var bidRoleRow = bidToUpdate.BidLabours.SingleOrDefault(p => p.RoleID == role); // bid Labour row
+
+                    //if product is alreay assigned to the bid
+                    if (bidRoleRow != null)
+                    {
+                        // check if the qnty is not same as inputed qnty
+                        if ((int)bidRoleRow.Hours != Convert.ToInt32(requiredHours[selctedOptionIndex]))
+                        {
+                            //change the quantity to input qnty
+                            bidRoleRow.Hours = (int)inputHrs;
+                        }
+                    }
+                    else // assign the produc to bid
+                    {
+
+                        var specToAdd = new BidLabour
+                        {
+                            BidID = bidToUpdate.ID,
+                            RoleID = role,
+                            Hours = (double)inputHrs
+                        };
+
+                        _context.BidLabours.Add(specToAdd);
+                    }
+
+
+                }
+                //else not delete the row 
+                else
+                {
+                    // try to delete if the product actually is assigned to the bid
+                    try
+                    {
+                        var specToRemove = bidToUpdate.BidLabours.SingleOrDefault(p => p.RoleID == role);
+                        _context.Remove(specToRemove);
+                    }
+                    catch
+                    {
+                        // Do nothing and loop
+                    }
+
+
+                }
+
+            }
+            _context.SaveChangesAsync();
+
+        }
+
+
     }
+
 
 
 }

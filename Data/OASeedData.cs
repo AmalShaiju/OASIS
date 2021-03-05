@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using OASIS.Models;
+using System.Threading;
 
 namespace OASIS.Data
 {
@@ -19,6 +20,32 @@ namespace OASIS.Data
             using (var context = new OasisContext(
                 serviceProvider.GetRequiredService<DbContextOptions<OasisContext>>()))
             {
+                string[] approvalStatus = new string[] { "Approved", "Disapproved", "RequiresApproval" };
+                string[] bidStatus = new string[] { "In Progress", "Stoped Due To Weather", "Completed", "Not Started" };
+                string[] productTypes = new string[] { "Plant Inventory", "Pottery Inventory", "Materials Inventory" };
+                string[] _firstName = new string[] { "Adam", "Alex", "Aaron", "Ben", "Carl", "Dan", "David", "Edward", "Fred", "Frank", "George", "Hal", "Hank", "Ike", "John", "Jack", "Joe", "Larry", "Monte", "Matthew", "Mark", "Nathan", "Otto", "Paul", "Peter", "Roger", "Roger", "Steve", "Thomas", "Tim", "Ty", "Victor", "Walter" };
+                string[] _lastName = new string[] { "Anderson", "Ashwoon", "Aikin", "Bateman", "Bongard", "Bowers", "Boyd", "Cannon", "Cast", "Deitz", "Dewalt", "Ebner", "Frick", "Hancock", "Haworth", "Hesch", "Hoffman", "Kassing", "Knutson", "Lawless", "Lawicki", "Mccord", "McCormack", "Miller", "Myers", "Nugent", "Ortiz", "Orwig", "Ory", "Paiser", "Pak", "Pettigrew", "Quinn", "Quizoz", "Ramachandran", "Resnick", "Sagar", "Schickowski", "Schiebel", "Sellon", "Severson", "Shaffer", "Solberg", "Soloman", "Sonderling", "Soukup", "Soulis", "Stahl", "Sweeney", "Tandy", "Trebil", "Trusela", "Trussel", "Turco", "Uddin", "Uflan", "Ulrich", "Upson", "Vader", "Vail", "Valente", "Van Zandt", "Vanderpoel", "Ventotla", "Vogal", "Wagle", "Wagner", "Wakefield", "Weinstein", "Weiss", "Woo", "Yang", "Yates", "Yocum", "Zeaser", "Zeller", "Ziegler", "Bauer", "Baxster", "Casal", "Cataldi", "Caswell", "Celedon", "Chambers", "Chapman", "Christensen", "Darnell", "Davidson", "Davis", "DeLorenzo", "Dinkins", "Doran", "Dugelman", "Dugan", "Duffman", "Eastman", "Ferro", "Ferry", "Fletcher", "Fietzer", "Hylan", "Hydinger", "Illingsworth", "Ingram", "Irwin", "Jagtap", "Jenson", "Johnson", "Johnsen", "Jones", "Jurgenson", "Kalleg", "Kaskel", "Keller", "Leisinger", "LePage", "Lewis", "Linde", "Lulloff", "Maki", "Martin", "McGinnis", "Mills", "Moody", "Moore", "Napier", "Nelson", "Norquist", "Nuttle", "Olson", "Ostrander", "Reamer", "Reardon", "Reyes", "Rice", "Ripka", "Roberts", "Rogers", "Root", "Sandstrom", "Sawyer", "Schlicht", "Schmitt", "Schwager", "Schutz", "Schuster", "Tapia", "Thompson", "Tiernan", "Tisler" };
+                string[] countryList = new string[] { "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas (the)", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia (Plurinational State of)", "Bonaire, Sint Eustatius and Saba", "Bosnia and Herzegovina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory (the)", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Cayman Islands (the)", "Central African Republic (the)", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands (the)", "Colombia", "Comoros (the)", "Congo (the Democratic Republic of the)", "Congo (the)", "Cook Islands (the)", "Costa Rica", "Croatia", "Cuba", "Curaçao", "Cyprus", "Czechia", "Côte d'Ivoire", "Denmark", "Djibouti", "Dominica", "Dominican Republic (the)", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Falkland Islands (the) [Malvinas]", "Faroe Islands (the)", "Fiji", "Finland", "France", "French Guiana", "French Polynesia", "French Southern Territories (the)", "Gabon", "Gambia (the)", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard Island and McDonald Islands", "Holy See (the)", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran (Islamic Republic of)", "Iraq", "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea (the Democratic People's Republic of)", "Korea (the Republic of)", "Kuwait", "Kyrgyzstan", "Lao People's Democratic Republic (the)", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macao", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands (the)", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia (Federated States of)", "Moldova (the Republic of)", "Monaco", "Mongolia", "Montenegro", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands (the)", "New Caledonia", "New Zealand", "Nicaragua", "Niger (the)", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands (the)", "Norway", "Oman", "Pakistan", "Palau", "Palestine, State of", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines (the)", "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Republic of North Macedonia", "Romania", "Russian Federation (the)", "Rwanda", "Réunion", "Saint Barthélemy", "Saint Helena, Ascension and Tristan da Cunha", "Saint Kitts and Nevis", "Saint Lucia", "Saint Martin (French part)", "Saint Pierre and Miquelon", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Sint Maarten (Dutch part)", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "South Sudan", "Spain", "Sri Lanka", "Sudan (the)", "Suriname", "Svalbard and Jan Mayen", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Timor-Leste", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands (the)", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates (the)", "United Kingdom of Great Britain and Northern Ireland (the)", "United States Minor Outlying Islands (the)", "United States of America (the)", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela (Bolivarian Republic of)", "Viet Nam", "Virgin Islands (British)", "Virgin Islands (U.S.)", "Wallis and Futuna", "Western Sahara", "Yemen", "Zambia", "Zimbabwe", "Åland Islands" };
+                string[] streetNumber = new string[] { "25489", "87459", "35478", "15975", "95125", "78965" };
+                string[] CompanyName = new string[] { "Media", "Inc", "Builders", "Shop", "Demolishers", "Styles" };
+                string[] position = new string[] { "CEO", "Manager", "Employee", "Supervisor", "CTO" };
+
+                string[] streetName = new string[] { "A street", "B street", "C street", "D street", "E street", "F street" };
+                ;
+                string[] cityName = new string[] { "Riyadh", "Damman", "Jedda", "Tabouk", "Makka", "Maddena", "Haiel" };
+
+                string[] stateName = new string[] { "Qassem State", "North State", "East State", "South State", "West State" };
+
+                string[] zipCode = new string[] { "28889", "96459", "35748", "15005", "99625", "71465" };
+
+                bool Checkarrray(List<string> list, string s)
+                {
+                    if (list.Contains(s))
+                        return true;
+                    return false;
+                }
+
+
                 if (!context.Roles.Any())
                 {
                     context.Roles.AddRange(
@@ -57,163 +84,165 @@ namespace OASIS.Data
                     context.SaveChanges();
                 }
 
+
+                int[] roleID = context.Roles.Select(p => p.ID).ToArray();
+
+
                 if (!context.Employees.Any())
                 {
-                    context.Employees.AddRange(
-                    new Employee
+                    for (int i = 0; i < 25; i++)
                     {
-                        FirstName = "Amal",
-                        MiddleName = "E",
-                        LastName = "Shaiju",
-                        AddressLineOne = "586 First Ave",
-                        City = "Welland",
-                        Province = "Ontario",
-                        Country = "Canada",
-                        Phone = 9055551212,
-                        Email = "Ashaiju1@outlook.com",
-                        RoleID = context.Roles.FirstOrDefault(d => d.Name == "Designer").ID
-                    },
-                    new Employee
-                    {
-                        FirstName = "Jesline",
 
-                        LastName = "Stanly",
-                        AddressLineOne = "596",
-                        AddressLineTwo = "First Ave",
-                        ApartmentNumber = "Flat 96",
-                        City = "Welland",
-                        Province = "Ontario",
-                        Country = "Canada",
-                        Phone = 9055551213,
-                        Email = "Jstanly1@outlook.com",
-                        RoleID = context.Roles.FirstOrDefault(d => d.Name == "Production Worker").ID
-                    },
-                    new Employee
-                    {
-                        FirstName = "Val",
-                        LastName = "Garaskky",
-                        AddressLineOne = "598 First Ave",
-                        City = "Welland",
-                        Province = "Ontario",
-                        Country = "Canada",
-                        Phone = 9055551215,
-                        Email = "val1@outlook.com",
-                        RoleID = context.Roles.FirstOrDefault(d => d.Name == "Equipment Operator").ID
-                    },
-                    new Employee
-                    {
-                        FirstName = "Yasmeen",
-                        LastName = "Faager",
-                        AddressLineOne = "590 First Ave",
-                        City = "Welland",
-                        Province = "Ontario",
-                        Country = "Canada",
-                        Phone = 9055554213,
-                        Email = "Yasmmen1@outlook.com",
-                        RoleID = context.Roles.FirstOrDefault(d => d.Name == "Botanist").ID
-                    },
-                    new Employee
-                    {
-                        FirstName = "Rufaro",
-                        LastName = "Gonsalaz",
-                        AddressLineOne = "580 First Ave",
-                        City = "Welland",
-                        Province = "Ontario",
-                        Country = "Canada",
-                        Phone = 9255554213,
-                        Email = "Rgonz1@outlook.com",
-                        RoleID = context.Roles.FirstOrDefault(d => d.Name == "Botanist").ID
-                    },
-                     new Employee
-                     {
-                         FirstName = "Dave",
-                         LastName = "Kendell",
-                         AddressLineOne = "580 First Ave",
-                         City = "Welland",
-                         Province = "Ontario",
-                         Country = "Canada",
-                         Phone = 9255524213,
-                         Email = "Dkendell1@outlook.com",
-                         RoleID = context.Roles.FirstOrDefault(d => d.Name == "Sales Associate").ID
-                     }
-                    );
-                    context.SaveChanges();
+                        var a = new Employee()
+                        {
+                            FirstName = _firstName[random.Next(_firstName.Count())],
+                            MiddleName = _firstName[random.Next(_firstName.Count())],
+                            LastName = _lastName[random.Next(_lastName.Count())],
+                            AddressLineOne = streetNumber[random.Next(streetNumber.Count())] + streetName[random.Next(streetName.Count())],
+                            City = cityName[random.Next(cityName.Count())],
+                            Province = stateName[random.Next(stateName.Count())],
+                            Country = countryList[random.Next(countryList.Count())],
+                            Phone = 1234567890,
+                            Email = _firstName[random.Next(_firstName.Count())] + _lastName[random.Next(_lastName.Count())] + "@outlook.com",
+                            RoleID = roleID[random.Next(roleID.Count())]
+                        };
+
+                        try
+                        {
+                            context.Add(a);
+                            context.SaveChanges();
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+
                 }
-
 
                 if (!context.Customers.Any())
                 {
-                    context.Customers.AddRange(
-                    new Customer
+                    for (int i = 0; i < 50; i++)
                     {
-                        OrgName = "Wonderboy Media",
-                        FirstName = "Amal",
-                        MiddleName = "E",
-                        LastName = "Shaiju",
-                        Position = "CEO",
-                        AddressLineOne = "586 First Ave",
-                        City = "Welland",
-                        Province = "Ontario",
-                        Country = "Canada",
-                        Phone = 9055551212,
-                        Email = "Ashaiju1@outlook.com",
-                    },
-                    new Customer
-                    {
-                        OrgName = "Weiner Media",
-                        FirstName = "Jesline",
-                        LastName = "Stanly",
-                        Position = "CTO",
-                        AddressLineOne = "596",
-                        AddressLineTwo = "First Ave",
-                        ApartmentNumber = "Flat 96",
-                        City = "Welland",
-                        Province = "Ontario",
-                        Country = "Canada",
-                        Phone = 9055551213,
-                        Email = "Jstanly1@outlook.com",
-                    },
-                    new Customer
-                    {
-                        OrgName = "VAl Media",
-                        FirstName = "Val",
-                        LastName = "Garaskky",
-                        Position = "Manager",
-                        AddressLineOne = "598 First Ave",
-                        City = "Welland",
-                        Province = "Ontario",
-                        Country = "Canada",
-                        Phone = 9055551215,
-                        Email = "val1@outlook.com",
-                    },
-                    new Customer
-                    {
-                        OrgName = "Yasmeen Designers",
-                        FirstName = "Yasmeen",
-                        LastName = "Faager",
-                        Position = "CFO",
-                        AddressLineOne = "590 First Ave",
-                        City = "Welland",
-                        Province = "Ontario",
-                        Country = "Canada",
-                        Phone = 9055554213,
-                        Email = "Yasmmen1@outlook.com",
-                    },
-                    new Customer
-                    {
-                        OrgName = "Rufaro Media",
-                        FirstName = "Rufaro",
-                        Position = "CKO",
-                        LastName = "Gonsalaz",
-                        AddressLineOne = "580 First Ave",
-                        City = "Welland",
-                        Province = "Ontario",
-                        Country = "Canada",
-                        Phone = 9255554213,
-                        Email = "Rgonz1@outlook.com",
-                    });
-                    context.SaveChanges();
+
+                        var a = new Customer()
+                        {
+                            FirstName = _firstName[random.Next(_firstName.Count())],
+                            MiddleName = _firstName[random.Next(_firstName.Count())],
+                            LastName = _lastName[random.Next(_lastName.Count())],
+                            AddressLineOne = streetNumber[random.Next(streetNumber.Count())] + " " + streetName[random.Next(streetName.Count())],
+                            City = cityName[random.Next(cityName.Count())],
+                            Province = stateName[random.Next(stateName.Count())],
+                            Country = countryList[random.Next(countryList.Count())],
+                            Phone = 1234567890,
+                            Email = _firstName[random.Next(_firstName.Count())] + _lastName[random.Next(_lastName.Count())] + "@outlook.com",
+                            OrgName = _firstName[random.Next(_firstName.Count())] + " " + CompanyName[random.Next(CompanyName.Count())],
+                            Position = position[random.Next(position.Count())]
+                        };
+
+                        try
+                        {
+                            context.Add(a);
+                            context.SaveChanges();
+                        }
+                        catch
+                        {
+                            //do nothing
+                        }
+                    }
+
                 }
+
+
+
+                int[] CustomerIDs = context.Customers.Select(p => p.ID).ToArray();
+                //if (!context.Projects.Any())
+                //{
+                //    List<string> projectName = new List<string>();
+
+                //    foreach (int i in CustomerIDs)
+                //    {
+
+                //        var project = _firstName[random.Next(_firstName.Count())] + "Project";
+
+                //        while (Checkarrray(projectName, project))
+                //        {
+                //            project = _lastName[random.Next(_lastName.Count())] + "Project";
+
+                //        }
+
+                //        projectName.Add(project);
+
+                //        try { 
+                //        context.Projects.Add(
+                //           new Project
+                //           {
+                //               Name = project,
+                //               SiteAddressLineOne = "586 First Ave",
+                //               City = "Welland",
+                //               Province = "Ontario",
+                //               Country = "Canada",
+                //               CustomerID = random.Next(CustomerIDs.Count())
+                //           });
+
+                //            context.SaveChangesAsync();
+                //        }
+                //        catch
+                //        {
+
+                //        }
+
+                //    }
+                //}
+
+                //if (!context.Projects.Any())
+                //{
+                //    List<string> projectName = new List<string>();
+                //    foreach (int i in CustomerIDs)
+                //    {
+                //        for (int j = 0; j < 5; j++)
+                //        {
+
+                //            var project = _firstName[random.Next(_firstName.Count())] + "Project";
+
+                //            while (Checkarrray(projectName, project))
+                //            {
+                //                project = _lastName[random.Next(_lastName.Count())] + "Project";
+
+                //            }
+
+                //            Project a = new Project()
+                //            {
+                //                Name = project,
+                //                SiteAddressLineOne = streetNumber[random.Next(streetNumber.Count())] + " " + streetName[random.Next(streetName.Count())],
+                //                City = cityName[random.Next(cityName.Count())],
+                //                Province = stateName[random.Next(stateName.Count())],
+                //                Country = countryList[random.Next(countryList.Count())],
+                //                CustomerID = i
+
+
+                //            };
+
+                //            try
+                //            {
+                //                context.Add(a);
+                //                context.SaveChanges();
+
+                //            }
+                //            catch
+                //            {
+                //                dod nothing repeat
+                //            }
+                //        }
+
+
+
+
+
+                //    }
+                //    context.SaveChanges();
+                //}
+
 
 
                 if (!context.Projects.Any())
@@ -226,7 +255,7 @@ namespace OASIS.Data
                         City = "Welland",
                         Province = "Ontario",
                         Country = "Canada",
-                        CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Amal").ID
+                        CustomerID = random.Next(CustomerIDs.Count())
                     },
                     new Project
                     {
@@ -236,7 +265,7 @@ namespace OASIS.Data
                         City = "Welland",
                         Province = "Ontario",
                         Country = "Canada",
-                        CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Jesline").ID
+                        CustomerID = random.Next(CustomerIDs.Count())
                     },
                      new Project
                      {
@@ -245,7 +274,7 @@ namespace OASIS.Data
                          City = "Welland",
                          Province = "Ontario",
                          Country = "Canada",
-                         CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Yasmeen").ID
+                         CustomerID = random.Next(CustomerIDs.Count())
                      },
                      new Project
                      {
@@ -254,7 +283,7 @@ namespace OASIS.Data
                          City = "Welland",
                          Province = "Ontario",
                          Country = "Canada",
-                         CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Val").ID
+                         CustomerID = random.Next(CustomerIDs.Count())
                      },
                       new Project
                       {
@@ -263,7 +292,7 @@ namespace OASIS.Data
                           City = "Welland",
                           Province = "Ontario",
                           Country = "Canada",
-                          CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Rufaro").ID
+                          CustomerID = random.Next(CustomerIDs.Count())
                       }, new Project
                       {
                           Name = "Walmart",
@@ -271,7 +300,7 @@ namespace OASIS.Data
                           City = "Niagara",
                           Province = "Ontario",
                           Country = "Canada",
-                          CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Amal").ID
+                          CustomerID = random.Next(CustomerIDs.Count())
                       },
                         new Project
                         {
@@ -280,7 +309,7 @@ namespace OASIS.Data
                             City = "Hamilton",
                             Province = "Ontario",
                             Country = "Canada",
-                            CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Jesline").ID
+                            CustomerID = random.Next(CustomerIDs.Count())
                         },
                          new Project
                          {
@@ -289,7 +318,7 @@ namespace OASIS.Data
                              City = "St Chatehrines",
                              Province = "Ontario",
                              Country = "Canada",
-                             CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Val").ID
+                             CustomerID = random.Next(CustomerIDs.Count())
                          },
                           new Project
                           {
@@ -298,7 +327,7 @@ namespace OASIS.Data
                               City = "Toronto",
                               Province = "Ontario",
                               Country = "Canada",
-                              CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Yasmeen").ID
+                              CustomerID = random.Next(CustomerIDs.Count())
                           },
                            new Project
                            {
@@ -307,7 +336,7 @@ namespace OASIS.Data
                                City = "Welland",
                                Province = "Ontario",
                                Country = "Canada",
-                               CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Rufaro").ID
+                               CustomerID = random.Next(CustomerIDs.Count())
                            },
                             new Project
                             {
@@ -316,17 +345,33 @@ namespace OASIS.Data
                                 City = "Welland",
                                 Province = "Ontario",
                                 Country = "Canada",
-                                CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Amal").ID
+                                CustomerID = random.Next(CustomerIDs.Count())
                             }
-                      );
+                      ); ;
                     context.SaveChanges();
                 }
 
 
-                string[] productTypes = new string[] { "Plant Inventory", "Pottery Inventory", "Materials Inventory"};
+
+
+                if (!context.ApprovalStatuses.Any())
+                {
+                    foreach (string i in approvalStatus)
+                    {
+                        ApprovalStatus a = new ApprovalStatus()
+                        {
+                            Name = i
+                        };
+                        context.Add(a);
+                    }
+                    context.SaveChanges();
+
+                }
+
+
                 if (!context.ProductTypes.Any())
                 {
-                   foreach( string i in productTypes)
+                    foreach (string i in productTypes)
                     {
                         ProductType a = new ProductType()
                         {
@@ -371,7 +416,6 @@ namespace OASIS.Data
                     context.SaveChanges();
                 }
 
-                string[] bidStatus = new string[] { "Requires Approval", "Approved", "Disapproved" };
                 if (!context.BidStatuses.Any())
                 {
                     foreach (string i in bidStatus)
@@ -383,6 +427,7 @@ namespace OASIS.Data
                         context.Add(a);
                     }
                     context.SaveChanges();
+
                 }
 
                 int[] projectID = context.Projects.Select(s => s.ID).ToArray();
@@ -398,64 +443,114 @@ namespace OASIS.Data
                 {
                     foreach (int i in projectID)
                     {
-                        Bid a = new Bid()
+                        for (int j = 0; j < 5; j++)
                         {
-                            DateCreated = DateTime.Now,
-                            EstAmount = random.Next(1000, 100000),
-                            EstBidStartDate = DateTime.Today,
-                            EstBidEndDate = DateTime.Today.AddDays(random.Next(5)),
-                            comments = baconNotes[random.Next(5)],
-                            DesignerID = designerID[random.Next(designerCount)],
-                            SalesAsscociateID = salesAssociateID[random.Next(salesAssociateCount)],
-                            ProjectID = projectID[random.Next(ProjectCount)],
-                            BidStatusID = bidStatusID[random.Next(bidStatusCount)],
-                            
+                            Bid a = new Bid()
+                            {
+                                DateCreated = DateTime.Now,
+                                EstAmount = random.Next(1000, 100000),
+                                EstBidStartDate = DateTime.Today,
+                                EstBidEndDate = DateTime.Today.AddDays(random.Next(5)),
+                                Comments = baconNotes[random.Next(5)],
+                                DesignerID = designerID[random.Next(designerCount)],
+                                SalesAsscociateID = salesAssociateID[random.Next(salesAssociateCount)],
+                                ProjectID = projectID[random.Next(ProjectCount)],
+                                BidStatusID = bidStatusID[random.Next(bidStatusCount)],
 
-                        };
-                        context.Bids.Add(a);
 
-                    } 
+                            };
+
+                            try
+                            {
+                                context.Add(a);
+                                context.SaveChanges();
+
+                            }
+                            catch
+                            {
+                                // dod nothing repeat
+                            }
+                        }
+
+                    }
                     context.SaveChanges();
                 }
+
+
+
 
                 int[] bidID = context.Bids.Select(s => s.ID).ToArray();
                 int[] productID = context.Products.Select(p => p.ID).ToArray();
+
+                //Bid Products 
                 if (!context.BidProducts.Any())
                 {
-                    foreach(int i in bidID)
-                    {
+                    // loop over bid
 
-                        BidProduct a = new BidProduct()
-                        {
-                            Quantity = random.Next(5,100),
-                            BidID = bidID[random.Next(bidID.Count())],
-                            ProductID = productID[random.Next(productID.Count())]
-                        };
-                        context.BidProducts.Add(a);
-
-                    }
-                    context.SaveChanges();
-                }
-
-                int[] roleID = context.Roles.Select(p => p.ID).ToArray();
-                if (!context.BidLabours.Any())
-                {
                     foreach (int i in bidID)
                     {
-
-                        BidLabour a = new BidLabour()
+                        int breaker = random.Next(productID.Count());
+                        // loop over products
+                        foreach (var j in productID)
                         {
-                            Hours = random.Next(1, 8),
-                            Description = baconNotes[random.Next(5)],
-                            RoleID = roleID[random.Next(roleID.Count())],
-                            BidID = bidID[random.Next(bidID.Count())]
+                            if (j == breaker)
+                                break;
+                            BidProduct bidProduct = new BidProduct()
+                            {
+                                BidID = i,
+                                Quantity = random.Next(1, 100),
+                                ProductID = j
+                            };
 
-                        };
-                        context.BidLabours.Add(a);
-
+                            try
+                            {
+                                context.Add(bidProduct);
+                                context.SaveChanges();
+                            }
+                            catch
+                            {
+                                // do nothing
+                            }
+                        }
                     }
-                    context.SaveChanges();
                 }
+
+
+                if (!context.BidLabours.Any())
+                {
+                    // loop over bid
+
+                    foreach (int i in bidID)
+                    {
+                        int breaker = random.Next(productID.Count());
+
+                        // loop over role
+                        foreach (var j in roleID)
+                        {
+                            if (j == breaker)
+                                break;
+
+                            BidLabour bidLabour = new BidLabour()
+                            {
+                                BidID = i,
+                                Hours = random.Next(1, 8),
+                                RoleID = j
+                            };
+
+                            try
+                            {
+                                context.Add(bidLabour);
+                                context.SaveChanges();
+                            }
+                            catch
+                            {
+                                // do nothing
+                            }
+                        }
+                    }
+                }
+
+
             }
 
 

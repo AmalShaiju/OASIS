@@ -37,7 +37,7 @@ namespace OASIS.Controllers
             var bidProduct = await _context.BidProducts
                 .Include(b => b.Bid)
                 .Include(b => b.Product)
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .FirstOrDefaultAsync(m => m.BidID == id);
             if (bidProduct == null)
             {
                 return NotFound();
@@ -59,7 +59,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Quantity,BidID,ProductID")] BidProduct bidProduct)
+        public async Task<IActionResult> Create([Bind("BidID,Quantity,ProductID")] BidProduct bidProduct)
         {
             if (ModelState.IsValid)
             {
@@ -95,9 +95,9 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Quantity,BidID,ProductID")] BidProduct bidProduct)
+        public async Task<IActionResult> Edit(int id, [Bind("BidID,Quantity,ProductID")] BidProduct bidProduct)
         {
-            if (id != bidProduct.ID)
+            if (id != bidProduct.BidID)
             {
                 return NotFound();
             }
@@ -111,7 +111,7 @@ namespace OASIS.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BidProductExists(bidProduct.ID))
+                    if (!BidProductExists(bidProduct.BidID))
                     {
                         return NotFound();
                     }
@@ -138,7 +138,7 @@ namespace OASIS.Controllers
             var bidProduct = await _context.BidProducts
                 .Include(b => b.Bid)
                 .Include(b => b.Product)
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .FirstOrDefaultAsync(m => m.BidID == id);
             if (bidProduct == null)
             {
                 return NotFound();
@@ -160,7 +160,7 @@ namespace OASIS.Controllers
 
         private bool BidProductExists(int id)
         {
-            return _context.BidProducts.Any(e => e.ID == id);
+            return _context.BidProducts.Any(e => e.BidID == id);
         }
     }
 }
