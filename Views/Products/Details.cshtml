@@ -43,6 +43,13 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> 
+    @if (String.IsNullOrEmpty(ViewData["returnURL"]?.ToString()))
+    {
+        <a asp-action="Index">Back to List of Products</a>
+    }
+    else
+    {
+        <a href='@ViewData["returnURL"]'>Back to List of Products</a>
+    }
 </div>

@@ -121,6 +121,52 @@ namespace OASIS.Data
                    END
                ");
 
+            // Product
+            migrationBuilder.Sql(
+                     @"
+                        CREATE TRIGGER SetProductTimestampOnUpdate
+                        AFTER UPDATE ON Products
+                        BEGIN
+                            UPDATE Products
+                            SET RowVersion = randomblob(8)
+                            WHERE rowid = NEW.rowid;
+                        END
+                    ");
+            migrationBuilder.Sql(
+                        @"
+                        CREATE TRIGGER SetProductTimestampOnInsert
+                        AFTER INSERT ON Products
+                        BEGIN
+                            UPDATE Products
+                            SET RowVersion = randomblob(8)
+                            WHERE rowid = NEW.rowid;
+                        END
+                ");
+
+            // ProductType
+            migrationBuilder.Sql(
+                      @"
+                        CREATE TRIGGER SetProductTypeTimestampOnUpdate
+                        AFTER UPDATE ON ProductTypes
+                        BEGIN
+                            UPDATE ProductTypes
+                            SET RowVersion = randomblob(8)
+                            WHERE rowid = NEW.rowid;
+                        END
+                    ");
+            migrationBuilder.Sql(
+                        @"
+                        CREATE TRIGGER SetProductTypeTimestampOnInsert
+                        AFTER INSERT ON ProductTypes
+                        BEGIN
+                            UPDATE ProductTypes
+                            SET RowVersion = randomblob(8)
+                            WHERE rowid = NEW.rowid;
+                        END
+                ");
+
+         
+
 
         }
     }

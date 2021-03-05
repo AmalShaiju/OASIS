@@ -45,7 +45,15 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="ID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="hidden" name="returnURL" value="@ViewData["returnURL"]" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> 
+        @if (String.IsNullOrEmpty(ViewData["returnURL"]?.ToString()))
+        {
+            <a asp-action="Index">Back to List of Products</a>
+        }
+        else
+        {
+            <a href='@ViewData["returnURL"]'>Back to List of Products</a>
+        }
     </form>
 </div>

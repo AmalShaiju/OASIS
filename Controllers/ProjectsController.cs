@@ -339,7 +339,9 @@ namespace OASIS.Controllers
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
 
-            var project = await _context.Projects.FindAsync(id);
+            var project = await _context.Projects
+                            .Include(p => p.Bids)
+                         .FirstOrDefaultAsync(m => m.ID == id);
 
             try
             {

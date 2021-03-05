@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OASIS.Models
 {
-    public class Product
+    public class Product : Auditable
     {
         public Product()
         {
