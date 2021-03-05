@@ -1,10 +1,18 @@
-﻿Add-Migration -Context OasisContext -o Data\OASISMigrations Initial
-Update-Database -Context OasisContext 
-Update-Database -Context ApplicationDbContext
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-// Customer Auditing Fields Updation
-             migrationBuilder.Sql(
-                   @"
+namespace OASIS.Data
+{
+    public static class ExtraMigration
+    {
+        public static void Steps(MigrationBuilder migrationBuilder)
+        {
+            // Customer Auditing Fields Updation
+            migrationBuilder.Sql(
+                  @"
                     CREATE TRIGGER SetCustomerTimestampOnUpdate
                     AFTER UPDATE ON Customers
                     BEGIN
@@ -13,8 +21,8 @@ Update-Database -Context ApplicationDbContext
                         WHERE rowid = NEW.rowid;
                     END
                 ");
-                migrationBuilder.Sql(
-                   @"
+            migrationBuilder.Sql(
+               @"
                     CREATE TRIGGER SetCustomerTimestampOnInsert
                     AFTER INSERT ON Customers
                     BEGIN
@@ -25,9 +33,9 @@ Update-Database -Context ApplicationDbContext
                ");
 
 
-// Role Auditing Fields Updation
- migrationBuilder.Sql(
-               @"
+            // Role Auditing Fields Updation
+            migrationBuilder.Sql(
+                          @"
                 CREATE TRIGGER SetRoleTimestampOnUpdate
                 AFTER UPDATE ON Roles
                 BEGIN
@@ -47,7 +55,51 @@ Update-Database -Context ApplicationDbContext
                END
            ");
 
-              // Bid Auditing Fields Updation
+            // Project Auditing Field Updation
+            migrationBuilder.Sql(
+             @"
+                    CREATE TRIGGER SetProjectTimestampOnUpdate
+                    AFTER UPDATE ON Projects
+                    BEGIN
+                        UPDATE Projects
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                    END
+                ");
+            migrationBuilder.Sql(
+               @"
+                    CREATE TRIGGER SetProjectTimestampOnInsert
+                    AFTER INSERT ON Projects
+                    BEGIN
+                        UPDATE Projects
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                   END
+               ");
+
+            // Employee Auditing Fields Updation
+            migrationBuilder.Sql(
+                  @"
+                    CREATE TRIGGER SetEmployeeTimestampOnUpdate
+                    AFTER UPDATE ON Employees
+                    BEGIN
+                        UPDATE Employees
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                    END
+                ");
+            migrationBuilder.Sql(
+               @"
+                    CREATE TRIGGER SetEmployeeTimestampOnInsert
+                    AFTER INSERT ON Employees
+                    BEGIN
+                        UPDATE Employees
+                        SET RowVersion = randomblob(8)
+                        WHERE rowid = NEW.rowid;
+                   END
+               ");
+
+            // Bid Auditing Fields Updation
             migrationBuilder.Sql(
                     @"
                     CREATE TRIGGER SetBidTimestampOnUpdate
@@ -69,54 +121,9 @@ Update-Database -Context ApplicationDbContext
                    END
                ");
 
-// Project Auditing Field Updation
-                migrationBuilder.Sql(
-                 @"
-                    CREATE TRIGGER SetProjectTimestampOnUpdate
-                    AFTER UPDATE ON Projects
-                    BEGIN
-                        UPDATE Projects
-                        SET RowVersion = randomblob(8)
-                        WHERE rowid = NEW.rowid;
-                    END
-                ");
-                migrationBuilder.Sql(
-                   @"
-                    CREATE TRIGGER SetProjectTimestampOnInsert
-                    AFTER INSERT ON Projects
-                    BEGIN
-                        UPDATE Projects
-                        SET RowVersion = randomblob(8)
-                        WHERE rowid = NEW.rowid;
-                   END
-               ");
-
-// Employee Auditing Fields Updation
-             migrationBuilder.Sql(
-                   @"
-                    CREATE TRIGGER SetEmployeeTimestampOnUpdate
-                    AFTER UPDATE ON Employees
-                    BEGIN
-                        UPDATE Employees
-                        SET RowVersion = randomblob(8)
-                        WHERE rowid = NEW.rowid;
-                    END
-                ");
-                migrationBuilder.Sql(
-                   @"
-                    CREATE TRIGGER SetEmployeeTimestampOnInsert
-                    AFTER INSERT ON Employees
-                    BEGIN
-                        UPDATE Employees
-                        SET RowVersion = randomblob(8)
-                        WHERE rowid = NEW.rowid;
-                   END
-               ");
-
-  //For Product Concurency Add this after Migration
-
- migrationBuilder.Sql(
-                      @"
+            // Product
+            migrationBuilder.Sql(
+                     @"
                         CREATE TRIGGER SetProductTimestampOnUpdate
                         AFTER UPDATE ON Products
                         BEGIN
@@ -125,8 +132,8 @@ Update-Database -Context ApplicationDbContext
                             WHERE rowid = NEW.rowid;
                         END
                     ");
-                    migrationBuilder.Sql(
-                                @"
+            migrationBuilder.Sql(
+                        @"
                         CREATE TRIGGER SetProductTimestampOnInsert
                         AFTER INSERT ON Products
                         BEGIN
@@ -136,8 +143,7 @@ Update-Database -Context ApplicationDbContext
                         END
                 ");
 
-     //For ProductType Concurency Add this after Migration
-
+            // ProductType
             migrationBuilder.Sql(
                       @"
                         CREATE TRIGGER SetProductTypeTimestampOnUpdate
@@ -158,3 +164,11 @@ Update-Database -Context ApplicationDbContext
                             WHERE rowid = NEW.rowid;
                         END
                 ");
+
+         
+
+
+        }
+    }
+}
+

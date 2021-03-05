@@ -8,6 +8,11 @@ namespace OASIS.Models
 {
     public class Role : Auditable
     {
+        public Role()
+        {
+            BidLabours = new HashSet<BidLabour>();
+        }
+
         public int ID { get; set; }
 
         [Required(ErrorMessage ="You cannot leave the role name blank")]

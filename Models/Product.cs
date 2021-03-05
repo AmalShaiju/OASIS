@@ -9,6 +9,10 @@ namespace OASIS.Models
 {
     public class Product : Auditable
     {
+        public Product()
+        {
+            BidProducts = new HashSet<BidProduct>();
+        }
         public int ID { get; set; }
 
 
@@ -35,6 +39,8 @@ namespace OASIS.Models
         [Required(ErrorMessage = "You must select a product type.")]
         public int ProductTypeID { get; set; }
         public ProductType ProductType { get; set; }
+
+        public ICollection<BidProduct> BidProducts { get; set; }
 
     }
 }

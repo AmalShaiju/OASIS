@@ -254,7 +254,7 @@ namespace OASIS.Controllers
                     if (databaseEntry == null)
                     {
                         ModelState.AddModelError("",
-                            "Unable to save changes. The Patient was deleted by another user.");
+                            "Unable to save changes. The Project was deleted by another user.");
                     }
                     else
                     {
