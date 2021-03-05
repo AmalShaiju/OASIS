@@ -29,7 +29,12 @@ namespace OASIS.Controllers
                  .Include(b => b.ProductType)
                               select b;
 
-           // PopulateDropDownLists1(); //Data for ProductType filter DDL
+
+
+            // PopulateDropDownLists1(); //Data for ProductType filter DDL
+            ViewData["ProductTypeID"] = new SelectList(_context
+               .ProductTypes
+               .OrderBy(c => c.Name), "ID", "Name");
 
             ViewData["Filtering"] = ""; //Assume not filtering
 
@@ -150,13 +155,15 @@ namespace OASIS.Controllers
         // GET: Products/Create
         public IActionResult Create(string returnURL)
         {
+            Product product = new Product();
             //Get the URL of the page that send us here
             if (String.IsNullOrEmpty(returnURL))
             {
                 returnURL = Request.Headers["Referer"].ToString();
             }
             ViewData["returnURL"] = returnURL;
-            ViewData["ProductTypeID"] = new SelectList(_context.ProductTypes, "ID", "Name");
+
+            PopulateDropDownLists1(product);
             return View();
         }
 
@@ -198,7 +205,7 @@ namespace OASIS.Controllers
                     ModelState.AddModelError("", "Unable to save changes.Try again,and if the problem persists see your system administrator.");
                 }
             }
-            ViewData["ProductTypeID"] = new SelectList(_context.ProductTypes, "ID", "Name", product.ProductTypeID);
+            PopulateDropDownLists1(product);
             return View(product);
         }
 
@@ -222,7 +229,7 @@ namespace OASIS.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProductTypeID"] = new SelectList(_context.ProductTypes, "ID", "Name", product.ProductTypeID);
+            PopulateDropDownLists1(product);
             return View(product);
         }
 
@@ -318,7 +325,7 @@ namespace OASIS.Controllers
 
          
             }
-            ViewData["ProductTypeID"] = new SelectList(_context.ProductTypes, "ID", "Name", productToUpdate.ProductTypeID);
+            PopulateDropDownLists1(productToUpdate);
             return View(productToUpdate);
         }
 

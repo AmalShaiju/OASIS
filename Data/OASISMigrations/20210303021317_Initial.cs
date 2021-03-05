@@ -362,6 +362,54 @@ namespace OASIS.Data.OASISMigrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+        
+
+            //  Product  Auditing Fields Updation .
+
+            migrationBuilder.Sql(
+                                 @"
+                        CREATE TRIGGER SetProductTimestampOnUpdate
+                        AFTER UPDATE ON Products
+                        BEGIN
+                            UPDATE Products
+                            SET RowVersion = randomblob(8)
+                            WHERE rowid = NEW.rowid;
+                        END
+                    ");
+            migrationBuilder.Sql(
+                        @"
+                        CREATE TRIGGER SetProductTimestampOnInsert
+                        AFTER INSERT ON Products
+                        BEGIN
+                            UPDATE Products
+                            SET RowVersion = randomblob(8)
+                            WHERE rowid = NEW.rowid;
+                        END
+                ");
+
+            //  ProductType  Auditing Fields Updation .
+
+            migrationBuilder.Sql(
+                      @"
+                        CREATE TRIGGER SetProductTypeTimestampOnUpdate
+                        AFTER UPDATE ON ProductTypes
+                        BEGIN
+                            UPDATE ProductTypes
+                            SET RowVersion = randomblob(8)
+                            WHERE rowid = NEW.rowid;
+                        END
+                    ");
+            migrationBuilder.Sql(
+                        @"
+                        CREATE TRIGGER SetProductTypeTimestampOnInsert
+                        AFTER INSERT ON ProductTypes
+                        BEGIN
+                            UPDATE ProductTypes
+                            SET RowVersion = randomblob(8)
+                            WHERE rowid = NEW.rowid;
+                        END
+                ");
+
             // Customer Auditing Fields Updation
             migrationBuilder.Sql(
                   @"
@@ -450,54 +498,6 @@ namespace OASIS.Data.OASISMigrations
                         WHERE rowid = NEW.rowid;
                    END
                ");
-
-            //  Product  Auditing Fields Updation .
-
-            migrationBuilder.Sql(
-                                 @"
-                        CREATE TRIGGER SetProductTimestampOnUpdate
-                        AFTER UPDATE ON Products
-                        BEGIN
-                            UPDATE Products
-                            SET RowVersion = randomblob(8)
-                            WHERE rowid = NEW.rowid;
-                        END
-                    ");
-            migrationBuilder.Sql(
-                        @"
-                        CREATE TRIGGER SetProductTimestampOnInsert
-                        AFTER INSERT ON Products
-                        BEGIN
-                            UPDATE Products
-                            SET RowVersion = randomblob(8)
-                            WHERE rowid = NEW.rowid;
-                        END
-                ");
-
-            //  ProductType  Auditing Fields Updation .
-
-            migrationBuilder.Sql(
-                      @"
-                        CREATE TRIGGER SetProductTypeTimestampOnUpdate
-                        AFTER UPDATE ON ProductTypes
-                        BEGIN
-                            UPDATE ProductTypes
-                            SET RowVersion = randomblob(8)
-                            WHERE rowid = NEW.rowid;
-                        END
-                    ");
-            migrationBuilder.Sql(
-                        @"
-                        CREATE TRIGGER SetProductTypeTimestampOnInsert
-                        AFTER INSERT ON ProductTypes
-                        BEGIN
-                            UPDATE ProductTypes
-                            SET RowVersion = randomblob(8)
-                            WHERE rowid = NEW.rowid;
-                        END
-                ");
-
-
 
             migrationBuilder.CreateIndex(
                 name: "IX_Approvals_BidID",

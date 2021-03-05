@@ -22,7 +22,7 @@ namespace OASIS.Controllers
         // GET: Bids
         public async Task<IActionResult> Index()
         {
-            var oasisContext = _context.Bids.Include(b => b.BidStatus).Include(b => b.Designer).Include(b => b.SalesAsscociate).Include(b => b.project);
+            var oasisContext = _context.Bids.Include(b => b.BidStatus).Include(b => b.Designer).Include(b => b.SalesAsscociate).Include(b => b.Project);
             return View(await oasisContext.ToListAsync());
         }
 
@@ -38,7 +38,7 @@ namespace OASIS.Controllers
                 .Include(b => b.BidStatus)
                 .Include(b => b.Designer)
                 .Include(b => b.SalesAsscociate)
-                .Include(b => b.project)
+                .Include(b => b.Project)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (bid == null)
             {
@@ -121,7 +121,7 @@ namespace OASIS.Controllers
             }
 
 
-            if (await TryUpdateModelAsync<Bid>(bidToUpdate, "", p => p.DateCreated, p => p.EstAmount, p => p.ProjectStartDate, p => p.ProjectEndDate, p => p.EstBidEndDate, p => p.EstBidStartDate, p => p.comments
+            if (await TryUpdateModelAsync<Bid>(bidToUpdate, "", p => p.DateCreated, p => p.EstAmount, p => p.ProjectStartDate, p => p.ProjectEndDate, p => p.EstBidEndDate, p => p.EstBidStartDate, p => p.Comments
            , p => p.DesignerID, p => p.SalesAsscociateID, p => p.BidStatusID, p => p.ProjectID))
             {
 
@@ -162,7 +162,7 @@ namespace OASIS.Controllers
                 .Include(b => b.BidStatus)
                 .Include(b => b.Designer)
                 .Include(b => b.SalesAsscociate)
-                .Include(b => b.project)
+                .Include(b => b.Project)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (bid == null)
             {

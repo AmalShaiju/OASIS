@@ -1405,3 +1405,8 @@ C:\Users\Yasmeen\Desktop\NBD\OASIS\obj\Debug\netcoreapp3.1\OASIS.csproj.CopyComp
 C:\Users\Yasmeen\Desktop\NBD\OASIS\obj\Debug\netcoreapp3.1\staticwebassets\OASIS.StaticWebAssets.Manifest.cache
 C:\Users\Yasmeen\Desktop\NBD\OASIS\obj\Debug\netcoreapp3.1\staticwebassets\OASIS.StaticWebAssets.xml
 C:\Users\Yasmeen\Desktop\NBD\OASIS\obj\Debug\netcoreapp3.1\OASIS.genruntimeconfig.cache
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\ApprovalStatus\Create.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\ApprovalStatus\Delete.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\ApprovalStatus\Details.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\ApprovalStatus\Edit.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\ApprovalStatus\Index.cshtml.g.cs

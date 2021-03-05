@@ -125,7 +125,7 @@ namespace OASIS.Data
             //project assigned
             modelBuilder.Entity<Project>()
                 .HasMany<Bid>(d => d.Bids)
-                .WithOne(p => p.project)
+                .WithOne(p => p.Project)
                 .HasForeignKey(p => p.ProjectID)
                 .OnDelete(DeleteBehavior.Restrict);
 
