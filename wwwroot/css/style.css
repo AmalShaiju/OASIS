@@ -37,9 +37,10 @@ a {
     cursor:pointer;
 }
 
-
+#ProductTypeLogo path{
+    fill:black;
+}
 /*NAVIGATION*/
-
 .flex-container {
     display: flex;
     height: 15%;
@@ -370,6 +371,7 @@ header a {
 .nav-item-flex {
     display: flex;
     width: 100%;
+    cursor:pointer;
 }
 
 .nav-item-box-one {

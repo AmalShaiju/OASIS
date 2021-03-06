@@ -26,6 +26,7 @@ namespace OASIS.Controllers
         {
             var project = from p in _context.Projects
               .Include(p => p.Customer)
+              .Include(p => p.Bids)
                             select p;
 
             ViewData["Filtering"] = "";
@@ -146,6 +147,7 @@ namespace OASIS.Controllers
 
             var project = await _context.Projects
                 .Include(p => p.Customer)
+                .Include(p => p.Bids)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (project == null)
             {

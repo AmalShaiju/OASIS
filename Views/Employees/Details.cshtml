@@ -32,15 +32,17 @@
                         </div>
                     </div>
 
-                    <div class="row" style=" text-align: center; margin-top: 8%;">
+                    <div class="row" style=" text-align: center; margin-top: 8%; height:90%; display:block;">
                         @*For loop through project and display project names*@
-                        <div class="col">
-                            <p>
-                                @Html.DisplayFor(model => model.FirstName)
-                            </p>
-                        </div>
-                        <div class="w-100"></div>
+                        @foreach (var item in ViewBag.ProjectName)
+                        {
+                            <div style="width:100%; height:5%;">
+                                <a asp-action="Details" asp-controller="projects" asp-route-id="@item.ID" class="btn-link">
+                                    @item.Name
+                                </a>
 
+                            </div>
+                        }
                     </div>
                 </div>
 
