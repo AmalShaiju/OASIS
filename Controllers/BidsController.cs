@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OASIS.Data;
 using OASIS.Models;
+using OASIS.Utilities;
 using OASIS.ViewModels;
 
 namespace OASIS.Controllers
@@ -21,16 +22,241 @@ namespace OASIS.Controllers
         }
 
         // GET: Bids
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchProjectName, string BidAmountBelow, string BidAmountAbove,
+            string EstStartDateAbove, string EstStartDateBelow, string EstFinishDateBelow, string EstFinishDateAbove,
+            int? BidstatusID, int? DesignerStatusID, int? ClientStatusID, int? DesignerID, int? SalesAsscID,
+            int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "Price")
         {
-            var oasisContext = _context.Bids.Include(b => b.BidStatus)
-                .Include(b => b.Designer).
-                Include(b => b.SalesAsscociate)
-                .Include(b => b.Project)
+
+            var bids = from b in _context.Bids
+                .Include(b => b.BidStatus)
+                .Include(b => b.Designer)
+                .Include(b => b.BidLabours).ThenInclude(b => b.Role)
+                .Include(b => b.SalesAsscociate)
+                .Include(b => b.Project).ThenInclude(p => p.Customer)
                 .Include(b => b.BidProducts)
-                .Include(b => b.BidLabours);
-            return View(await oasisContext.ToListAsync());
+                .Include(b => b.BidLabours)
+                .Include(b => b.Approval).ThenInclude(b => b.ApprovalStatuses)
+                       select b;
+
+            ViewData["Filtering"] = ""; //Assume not filtering
+
+            //DDL
+            ViewData["BidstatusID"] = new SelectList(_context
+             .BidStatuses
+             .OrderBy(c => c.Name), "ID", "Name");
+
+            ViewData["DesignerStatusID"] = new SelectList(_context
+            .ApprovalStatuses
+            .OrderBy(c => c.Name), "ID", "Name");
+
+            ViewData["ClientStatusID"] = new SelectList(_context
+           .ApprovalStatuses
+           .OrderBy(c => c.Name), "ID", "Name");
+
+            ViewData["DesignerID"] = new SelectList(_context
+            .Employees.Where(p => p.Role.Name == "Designer")
+            .OrderBy(c => c.LastName), "ID", "FullName");
+
+            ViewData["SalesAsscID"] = new SelectList(_context
+            .Employees.Where(p => p.Role.Name == "Sales Associate")
+            .OrderBy(c => c.LastName), "ID", "FullName");
+
+
+            //Clear the sort/filter/paging URL Cookie
+            CookieHelper.CookieSet(HttpContext, "CustomersURL", "", -1);
+
+            if (!String.IsNullOrEmpty(SearchProjectName))
+            {
+                bids = bids.Where(p => p.Project.Name.ToUpper().Contains(SearchProjectName.ToUpper()));
+                ViewData["Filtering"] = "show";
+            }
+
+            //Estimated Amount
+            if (!String.IsNullOrEmpty(BidAmountBelow))
+            {
+                bids = bids.Where(p => p.EstAmount < (double)Convert.ToDecimal(BidAmountBelow));
+                ViewData["Filtering"] = "show";
+            }
+
+            if (!String.IsNullOrEmpty(BidAmountAbove))
+            {
+                bids = bids.Where(p => p.EstAmount > (double)Convert.ToDecimal(BidAmountAbove));
+                ViewData["Filtering"] = "show";
+            }
+
+            // Est StartDates
+            if (!String.IsNullOrEmpty(EstStartDateAbove))
+            {
+                bids = bids.Where(p => p.EstBidStartDate > Convert.ToDateTime(EstStartDateAbove));
+                ViewData["Filtering"] = "show";
+            }
+
+            if (!String.IsNullOrEmpty(EstStartDateBelow))
+            {
+                bids = bids.Where(p => p.EstBidStartDate < Convert.ToDateTime(EstStartDateBelow));
+                ViewData["Filtering"] = "show";
+            }
+
+            //Est Finish Date
+            if (!String.IsNullOrEmpty(EstFinishDateBelow))
+            {
+                bids = bids.Where(p => p.EstBidEndDate < Convert.ToDateTime(EstFinishDateBelow));
+                ViewData["Filtering"] = "show";
+            }
+
+            if (!String.IsNullOrEmpty(EstFinishDateAbove))
+            {
+                bids = bids.Where(p => p.EstBidEndDate > Convert.ToDateTime(EstFinishDateAbove));
+                ViewData["Filtering"] = "show";
+            }
+
+            // BidStatus
+            if (BidstatusID.HasValue)
+            {
+                bids = bids.Where(p => p.BidStatusID == BidstatusID);
+                ViewData["Filtering"] = " show";
+            }
+
+            //Designer
+            if (DesignerID.HasValue)
+            {
+                bids = bids.Where(p => p.DesignerID == DesignerID);
+                ViewData["Filtering"] = " show";
+            }
+
+            //Sales Associate
+            if (SalesAsscID.HasValue)
+            {
+                bids = bids.Where(p => p.SalesAsscociateID == SalesAsscID);
+                ViewData["Filtering"] = " show";
+            }
+
+
+            // DesignerStatus
+            if (DesignerStatusID.HasValue)
+            {
+                bids = bids.Where(p => p.Approval.DesignerStatusID == DesignerStatusID);
+                ViewData["Filtering"] = " show";
+            }
+
+            // ClientStatus
+            if (ClientStatusID.HasValue)
+            {
+                bids = bids.Where(p => p.Approval.ClientStatusID == ClientStatusID);
+                ViewData["Filtering"] = " show";
+            }
+
+            //Before we sort, see if we have called for a change of filtering or sorting
+            if (!String.IsNullOrEmpty(actionButton))
+            {
+                if (actionButton != "Filter")
+                {
+                    if (actionButton == sortField)
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;
+                }
+            }
+
+            if (sortField == "Amount")
+            {
+                if (sortDirection == "asc")
+                {
+                    bids = bids
+                        .OrderBy(p => p.EstAmount);
+                }
+                else
+                {
+                    bids = bids
+                       .OrderByDescending(p => p.EstAmount);
+                }
+            }
+            else if (sortField == "Project")
+            {
+                if (sortDirection == "asc")
+                {
+                    bids = bids
+                        .OrderBy(p => p.Project.Name);
+                }
+                else
+                {
+                    bids = bids
+                         .OrderByDescending(p => p.Project.Name);
+                }
+            }
+            else if (sortField == "Organization")
+            {
+                if (sortDirection == "asc")
+                {
+                    bids = bids
+                        .OrderBy(p => p.Project.Customer.OrgName);
+                }
+                else
+                {
+                    bids = bids
+                         .OrderByDescending(p => p.Project.Customer.OrgName);
+                }
+            }
+            else if (sortField == "Designer")
+            {
+                if (sortDirection == "asc")
+                {
+                    bids = bids
+                        .OrderBy(p => p.Designer.LastName)
+                         .ThenBy(p => p.Designer.FirstName);
+
+                }
+                else
+                {
+                    bids = bids
+                         .OrderByDescending(p => p.Designer.LastName)
+                         .ThenByDescending(p => p.Designer.FirstName);
+                }
+            }
+
+            else //Sort By product type:Name
+            {
+                if (sortDirection == "asc")
+                {
+                    bids = bids
+                    .OrderBy(p => p.DateCreated);
+                }
+                else
+                {
+                    bids = bids
+                    .OrderByDescending(p => p.DateCreated);
+                }
+            }
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+
+
+            //For Paging
+            int pageSize;
+            if (pageSizeID.HasValue)
+            {
+                //Value selected from DDL so use and save it to Cookie
+                pageSize = pageSizeID.GetValueOrDefault();
+                CookieHelper.CookieSet(HttpContext, "pageSizeValue", pageSize.ToString(), 30);
+            }
+            else
+            {
+                //Not selected so see if it is in Cookie
+                pageSize = Convert.ToInt32(HttpContext.Request.Cookies["pageSizeValue"]);
+            }
+            pageSize = (pageSize == 0) ? 5 : pageSize;
+            ViewData["pageSizeID"] =
+                new SelectList(new[] { "3", "5", "10", "20", "30", "40", "50", "100", "500" }, pageSize.ToString());
+            var pagedData = await PaginatedList<Bid>.CreateAsync(bids.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
         }
+
+
+
 
         // GET: Bids/Details/5
         public async Task<IActionResult> Details(int? id)
