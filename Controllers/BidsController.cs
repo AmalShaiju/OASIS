@@ -307,8 +307,7 @@ namespace OASIS.Controllers
                 await _context.SaveChangesAsync();
                 UpdateBidProducts(selectedProducts, selectedQuantity, bid);
                 UpdateApprovalStatus(bid, DesignerStatusID, ClientStatusID, approvalComment);
-                UpdateBidProducts(selectedProducts, selectedQuantity, bid);
-                //UpdateBidLabours(selectedRoles, requiredHours, bid);
+                UpdateBidLabours(selectedRoles, requiredHours, bid);
 
 
                 return RedirectToAction(nameof(Index));
@@ -689,7 +688,7 @@ namespace OASIS.Controllers
                 if (selectedOptions.Contains(product.ToString()))
                 {
                     var selctedOptionIndex = Array.IndexOf(selectedOptions, product.ToString()); // index of product in selectedOptions
-                    var inputQnty = Convert.ToInt32(selectedQuantity[selctedOptionIndex]); //  input Qnty
+                    var inputQnty = Convert.ToDecimal(selectedQuantity[selctedOptionIndex]); //  input Qnty
 
                     var bidproductrow = bidToUpdate.BidProducts.SingleOrDefault(p => p.ProductID == product); // bid product row
 

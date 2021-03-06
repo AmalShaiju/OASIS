@@ -38,12 +38,12 @@ namespace OASIS.Data
 
                 string[] zipCode = new string[] { "28889", "96459", "35748", "15005", "99625", "71465" };
 
-                bool Checkarrray(List<string> list, string s)
-                {
-                    if (list.Contains(s))
-                        return true;
-                    return false;
-                }
+                //bool Checkarrray(List<string> list, string s)
+                //{
+                //    if (list.Contains(s))
+                //        return true;
+                //    return false;
+                //}
 
 
                 if (!context.Roles.Any())

@@ -586,3 +586,23 @@ focusedin {
     background-color: yellow;
 }
 
+/*Bid Create*/
+
+
+.bid-product-card{
+    margin-bottom:50px; 
+    width:100%;
+}
+
+#pills-tab  {
+    width: 30%;
+    margin-top:20px;
+}
+
+    #pills-tab .button-menu input, a {
+        color: #007bff;
+    }
+    
+
+
+/*Bid Create*/
