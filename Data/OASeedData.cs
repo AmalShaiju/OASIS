@@ -598,7 +598,7 @@ namespace OASIS.Data
                        },
                          new Product
                          {
-                             Code = "areca",
+                             Code = "Areca",
                              Description = "arecastum coco",
                              size = "15 gal",
                              Price = 458.00,
@@ -607,7 +607,7 @@ namespace OASIS.Data
                          },
                             new Product
                             {
-                                Code = "cary",
+                                Code = "Cary",
                                 Description = "caryota mitius",
                                 size = "15 gal",
                                 Price = 154.00,
@@ -616,7 +616,7 @@ namespace OASIS.Data
                             },
                             new Product
                             {
-                                Code = "margi",
+                                Code = "Margi",
                                 Description = "marginata",
                                 size = "2 gal",
                                 Price = 75.00,

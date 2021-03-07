@@ -244,11 +244,13 @@ td a {
     height: 60px;
     padding-top: 0px;
     margin-right: 10px;
+    cursor:pointer;
 }
 
     .table-row-img img {
         width: 100%;
         height: 100%;
+        
     }
 
 .index-drop-down-menu {
@@ -641,11 +643,22 @@ focusedin {
     margin-top:20px;
 }
 
-    
+.nav-item a{
+    width:15%;
+}
+
+#pills-tab li{
+
+    width:15%;
+}
+#pills-tab li a {
+    width: 50%;
+}
+    #pills-tab li a svg {
+        fill:red
+    }
 /*Bid Create*/
-
 /*Bid Details Table*/
-
 .wrap-table100 {
     width: 100%;
 }
