@@ -321,8 +321,8 @@ namespace OASIS.Controllers
 
             ViewData["Labour"] = outputLabour;
             ViewData["products"] = outputProducts;
-            ViewData["productTotal"] = productTotal;
-            ViewData["LabourtTotal"] = LabourtTotal;
+            ViewData["productTotal"] = Math.Round(productTotal,2);
+            ViewData["LabourtTotal"] = Math.Round(LabourtTotal,2);
 
 
 
