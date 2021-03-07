@@ -270,7 +270,11 @@ namespace OASIS.Controllers
                 .Include(b => b.BidStatus)
                 .Include(b => b.Designer)
                 .Include(b => b.SalesAsscociate)
-                .Include(b => b.Project)
+                .Include(b => b.Project).ThenInclude(p => p.Customer)
+                .Include(p=>p.BidProducts).ThenInclude(p => p.Product)
+                .Include(p=>p.BidLabours).ThenInclude(p => p.Role)
+                .Include(p=>p.Approval).ThenInclude(p => p.ApprovalStatuses)
+
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (bid == null)
             {
@@ -296,19 +300,21 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,DateCreated,EstAmount,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
+        public async Task<IActionResult> Create([Bind("ID,DateCreated,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
             int DesignerStatusID, int ClientStatusID, string approvalComment, string[] selectedProducts, string[] selectedQuantity, string[] selectedRoles, string[] requiredHours)
         {
 
-
+            double total = 0;
             if (ModelState.IsValid)
             {
                 _context.Add(bid);
                 await _context.SaveChangesAsync();
-                UpdateBidProducts(selectedProducts, selectedQuantity, bid);
+                total += UpdateBidProducts(selectedProducts, selectedQuantity, bid);
                 UpdateApprovalStatus(bid, DesignerStatusID, ClientStatusID, approvalComment);
-                UpdateBidLabours(selectedRoles, requiredHours, bid);
+                total += UpdateBidLabours(selectedRoles, requiredHours, bid);
+                bid.EstAmount = total;
 
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -356,6 +362,8 @@ namespace OASIS.Controllers
         public async Task<IActionResult> Edit(int id, int DesignerStatusID, int ClientStatusID, string approvalComment, string[] selectedProducts, string[] selectedQuantity,
             string[] selectedRoles, string[] requiredHours, Byte[] RowVersion)
         {
+            double total = 0;
+
             var bidToUpdate = await _context.Bids
             .Include(a => a.Approval)
             .ThenInclude(d => d.ApprovalStatuses)
@@ -370,10 +378,12 @@ namespace OASIS.Controllers
             }
             _context.Entry(bidToUpdate).Property("RowVersion").OriginalValue = RowVersion;
 
-            UpdateBidProducts(selectedProducts, selectedQuantity, bidToUpdate);
-            UpdateBidLabours(selectedRoles, requiredHours, bidToUpdate);
+            total += UpdateBidProducts(selectedProducts, selectedQuantity, bidToUpdate);
+            total += UpdateBidLabours(selectedRoles, requiredHours, bidToUpdate);
 
-            if (await TryUpdateModelAsync<Bid>(bidToUpdate, "", p => p.DateCreated, p => p.EstAmount, p => p.ProjectStartDate, p => p.ProjectEndDate, p => p.EstBidEndDate, p => p.EstBidStartDate, p => p.Comments
+            bidToUpdate.EstAmount = total;
+
+            if (await TryUpdateModelAsync<Bid>(bidToUpdate, "", p => p.DateCreated, p => p.ProjectStartDate, p => p.ProjectEndDate, p => p.EstBidEndDate, p => p.EstBidStartDate, p => p.Comments
            , p => p.DesignerID, p => p.SalesAsscociateID, p => p.BidStatusID, p => p.ProjectID))
 
             {
@@ -671,30 +681,34 @@ namespace OASIS.Controllers
             ViewData["qntyOpts"] = new MultiSelectList(AssignedQuantity, "ID", "DisplayText");
         }
 
-        private void UpdateBidProducts(string[] selectedOptions, string[] selectedQuantity, Bid bidToUpdate)
+        private double UpdateBidProducts(string[] selectedOptions, string[] selectedQuantity, Bid bidToUpdate)
         {
-            var allProducts = _context.Products.Select(p => p.ID); // All product ID's
+            double total = 0;
+
+            var allProducts = _context.Products.ToList(); // All product ID's
+            var allProductPrice = _context.Products.Select(p => p.Price); // All product ID's
 
             if (selectedOptions.Length < 1 || selectedQuantity.Length < 1)
             {
                 bidToUpdate.BidProducts = new List<BidProduct>();
-                return;
+                return total ;
             }
 
 
             foreach (var product in allProducts)
             {
                 //if input array contains this product
-                if (selectedOptions.Contains(product.ToString()))
+                if (selectedOptions.Contains(product.ID.ToString()))
                 {
-                    var selctedOptionIndex = Array.IndexOf(selectedOptions, product.ToString()); // index of product in selectedOptions
+                    var selctedOptionIndex = Array.IndexOf(selectedOptions, product.ID.ToString()); // index of product in selectedOptions
                     var inputQnty = Convert.ToDecimal(selectedQuantity[selctedOptionIndex]); //  input Qnty
 
-                    var bidproductrow = bidToUpdate.BidProducts.SingleOrDefault(p => p.ProductID == product); // bid product row
+                    var bidproductrow = bidToUpdate.BidProducts.SingleOrDefault(p => p.ProductID == product.ID); // bid product row
 
                     //if product is alreay assigned to the bid
                     if (bidproductrow != null)
                     {
+                        total += product.Price * (int)inputQnty;
                         // check if the qnty is not same as inputed qnty
                         if (bidproductrow.Quantity != Convert.ToDecimal(selectedQuantity[selctedOptionIndex]))
                         {
@@ -704,11 +718,12 @@ namespace OASIS.Controllers
                     }
                     else // assign the produc to bid
                     {
+                        total += product.Price* (int)inputQnty;
 
                         var specToAdd = new BidProduct
                         {
                             BidID = bidToUpdate.ID,
-                            ProductID = product,
+                            ProductID = product.ID,
                             Quantity = (int)inputQnty
                         };
 
@@ -723,7 +738,7 @@ namespace OASIS.Controllers
                     // try to delete if the product actually is assigned to the bid
                     try
                     {
-                        var specToRemove = bidToUpdate.BidProducts.SingleOrDefault(p => p.ProductID == product);
+                        var specToRemove = bidToUpdate.BidProducts.SingleOrDefault(p => p.ProductID == product.ID);
                         _context.Remove(specToRemove);
                     }
                     catch
@@ -734,8 +749,9 @@ namespace OASIS.Controllers
 
                 }
 
-            }
 
+            }
+            return total;
         }
         private void PopuateSelectedRoles(Bid bid)
         {
@@ -764,30 +780,34 @@ namespace OASIS.Controllers
             ViewData["reqHrs"] = new MultiSelectList(AssignedHours, "ID", "DisplayText");
         }
 
-        private void UpdateBidLabours(string[] selectedRoles, string[] requiredHours, Bid bidToUpdate)
+        private double UpdateBidLabours(string[] selectedRoles, string[] requiredHours, Bid bidToUpdate)
         {
-            var allRoles = _context.Roles.Select(p => p.ID); // All product ID's
+            double total = 0;
+
+            var allRoles = _context.Roles.ToList(); // All product ID's
 
             if (selectedRoles.Length < 1 || requiredHours.Length < 1)
             {
                 bidToUpdate.BidProducts = new List<BidProduct>();
-                return;
-            }
+                return total;
 
+            }
 
             foreach (var role in allRoles)
             {
                 //if input array contains this product
-                if (selectedRoles.Contains(role.ToString()))
+                if (selectedRoles.Contains(role.ID.ToString()))
                 {
-                    var selctedOptionIndex = Array.IndexOf(selectedRoles, role.ToString()); // index of product in selectedRoles
+                    var selctedOptionIndex = Array.IndexOf(selectedRoles, role.ID.ToString()); // index of product in selectedRoles
                     var inputHrs = Convert.ToDecimal(requiredHours[selctedOptionIndex]); //  input hrs
 
-                    var bidRoleRow = bidToUpdate.BidLabours.SingleOrDefault(p => p.RoleID == role); // bid Labour row
+                    var bidRoleRow = bidToUpdate.BidLabours.SingleOrDefault(p => p.RoleID == role.ID); // bid Labour row
 
                     //if product is alreay assigned to the bid
                     if (bidRoleRow != null)
                     {
+                        total += (double)role.LabourPricePerHr * (double)inputHrs;
+
                         // check if the qnty is not same as inputed qnty
                         if ((int)bidRoleRow.Hours != Convert.ToInt32(requiredHours[selctedOptionIndex]))
                         {
@@ -797,11 +817,12 @@ namespace OASIS.Controllers
                     }
                     else // assign the produc to bid
                     {
+                        total += (double)role.LabourPricePerHr * (double)inputHrs;
 
                         var specToAdd = new BidLabour
                         {
                             BidID = bidToUpdate.ID,
-                            RoleID = role,
+                            RoleID = role.ID,
                             Hours = (double)inputHrs
                         };
 
@@ -816,7 +837,7 @@ namespace OASIS.Controllers
                     // try to delete if the product actually is assigned to the bid
                     try
                     {
-                        var specToRemove = bidToUpdate.BidLabours.SingleOrDefault(p => p.RoleID == role);
+                        var specToRemove = bidToUpdate.BidLabours.SingleOrDefault(p => p.RoleID == role.ID);
                         _context.Remove(specToRemove);
                     }
                     catch
@@ -829,9 +850,9 @@ namespace OASIS.Controllers
 
             }
             _context.SaveChangesAsync();
+            return total;
 
         }
-
 
     }
 

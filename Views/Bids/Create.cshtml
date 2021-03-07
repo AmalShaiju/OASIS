@@ -16,16 +16,16 @@
 
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Bid</a>
+                <a style="color:#00adef" class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Bid</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Approvals</a>
+                <a style="color:#00adef"  class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Approvals</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Products</a>
+                <a style="color:#00adef"  class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Products</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="pills-bidLabour-tab" data-toggle="pill" href="#pills-bidLabour" role="tab" aria-controls="pills-bidLabour" aria-selected="false">Labour</a>
+                <a style="color:#00adef"  class="nav-link" id="pills-bidLabour-tab" data-toggle="pill" href="#pills-bidLabour" role="tab" aria-controls="pills-bidLabour" aria-selected="false">Labour</a>
             </li>
         </ul>
         <div class="col-md-12 tab-content" id="pills-tabContent">
@@ -35,13 +35,12 @@
                     <div style="margin-top:0px;" class="form-row col-10">
 
                         <div class="form-group col-5">
-                            <label asp-for="EstAmount" class="control-label"></label>
-                            <input asp-for="EstAmount" class="form-control" />
-                            <span asp-validation-for="EstAmount" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-6">
                             <label asp-for="ProjectID" class="control-label"></label>
                             <select asp-for="ProjectID" class="form-control" asp-items="ViewBag.ProjectID"></select>
+                        </div>
+                        <div class="form-group col-6">
+                            <label asp-for="BidStatusID" class="control-label"></label>
+                            <select asp-for="BidStatusID" class="form-control" asp-items="ViewBag.BidStatusID"></select>
                         </div>
 
                     </div>
@@ -89,15 +88,6 @@
                             <select asp-for="SalesAsscociateID" class="form-control" asp-items="ViewBag.SalesAsscociateID"></select>
                         </div>
 
-
-                    </div>
-
-                    <div class="form-row col-10">
-
-                        <div class="form-group col-5">
-                            <label asp-for="BidStatusID" class="control-label"></label>
-                            <select asp-for="BidStatusID" class="form-control" asp-items="ViewBag.BidStatusID"></select>
-                        </div>
 
                     </div>
                 </div>
@@ -185,7 +175,7 @@
                                     <label class="input-group-text" for="inputGroupSelect02">Quantity</label>
                                 </div>
                                 <input style="margin:0" id="ProductQuantity" type="number" class="form-control" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1">
-                                <button id="btnAddProduct" class="btn btn-outline-secondary" type="button">+</button>
+                                <button id="btnAddProduct" class="btn btn-outline-success" type="button">+</button>
                             </div>
 
                         </div>
@@ -239,7 +229,7 @@
                                     <label class="input-group-text" for="inputGroupSelect02">Quantity</label>
                                 </div>
                                 <input style="margin:0" id="roleHours" type="number" class="form-control" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1">
-                                <button id="btnAddRole" class="btn btn-outline-secondary" type="button">+</button>
+                                <button id="btnAddRole" class="btn btn-outline-success" type="button">+</button>
                             </div>
 
                         </div>

@@ -1410,3 +1410,4 @@ C:\Users\Yasmeen\Desktop\NBD\OASIS\obj\Debug\netcoreapp3.1\OASIS.csproj.CopyComp
 C:\Users\Yasmeen\Desktop\NBD\OASIS\obj\Debug\netcoreapp3.1\staticwebassets\OASIS.StaticWebAssets.Manifest.cache
 C:\Users\Yasmeen\Desktop\NBD\OASIS\obj\Debug\netcoreapp3.1\staticwebassets\OASIS.StaticWebAssets.xml
 C:\Users\Yasmeen\Desktop\NBD\OASIS\obj\Debug\netcoreapp3.1\OASIS.genruntimeconfig.cache
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_DetailsMenu.cshtml.g.cs
