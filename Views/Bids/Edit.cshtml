@@ -39,12 +39,14 @@
 
                         <div class="form-group col-5">
                             <label asp-for="EstAmount" class="control-label"></label>
-                            <input asp-for="EstAmount" class="form-control" />
+                            <input asp-for="EstAmount" tabindex="1" placeholder="Example: 25 " class="form-control" />
                             <span asp-validation-for="EstAmount" class="text-danger"></span>
                         </div>
                         <div class="form-group col-6">
                             <label asp-for="ProjectID" class="control-label"></label>
-                            <select asp-for="ProjectID" class="form-control" asp-items="ViewBag.ProjectID"></select>
+                            <select asp-for="ProjectID" tabindex="2" class="form-control" asp-items="ViewBag.ProjectID">
+                                <option value="Choose option"></option>
+                            </select>
                         </div>
 
                     </div>
@@ -52,13 +54,13 @@
                     <div class="form-row col-10">
                         <div class="form-group col-5">
                             <label asp-for="ProjectStartDate" class="control-label"></label>
-                            <input asp-for="ProjectStartDate" class="form-control" />
+                            <input asp-for="ProjectStartDate" tabindex="3" placeholder="Example: yyyy/mm/dd " class="form-control" />
                             <span asp-validation-for="ProjectStartDate" class="text-danger"></span>
                         </div>
 
                         <div class="form-group col-6">
                             <label asp-for="ProjectEndDate" class="control-label"></label>
-                            <input asp-for="ProjectEndDate" class="form-control" />
+                            <input asp-for="ProjectEndDate" tabindex="4" placeholder="Example: yyyy/mm/dd " class="form-control" />
                             <span asp-validation-for="ProjectEndDate" class="text-danger"></span>
                         </div>
 
@@ -69,13 +71,13 @@
 
                         <div class="form-group col-5">
                             <label asp-for="EstBidStartDate" class="control-label"></label>
-                            <input asp-for="EstBidStartDate" class="form-control" />
+                            <input asp-for="EstBidStartDate" tabindex="5" placeholder="Example: yyyy/mm/dd " class="form-control" />
                             <span asp-validation-for="EstBidStartDate" class="text-danger"></span>
                         </div>
 
                         <div class="form-group col-6">
                             <label asp-for="EstBidEndDate" class="control-label"></label>
-                            <input asp-for="EstBidEndDate" class="form-control" />
+                            <input asp-for="EstBidEndDate" tabindex="6" placeholder="Example: yyyy/mm/dd " class="form-control" />
                             <span asp-validation-for="EstBidEndDate" class="text-danger"></span>
                         </div>
 
@@ -85,11 +87,15 @@
 
                         <div class="form-group col-5">
                             <label asp-for="DesignerID" class="control-label"></label>
-                            <select asp-for="DesignerID" class="form-control" asp-items="ViewBag.DesignerID"></select>
+                            <select asp-for="DesignerID" tabindex="7" class="form-control" asp-items="ViewBag.DesignerID">
+                                <option value="Choose option"></option>
+                            </select>
                         </div>
                         <div class="form-group col-6">
                             <label asp-for="SalesAsscociateID" class="control-label"></label>
-                            <select asp-for="SalesAsscociateID" class="form-control" asp-items="ViewBag.SalesAsscociateID"></select>
+                            <select asp-for="SalesAsscociateID" tabindex="8" class="form-control" asp-items="ViewBag.SalesAsscociateID">
+                                <option value="Choose option"></option>
+                            </select>
                         </div>
 
 
@@ -99,7 +105,9 @@
 
                         <div class="form-group col-5">
                             <label asp-for="BidStatusID" class="control-label"></label>
-                            <select asp-for="BidStatusID" class="form-control" asp-items="ViewBag.BidStatusID"></select>
+                            <select asp-for="BidStatusID" tabindex="9" class="form-control" asp-items="ViewBag.BidStatusID">
+                                <option value="Choose option"></option>
+                            </select>
                         </div>
 
                     </div>
@@ -112,12 +120,16 @@
 
                         <div class="form-group col-5">
                             <label for="ClientStatusID" class="control-label">Client Status</label>
-                            <select name="ClientStatusID" class="form-control" asp-items="ViewBag.ClientStatusID"></select>
+                            <select name="ClientStatusID" class="form-control" asp-items="ViewBag.ClientStatusID">
+                                <option value="Choose option"></option>
+                            </select>
                         </div>
 
                         <div class="form-group col-6">
                             <label for="DesignerStatusID" class="control-label">Designer Status</label>
-                            <select name="DesignerStatusID" class="form-control" asp-items="ViewBag.DesignerStatusID"></select>
+                            <select name="DesignerStatusID" class="form-control" asp-items="ViewBag.DesignerStatusID">
+                                <option value="Choose option"></option>
+                            </select>
                         </div>
 
                     </div>
@@ -127,7 +139,7 @@
 
                         <div class="form-group col-5">
                             <label for="approvalComment" class="control-label">Approval Comments</label>
-                            <textarea name="approvalComment" class="form-control">@ViewData["approvalComment"]</textarea>
+                            <textarea name="approvalComment" placeholder="Example: Any comment you would like to enter." class="form-control">@ViewData["approvalComment"]</textarea>
                             <span asp-validation-for="Approval.Comments" class="text-danger"></span>
                         </div>
 
