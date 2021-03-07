@@ -8,19 +8,9 @@
     <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
     <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
     <div class="flex-container">
-
-        <div class="inner-flex-container-left">
-            <div class="inner-flex-container-left-items">
-                <strong>Total Customers : <span> @Model.Count()</span></strong>
-            </div>
-            <div class="inner-flex-container-left-items">
-                <strong>Sorted by : <span>@ViewData["sortField"]</span> </strong>
-            </div>
-        </div>
-
         <div class="inner-flex-container-right">
 
-            <button type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" class="inner-flex-container-right-items" style=" width:30%; background-color:white">
+            <button type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" class="inner-flex-container-right-items" style=" width:15%; background-color:white">
 
                 <div style="width:60%;text-align:center">
                     <p>Filter</p>
@@ -39,7 +29,7 @@
 
             </button>
 
-            <a asp-action="Create" class="inner-flex-container-right-items" style=" width:48%; background-color:#27a9f8">
+            <a asp-action="Create" class="inner-flex-container-right-items" style=" width:24%; background-color:#27a9f8">
                 <div style="width:40%;text-align:right">
                     <svg style="width:50%; height:50%;" version="1.0" xmlns="http://www.w3.org/2000/svg"
                          width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
@@ -116,12 +106,6 @@ c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
                 </div>
             </a>
 
-            <div class="inner-flex-container-right-items" id="moreOptions" style="width:10%;background-color: rgba(39,169,248,0.25)">
-                <div style="width:100%">
-                    <img style="width:100%" ;height="100%" src="~/resources/moreOptions.png" alt="Alternate Text" />
-                </div>
-
-            </div>
         </div>
 
     </div>
@@ -170,13 +154,40 @@ c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
         <thead>
             <tr>
                 <th>
-                    <input type="submit" name="actionButton" value="Project" class="btn btn-link" />
+                    @if (ViewData["sortField"].ToString().Contains("Project"))
+                    {
+                        <input type="submit" style="color:gold" name="actionButton" value="Project  (@Model.Count())" class="btn btn-link" />
+                    }
+                    else
+                    {
+                        <input type="submit"  name="actionButton" value="Project  (@Model.Count())" class="btn btn-link" />
+
+
+                    }
                 </th>
                 <th>
-                    <input type="submit" name="actionButton" value="Organization" class="btn btn-link" />
+                    @if (ViewData["sortField"].ToString().Contains("Organization"))
+                    {
+                        <input type="submit" style="color:gold" name="actionButton" value="Organization" class="btn btn-link" />
+                    }
+                    else
+                    {
+                        <input type="submit" name="actionButton" value="Organization" class="btn btn-link" />
+
+
+                    }
                 </th>
                 <th>
-                    <input type="submit" name="actionButton" value="City" class="btn btn-link" />
+                    @if (ViewData["sortField"].ToString().Contains("City"))
+                    { 
+                        <input type="submit" style="color:gold" name="actionButton" value="City" class="btn btn-link" />
+                    }
+                    else
+                    {
+                        <input type="submit"  name="actionButton" value="City" class="btn btn-link" />
+
+
+                    }
                 </th>
 
             </tr>

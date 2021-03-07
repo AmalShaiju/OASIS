@@ -22,7 +22,7 @@ namespace OASIS.Controllers
 
         // GET: Customers
         public async Task<IActionResult> Index(string SearchName, string SearchProject, string SearchOrg, string SearchEmail,
-            int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "project")
+            int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "Customer")
         {
             var customers = from p in _context.Customers
                 .Include(p => p.Projects)
@@ -83,7 +83,7 @@ namespace OASIS.Controllers
                         .OrderBy(p => p.Projects.FirstOrDefault(m => m.CustomerID == p.ID));
                 }
             }
-            else if (sortField == "Customer")
+            else if (sortField.Contains("Customer"))
             {
                 if (sortDirection == "asc")
                 {

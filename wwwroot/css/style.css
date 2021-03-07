@@ -89,7 +89,7 @@ a p {
 }
 
 .inner-flex-container-right {
-    width: 50%;
+    width: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -619,14 +619,21 @@ focusedin {
     .card-header button {
         width: 100%;
     }
+.bid-tab-link {
+    width: 50%;
+    height: 50%;
+}
 
+.bid-tab-link svg {
+    background: white;
+    width: 100%;
+    height: 100%;
+}
 
 /*Bid Create*/
-
-
-.bid-product-card{
-    margin-bottom:50px; 
-    width:100%;
+.bid-product-card {
+    margin-bottom: 50px;
+    width: 100%;
 }
 
 #pills-tab  {
@@ -635,6 +642,76 @@ focusedin {
 }
 
     
-
-
 /*Bid Create*/
+
+/*Bid Details Table*/
+
+.wrap-table100 {
+    width: 100%;
+}
+    .wrap-table100 table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        margin: 0 auto;
+    }
+
+        .wrap-table100 table thead tr {
+            height: 60px;
+            background: #7460ee
+        }
+
+    .wrap-table100 tbody tr {
+        font-family: OpenSans-Regular;
+        font-size: 15px;
+        color: #808080;
+        line-height: 4;
+        font-weight: unset;
+    }
+
+.table100-head th {
+    font-family: OpenSans-Regular;
+    font-size: 18px;
+    color: #fff;
+    line-height: 4;
+    font-weight: unset;
+}
+
+tbody tr:nth-child(even) {
+    background-color: rgba(116,96,238,0.1)
+}
+
+
+
+.column1 {
+    width: 160px;
+    padding-left: 40px;
+}
+
+.column2 {
+    width: 260px;
+}
+
+.column3 {
+    width: 245px;
+}
+
+.column4 {
+    width: 110px;
+    text-align: right;
+}
+
+.column5 {
+    width: 170px;
+    text-align: right;
+}
+
+.column6 {
+    width: 222px;
+    text-align: right;
+    padding-right: 62px;
+}
+    
+
+/*Bid Details Table*/

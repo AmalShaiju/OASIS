@@ -10,18 +10,10 @@
 
     <div class="flex-container">
 
-        <div class="inner-flex-container-left">
-            <div class="inner-flex-container-left-items">
-                <strong>Total Customers : <span> @Model.Count()</span></strong>
-            </div>
-            <div class="inner-flex-container-left-items">
-                <strong>Sorted by : <span>@ViewData["sortField"]</span> </strong>
-            </div>
-        </div>
 
         <div class="inner-flex-container-right">
 
-            <button type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" class="inner-flex-container-right-items" style=" width:30%; background-color:white">
+            <button type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" class="inner-flex-container-right-items" style=" width:15%; background-color:white">
 
                 <div style="width:60%;text-align:center">
                     <p>Filter</p>
@@ -40,12 +32,12 @@
 
             </button>
 
-            <a asp-action="Create" class="inner-flex-container-right-items" style=" width:48%; background-color:#27a9f8">
+            <a asp-action="Create" class="inner-flex-container-right-items" style=" width:24%; background-color:#27a9f8">
                 <div style="width:40%;text-align:right">
                     <svg style="width:50%; height:50%;" version="1.0" xmlns="http://www.w3.org/2000/svg"
                          width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
                          preserveAspectRatio="xMidYMid meet">
-                            
+
                         <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
                            fill="#f4f8f9" stroke="none">
                             <path d="M2360 5105 c-303 -68 -555 -275 -667 -547 -56 -138 -65 -188 -72
@@ -101,8 +93,8 @@ l-25 -37 -89 0 -90 0 -27 41 c-22 34 -24 42 -12 49 7 5 39 27 69 49 30 22 56
                 </div>
             </a>
 
-            <div class="inner-flex-container-right-items" id="moreOptions" style="width:10%;background-color: rgba(39,169,248,0.25)">
-                <a  asp-controller="roles" asp-action="Index" style="width:100%">
+            <div class="inner-flex-container-right-items" id="moreOptions" style="width:5%;background-color: rgba(39,169,248,0.25)">
+                <a asp-controller="roles" asp-action="Index" style="width:100%">
                     <svg style="width:100%; height:100%" version="1.0" xmlns="http://www.w3.org/2000/svg"
                          width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
                          preserveAspectRatio="xMidYMid meet">
@@ -202,11 +194,29 @@ l-25 -37 -89 0 -90 0 -27 41 c-22 34 -24 42 -12 49 7 5 39 27 69 49 30 22 56
         <thead>
             <tr>
                 <th>
-                    <input type="submit" name="actionButton" value="Employee" class="btn btn-link" />
+                    @if (ViewData["sortField"].ToString().Contains("Employee"))
+                    {
+                        <input type="submit" style="color:gold" name="actionButton" value="Employee (@Model.Count())" class="btn btn-link" /> 
+                    }
+                    else
+                    {
+                        <input type="submit" name="actionButton" value="Employee  (@Model.Count())" class="btn btn-link" /> 
+
+                    }
                 </th>
 
+
                 <th>
-                    <input type="submit" name="actionButton" value="Designation" class="btn btn-link" />
+                    @if (ViewData["sortField"].ToString() == "Designation")
+                    {
+
+                        <input type="submit"  style="color:gold" name="actionButton" value="Designation" class="btn btn-link" /> 
+                    }
+                    else
+                    {
+                        <input type="submit" name="actionButton" value="Designation" class="btn btn-link" />
+
+                    }
                 </th>
                 <th></th>
             </tr>
@@ -219,11 +229,16 @@ l-25 -37 -89 0 -90 0 -27 41 c-22 34 -24 42 -12 49 7 5 39 27 69 49 30 22 56
 
                     <td>
                         <div style="display:flex; align-items:center">
+
                             @Html.DisplayFor(modelItem => item.FullName)
+
 
                         </div>
                         <div>
+
+
                             @Html.DisplayFor(modelItem => item.Email)
+
 
                         </div>
 
@@ -324,7 +339,7 @@ l-25 -37 -89 0 -90 0 -27 41 c-22 34 -24 42 -12 49 7 5 39 27 69 49 30 22 56
                                     <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
                                          width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
                                          preserveAspectRatio="xMidYMid meet">
-                                       
+
                                         <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
                                            fill="#000000" stroke="none">
                                             <path d="M1770 5109 c-201 -26 -461 -104 -634 -191 -623 -313 -1042 -899
