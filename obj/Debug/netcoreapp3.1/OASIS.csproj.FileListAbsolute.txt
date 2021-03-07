@@ -1411,3 +1411,4 @@ C:\Users\Yasmeen\Desktop\NBD\OASIS\obj\Debug\netcoreapp3.1\staticwebassets\OASIS
 C:\Users\Yasmeen\Desktop\NBD\OASIS\obj\Debug\netcoreapp3.1\staticwebassets\OASIS.StaticWebAssets.xml
 C:\Users\Yasmeen\Desktop\NBD\OASIS\obj\Debug\netcoreapp3.1\OASIS.genruntimeconfig.cache
 C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_DetailsMenu.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_CreateMenu.cshtml.g.cs
