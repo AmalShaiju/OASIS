@@ -30,12 +30,12 @@
 
                     <div class="form-group col-5">
                         <label asp-for="Name" class="control-label"></label>
-                        <input asp-for="Name" placeholder="Outdoor Project " class="form-control" />
+                        <input asp-for="Name" tabindex="1" placeholder="Example: Outdoor Project " class="form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="form-group col-6">
                         <label asp-for="SiteAddressLineOne" class="control-label"></label>
-                        <input asp-for="SiteAddressLineOne" placeholder="123 Street Road" class="form-control" />
+                        <input asp-for="SiteAddressLineOne" tabindex="2" placeholder="Example: 123 Street Road" class="form-control" />
                         <span asp-validation-for="SiteAddressLineOne" class="text-danger"></span>
                     </div>
 
@@ -44,12 +44,14 @@
                 <div class="form-row col-10">
                     <div class="form-group col-5">
                         <label asp-for="CustomerID" class="control-label"></label>
-                        <select asp-for="CustomerID" class="form-control" asp-items="ViewBag.CustomerID"></select>
+                        <select asp-for="CustomerID" tabindex="3" class="form-control" asp-items="ViewBag.CustomerID">
+                            <option value="">Select an option</option>
+                        </select>
                     </div>
 
                     <div class="form-group col-6">
                         <label asp-for="SiteAddressLineTwo" class="control-label"></label>
-                        <input asp-for="SiteAddressLineTwo" placeholder="124 Apple Street " class="form-control" />
+                        <input asp-for="SiteAddressLineTwo" tabindex="4" placeholder="Example: 124 Apple Street " class="form-control" />
                         <span asp-validation-for="SiteAddressLineTwo" class="text-danger"></span>
                     </div>
 
@@ -62,7 +64,7 @@
                     </div>
                     <div class="form-group col-6">
                         <label asp-for="City" class="control-label"></label>
-                        <input asp-for="City" placeholder="Toronto" class="form-control" />
+                        <input asp-for="City" tabindex="5" placeholder="Example: Toronto" class="form-control" />
                         <span asp-validation-for="City" class="text-danger"></span>
                     </div>
 
@@ -76,7 +78,7 @@
                     </div>
                     <div class="form-group col-6">
                         <label asp-for="Province" class="control-label"></label>
-                        <input asp-for="Province" placeholder="Ontario" class="form-control" />
+                        <input asp-for="Province" tabindex="6" placeholder="Example: Ontario" class="form-control" />
                         <span asp-validation-for="Province" class="text-danger"></span>
                     </div>
 
@@ -89,7 +91,7 @@
                     </div>
                     <div class="form-group col-6">
                         <label asp-for="Country" class="control-label"></label>
-                        <input asp-for="Country" placeholder="Canada" class="form-control" />
+                        <input asp-for="Country" tabindex="7" placeholder="Example: Canada" class="form-control" />
                         <span asp-validation-for="Country" class="text-danger"></span>
                     </div>
 

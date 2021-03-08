@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Amals\\OneDrive - NC\\OASIS\\OASIS.csproj": {}
+    "C:\\OASIS\\OASIS.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Amals\\OneDrive - NC\\OASIS\\OASIS.csproj": {
+    "C:\\OASIS\\OASIS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Amals\\OneDrive - NC\\OASIS\\OASIS.csproj",
+        "projectUniqueName": "C:\\OASIS\\OASIS.csproj",
         "projectName": "OASIS",
-        "projectPath": "C:\\Users\\Amals\\OneDrive - NC\\OASIS\\OASIS.csproj",
+        "projectPath": "C:\\OASIS\\OASIS.csproj",
         "packagesPath": "C:\\Users\\Amals\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Amals\\OneDrive - NC\\OASIS\\obj\\",
+        "outputPath": "C:\\OASIS\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
