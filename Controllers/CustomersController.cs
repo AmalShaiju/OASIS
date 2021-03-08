@@ -175,7 +175,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,OrgName,FirstName,LastName,MiddleName,Position,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email")] Customer customer)
+        public async Task<IActionResult> Create([Bind("ID,OrgName,FirstName,LastName,MiddleName,Position,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email")] Customer customer, int employeeTrue, int projectTrue, int bidTrue)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
             try
@@ -187,6 +187,18 @@ namespace OASIS.Controllers
                     _context.Add(customer);
                     await _context.SaveChangesAsync();
                     //return RedirectToAction(nameof(Index));
+                    if (employeeTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Employees");
+                    }
+                    if (projectTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Projects", new { customerID = customer.ID });
+                    }
+                    if (bidTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Bids");
+                    }
                     return RedirectToAction("Details", new { customer.ID });
 
                 }

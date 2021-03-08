@@ -330,10 +330,14 @@ namespace OASIS.Controllers
         }
 
         // GET: Bids/Create
-        public IActionResult Create()
+        public IActionResult Create(int? projectID)
         {
             var bid = new Bid();
+            if (projectID != null)
+            {
+                bid.ProjectID = (int)projectID;
 
+            }
             PopulateDropDownLists(bid);
             PopuateSelectedProducts(bid);
             PopuateSelectedRoles(bid);

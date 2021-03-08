@@ -166,14 +166,21 @@ namespace OASIS.Controllers
         }
 
         // GET: Products/Create
-        public IActionResult Create(string returnURL)
+        public IActionResult Create(string returnURL, int? productTypeID)
         {
             Product product = new Product();
+            if (productTypeID != null)
+            {
+                product.ProductTypeID = (int)productTypeID;
+
+            }
+
             //Get the URL of the page that send us here
             if (String.IsNullOrEmpty(returnURL))
             {
                 returnURL = Request.Headers["Referer"].ToString();
             }
+
             ViewData["returnURL"] = returnURL;
 
             PopulateDropDownLists1(product);
@@ -185,7 +192,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Code,Description,size,Price,ProductTypeID")] Product product ,string returnURL)
+        public async Task<IActionResult> Create([Bind("ID,Code,Description,size,Price,ProductTypeID")] Product product ,string returnURL, int employeeTrue, int customerTrue, int projectTrue, int bidTrue)
         {
             ViewData["returnURL"] = returnURL;
 
@@ -195,6 +202,25 @@ namespace OASIS.Controllers
                 {
                     _context.Add(product);
                     await _context.SaveChangesAsync();
+
+                    if (employeeTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Employees");
+                    }
+                    if (customerTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Customers");
+                    }
+                    if (projectTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Projects");
+                    }
+                    if (bidTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Bids");
+                    }
+
+
                     //If no referrer then go back to index
                     if (String.IsNullOrEmpty(returnURL))
                     {

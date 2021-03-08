@@ -158,11 +158,15 @@ namespace OASIS.Controllers
         }
 
         // GET: Projects/Create
-        public IActionResult Create()
+        public IActionResult Create(int? customerID)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
-
             Project project = new Project();
+            if (customerID != null)
+            {
+                project.CustomerID = (int)customerID;
+
+            }
             PopulateDropDownLists(project);
             return View();
         }
@@ -172,7 +176,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,SiteAddressLineOne,SiteAddressLineTwo,City,Province,Country,CustomerID")] Project project)
+        public async Task<IActionResult> Create([Bind("ID,Name,SiteAddressLineOne,SiteAddressLineTwo,City,Province,Country,CustomerID")] Project project, int employeeTrue, int customerTrue, int bidTrue)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
 
@@ -183,6 +187,20 @@ namespace OASIS.Controllers
                     _context.Add(project);
                     await _context.SaveChangesAsync();
                     //return RedirectToAction(nameof(Index));
+                    if (employeeTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Employees");
+                    }
+                    if (customerTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Customers");
+                    }
+                   
+                    if (bidTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Bids", new {projectID = project.ID });
+                    }
+
                     return RedirectToAction("Details", new { project.ID });
                 }
             }

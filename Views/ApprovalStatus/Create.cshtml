@@ -10,7 +10,7 @@
     <div class="row">
         <div class="form-row col-10">
             <div style="width:35px; height:37px; align-self:center;">
-                <img style="width:100%; height:100%;" src="~/resources/add-user-full-fill.png" alt="Alternate Text" />
+                <svg style="width:100%;height:100%;" id="Capa_1" enable-background="new 0 0 512 512" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg"><g fill="#7460ee"><path d="m346.555 65.585-31.819 31.819 53.033 53.033 74.245-74.246-31.819-31.819-42.426 42.426zm74.246 10.606-53.032 53.033-31.82-31.82 10.606-10.606 21.214 21.213 42.426-42.426z"></path><path d="m464.528 89.904h15v15h-15z"></path><path d="m277.221 0v194.808h68.048l33.106 33.107 33.105-33.107h68.048v-74.904h-15v59.904h-59.26l-26.893 26.893-26.894-26.893h-59.26v-164.808h172.307v59.904h15v-74.904z"></path><path d="m389.72 294.5c0-20.678-16.822-37.5-37.5-37.5h-97.499v-34.899c0-20.739-3.378-35.177-10.629-45.438-8.637-12.221-22.332-18.161-41.871-18.161h-22.499v89.636l-17.444 46.362h-129.806v142.5h15v-127.5h59.999v172.499h-59.999v-30h-15v45h89.999v-15h56.623l45 30.001h120.853c20.553 0 37.273-16.822 37.273-37.5 0-10.724-4.532-20.403-11.772-27.244 11.485-6.417 19.272-18.691 19.272-32.756 0-12.254-5.909-23.153-15.026-30 9.117-6.847 15.026-17.746 15.026-30s-5.909-23.152-15.026-30c9.117-6.847 15.026-17.746 15.026-30zm-267.249 15h14.999v157.499h-14.999zm61.164 157.499h-31.165v-157.499h20.191l22.061-58.635v-77.364h7.499c27.336 0 37.5 13.172 37.5 48.6v72.4h15v-22.501h22.521c-4.719 6.272-7.521 14.065-7.521 22.5 0 12.254 5.909 23.153 15.026 30-9.117 6.847-15.026 17.746-15.026 30s5.909 23.153 15.026 30c-9.117 6.847-15.026 17.746-15.026 30 0 14.065 7.787 26.339 19.272 32.756-7.24 6.841-11.772 16.521-11.772 27.244 0 8.436 2.801 16.228 7.521 22.5h-56.106zm161.311 30.001h-30.226c-12.406 0-22.5-10.093-22.5-22.5s10.094-22.5 22.5-22.5h29.999c12.406 0 22.5 10.093 22.5 22.5s-9.991 22.5-22.273 22.5zm29.774-82.5c0 12.407-10.094 22.5-22.5 22.5h-44.999c-12.406 0-22.5-10.093-22.5-22.5s10.094-22.5 22.5-22.5h44.999c12.406 0 22.5 10.093 22.5 22.5zm0-60c0 12.407-10.094 22.5-22.5 22.5h-44.999c-12.406 0-22.5-10.093-22.5-22.5 0-12.406 10.094-22.5 22.5-22.5h44.999c12.406 0 22.5 10.094 22.5 22.5zm-22.5-37.5h-44.999c-12.406 0-22.5-10.093-22.5-22.5s10.094-22.5 22.5-22.5h44.999c12.406 0 22.5 10.094 22.5 22.5 0 12.407-10.094 22.5-22.5 22.5z"></path><path d="m77.471 324.5h15v15h-15z"></path><path d="m77.471 354.5h15v15h-15z"></path></g></svg>
             </div>
             <h2 style="margin-left: 14px; margin-top:5px; color:#7460ee">Add Approval Status</h2>
 
@@ -25,7 +25,7 @@
             </div>
           
             <div style="display:flex; margin-top:50px; margin-bottom:20px;">
-                <div style="width: 6%;margin-right:3.5%;" class="button-menu form-group btn btn-success">
+                <button type="submit" style="width: 6%;margin-right:3.5%;" class="button-menu form-group btn btn-success">
                     <div style="width:20px; height:22px;">
                         <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
 
@@ -53,9 +53,9 @@
 
                     </div>
 
-                </div>
+                </button>
 
-                <div style="width: 6%;" class="button-menu form-group btn btn-dark">
+                <button type="submit" style="width: 6%;" class="button-menu form-group btn btn-dark">
                     <div style="width:20px; height:22px;">
                         <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
 
@@ -76,7 +76,7 @@
                         </svg>
                     </div>
 
-                </div>
+                </button>
                 <div style="width:75%;">
                     <a href='@ViewData["returnURL"]' @*asp-action="Index"*@ style="float:right; width:10%; color:white" class="btn btn-info">
                         ←

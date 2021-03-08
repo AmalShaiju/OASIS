@@ -134,7 +134,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name")] ProductType productType ,string returnURL ,Byte[] RowVersion)
+        public async Task<IActionResult> Create([Bind("ID,Name")] ProductType productType ,string returnURL ,Byte[] RowVersion, int productTrue)
         {
             ViewData["returnURL"] = returnURL;
             try
@@ -148,6 +148,11 @@ namespace OASIS.Controllers
                     if(String.IsNullOrEmpty(returnURL))
                     {
                         return RedirectToAction(nameof(Index));
+                    }
+
+                    if (productTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Products", new {productTypeID = productType.ID });
                     }
                     else
                     {
