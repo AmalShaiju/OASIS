@@ -4,16 +4,25 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="inner-flex-container-right">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+
+    <a asp-action="Create" class="inner-flex-container-right-items" style=" width:24%; background-color:#27a9f8">
+        <div style="width:40%;text-align:right">
+            <svg style="width:50%;height:100%;" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg"><g id="outline" fill="white"><path d="m24 496h352a8 8 0 0 0 8-8v-68.686l23.514 23.514a39.393 39.393 0 0 1 10.112 16.489 39.757 39.757 0 0 0 38.34 28.683q1.418 0 2.855-.1a40.005 40.005 0 0 0 8.5-78.276 39.381 39.381 0 0 1 -16.488-10.111l-23.564-23.564a24.009 24.009 0 0 0 -.921-32.921l-7.03-7.03 18.343-18.343a8 8 0 0 0 0-11.314l-24-24a8 8 0 0 0 -11.314 0l-18.347 18.345v-196.686a8 8 0 0 0 -2.343-5.657l-80-80a8 8 0 0 0 -5.657-2.343h-272a8 8 0 0 0 -8 8v464a8 8 0 0 0 8 8zm438.8-71.026a24.006 24.006 0 1 1 -29.826 29.826 55.394 55.394 0 0 0 -14.146-23.281l-23.514-23.519 20.686-20.686 23.516 23.515a55.4 55.4 0 0 0 23.284 14.145zm-47.768-70.631a8.01 8.01 0 0 1 0 11.314l-41.376 41.373a8.007 8.007 0 0 1 -11.312 0l-7.03-7.03 52.686-52.686zm-7.032-55.03 12.687 12.687-100.687 100.687-12.687-12.687zm-104-256 52.687 52.687h-52.687zm-272-11.313h256v72a8 8 0 0 0 8 8h72v204.686l-77.657 77.657a8 8 0 0 0 0 11.314l24 24a8 8 0 0 0 11.314 0l18.343-18.343 7.029 7.029a23.925 23.925 0 0 0 16.971 7.018v54.639h-336z"></path><path d="m136 160h128a8 8 0 0 0 8-8v-24a8 8 0 0 0 -8-8h-8v-24h8a8 8 0 0 0 3.578-15.155l-64-32a8 8 0 0 0 -7.156 0l-64 32a8 8 0 0 0 3.578 15.155h8v24h-8a8 8 0 0 0 -8 8v24a8 8 0 0 0 8 8zm104-40h-16v-24h16zm-32-24v24h-16v-24zm-8-31.056 30.111 15.056h-60.222zm-40 31.056h16v24h-16zm-16 40h112v8h-112z"></path><path d="m48 176h304v16h-304z"></path><path d="m48 208h304v16h-304z"></path><path d="m48 240h304v16h-304z"></path><path d="m200 304a80 80 0 1 0 80 80 80.091 80.091 0 0 0 -80-80zm0 144a64 64 0 1 1 64-64 64.072 64.072 0 0 1 -64 64z"></path><path d="m184 404.687-18.343-18.344-11.314 11.314 24 24a8 8 0 0 0 11.314 0l56-56-11.314-11.314z"></path><path d="m48 272h304v16h-304z"></path></g></svg>
+        </div>
+
+        <div style="width:100%;text-align:center">
+            <p>Add Status</p>
+        </div>
+    </a>
+</div>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Status
             </th>
             <th></th>
         </tr>
@@ -26,7 +35,7 @@
             </td>
             <td style="padding-top:0px; position:relative" class="table-row-img">
                 <img id="@item.ID" src="~/resources/moreOptions.png" class="ddl-icon" onclick="divVisibility(@item.ID)" alt="Alternate Text" />
-                <div id="@item.ID-ddl" class="index-drop-down-menu" style="height:95px">
+                <div id="@item.ID-ddl" class="index-drop-down-menu" style="height:45px">
                     <a asp-action="Edit" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
                         <div class="index-drop-down-menu-flex-container-img">
 
@@ -110,29 +119,7 @@
                         <p>Edit</p>
                     </a>
 
-                    <a asp-action="Details" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
-                        <div class="index-drop-down-menu-flex-container-img">
-                            <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                                 width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
-                                 preserveAspectRatio="xMidYMid meet">
-
-                                <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                                   fill="#000000" stroke="none">
-                                    <path d="M1770 5109 c-201 -26 -461 -104 -634 -191 -623 -313 -1042 -899
-                                -1126 -1578 -15 -125 -12 -405 5 -529 64 -442 265 -841 582 -1157 224 -223
-                                468 -375 777 -483 610 -214 1321 -105 1852 285 l71 52 724 -725 c398 -399 742
-                                -738 763 -754 29 -22 50 -29 84 -29 44 0 48 3 149 103 100 101 103 105 103
-                                149 0 34 -7 55 -29 84 -16 21 -355 365 -754 763 l-725 724 52 71 c170 232 292
-                                507 350 788 138 671 -66 1356 -548 1841 -316 317 -715 518 -1157 582 -115 16
-                                -425 19 -539 4z m513 -444 c512 -81 970 -430 1188 -903 282 -612 156 -1316
-                                -321 -1792 -626 -627 -1626 -626 -2251 2 -238 240 -389 535 -446 870 -19 115
-                                -21 375 -4 478 63 371 216 669 472 916 277 266 611 416 999 448 74 6 269 -4
-                                363 -19z" />
-                                </g>
-                            </svg>
-                        </div>
-                        <p>Details</p>
-                    </a>
+                  
                 </div>
         </tr>
 }
