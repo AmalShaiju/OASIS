@@ -52,202 +52,232 @@
             <div class="col-12 col-md-8 row inner-details-container-two">
 
                 <div class="container">
+                    <div class="accordion" id="accordionExample">
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <h2 class="mb-0">
+                                    <button class="collapse-card" style=" color: #7460ee;" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        <div class="details-headings row" style="margin-bottom:0px;">
+                                            <div class="details-headings-img-container">
+                                                <img src="~/resources/user-full-fill.png" alt="Alternate Text" />
+                                            </div>
+                                            <div>
+                                                <h3>Personal Information </h3>
+                                            </div>
+                                            <div style=" margin-left: 1.5%; margin-top: 0.5%;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                    </button>
+                                </h2>
+                            </div>
 
-                    <div class="details-headings row" style="margin-bottom:0px;">
-                        <div class="details-headings-img-container">
-                            <img src="~/resources/user-full-fill.png" alt="Alternate Text" />
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label>
+                                                @Html.DisplayNameFor(model => model.FirstName)
+
+                                            </label>
+                                        </div>
+                                        <div class="col">
+                                            <p>
+                                                @Html.DisplayFor(model => model.FirstName)
+                                            </p>
+                                        </div>
+                                        <div class="w-100"></div>
+                                        <div class="col">
+                                            <label>
+                                                @Html.DisplayNameFor(model => model.LastName)
+
+                                            </label>
+                                        </div>
+                                        <div class="col">
+                                            <p>
+                                                @Html.DisplayFor(model => model.LastName)
+
+                                            </p>
+                                        </div>
+                                        <div class="w-100"></div>
+                                        <div class="col">
+                                            <label>
+                                                @Html.DisplayNameFor(model => model.MiddleName)
+
+                                            </label>
+                                        </div>
+                                        <div class="col">
+                                            <p>
+                                                @Html.DisplayFor(model => model.MiddleName)
+
+                                            </p>
+                                        </div>
+                                        <div class="w-100"></div>
+                                        <div class="col">
+                                            <label>
+                                                @Html.DisplayNameFor(model => model.OrgName)
+
+                                            </label>
+                                        </div>
+                                        <div class="col">
+                                            <p>
+                                                @Html.DisplayFor(model => model.OrgName)
+
+                                            </p>
+                                        </div>
+                                        <div class="w-100"></div>
+                                        <div class="col">
+                                            <label>
+                                                @Html.DisplayNameFor(model => model.Position)
+
+                                            </label>
+                                        </div>
+                                        <div class="col">
+                                            <p>
+                                                @Html.DisplayFor(model => model.Position)
+
+                                            </p>
+                                        </div>
+                                        <div class="w-100"></div>
+                                        <div class="col">
+                                            <label>
+
+                                                @Html.DisplayNameFor(model => model.Phone)
+                                            </label>
+                                        </div>
+                                        <div class="col">
+                                            <p>
+                                                @Html.DisplayFor(model => model.Phone)
+
+                                            </p>
+                                        </div>
+                                        <div class="w-100"></div>
+                                        <div class="col">
+                                            <label>
+                                                @Html.DisplayNameFor(model => model.Email)
+
+                                            </label>
+                                        </div>
+                                        <div class="col">
+                                            <p>
+                                                @Html.DisplayFor(model => model.Email)
+
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <h3>Personal Information</h3>
+                        <div class="card">
+                            <div class="card-header" id="headingTwo">
+                                <h2 class="mb-0">
+                                    <button class="collapse-card collapsed" style=" color: #7460ee; " type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                        <div class="details-headings row" style="margin-bottom:0px;">
+                                            <div class="details-headings-img-container">
+                                                <img src="~/resources/location.png" alt="Alternate Text" />
+                                            </div>
+                                            <div>
+                                                <h3>Address Information</h3>
+                                            </div>
+                                            <div style=" margin-left: 1.5%; margin-top: 0.5%;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+                                            </div>
+                                        </div>
+                                        <hr />
+
+                                    </button>
+                                </h2>
+                            </div>
+
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label>
+                                                @Html.DisplayNameFor(model => model.AddressLineOne)
+
+                                            </label>
+                                        </div>
+                                        <div class="col">
+                                            <p>
+                                                @Html.DisplayFor(model => model.AddressLineOne)
+
+                                            </p>
+                                        </div>
+                                        <div class="w-100"></div>
+                                        <div class="col">
+                                            <label>
+                                                @Html.DisplayNameFor(model => model.AddressLineTwo)
+
+                                            </label>
+                                        </div>
+                                        <div class="col">
+                                            <p>
+                                                @Html.DisplayFor(model => model.AddressLineTwo)
+
+                                            </p>
+                                        </div>
+                                        <div class="w-100"></div>
+                                        <div class="col">
+                                            <label>
+                                                @Html.DisplayNameFor(model => model.ApartmentNumber)
+
+                                            </label>
+                                        </div>
+                                        <div class="col">
+                                            <p>
+                                                @Html.DisplayFor(model => model.ApartmentNumber)
+
+                                            </p>
+                                        </div>
+                                        <div class="w-100"></div>
+                                        <div class="col">
+                                            <label>
+                                                @Html.DisplayNameFor(model => model.City)
+
+                                            </label>
+                                        </div>
+                                        <div class="col">
+                                            <p>
+                                                @Html.DisplayFor(model => model.City)
+
+                                            </p>
+                                        </div>
+                                        <div class="w-100"></div>
+                                        <div class="col">
+                                            <label>
+                                                @Html.DisplayNameFor(model => model.Province)
+
+                                            </label>
+                                        </div>
+                                        <div class="col">
+                                            <p>
+                                                @Html.DisplayFor(model => model.Province)
+
+                                            </p>
+                                        </div>
+                                        <div class="w-100"></div>
+                                        <div class="col">
+                                            <label>
+                                                @Html.DisplayNameFor(model => model.Country)
+
+                                            </label>
+                                        </div>
+                                        <div class="col">
+                                            <p>
+                                                @Html.DisplayFor(model => model.Country)
+
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <hr />
 
-
-                    <div class="row">
-                        <div class="col">
-                            <label>
-                                @Html.DisplayNameFor(model => model.FirstName)
-
-                            </label>
-                        </div>
-                        <div class="col">
-                            <p>
-                                @Html.DisplayFor(model => model.FirstName)
-                            </p>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col">
-                            <label>
-                                @Html.DisplayNameFor(model => model.LastName)
-
-                            </label>
-                        </div>
-                        <div class="col">
-                            <p>
-                                @Html.DisplayFor(model => model.LastName)
-
-                            </p>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col">
-                            <label>
-                                @Html.DisplayNameFor(model => model.MiddleName)
-
-                            </label>
-                        </div>
-                        <div class="col">
-                            <p>
-                                @Html.DisplayFor(model => model.MiddleName)
-
-                            </p>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col">
-                            <label>
-                                @Html.DisplayNameFor(model => model.OrgName)
-
-                            </label>
-                        </div>
-                        <div class="col">
-                            <p>
-                                @Html.DisplayFor(model => model.OrgName)
-
-                            </p>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col">
-                            <label>
-                                @Html.DisplayNameFor(model => model.Position)
-
-                            </label>
-                        </div>
-                        <div class="col">
-                            <p>
-                                @Html.DisplayFor(model => model.Position)
-
-                            </p>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col">
-                            <label>
-
-                                @Html.DisplayNameFor(model => model.Phone)
-                            </label>
-                        </div>
-                        <div class="col">
-                            <p>
-                                @Html.DisplayFor(model => model.Phone)
-
-                            </p>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col">
-                            <label>
-                                @Html.DisplayNameFor(model => model.Email)
-
-                            </label>
-                        </div>
-                        <div class="col">
-                            <p>
-                                @Html.DisplayFor(model => model.Email)
-
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="details-headings row" style="margin-bottom:0px;">
-                        <div class="details-headings-img-container">
-                            <img src="~/resources/location.png" alt="Alternate Text" />
-                        </div>
-                        <div>
-                            <h3>Address Information</h3>
-                        </div>
-                    </div>
-                    <hr />
-
-
-                    <div class="row">
-                        <div class="col">
-                            <label>
-                                @Html.DisplayNameFor(model => model.AddressLineOne)
-
-                            </label>
-                        </div>
-                        <div class="col">
-                            <p>
-                                @Html.DisplayFor(model => model.AddressLineOne)
-
-                            </p>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col">
-                            <label>
-                                @Html.DisplayNameFor(model => model.AddressLineTwo)
-
-                            </label>
-                        </div>
-                        <div class="col">
-                            <p>
-                                @Html.DisplayFor(model => model.AddressLineTwo)
-
-                            </p>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col">
-                            <label>
-                                @Html.DisplayNameFor(model => model.ApartmentNumber)
-
-                            </label>
-                        </div>
-                        <div class="col">
-                            <p>
-                                @Html.DisplayFor(model => model.ApartmentNumber)
-
-                            </p>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col">
-                            <label>
-                                @Html.DisplayNameFor(model => model.City)
-
-                            </label>
-                        </div>
-                        <div class="col">
-                            <p>
-                                @Html.DisplayFor(model => model.City)
-
-                            </p>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col">
-                            <label>
-                                @Html.DisplayNameFor(model => model.Province)
-
-                            </label>
-                        </div>
-                        <div class="col">
-                            <p>
-                                @Html.DisplayFor(model => model.Province)
-
-                            </p>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col">
-                            <label>
-                                @Html.DisplayNameFor(model => model.Country)
-
-                            </label>
-                        </div>
-                        <div class="col">
-                            <p>
-                                @Html.DisplayFor(model => model.Country)
-
-                            </p>
-                        </div>
                     </div>
                 </div>
-            </div>
+            </div>=
         </div>
     </div>
 

@@ -73,7 +73,20 @@ namespace OASIS.Controllers
                 }
             }
 
-            if (sortField == "Price")
+            else if (sortField == "Description")
+            {
+                if (sortDirection == "asc")
+                {
+                    products = products
+                        .OrderBy(p => p.Description);
+                }
+                else
+                {
+                    products = products
+                       .OrderByDescending(p => p.Description);
+                }
+            }
+            else if (sortField == "Price")
             {
                 if (sortDirection == "asc")
                 {
@@ -86,7 +99,7 @@ namespace OASIS.Controllers
                        .OrderByDescending(p => p.Price);
                 }
             }
-            
+
             else //Sort By product type:Name
             {
                 if (sortDirection == "asc")

@@ -32,12 +32,12 @@
 
                     <div class="form-group col-5">
                         <label asp-for="FirstName" class="control-label"></label>
-                        <input asp-for="FirstName" placeholder="John" class="form-control" />
+                        <input asp-for="FirstName" tabindex="1" placeholder="Example: John" class="form-control" />
                         <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                     <div class="form-group col-6">
                         <label asp-for="AddressLineOne" class="control-label"></label>
-                        <input asp-for="AddressLineOne" placeholder="123 Road Street" class="form-control" />
+                        <input asp-for="AddressLineOne" tabindex="2" placeholder="Example: 123 Road Street" class="form-control" />
                         <span asp-validation-for="AddressLineOne" class="text-danger"></span>
                     </div>
 
@@ -46,13 +46,13 @@
                 <div class="form-row col-10">
                     <div class="form-group col-5">
                         <label asp-for="MiddleName" class="control-label"></label>
-                        <input asp-for="MiddleName" placeholder="James" class="form-control" />
+                        <input asp-for="MiddleName" tabindex="3" placeholder="Example: James" class="form-control" />
                         <span asp-validation-for="MiddleName" class="text-danger"></span>
                     </div>
 
                     <div class="form-group col-6">
                         <label asp-for="AddressLineTwo" class="control-label"></label>
-                        <input asp-for="AddressLineTwo" placeholder="124 Apple Road" class="form-control" />
+                        <input asp-for="AddressLineTwo" tabindex="4" placeholder="Example: 124 Apple Road" class="form-control" />
                         <span asp-validation-for="AddressLineTwo" class="text-danger"></span>
                     </div>
 
@@ -62,13 +62,13 @@
 
                     <div class="form-group col-5">
                         <label asp-for="LastName" class="control-label"></label>
-                        <input asp-for="LastName" placeholder="Doe" class="form-control" />
+                        <input asp-for="LastName" tabindex="5" placeholder="Example: Doe" class="form-control" />
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
 
                     <div class="form-group col-6">
                         <label asp-for="ApartmentNumber" class="control-label"></label>
-                        <input asp-for="ApartmentNumber" placeholder=" Suite 1 / Suite A" class="form-control" />
+                        <input asp-for="ApartmentNumber" tabindex="6" placeholder="Example: Suite 1 / Suite A" class="form-control" />
                         <span asp-validation-for="ApartmentNumber" class="text-danger"></span>
                     </div>
 
@@ -77,12 +77,12 @@
 
                     <div class="form-group col-5">
                         <label asp-for="OrgName" class="control-label"></label>
-                        <input asp-for="OrgName" placeholder=" Company Name" class="form-control" />
+                        <input asp-for="OrgName" tabindex="7" placeholder="Example: Company Name" class="form-control" />
                         <span asp-validation-for="OrgName" class="text-danger"></span>
                     </div>
                     <div class="form-group col-6">
                         <label asp-for="City" class="control-label"></label>
-                        <input asp-for="City" placeholder="Welland" class="form-control" />
+                        <input asp-for="City" tabindex="8" placeholder="Example: Welland" class="form-control" />
                         <span asp-validation-for="City" class="text-danger"></span>
                     </div>
 
@@ -93,12 +93,12 @@
 
                     <div class="form-group col-5">
                         <label asp-for="Position" class="control-label"></label>
-                        <input asp-for="Position" placeholder="Manager" class="form-control" />
+                        <input asp-for="Position" tabindex="9" placeholder="Example: Manager" class="form-control" />
                         <span asp-validation-for="Position" class="text-danger"></span>
                     </div>
                     <div class="form-group col-6">
                         <label asp-for="Province" class="control-label"></label>
-                        <input asp-for="Province" placeholder="Ontario" class="form-control" />
+                        <input asp-for="Province" tabindex="10" placeholder="Example: Ontario" class="form-control" />
                         <span asp-validation-for="Province" class="text-danger"></span>
                     </div>
 
@@ -108,12 +108,12 @@
 
                     <div class="form-group col-5">
                         <label asp-for="Phone" class="control-label"></label>
-                        <input asp-for="Phone" placeholder="9051234567" class="form-control" />
+                        <input asp-for="Phone" tabindex="11" placeholder="Example: 9051234567" class="form-control" />
                         <span asp-validation-for="Phone" class="text-danger"></span>
                     </div>
                     <div class="form-group col-6">
                         <label asp-for="Country" class="control-label"></label>
-                        <input asp-for="Country" placeholder="Please Enter The Country Name" class="form-control" />
+                        <input asp-for="Country" tabindex="12" placeholder="Example: Please Enter The Country Name" class="form-control" />
                         <span asp-validation-for="Country" class="text-danger"></span>
                     </div>
 
@@ -123,7 +123,7 @@
 
                     <div class="form-group col-5">
                         <label asp-for="Email" class="control-label"></label>
-                        <input asp-for="Email" placeholder="email@address.com" class="form-control" />
+                        <input asp-for="Email" tabindex="13" placeholder="Example: email@address.com" class="form-control" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
@@ -131,48 +131,41 @@
                 </div>
             </div>
             <div style="display:flex; margin-top:50px; margin-bottom:20px;">
-                <div style="width:12%; margin-right:3.5%; " class="button-menu form-group btn btn-success">
+                <div style="width: 6%;margin-right:3.5%;" class="button-menu form-group btn btn-success">
                     <div style="width:20px; height:22px;">
-                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                             width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
-                             preserveAspectRatio="xMidYMid meet">
+                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
 
-                            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                               fill="white" stroke="none">
+                            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
                                 <path d="M66 5101 c-15 -10 -37 -32 -47 -47 -18 -28 -19 -96 -19 -2494 0
                                 -2398 1 -2466 19 -2494 10 -15 32 -37 47 -47 28 -18 96 -19 2494 -19 2398 0
                                 2466 1 2494 19 15 10 37 32 47 47 18 28 19 88 19 2095 l0 2066 -29 39 c-34 46
                                 -805 814 -841 838 -21 14 -64 16 -332 16 l-307 0 -3 -742 -3 -743 -22 -35
                                 c-12 -19 -37 -44 -55 -55 -33 -20 -51 -20 -1268 -20 l-1235 0 -35 22 c-19 12
                                 -44 37 -55 55 -19 32 -20 53 -23 776 l-3 742 -407 0 c-382 0 -409 -1 -436 -19z
-                                m3844 -3751 l0 -1050 -1350 0 -1350 0 0 1050 0 1050 1350 0 1350 0 0 -1050z" />
+                                m3844 -3751 l0 -1050 -1350 0 -1350 0 0 1050 0 1050 1350 0 1350 0 0 -1050z"></path>
                                 <path d="M1576 2081 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
                                 65 -19 984 -19 919 0 956 1 984 19 46 31 66 69 66 131 0 62 -20 100 -66 131
-                                -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z" />
+                                -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z"></path>
                                 <path d="M1576 1481 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
                                 65 -19 984 -19 919 0 956 1 984 19 46 31 66 69 66 131 0 62 -20 100 -66 131
-                                -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z" />
+                                -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z"></path>
                                 <path d="M1576 881 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
                                 65 -19 984 -19 919 0 956 1 984 19 46 31 66 69 66 131 0 62 -20 100 -66 131
-                                -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z" />
+                                -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z"></path>
                                 <path d="M1210 4470 l0 -650 1050 0 1050 0 0 650 0 650 -1050 0 -1050 0 0
-                                -650z" />
+                                -650z"></path>
                             </g>
                         </svg>
+
                     </div>
-                    <div>
-                        <input type="submit" value="Save" />
-                    </div>
+
                 </div>
 
-                <div style="width:17%" class="button-menu form-group btn btn-dark">
+                <div style="width: 6%;" class="button-menu form-group btn btn-dark">
                     <div style="width:20px; height:22px;">
-                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                             width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
-                             preserveAspectRatio="xMidYMid meet">
+                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
 
-                            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                               fill="white" stroke="none">
+                            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
                                 <path d="M2265 5109 c-108 -13 -301 -53 -409 -84 -338 -98 -691 -287 -957
                                 -513 l-106 -90 -214 215 c-248 250 -279 273 -358 273 -89 -1 -154 -38 -202
                                 -115 -18 -29 -19 -65 -19 -838 0 -706 2 -812 15 -845 20 -47 50 -78 100 -105
@@ -184,17 +177,15 @@
                                 100 -194 326 -364 788 -638 1275 -757 225 -55 318 -65 618 -65 300 0 385 9
                                 610 65 352 88 705 261 995 488 116 91 346 328 437 452 286 386 459 820 508
                                 1272 22 205 10 538 -25 728 -74 400 -234 763 -483 1100 -91 124 -321 361 -437
-                                452 -344 270 -755 453 -1190 530 -128 22 -575 33 -710 17z" />
+                                452 -344 270 -755 453 -1190 530 -128 22 -575 33 -710 17z"></path>
                             </g>
                         </svg>
                     </div>
-                    <div>
-                        <input type="reset" name="name" value="Revert Changes" />
-                    </div>
+
                 </div>
                 <div style="width:75%;">
-                    <a href='@ViewData["returnURL"]' @*asp-action="Index"*@ style="float:right; width:19%;" class="btn btn-info">
-                        &#8592; Back To List
+                    <a href='@ViewData["returnURL"]' @*asp-action="Index"*@ style="float:right; width:10%;" class="btn btn-info">
+                        ←
                     </a>
                 </div>
 

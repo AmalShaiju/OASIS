@@ -25,7 +25,7 @@ namespace OASIS.Controllers
         public async Task<IActionResult> Index(string SearchProjectName, string BidAmountBelow, string BidAmountAbove,
             string EstStartDateAbove, string EstStartDateBelow, string EstFinishDateBelow, string EstFinishDateAbove,
             int? BidstatusID, int? DesignerStatusID, int? ClientStatusID, int? DesignerID, int? SalesAsscID,
-            int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "Price")
+            int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "DateCreated")
         {
 
             var bids = from b in _context.Bids
@@ -160,19 +160,20 @@ namespace OASIS.Controllers
                 }
             }
 
-            if (sortField == "Amount")
+            if (sortField.Contains("DateCreated")) //Sort By product type:Name
             {
                 if (sortDirection == "asc")
                 {
                     bids = bids
-                        .OrderBy(p => p.EstAmount);
+                    .OrderBy(p => p.DateCreated);
                 }
                 else
                 {
                     bids = bids
-                       .OrderByDescending(p => p.EstAmount);
+                    .OrderByDescending(p => p.DateCreated);
                 }
             }
+
             else if (sortField == "Project")
             {
                 if (sortDirection == "asc")
@@ -216,17 +217,17 @@ namespace OASIS.Controllers
                 }
             }
 
-            else //Sort By product type:Name
+            else
             {
                 if (sortDirection == "asc")
                 {
                     bids = bids
-                    .OrderBy(p => p.DateCreated);
+                        .OrderBy(p => p.EstAmount);
                 }
                 else
                 {
                     bids = bids
-                    .OrderByDescending(p => p.DateCreated);
+                       .OrderByDescending(p => p.EstAmount);
                 }
             }
             //Set sort for next time
@@ -280,6 +281,50 @@ namespace OASIS.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["ClientStatus"] = _context.ApprovalStatuses.SingleOrDefault(p => p.ID == bid.Approval.ClientStatusID).Name;
+            ViewData["DesignerStatus"] = _context.ApprovalStatuses.SingleOrDefault(p => p.ID == bid.Approval.DesignerStatusID).Name;
+            var productIDs = _context.BidProducts.Where(p => p.BidID == bid.ID) ;
+            var labourIDs = _context.BidLabours.Where(p => p.BidID == bid.ID);
+
+            List<BidProductDetails> outputProducts = new List<BidProductDetails>();
+            List<BidLabourDetails> outputLabour = new List<BidLabourDetails>();
+            double productTotal = 0;
+            double LabourtTotal = 0;
+            foreach (var i in productIDs)
+            {
+                productTotal += _context.Products.SingleOrDefault(p => p.ID == i.ProductID).Price * i.Quantity;
+                outputProducts.Add(new BidProductDetails
+                {
+                    Code = _context.Products.SingleOrDefault(p => p.ID == i.ProductID).Code,
+                    Description = _context.Products.SingleOrDefault(p => p.ID == i.ProductID).Description,
+                    Price = Math.Round(_context.Products.SingleOrDefault(p => p.ID == i.ProductID).Price,2),
+                    Size = _context.Products.SingleOrDefault(p => p.ID == i.ProductID).size,
+                    Quantity = i.Quantity,
+                    Total = Math.Round(_context.Products.SingleOrDefault(p => p.ID == i.ProductID).Price * i.Quantity,2)
+                });
+            }
+
+            foreach (var i in labourIDs)
+            {
+                LabourtTotal += (double)_context.Roles.SingleOrDefault(p => p.ID == i.RoleID).LabourPricePerHr * i.Hours;
+
+                outputLabour.Add(new BidLabourDetails
+                {
+                    Name = _context.Roles.SingleOrDefault(p => p.ID == i.RoleID).Name,
+                    Price = Math.Round((double)_context.Roles.SingleOrDefault(p => p.ID == i.RoleID).LabourPricePerHr,2),
+                    Hours = i.Hours,
+                    Total = Math.Round((double)_context.Roles.SingleOrDefault(p => p.ID == i.RoleID).LabourPricePerHr * i.Hours,2 )
+
+                });
+            }
+
+            ViewData["Labour"] = outputLabour;
+            ViewData["products"] = outputProducts;
+            ViewData["productTotal"] = Math.Round(productTotal,2);
+            ViewData["LabourtTotal"] = Math.Round(LabourtTotal,2);
+
+
 
             return View(bid);
         }

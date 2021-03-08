@@ -244,11 +244,13 @@ td a {
     height: 60px;
     padding-top: 0px;
     margin-right: 10px;
+    cursor:pointer;
 }
 
     .table-row-img img {
         width: 100%;
         height: 100%;
+        
     }
 
 .index-drop-down-menu {
@@ -256,7 +258,7 @@ td a {
     background: rgba(39,169,248,0.4);
     position: absolute;
     width: 125px;
-    height: 140px;
+    height: 98px;
     right: 0%;
     top: 55%;
     margin-bottom: 100px;
@@ -614,19 +616,26 @@ focusedin {
     background-color:transparent;
 }
 .card-header h3 {
-    margin-top:2.5%;
+    margin-top:3.5%;
 }
     .card-header button {
         width: 100%;
     }
+.bid-tab-link {
+    width: 50%;
+    height: 50%;
+}
 
+.bid-tab-link svg {
+    background: white;
+    width: 100%;
+    height: 100%;
+}
 
 /*Bid Create*/
-
-
-.bid-product-card{
-    margin-bottom:50px; 
-    width:100%;
+.bid-product-card {
+    margin-bottom: 50px;
+    width: 100%;
 }
 
 #pills-tab  {
@@ -634,7 +643,88 @@ focusedin {
     margin-top:20px;
 }
 
+.nav-item a{
+    width:15%;
+}
+
+#pills-tab li{
+
+    width:15%;
+}
+#pills-tab li a {
+    width: 50%;
+}
+    #pills-tab li a svg {
+        fill:red
+    }
+/*Bid Create*/
+/*Bid Details Table*/
+.wrap-table100 {
+    width: 100%;
+}
+    .wrap-table100 table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        margin: 0 auto;
+    }
+
+        .wrap-table100 table thead tr {
+            height: 60px;
+            background: #7460ee
+        }
+
+    .wrap-table100 tbody tr {
+        font-family: OpenSans-Regular;
+        font-size: 15px;
+        color: #808080;
+        line-height: 4;
+        font-weight: unset;
+    }
+
+.table100-head th {
+    font-family: OpenSans-Regular;
+    font-size: 18px;
+    color: #fff;
+    line-height: 4;
+    font-weight: unset;
+}
+
+tbody tr:nth-child(even) {
+    background-color: rgba(116,96,238,0.1)
+}
+
+
+
+.column1 {
+    width: 160px;
+    padding-left: 40px;
+}
+
+.column2 {
+    width: 260px;
+}
+
+.column3 {
+    width: 245px;
+}
+
+.column4 {
+    width: 110px;
+    text-align: right;
+}
+
+.column5 {
+    width: 170px;
+    text-align: right;
+}
+
+.column6 {
+    width: 222px;
+    text-align: right;
+    padding-right: 62px;
+}
     
 
-
-/*Bid Create*/
+/*Bid Details Table*/

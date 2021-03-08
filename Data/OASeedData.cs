@@ -21,7 +21,7 @@ namespace OASIS.Data
                 serviceProvider.GetRequiredService<DbContextOptions<OasisContext>>()))
             {
                 string[] approvalStatus = new string[] { "Approved", "Disapproved", "RequiresApproval" };
-                string[] bidStatus = new string[] { "In Progress", "Stoped Due To Weather", "Completed", "Not Started" };
+                string[] bidStatus = new string[] { "In Progress", "Stoped Due To Weather", "Completed", "Not Started", "Waiting approval", "Design stage", "Approved by client", "Approved by NBD", "Needs revision", };
                 string[] productTypes = new string[] { "Plant Inventory", "Pottery Inventory", "Materials Inventory" };
                 string[] _firstName = new string[] { "Adam", "Alex", "Aaron", "Ben", "Carl", "Dan", "David", "Edward", "Fred", "Frank", "George", "Hal", "Hank", "Ike", "John", "Jack", "Joe", "Larry", "Monte", "Matthew", "Mark", "Nathan", "Otto", "Paul", "Peter", "Roger", "Roger", "Steve", "Thomas", "Tim", "Ty", "Victor", "Walter" };
                 string[] _lastName = new string[] { "Anderson", "Ashwoon", "Aikin", "Bateman", "Bongard", "Bowers", "Boyd", "Cannon", "Cast", "Deitz", "Dewalt", "Ebner", "Frick", "Hancock", "Haworth", "Hesch", "Hoffman", "Kassing", "Knutson", "Lawless", "Lawicki", "Mccord", "McCormack", "Miller", "Myers", "Nugent", "Ortiz", "Orwig", "Ory", "Paiser", "Pak", "Pettigrew", "Quinn", "Quizoz", "Ramachandran", "Resnick", "Sagar", "Schickowski", "Schiebel", "Sellon", "Severson", "Shaffer", "Solberg", "Soloman", "Sonderling", "Soukup", "Soulis", "Stahl", "Sweeney", "Tandy", "Trebil", "Trusela", "Trussel", "Turco", "Uddin", "Uflan", "Ulrich", "Upson", "Vader", "Vail", "Valente", "Van Zandt", "Vanderpoel", "Ventotla", "Vogal", "Wagle", "Wagner", "Wakefield", "Weinstein", "Weiss", "Woo", "Yang", "Yates", "Yocum", "Zeaser", "Zeller", "Ziegler", "Bauer", "Baxster", "Casal", "Cataldi", "Caswell", "Celedon", "Chambers", "Chapman", "Christensen", "Darnell", "Davidson", "Davis", "DeLorenzo", "Dinkins", "Doran", "Dugelman", "Dugan", "Duffman", "Eastman", "Ferro", "Ferry", "Fletcher", "Fietzer", "Hylan", "Hydinger", "Illingsworth", "Ingram", "Irwin", "Jagtap", "Jenson", "Johnson", "Johnsen", "Jones", "Jurgenson", "Kalleg", "Kaskel", "Keller", "Leisinger", "LePage", "Lewis", "Linde", "Lulloff", "Maki", "Martin", "McGinnis", "Mills", "Moody", "Moore", "Napier", "Nelson", "Norquist", "Nuttle", "Olson", "Ostrander", "Reamer", "Reardon", "Reyes", "Rice", "Ripka", "Roberts", "Rogers", "Root", "Sandstrom", "Sawyer", "Schlicht", "Schmitt", "Schwager", "Schutz", "Schuster", "Tapia", "Thompson", "Tiernan", "Tisler" };
@@ -120,129 +120,311 @@ namespace OASIS.Data
 
                 }
 
-                if (!context.Customers.Any())
-                {
-                    for (int i = 0; i < 50; i++)
-                    {
-
-                        var a = new Customer()
-                        {
-                            FirstName = _firstName[random.Next(_firstName.Count())],
-                            MiddleName = _firstName[random.Next(_firstName.Count())],
-                            LastName = _lastName[random.Next(_lastName.Count())],
-                            AddressLineOne = streetNumber[random.Next(streetNumber.Count())] + " " + streetName[random.Next(streetName.Count())],
-                            City = cityName[random.Next(cityName.Count())],
-                            Province = stateName[random.Next(stateName.Count())],
-                            Country = countryList[random.Next(countryList.Count())],
-                            Phone = 1234567890,
-                            Email = _firstName[random.Next(_firstName.Count())] + _lastName[random.Next(_lastName.Count())] + "@outlook.com",
-                            OrgName = _firstName[random.Next(_firstName.Count())] + " " + CompanyName[random.Next(CompanyName.Count())],
-                            Position = position[random.Next(position.Count())]
-                        };
-
-                        try
-                        {
-                            context.Add(a);
-                            context.SaveChanges();
-                        }
-                        catch
-                        {
-                            //do nothing
-                        }
-                    }
-
-                }
-
-
-
-                int[] CustomerIDs = context.Customers.Select(p => p.ID).ToArray();
-                //if (!context.Projects.Any())
+                //if (!context.Customers.Any())
                 //{
-                //    List<string> projectName = new List<string>();
-
-                //    foreach (int i in CustomerIDs)
+                //    for (int i = 0; i < 50; i++)
                 //    {
 
-                //        var project = _firstName[random.Next(_firstName.Count())] + "Project";
-
-                //        while (Checkarrray(projectName, project))
+                //        var a = new Customer()
                 //        {
-                //            project = _lastName[random.Next(_lastName.Count())] + "Project";
+                //            FirstName = _firstName[random.Next(_firstName.Count())],
+                //            MiddleName = _firstName[random.Next(_firstName.Count())],
+                //            LastName = _lastName[random.Next(_lastName.Count())],
+                //            AddressLineOne = streetNumber[random.Next(streetNumber.Count())] + " " + streetName[random.Next(streetName.Count())],
+                //            City = cityName[random.Next(cityName.Count())],
+                //            Province = stateName[random.Next(stateName.Count())],
+                //            Country = countryList[random.Next(countryList.Count())],
+                //            Phone = 1234567890,
+                //            Email = _firstName[random.Next(_firstName.Count())] + _lastName[random.Next(_lastName.Count())] + "@outlook.com",
+                //            OrgName = _firstName[random.Next(_firstName.Count())] + " " + CompanyName[random.Next(CompanyName.Count())],
+                //            Position = position[random.Next(position.Count())]
+                //        };
 
+                //        try
+                //        {
+                //            context.Add(a);
+                //            context.SaveChanges();
                 //        }
+                //        catch
+                //        {
+                //            //do nothing
+                //        }
+                //    }
 
-                //        projectName.Add(project);
+                //}
 
-                //        try { 
-                //        context.Projects.Add(
+
+
+                //int[] CustomerIDs = context.Customers.Select(p => p.ID).ToArray();
+                ////if (!context.Projects.Any())
+                ////{
+                ////    List<string> projectName = new List<string>();
+
+                ////    foreach (int i in CustomerIDs)
+                ////    {
+
+                ////        var project = _firstName[random.Next(_firstName.Count())] + "Project";
+
+                ////        while (Checkarrray(projectName, project))
+                ////        {
+                ////            project = _lastName[random.Next(_lastName.Count())] + "Project";
+
+                ////        }
+
+                ////        projectName.Add(project);
+
+                ////        try { 
+                ////        context.Projects.Add(
+                ////           new Project
+                ////           {
+                ////               Name = project,
+                ////               SiteAddressLineOne = "586 First Ave",
+                ////               City = "Welland",
+                ////               Province = "Ontario",
+                ////               Country = "Canada",
+                ////               CustomerID = random.Next(CustomerIDs.Count())
+                ////           });
+
+                ////            context.SaveChangesAsync();
+                ////        }
+                ////        catch
+                ////        {
+
+                ////        }
+
+                ////    }
+                ////}
+
+                ////if (!context.Projects.Any())
+                ////{
+                ////    List<string> projectName = new List<string>();
+                ////    foreach (int i in CustomerIDs)
+                ////    {
+                ////        for (int j = 0; j < 5; j++)
+                ////        {
+
+                ////            var project = _firstName[random.Next(_firstName.Count())] + "Project";
+
+                ////            while (Checkarrray(projectName, project))
+                ////            {
+                ////                project = _lastName[random.Next(_lastName.Count())] + "Project";
+
+                ////            }
+
+                ////            Project a = new Project()
+                ////            {
+                ////                Name = project,
+                ////                SiteAddressLineOne = streetNumber[random.Next(streetNumber.Count())] + " " + streetName[random.Next(streetName.Count())],
+                ////                City = cityName[random.Next(cityName.Count())],
+                ////                Province = stateName[random.Next(stateName.Count())],
+                ////                Country = countryList[random.Next(countryList.Count())],
+                ////                CustomerID = i
+
+
+                ////            };
+
+                ////            try
+                ////            {
+                ////                context.Add(a);
+                ////                context.SaveChanges();
+
+                ////            }
+                ////            catch
+                ////            {
+                ////                dod nothing repeat
+                ////            }
+                ////        }
+
+
+
+
+
+                ////    }
+                ////    context.SaveChanges();
+                ////}
+
+
+
+                //if (!context.Projects.Any())
+                //{
+                //    context.Projects.AddRange(
+                //    new Project
+                //    {
+                //        Name = "Alpha",
+                //        SiteAddressLineOne = "586 First Ave",
+                //        City = "Welland",
+                //        Province = "Ontario",
+                //        Country = "Canada",
+                //        CustomerID = random.Next(CustomerIDs.Count())
+                //    },
+                //    new Project
+                //    {
+                //        Name = "Beta",
+                //        SiteAddressLineOne = "586",
+                //        SiteAddressLineTwo = "First Ave",
+                //        City = "Welland",
+                //        Province = "Ontario",
+                //        Country = "Canada",
+                //        CustomerID = random.Next(CustomerIDs.Count())
+                //    },
+                //     new Project
+                //     {
+                //         Name = "Mall",
+                //         SiteAddressLineOne = "586 First Ave",
+                //         City = "Welland",
+                //         Province = "Ontario",
+                //         Country = "Canada",
+                //         CustomerID = random.Next(CustomerIDs.Count())
+                //     },
+                //     new Project
+                //     {
+                //         Name = "Seaway Mall",
+                //         SiteAddressLineOne = "586 First Ave",
+                //         City = "Welland",
+                //         Province = "Ontario",
+                //         Country = "Canada",
+                //         CustomerID = random.Next(CustomerIDs.Count())
+                //     },
+                //      new Project
+                //      {
+                //          Name = "Start up",
+                //          SiteAddressLineOne = "586 First Ave",
+                //          City = "Welland",
+                //          Province = "Ontario",
+                //          Country = "Canada",
+                //          CustomerID = random.Next(CustomerIDs.Count())
+                //      }, new Project
+                //      {
+                //          Name = "Walmart",
+                //          SiteAddressLineOne = "786 First Ave",
+                //          City = "Niagara",
+                //          Province = "Ontario",
+                //          Country = "Canada",
+                //          CustomerID = random.Next(CustomerIDs.Count())
+                //      },
+                //        new Project
+                //        {
+                //            Name = "BestBuy",
+                //            SiteAddressLineOne = "5096 First Ave",
+                //            City = "Hamilton",
+                //            Province = "Ontario",
+                //            Country = "Canada",
+                //            CustomerID = random.Next(CustomerIDs.Count())
+                //        },
+                //         new Project
+                //         {
+                //             Name = "Staples",
+                //             SiteAddressLineOne = "596 First Ave",
+                //             City = "St Chatehrines",
+                //             Province = "Ontario",
+                //             Country = "Canada",
+                //             CustomerID = random.Next(CustomerIDs.Count())
+                //         },
+                //          new Project
+                //          {
+                //              Name = "Burger King",
+                //              SiteAddressLineOne = "176 First Ave",
+                //              City = "Toronto",
+                //              Province = "Ontario",
+                //              Country = "Canada",
+                //              CustomerID = random.Next(CustomerIDs.Count())
+                //          },
                 //           new Project
                 //           {
-                //               Name = project,
+                //               Name = "Tim Hortons",
                 //               SiteAddressLineOne = "586 First Ave",
                 //               City = "Welland",
                 //               Province = "Ontario",
                 //               Country = "Canada",
                 //               CustomerID = random.Next(CustomerIDs.Count())
-                //           });
-
-                //            context.SaveChangesAsync();
-                //        }
-                //        catch
-                //        {
-
-                //        }
-
-                //    }
-                //}
-
-                //if (!context.Projects.Any())
-                //{
-                //    List<string> projectName = new List<string>();
-                //    foreach (int i in CustomerIDs)
-                //    {
-                //        for (int j = 0; j < 5; j++)
-                //        {
-
-                //            var project = _firstName[random.Next(_firstName.Count())] + "Project";
-
-                //            while (Checkarrray(projectName, project))
+                //           },
+                //            new Project
                 //            {
-                //                project = _lastName[random.Next(_lastName.Count())] + "Project";
-
+                //                Name = "A&W Canada",
+                //                SiteAddressLineOne = "586 First Ave",
+                //                City = "Welland",
+                //                Province = "Ontario",
+                //                Country = "Canada",
+                //                CustomerID = random.Next(CustomerIDs.Count())
                 //            }
-
-                //            Project a = new Project()
-                //            {
-                //                Name = project,
-                //                SiteAddressLineOne = streetNumber[random.Next(streetNumber.Count())] + " " + streetName[random.Next(streetName.Count())],
-                //                City = cityName[random.Next(cityName.Count())],
-                //                Province = stateName[random.Next(stateName.Count())],
-                //                Country = countryList[random.Next(countryList.Count())],
-                //                CustomerID = i
-
-
-                //            };
-
-                //            try
-                //            {
-                //                context.Add(a);
-                //                context.SaveChanges();
-
-                //            }
-                //            catch
-                //            {
-                //                dod nothing repeat
-                //            }
-                //        }
-
-
-
-
-
-                //    }
+                //      ); ;
                 //    context.SaveChanges();
                 //}
 
+
+                if (!context.Customers.Any())
+                {
+                    context.Customers.AddRange(
+                    new Customer
+                    {
+                        OrgName = "Wonderboy Media",
+                        FirstName = "Amal",
+                        MiddleName = "E",
+                        LastName = "Shaiju",
+                        Position = "CEO",
+                        AddressLineOne = "586 First Ave",
+                        City = "Welland",
+                        Province = "Ontario",
+                        Country = "Canada",
+                        Phone = 9055551212,
+                        Email = "Ashaiju1@outlook.com",
+                    },
+                    new Customer
+                    {
+                        OrgName = "Weiner Media",
+                        FirstName = "Jesline",
+                        LastName = "Stanly",
+                        Position = "CTO",
+                        AddressLineOne = "596",
+                        AddressLineTwo = "First Ave",
+                        ApartmentNumber = "Flat 96",
+                        City = "Welland",
+                        Province = "Ontario",
+                        Country = "Canada",
+                        Phone = 9055551213,
+                        Email = "Jstanly1@outlook.com",
+                    },
+                    new Customer
+                    {
+                        OrgName = "VAl Media",
+                        FirstName = "Val",
+                        LastName = "Garaskky",
+                        Position = "Manager",
+                        AddressLineOne = "598 First Ave",
+                        City = "Welland",
+                        Province = "Ontario",
+                        Country = "Canada",
+                        Phone = 9055551215,
+                        Email = "val1@outlook.com",
+                    },
+                    new Customer
+                    {
+                        OrgName = "Yasmeen Designers",
+                        FirstName = "Yasmeen",
+                        LastName = "Faager",
+                        Position = "CFO",
+                        AddressLineOne = "590 First Ave",
+                        City = "Welland",
+                        Province = "Ontario",
+                        Country = "Canada",
+                        Phone = 9055554213,
+                        Email = "Yasmmen1@outlook.com",
+                    },
+                    new Customer
+                    {
+                        OrgName = "Rufaro Media",
+                        FirstName = "Rufaro",
+                        Position = "CKO",
+                        LastName = "Gonsalaz",
+                        AddressLineOne = "580 First Ave",
+                        City = "Welland",
+                        Province = "Ontario",
+                        Country = "Canada",
+                        Phone = 9255554213,
+                        Email = "Rgonz1@outlook.com",
+                    });
+                    context.SaveChanges();
+                }
 
 
                 if (!context.Projects.Any())
@@ -255,7 +437,7 @@ namespace OASIS.Data
                         City = "Welland",
                         Province = "Ontario",
                         Country = "Canada",
-                        CustomerID = random.Next(CustomerIDs.Count())
+                        CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Amal").ID
                     },
                     new Project
                     {
@@ -265,7 +447,7 @@ namespace OASIS.Data
                         City = "Welland",
                         Province = "Ontario",
                         Country = "Canada",
-                        CustomerID = random.Next(CustomerIDs.Count())
+                        CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Jesline").ID
                     },
                      new Project
                      {
@@ -274,7 +456,7 @@ namespace OASIS.Data
                          City = "Welland",
                          Province = "Ontario",
                          Country = "Canada",
-                         CustomerID = random.Next(CustomerIDs.Count())
+                         CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Yasmeen").ID
                      },
                      new Project
                      {
@@ -283,7 +465,7 @@ namespace OASIS.Data
                          City = "Welland",
                          Province = "Ontario",
                          Country = "Canada",
-                         CustomerID = random.Next(CustomerIDs.Count())
+                         CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Val").ID
                      },
                       new Project
                       {
@@ -292,7 +474,7 @@ namespace OASIS.Data
                           City = "Welland",
                           Province = "Ontario",
                           Country = "Canada",
-                          CustomerID = random.Next(CustomerIDs.Count())
+                          CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Rufaro").ID
                       }, new Project
                       {
                           Name = "Walmart",
@@ -300,7 +482,7 @@ namespace OASIS.Data
                           City = "Niagara",
                           Province = "Ontario",
                           Country = "Canada",
-                          CustomerID = random.Next(CustomerIDs.Count())
+                          CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Amal").ID
                       },
                         new Project
                         {
@@ -309,7 +491,7 @@ namespace OASIS.Data
                             City = "Hamilton",
                             Province = "Ontario",
                             Country = "Canada",
-                            CustomerID = random.Next(CustomerIDs.Count())
+                            CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Jesline").ID
                         },
                          new Project
                          {
@@ -318,7 +500,7 @@ namespace OASIS.Data
                              City = "St Chatehrines",
                              Province = "Ontario",
                              Country = "Canada",
-                             CustomerID = random.Next(CustomerIDs.Count())
+                             CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Val").ID
                          },
                           new Project
                           {
@@ -327,7 +509,7 @@ namespace OASIS.Data
                               City = "Toronto",
                               Province = "Ontario",
                               Country = "Canada",
-                              CustomerID = random.Next(CustomerIDs.Count())
+                              CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Yasmeen").ID
                           },
                            new Project
                            {
@@ -336,7 +518,7 @@ namespace OASIS.Data
                                City = "Welland",
                                Province = "Ontario",
                                Country = "Canada",
-                               CustomerID = random.Next(CustomerIDs.Count())
+                               CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Rufaro").ID
                            },
                             new Project
                             {
@@ -345,11 +527,12 @@ namespace OASIS.Data
                                 City = "Welland",
                                 Province = "Ontario",
                                 Country = "Canada",
-                                CustomerID = random.Next(CustomerIDs.Count())
+                                CustomerID = context.Customers.FirstOrDefault(d => d.FirstName == "Amal").ID
                             }
-                      ); ;
+                      );
                     context.SaveChanges();
                 }
+
 
 
 
@@ -397,6 +580,51 @@ namespace OASIS.Data
                     },
                       new Product
                       {
+                          Code = "Cham",
+                          Description = "Chamaedorea",
+                          size = "15 Gal",
+                          Price = 499.00,
+                          ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Plant Inventory").ID
+
+                      },
+                       new Product
+                       {
+                           Code = "Cera",
+                           Description = "Ceratozamia molongo",
+                           size = "14 in",
+                           Price = 400.00,
+                           ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Plant Inventory").ID
+
+                       },
+                         new Product
+                         {
+                             Code = "Areca",
+                             Description = "arecastum coco",
+                             size = "15 gal",
+                             Price = 458.00,
+                             ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Plant Inventory").ID
+
+                         },
+                            new Product
+                            {
+                                Code = "Cary",
+                                Description = "caryota mitius",
+                                size = "15 gal",
+                                Price = 154.00,
+                                ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Plant Inventory").ID
+
+                            },
+                            new Product
+                            {
+                                Code = "Margi",
+                                Description = "marginata",
+                                size = "2 gal",
+                                Price = 75.00,
+                                ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Plant Inventory").ID
+
+                            },
+                      new Product
+                      {
                           Code = "TCP50",
                           Description = "t/c Pot",
                           size = "50 Gal",
@@ -404,6 +632,42 @@ namespace OASIS.Data
                           ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Pottery Inventory").ID
 
                       },
+                       new Product
+                       {
+                           Code = "GP50",
+                           Description = "Granite pot",
+                           size = "50 Gal",
+                           Price = 195.95,
+                           ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Pottery Inventory").ID
+
+                       },
+                         new Product
+                         {
+                             Code = "TCF03",
+                             Description = "t/c figurine-swan",
+                             size = "",
+                             Price = 45.00,
+                             ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Pottery Inventory").ID
+
+                         },
+                          new Product
+                          {
+                              Code = "MBBB30",
+                              Description = "Marble bird bath",
+                              size = "30 in",
+                              Price = 250.00,
+                              ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Pottery Inventory").ID
+
+                          },
+                           new Product
+                           {
+                               Code = "GFN48",
+                               Description = "Granite Fountain",
+                               size = "48 in",
+                               Price = 750.00,
+                               ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Pottery Inventory").ID
+
+                           },
                         new Product
                         {
                             Code = "CBRK5",
@@ -412,7 +676,72 @@ namespace OASIS.Data
                             Price = 15.95,
                             ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Materials Inventory").ID
 
-                        });
+                        },
+                          new Product
+                          {
+                              Code = "CRGRN",
+                              Description = "Crushed granite",
+                              size = "Yard",
+                              Price = 14.00,
+                              ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Materials Inventory").ID
+
+                          },
+                           new Product
+                           {
+                               Code = "PGRV",
+                               Description = "Pea gravel",
+                               size = "Yard",
+                               Price = 20.00,
+                               ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Materials Inventory").ID
+
+                           },
+                           new Product
+                           {
+                               Code = "GRVI",
+                               Description = "1 Gravel",
+                               size = "Yard",
+                               Price = 12.00,
+                               ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Materials Inventory").ID
+
+                           },
+                           new Product
+                           {
+                               Code = "TSOIL",
+                               Description = "Top soil",
+                               size = "Yard",
+                               Price = 20.00,
+                               ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Materials Inventory").ID
+
+                           },
+                             new Product
+                             {
+                                 Code = "PBLKG",
+                                 Description = "Patio block-gray",
+                                 size = "each",
+                                 Price = 0.84,
+                                 ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Materials Inventory").ID
+
+                             },
+                              new Product
+                              {
+                                  Code = "PBLKR",
+                                  Description = "Patio block-red",
+                                  size = "each",
+                                  Price = 0.84,
+                                  ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Materials Inventory").ID
+
+                              },
+
+
+                    new Product
+                    {
+                        Code = "Arenga",
+                        Description = "Arenga Pinnata",
+                        size = "15 Gal",
+                        Price = 516.00,
+                        ProductTypeID = context.ProductTypes.SingleOrDefault(p => p.Name == "Plant Inventory").ID
+
+                    });
                     context.SaveChanges();
                 }
 
@@ -451,7 +780,7 @@ namespace OASIS.Data
                             Bid a = new Bid()
                             {
                                 DateCreated = DateTime.Today.AddDays(random.Next(range)),
-                                EstAmount = random.Next(1000, 100000),
+                                EstAmount = 0,
                                 EstBidStartDate = DateTime.Today.AddDays(random.Next(range)),
                                 EstBidEndDate = DateTime.Today.AddDays(random.Next(range)),
                                 Comments = baconNotes[random.Next(5)],
@@ -482,7 +811,7 @@ namespace OASIS.Data
                     context.SaveChanges();
                 }
 
-              
+
 
 
                 int[] bidID = context.Bids.Select(s => s.ID).ToArray();
@@ -521,7 +850,6 @@ namespace OASIS.Data
                     }
                 }
 
-
                 if (!context.BidLabours.Any())
                 {
                     // loop over bid
@@ -554,6 +882,48 @@ namespace OASIS.Data
                             }
                         }
                     }
+                }
+
+
+                Thread.Sleep(2000);
+                //loop over bids 
+                if (context.BidProducts.Any())
+                {
+                    var allBids = context.Bids.ToList();
+
+                    //Loop over bids
+                    foreach (var i in allBids)
+                    {
+                        var allBidProducts = context.BidProducts.Where(p => p.BidID == i.ID);
+                        var allBidLabour = context.BidLabours.Where(p => p.BidID == i.ID);
+                        double total = 0;
+
+                        // loop over bid products
+                        foreach (var j in allBidProducts)
+                        {
+
+                            // Add bid price * qnty to total
+                            total += j.Product.Price * j.Quantity;
+                        }
+
+                        foreach (var j in allBidLabour)
+                        {
+                            total += (double)j.Role.LabourPricePerHr * j.Hours;
+                        }
+
+                        context.Bids.SingleOrDefault(p => p.ID == i.ID).EstAmount = total;
+
+                        try
+                        {
+                            context.SaveChangesAsync();
+                        }
+                        catch
+                        {
+                            // do nothing
+                        }
+
+                    }
+
                 }
 
 

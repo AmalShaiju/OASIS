@@ -4,81 +4,889 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
 
-<div>
-    <h4>Bid</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateCreated)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EstAmount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EstAmount)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProjectStartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProjectStartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProjectEndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProjectEndDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EstBidStartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EstBidStartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EstBidEndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EstBidEndDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Comments)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Comments)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Designer)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Designer.AddressLineOne)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SalesAsscociate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SalesAsscociate.AddressLineOne)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Project)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Project.City)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BidStatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BidStatus.Name)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div style="padding: 0% 10% 0% 3%;">
+    <div class="details-headings row" style="margin-bottom:2%;">
+        <div style="width:50px;height:50px; margin-top: 0.8%;">
+            <img src="~/resources/details.png" alt="Alternate Text" />
+        </div>
+        <div style="margin-left:1.8%;">
+            <h2 style="color:#7460ee">@Model.DateCreated.ToShortDateString()</h2>
+            <p>@Model.Project.Name  </p>
+        </div>
+        <partial name="_DetailsMenu">
+
+    </div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div>
+
+        <div class="row details-container">
+
+            <div style="margin-left:0px;" class="col-12 col-md-12 row inner-details-container-two">
+                <ul style="width:80%; height:5%;" class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                        <a style="color:#00adef" class="btn btn-light active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">
+                            <svg style="width:100%; height:100%" id="Layer_1" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"><g><path d="m459.261 429h-.261v-26.258c0-3.314-2.958-5.742-6.271-5.742h-261.799a5.725 5.725 0 0 0 -5.93 5.742v26.258h-.6a33.551 33.551 0 0 0 -33.4 33.83v9.108a5.756 5.756 0 0 0 5.639 6.062h330.381a6.036 6.036 0 0 0 5.98-6.062v-9.108a33.841 33.841 0 0 0 -33.739-33.83zm-262.261-20h250v20h-250zm284 57h-318v-3.17a21.539 21.539 0 0 1 21.4-21.83h274.861a21.827 21.827 0 0 1 21.739 21.83z"></path><path d="m182.244 276.23a6 6 0 0 0 8.485 0l19.876-19.875a6 6 0 0 0 0-8.485l-7.331-7.331 18.126-18.121 27.05 27.051-1.779 1.78a6 6 0 0 0 0 8.485l10.852 10.853-3.305 3.305a6 6 0 0 0 0 8.485l13.21 13.209a18.806 18.806 0 0 0 26.6 0l79.595-79.594a18.83 18.83 0 0 0 0-26.6l-13.21-13.21a6 6 0 0 0 -8.485 0l-3.305 3.305-10.852-10.853a6 6 0 0 0 -8.486 0l-1.78 1.781-84.732-84.727 1.78-1.78a6 6 0 0 0 0-8.485l-10.853-10.853 3.305-3.3a6 6 0 0 0 0-8.485l-13.205-13.215a18.832 18.832 0 0 0 -26.6 0l-79.594 79.6a18.83 18.83 0 0 0 0 26.6l13.21 13.209a6 6 0 0 0 8.485 0l3.305-3.3 10.852 10.853a6 6 0 0 0 8.485 0l1.781-1.78 27.051 27.051-18.122 18.121-7.33-7.331a6 6 0 0 0 -8.486 0l-19.875 19.876a6 6 0 0 0 0 8.485l2.577 2.577-108.194 96.246a36.879 36.879 0 0 0 24.474 64.432c.37 0 .743 0 1.115-.016a36.529 36.529 0 0 0 26.477-12.35l96.256-108.189zm173.922-87.319 8.967 8.967a6.817 6.817 0 0 1 0 9.629l-79.595 79.593a6.809 6.809 0 0 1 -9.629 0l-8.967-8.967zm-22.643-7.548 6.61 6.61-74.133 74.127-6.609-6.61zm-198.469-35.117-8.967-8.967a6.809 6.809 0 0 1 0-9.629l79.595-79.594a6.809 6.809 0 0 1 9.629 0l8.966 8.966zm22.643 7.548-6.61-6.61 74.128-74.128 6.61 6.61zm14.508 2.462 62.083-62.082 84.727 84.726-62.083 62.082zm27.051 44.022 13.654 13.654-18.121 18.122-13.654-13.654zm-38.18 15.034 36.8 36.8-11.39 11.39-36.8-36.8zm-86.631 158.555a24.879 24.879 0 1 1 -35.123-35.125l108.712-96.721 23.134 23.133z"></path><path d="m235.9 114.913a6 6 0 0 0 -8.485 8.485l5.656 5.657a6 6 0 1 0 8.486-8.486z"></path><path d="m290.345 183.845a6 6 0 0 0 4.242-10.243l-40.3-40.305a6 6 0 0 0 -8.486 8.486l40.3 40.3a5.979 5.979 0 0 0 4.244 1.762z"></path></g></svg>
+
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="color:#00adef" class="btn btn-light" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">
+                            <svg style="width:100%;height:100%;" id="Layer_1" enable-background="new 0 0 512.002 512.002" height="512" viewBox="0 0 512.002 512.002" width="512" xmlns="http://www.w3.org/2000/svg"><g><path d="m511.994 139.957c-.042-2.496-1.369-4.876-3.481-6.213l-158.6-100.428c-.777-.492-1.638-.837-2.54-1.018l-160.543-32.14c-7.955-1.596-12.335 9.352-5.484 13.69l71.847 45.494-57.841 17.166-48.998-31.026c-2.484-1.573-5.659-1.549-8.12.061l-59.406 38.886c-7.853 5.14.005 17.925 8.215 12.551l55.367-36.241 144.679 91.612-121.055 79.237-144.679-91.612 32.581-21.326c7.853-5.14-.005-17.925-8.215-12.551l-42.327 27.706c-2.082 1.361-3.393 3.79-3.393 6.275v264.004c0 2.57 1.316 4.961 3.488 6.336l158.601 100.428c1.796 1.136 4.112 1.46 6.146.854l274.923-81.589c8.998-2.67 5.139-17.174-4.268-14.38l-265.29 78.73v-248.358l323.399-95.976v248.357l-20.479 6.078c-8.997 2.67-5.141 17.17 4.268 14.38l25.846-7.67c3.183-.944 5.366-3.87 5.366-7.19v-264.004c0-.041-.006-.082-.007-.123zm-168.93-93.223 123.271 78.057-119.54-23.933-123.271-78.057zm-38.109 99.176-92.779-58.748 57.841-17.166 69.929 44.28c.777.492 1.638.837 2.54 1.018l130.882 26.203-260.347 77.263 92.029-60.238c2.134-1.397 3.412-3.782 3.393-6.332s-1.333-4.916-3.488-6.28zm-289.954 7.796 143.601 90.929v246.25l-143.601-90.928z"></path><path d="m466.654 293.54c-1.898-1.416-4.354-1.852-6.623-1.176l-253.737 75.506c-3.18.946-5.361 3.87-5.361 7.188v73.185c0 2.368 1.118 4.597 3.016 6.012 1.311.978 2.887 1.488 4.484 1.488.716 0 1.436-.103 2.139-.312l253.737-75.506c3.18-.946 5.361-3.87 5.361-7.188v-73.185c0-2.368-1.118-4.597-3.016-6.012zm-11.984 73.604-238.737 71.042v-57.535l238.737-71.042z"></path><path d="m291.679 405.335c4.142 0 7.5-3.358 7.5-7.5v-21.253c0-9.385-15-9.813-15 0v21.253c0 4.143 3.358 7.5 7.5 7.5z"></path><path d="m391.21 374.829c4.142 0 7.5-3.358 7.5-7.5v-21.254c0-9.385-15-9.813-15 0v21.254c0 4.142 3.358 7.5 7.5 7.5z"></path><path d="m413.346 368.829c4.142 0 7.5-3.358 7.5-7.5v-21.254c0-9.385-15-9.813-15 0v21.254c0 4.142 3.358 7.5 7.5 7.5z"></path><path d="m435.482 362.829c4.142 0 7.5-3.358 7.5-7.5v-21.254c0-9.385-15-9.813-15 0v21.254c0 4.142 3.358 7.5 7.5 7.5z"></path><path d="m235.335 422.099c4.142 0 7.5-3.358 7.5-7.5v-21.253c0-9.385-15-9.813-15 0v21.253c0 4.142 3.358 7.5 7.5 7.5z"></path><path d="m257.013 416.765c4.142 0 7.5-3.358 7.5-7.5v-21.253c0-9.385-15-9.813-15 0v21.253c0 4.142 3.358 7.5 7.5 7.5z"></path><path d="m330.843 393.227c4.142 0 7.5-3.358 7.5-7.5v-21.253c0-9.385-15-9.813-15 0v21.253c0 4.142 3.358 7.5 7.5 7.5z"></path><path d="m352.046 387.797c4.142 0 7.5-3.358 7.5-7.5v-21.253c0-9.385-15-9.813-15 0v21.253c0 4.142 3.358 7.5 7.5 7.5z"></path></g></svg>
+
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="color:#00adef" class="btn btn-light" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">
+                            <svg style="width:100%; height:100%;" version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+                                <metadata>
+                                    Created by potrace 1.16, written by Peter Selinger 2001-2019
+                                </metadata>
+                                <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="red" stroke="none">
+                                    <path d="M1654 5109 c-86 -25 -181 -122 -204 -210 -7 -25 -10 -133 -8 -282 3
+-235 4 -243 26 -275 13 -18 41 -41 62 -52 38 -19 61 -20 654 -20 410 0 624 4
+643 11 38 14 83 57 99 96 8 18 14 66 14 108 l0 75 401 0 401 0 29 -29 c24 -24
+29 -38 29 -76 l0 -46 -37 8 c-21 4 -92 7 -158 6 -270 -1 -497 -101 -686 -301
+-128 -135 -203 -279 -241 -460 -28 -136 -21 -328 17 -457 98 -335 361 -588
+696 -670 82 -20 288 -30 357 -17 l52 9 0 -1153 0 -1154 -29 -32 -29 -33 -1514
+-3 c-832 -2 -1533 0 -1557 3 -26 4 -53 16 -67 30 l-24 24 0 2149 c0 2101 0
+2150 19 2173 19 24 19 24 310 29 284 5 291 6 313 27 31 31 30 89 -2 115 -22
+18 -40 19 -330 16 l-307 -3 -49 -30 c-33 -21 -60 -48 -81 -85 l-33 -54 0
+-2182 c0 -2380 -4 -2212 56 -2283 15 -18 48 -43 75 -56 l48 -25 1588 0 c1516
+0 1590 1 1628 19 48 22 97 70 122 120 17 34 18 104 21 1233 l2 1198 64 29
+c131 59 271 174 363 296 108 143 181 346 184 512 2 62 -1 69 -26 91 -22 18
+-35 22 -59 18 -52 -11 -65 -33 -77 -131 -22 -197 -107 -366 -253 -502 -156
+-147 -365 -222 -581 -210 -117 7 -191 25 -295 73 -160 74 -296 208 -376 369
+-57 116 -75 186 -81 316 -12 239 75 452 251 616 110 102 217 160 367 199 86
+23 261 23 354 0 70 -18 275 -110 275 -124 0 -4 -112 -119 -250 -257 l-249
+-249 -135 132 c-153 151 -188 171 -287 172 -147 0 -248 -101 -248 -250 -1 -97
+18 -123 277 -383 130 -131 255 -248 277 -260 57 -30 174 -30 230 0 23 12 247
+230 517 500 515 516 517 519 518 623 0 107 -77 213 -176 240 -53 15 -149 9
+-190 -13 -16 -8 -59 -42 -95 -76 l-67 -61 -81 50 c-46 27 -98 54 -117 60 l-34
+12 0 75 c0 98 -15 144 -64 200 -74 84 -64 83 -537 83 l-416 0 -5 83 c-6 109
+-34 172 -104 236 -90 83 -77 81 -648 80 -276 0 -515 -5 -532 -10z m990 -149
+c45 -10 81 -34 110 -74 20 -26 21 -41 21 -239 l0 -212 -587 -3 -588 -2 0 206
+c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
+-21 29 -39 29 -63 0 -30 -40 -73 -475 -508 -471 -471 -475 -475 -515 -475 -40
+0 -46 6 -275 236 -206 206 -235 239 -235 266 0 48 43 93 88 93 33 0 49 -13
+208 -170 169 -168 172 -170 215 -170 l43 0 411 410 c374 374 414 410 444 410
+23 0 41 -9 62 -29z"></path>
+                                    <path d="M841 3984 c-24 -30 -26 -52 -9 -89 18 -41 64 -47 349 -43 252 3 259
+4 281 25 28 28 29 84 3 113 -17 19 -28 20 -311 20 l-293 0 -20 -26z"></path>
+                                    <path d="M922 3270 c-113 -57 -166 -144 -166 -275 -1 -65 4 -89 24 -130 113
+-232 437 -234 557 -3 23 45 27 65 27 133 0 131 -53 218 -166 275 -52 26 -72
+30 -138 30 -66 0 -86 -4 -138 -30z m216 -152 c34 -21 71 -84 72 -122 1 -67
+-80 -146 -150 -146 -50 0 -107 37 -130 85 -25 51 -25 69 0 122 35 79 133 108
+208 61z"></path>
+                                    <path d="M1495 3215 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 489
+0 489 0 21 23 c32 34 30 89 -4 116 -26 21 -36 21 -511 21 l-484 0 -24 -25z"></path>
+                                    <path d="M1495 2865 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 484
+0 c475 0 485 0 511 21 34 27 37 88 4 119 -21 20 -32 20 -510 20 l-489 0 -24
+-25z"></path>
+                                    <path d="M957 2366 c-135 -49 -221 -189 -202 -330 14 -108 70 -187 167 -236
+52 -26 72 -30 138 -30 66 0 86 4 139 31 68 34 130 101 153 166 21 63 16 180
+-12 238 -33 68 -99 129 -166 154 -64 24 -160 27 -217 7z m174 -168 c25 -14 46
+-37 59 -63 25 -51 25 -69 1 -121 -53 -117 -220 -111 -266 10 -49 128 86 242
+206 174z"></path>
+                                    <path d="M1495 2305 c-33 -32 -34 -83 -2 -113 l23 -22 651 0 652 0 20 26 c28
+36 27 79 -4 109 l-24 25 -646 0 -646 0 -24 -25z"></path>
+                                    <path d="M1495 1955 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 339
+0 339 0 21 23 c30 32 29 87 -1 115 -23 22 -28 22 -361 22 l-337 0 -24 -25z"></path>
+                                    <path d="M962 1455 c-77 -24 -134 -75 -179 -160 -23 -42 -27 -63 -27 -130 -1
+-68 3 -89 27 -137 112 -228 442 -229 554 0 23 46 27 70 27 132 1 99 -27 163
+-101 230 -82 75 -193 99 -301 65z m157 -160 c41 -20 79 -70 87 -110 9 -47 -29
+-123 -74 -149 -96 -55 -217 15 -217 126 0 104 116 179 204 133z"></path>
+                                    <path d="M1515 1409 c-51 -28 -61 -90 -22 -127 23 -22 24 -22 515 -22 479 0
+493 1 512 20 28 28 27 90 -1 116 -20 18 -45 19 -503 21 -338 2 -487 -1 -501
+-8z"></path>
+                                    <path d="M1513 1060 c-47 -19 -58 -92 -20 -128 l23 -22 651 0 652 0 20 26 c26
+33 27 75 2 105 l-19 24 -644 2 c-359 1 -653 -2 -665 -7z"></path>
+                                </g>
+                            </svg>
+                        </a>
+                    </li>
+                   
+                </ul>
+
+                <div class="container" style="margin-left:0">
+                    <div class="col-md-12 tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                            <div class="accordion" id="accordionExample">
+                                <div class="card">
+                                    <div class="card-header" id="headingOne">
+                                        <h2 class="mb-0">
+                                            <button class="collapse-card" style=" color: #7460ee;" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                <div class="details-headings row" style="margin-bottom:0px;">
+                                                    <div class="details-headings-img-container">
+
+
+                                                        <svg style="width:100%;height:100%;" id="Layer_1" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"><g fill="#7460ee"><path d="m459.261 429h-.261v-26.258c0-3.314-2.958-5.742-6.271-5.742h-261.799a5.725 5.725 0 0 0 -5.93 5.742v26.258h-.6a33.551 33.551 0 0 0 -33.4 33.83v9.108a5.756 5.756 0 0 0 5.639 6.062h330.381a6.036 6.036 0 0 0 5.98-6.062v-9.108a33.841 33.841 0 0 0 -33.739-33.83zm-262.261-20h250v20h-250zm284 57h-318v-3.17a21.539 21.539 0 0 1 21.4-21.83h274.861a21.827 21.827 0 0 1 21.739 21.83z" /><path d="m182.244 276.23a6 6 0 0 0 8.485 0l19.876-19.875a6 6 0 0 0 0-8.485l-7.331-7.331 18.126-18.121 27.05 27.051-1.779 1.78a6 6 0 0 0 0 8.485l10.852 10.853-3.305 3.305a6 6 0 0 0 0 8.485l13.21 13.209a18.806 18.806 0 0 0 26.6 0l79.595-79.594a18.83 18.83 0 0 0 0-26.6l-13.21-13.21a6 6 0 0 0 -8.485 0l-3.305 3.305-10.852-10.853a6 6 0 0 0 -8.486 0l-1.78 1.781-84.732-84.727 1.78-1.78a6 6 0 0 0 0-8.485l-10.853-10.853 3.305-3.3a6 6 0 0 0 0-8.485l-13.205-13.215a18.832 18.832 0 0 0 -26.6 0l-79.594 79.6a18.83 18.83 0 0 0 0 26.6l13.21 13.209a6 6 0 0 0 8.485 0l3.305-3.3 10.852 10.853a6 6 0 0 0 8.485 0l1.781-1.78 27.051 27.051-18.122 18.121-7.33-7.331a6 6 0 0 0 -8.486 0l-19.875 19.876a6 6 0 0 0 0 8.485l2.577 2.577-108.194 96.246a36.879 36.879 0 0 0 24.474 64.432c.37 0 .743 0 1.115-.016a36.529 36.529 0 0 0 26.477-12.35l96.256-108.189zm173.922-87.319 8.967 8.967a6.817 6.817 0 0 1 0 9.629l-79.595 79.593a6.809 6.809 0 0 1 -9.629 0l-8.967-8.967zm-22.643-7.548 6.61 6.61-74.133 74.127-6.609-6.61zm-198.469-35.117-8.967-8.967a6.809 6.809 0 0 1 0-9.629l79.595-79.594a6.809 6.809 0 0 1 9.629 0l8.966 8.966zm22.643 7.548-6.61-6.61 74.128-74.128 6.61 6.61zm14.508 2.462 62.083-62.082 84.727 84.726-62.083 62.082zm27.051 44.022 13.654 13.654-18.121 18.122-13.654-13.654zm-38.18 15.034 36.8 36.8-11.39 11.39-36.8-36.8zm-86.631 158.555a24.879 24.879 0 1 1 -35.123-35.125l108.712-96.721 23.134 23.133z" /><path d="m235.9 114.913a6 6 0 0 0 -8.485 8.485l5.656 5.657a6 6 0 1 0 8.486-8.486z" /><path d="m290.345 183.845a6 6 0 0 0 4.242-10.243l-40.3-40.305a6 6 0 0 0 -8.486 8.486l40.3 40.3a5.979 5.979 0 0 0 4.244 1.762z" /></g></svg>
+                                                    </div>
+                                                    <div>
+                                                        <h3> Bid Information </h3>
+                                                    </div>
+                                                    <div style=" margin-left: 1.5%; margin-top: 0.5%;">
+
+                                                        <svg style="width:100%;height:100%;" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                            </button>
+                                        </h2>
+                                    </div>
+
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label>
+                                                        @Html.DisplayNameFor(model => model.DateCreated)
+
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.DateCreated)
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+
+                                                        @Html.DisplayNameFor(model => model.BidStatusID)
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.BidStatus.Name)
+
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+                                                        @Html.DisplayNameFor(model => model.EstAmount)
+
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.EstAmount)
+
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+                                                        @Html.DisplayNameFor(model => model.EstBidStartDate)
+
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.EstBidStartDate)
+
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+                                                        @Html.DisplayNameFor(model => model.EstBidEndDate)
+
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.EstBidEndDate)
+
+                                                    </p>
+                                                </div>
+
+                                                @if (Model.ProjectStartDate != null)
+                                                {
+                                                    <div class="w-100"></div>
+                                                    <div class="col">
+                                                        <label>
+                                                            @Html.DisplayNameFor(model => model.ProjectStartDate)
+
+                                                        </label>
+                                                    </div>
+                                                    <div class="col">
+                                                        <p>
+                                                            @Html.DisplayFor(model => model.ProjectStartDate)
+
+                                                        </p>
+                                                    </div>
+                                                }
+
+                                                @if (Model.ProjectEndDate != null)
+                                                {
+                                                    <div class="w-100"></div>
+                                                    <div class="col">
+                                                        <label>
+
+                                                            @Html.DisplayNameFor(model => model.ProjectEndDate)
+                                                        </label>
+                                                    </div>
+                                                    <div class="col">
+                                                        <p>
+                                                            @Html.DisplayFor(model => model.ProjectEndDate)
+
+                                                        </p>
+                                                    </div>
+                                                }
+
+
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+
+                                                        Designer
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.Designer.FullName)
+
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+
+                                                        Sales Asscociate
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.SalesAsscociate.FullName)
+
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+                                                        Notes
+                                                    </label>
+                                                </div>
+                                                @if (Model.Comments != null)
+                                                {
+                                                    <div class="col">
+                                                        <p>
+                                                            @Html.TextAreaFor(model => model.Comments, new { @style = "height: 246px; background:transparent;margin:0px; ", @readonly = "readonly", @class = "form-control" })
+
+                                                        </p>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+
+                                                    <div class="col">
+                                                        <p>
+                                                            No Notes
+
+                                                        </p>
+                                                    </div>
+                                                }
+
+
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" id="headingTwo">
+                                        <h2 class="mb-0">
+                                            <button class="collapse-card collapsed" style=" color: #7460ee; " type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                                <div class="details-headings row" style="margin-bottom:0px;">
+                                                    <div class="details-headings-img-container">
+                                                        <svg style="width:100%;height:100%;" id="Capa_1" enable-background="new 0 0 512 512" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg"><g fill="#7460ee"><path d="m346.555 65.585-31.819 31.819 53.033 53.033 74.245-74.246-31.819-31.819-42.426 42.426zm74.246 10.606-53.032 53.033-31.82-31.82 10.606-10.606 21.214 21.213 42.426-42.426z"></path><path d="m464.528 89.904h15v15h-15z"></path><path d="m277.221 0v194.808h68.048l33.106 33.107 33.105-33.107h68.048v-74.904h-15v59.904h-59.26l-26.893 26.893-26.894-26.893h-59.26v-164.808h172.307v59.904h15v-74.904z"></path><path d="m389.72 294.5c0-20.678-16.822-37.5-37.5-37.5h-97.499v-34.899c0-20.739-3.378-35.177-10.629-45.438-8.637-12.221-22.332-18.161-41.871-18.161h-22.499v89.636l-17.444 46.362h-129.806v142.5h15v-127.5h59.999v172.499h-59.999v-30h-15v45h89.999v-15h56.623l45 30.001h120.853c20.553 0 37.273-16.822 37.273-37.5 0-10.724-4.532-20.403-11.772-27.244 11.485-6.417 19.272-18.691 19.272-32.756 0-12.254-5.909-23.153-15.026-30 9.117-6.847 15.026-17.746 15.026-30s-5.909-23.152-15.026-30c9.117-6.847 15.026-17.746 15.026-30zm-267.249 15h14.999v157.499h-14.999zm61.164 157.499h-31.165v-157.499h20.191l22.061-58.635v-77.364h7.499c27.336 0 37.5 13.172 37.5 48.6v72.4h15v-22.501h22.521c-4.719 6.272-7.521 14.065-7.521 22.5 0 12.254 5.909 23.153 15.026 30-9.117 6.847-15.026 17.746-15.026 30s5.909 23.153 15.026 30c-9.117 6.847-15.026 17.746-15.026 30 0 14.065 7.787 26.339 19.272 32.756-7.24 6.841-11.772 16.521-11.772 27.244 0 8.436 2.801 16.228 7.521 22.5h-56.106zm161.311 30.001h-30.226c-12.406 0-22.5-10.093-22.5-22.5s10.094-22.5 22.5-22.5h29.999c12.406 0 22.5 10.093 22.5 22.5s-9.991 22.5-22.273 22.5zm29.774-82.5c0 12.407-10.094 22.5-22.5 22.5h-44.999c-12.406 0-22.5-10.093-22.5-22.5s10.094-22.5 22.5-22.5h44.999c12.406 0 22.5 10.093 22.5 22.5zm0-60c0 12.407-10.094 22.5-22.5 22.5h-44.999c-12.406 0-22.5-10.093-22.5-22.5 0-12.406 10.094-22.5 22.5-22.5h44.999c12.406 0 22.5 10.094 22.5 22.5zm-22.5-37.5h-44.999c-12.406 0-22.5-10.093-22.5-22.5s10.094-22.5 22.5-22.5h44.999c12.406 0 22.5 10.094 22.5 22.5 0 12.407-10.094 22.5-22.5 22.5z"></path><path d="m77.471 324.5h15v15h-15z"></path><path d="m77.471 354.5h15v15h-15z"></path></g></svg>
+
+                                                    </div>
+                                                    <div>
+                                                        <h3>Approval Information</h3>
+                                                    </div>
+                                                    <div style=" margin-left: 1.5%; margin-top: 0.5%;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+
+                                                    </div>
+                                                </div>
+                                                <hr />
+
+                                            </button>
+                                        </h2>
+                                    </div>
+
+                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                        <div class="card-body">
+
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label>
+
+                                                        Client Status
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @ViewBag.ClientStatus
+
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+                                                        Lead Designer Status
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @ViewBag.DesignerStatus
+
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+                                                        @Html.NameFor(model => model.Approval.Comments)
+                                                    </label>
+                                                </div>
+
+                                                @if (Model.Comments != null)
+                                                {
+                                                    <div class="col">
+                                                        <p>
+                                                            @Html.TextAreaFor(model => model.Approval.Comments, new { @style = "height: 246px; background:transparent; margin:0px; ", @readonly = "readonly", @class = "form-control" })
+
+                                                        </p>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col">
+                                                        <p>
+                                                            No Comments
+                                                        </p>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                            <div class="accordion" id="accordionExample">
+                                <div class="card">
+                                    <div class="card-header" id="headingOne">
+                                        <h2 class="mb-0">
+                                            <button class="collapse-card" style=" color: #7460ee;" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                <div class="details-headings row" style="margin-bottom:0px;">
+                                                    <div class="details-headings-img-container">
+                                                        <svg style="width:100%;height:100%;" id="Layer_1" enable-background="new 0 0 512.002 512.002" height="512" viewBox="0 0 512.002 512.002" width="512" xmlns="http://www.w3.org/2000/svg"><g fill="#7460ee"><path d="m511.994 139.957c-.042-2.496-1.369-4.876-3.481-6.213l-158.6-100.428c-.777-.492-1.638-.837-2.54-1.018l-160.543-32.14c-7.955-1.596-12.335 9.352-5.484 13.69l71.847 45.494-57.841 17.166-48.998-31.026c-2.484-1.573-5.659-1.549-8.12.061l-59.406 38.886c-7.853 5.14.005 17.925 8.215 12.551l55.367-36.241 144.679 91.612-121.055 79.237-144.679-91.612 32.581-21.326c7.853-5.14-.005-17.925-8.215-12.551l-42.327 27.706c-2.082 1.361-3.393 3.79-3.393 6.275v264.004c0 2.57 1.316 4.961 3.488 6.336l158.601 100.428c1.796 1.136 4.112 1.46 6.146.854l274.923-81.589c8.998-2.67 5.139-17.174-4.268-14.38l-265.29 78.73v-248.358l323.399-95.976v248.357l-20.479 6.078c-8.997 2.67-5.141 17.17 4.268 14.38l25.846-7.67c3.183-.944 5.366-3.87 5.366-7.19v-264.004c0-.041-.006-.082-.007-.123zm-168.93-93.223 123.271 78.057-119.54-23.933-123.271-78.057zm-38.109 99.176-92.779-58.748 57.841-17.166 69.929 44.28c.777.492 1.638.837 2.54 1.018l130.882 26.203-260.347 77.263 92.029-60.238c2.134-1.397 3.412-3.782 3.393-6.332s-1.333-4.916-3.488-6.28zm-289.954 7.796 143.601 90.929v246.25l-143.601-90.928z" /><path d="m466.654 293.54c-1.898-1.416-4.354-1.852-6.623-1.176l-253.737 75.506c-3.18.946-5.361 3.87-5.361 7.188v73.185c0 2.368 1.118 4.597 3.016 6.012 1.311.978 2.887 1.488 4.484 1.488.716 0 1.436-.103 2.139-.312l253.737-75.506c3.18-.946 5.361-3.87 5.361-7.188v-73.185c0-2.368-1.118-4.597-3.016-6.012zm-11.984 73.604-238.737 71.042v-57.535l238.737-71.042z" /><path d="m291.679 405.335c4.142 0 7.5-3.358 7.5-7.5v-21.253c0-9.385-15-9.813-15 0v21.253c0 4.143 3.358 7.5 7.5 7.5z" /><path d="m391.21 374.829c4.142 0 7.5-3.358 7.5-7.5v-21.254c0-9.385-15-9.813-15 0v21.254c0 4.142 3.358 7.5 7.5 7.5z" /><path d="m413.346 368.829c4.142 0 7.5-3.358 7.5-7.5v-21.254c0-9.385-15-9.813-15 0v21.254c0 4.142 3.358 7.5 7.5 7.5z" /><path d="m435.482 362.829c4.142 0 7.5-3.358 7.5-7.5v-21.254c0-9.385-15-9.813-15 0v21.254c0 4.142 3.358 7.5 7.5 7.5z" /><path d="m235.335 422.099c4.142 0 7.5-3.358 7.5-7.5v-21.253c0-9.385-15-9.813-15 0v21.253c0 4.142 3.358 7.5 7.5 7.5z" /><path d="m257.013 416.765c4.142 0 7.5-3.358 7.5-7.5v-21.253c0-9.385-15-9.813-15 0v21.253c0 4.142 3.358 7.5 7.5 7.5z" /><path d="m330.843 393.227c4.142 0 7.5-3.358 7.5-7.5v-21.253c0-9.385-15-9.813-15 0v21.253c0 4.142 3.358 7.5 7.5 7.5z" /><path d="m352.046 387.797c4.142 0 7.5-3.358 7.5-7.5v-21.253c0-9.385-15-9.813-15 0v21.253c0 4.142 3.358 7.5 7.5 7.5z" /></g></svg>
+
+                                                    </div>
+                                                    <div>
+                                                        <h3>Products</h3>
+                                                    </div>
+                                                    <div style=" margin-left: 1.5%; margin-top: 0.5%;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                            </button>
+                                        </h2>
+                                    </div>
+
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                        <div class="container-table100">
+
+                                            <div class="wrap-table100">
+                                                <div class="table100">
+                                                    <table>
+                                                        <thead>
+                                                            <tr class="table100-head">
+                                                                <th class="column1">Code</th>
+                                                                <th class="column2">Description </th>
+                                                                <th class="column3">Size</th>
+                                                                <th class="column4">Price</th>
+                                                                <th class="column5">Quantity</th>
+                                                                <th class="column6">Total</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var i in ViewBag.products)
+                                                            {
+                                                                <tr>
+                                                                    <td class="column1">@i.Code</td>
+                                                                    <td class="column2">@i.Description</td>
+                                                                    <td class="column3">@i.Size</td>
+                                                                    <td class="column4">$@i.Price.ToString()</td>
+                                                                    <td class="column5">x @i.Quantity.ToString()</td>
+                                                                    <td class="column6">$   @i.Total</td>
+                                                                </tr>
+                                                            }
+
+                                                            <tr>
+                                                                <td class="column1"></td>
+                                                                <td class="column2"></td>
+                                                                <td class="column3"></td>
+                                                                <td class="column4"></td>
+                                                                <td class="column5" style="color:#7460ee">Total</td>
+                                                                <td class="column6" style="color:#7460ee">$@ViewBag.productTotal</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" id="headingTwo">
+                                        <h2 class="mb-0">
+                                            <button class="collapse-card collapsed" style=" color: #7460ee; " type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                                <div class="details-headings row" style="margin-bottom:0px;">
+                                                    <div class="details-headings-img-container">
+                                                        <svg style="width:100%; height:100%" version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+                                                            <metadata>
+                                                                Created by potrace 1.16, written by Peter Selinger 2001-2019
+                                                            </metadata>
+                                                            <g  transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#7460ee" stroke="none">
+                                                                <path d="M1660 5109 c-132 -20 -240 -95 -267 -184 -7 -21 -38 -188 -69 -374
+                                        -32 -185 -61 -341 -66 -348 -5 -7 -33 -19 -61 -29 -112 -36 -240 -107 -303
+                                        -169 -74 -73 -96 -118 -96 -202 1 -124 82 -219 267 -308 319 -156 832 -237
+                                        1495 -237 663 0 1176 81 1495 237 185 89 266 184 267 308 0 84 -22 129 -96
+                                        202 -63 62 -191 133 -303 169 -28 10 -56 22 -61 29 -5 7 -28 125 -51 262 -74
+                                        443 -80 471 -113 519 -39 59 -103 100 -189 121 -112 28 -338 17 -609 -30 -319
+                                        -54 -337 -54 -655 -5 -288 44 -472 56 -585 39z m240 -219 c63 -6 217 -26 342
+                                        -45 290 -45 362 -45 633 -1 116 19 254 40 307 46 122 15 262 9 304 -13 28 -14
+                                        32 -23 42 -84 7 -37 34 -195 60 -350 44 -250 47 -283 33 -287 -52 -15 -247
+                                        -48 -381 -65 -440 -56 -1011 -53 -1440 9 -92 13 -122 7 -155 -32 -43 -51 -30
+                                        -139 25 -168 20 -11 168 -32 360 -52 201 -21 913 -17 1120 5 205 23 417 58
+                                        556 93 94 24 111 25 148 14 99 -30 246 -122 246 -155 0 -40 -146 -124 -300
+                                        -173 -316 -100 -737 -152 -1240 -152 -503 0 -924 52 -1240 152 -154 49 -300
+                                        133 -300 173 0 39 142 122 300 174 102 34 121 44 138 76 7 15 142 761 142 790
+                                        0 13 57 38 102 45 76 11 72 11 198 0z"></path>
+                                                                <path d="M1514 3170 c-12 -4 -30 -20 -42 -34 -39 -51 -61 -268 -42 -427 22
+                                        -189 68 -282 171 -349 187 -121 428 -54 521 145 33 72 38 131 24 278 -7 64 -5
+                                        107 4 159 13 66 12 73 -6 107 -36 68 -139 76 -182 13 -39 -56 -53 -171 -39
+                                        -323 10 -112 10 -117 -11 -151 -61 -99 -205 -78 -241 34 -14 45 -31 215 -26
+                                        258 2 19 9 73 16 120 10 76 10 90 -5 118 -27 51 -88 74 -142 52z"></path>
+                                                                <path d="M3504 3161 c-49 -30 -59 -66 -43 -164 18 -106 16 -264 -5 -349 -54
+                                        -228 -189 -432 -368 -555 -97 -67 -152 -94 -277 -134 -122 -40 -168 -75 -201
+                                        -151 -19 -44 -22 -64 -17 -128 6 -89 -5 -123 -52 -163 -60 -50 -159 -28 -197
+                                        45 -23 43 -31 183 -14 257 41 188 183 330 390 391 111 32 206 86 285 162 151
+                                        143 222 342 195 546 -14 110 -34 152 -83 175 -33 17 -42 17 -80 5 -33 -10 -46
+                                        -21 -61 -52 -17 -35 -18 -44 -6 -106 7 -38 11 -100 8 -139 -9 -126 -93 -261
+                                        -203 -326 -22 -12 -90 -39 -150 -60 -138 -45 -230 -100 -315 -184 -184 -185
+                                        -258 -451 -194 -700 29 -112 121 -211 229 -247 70 -24 176 -21 247 6 79 29
+                                        150 96 190 178 30 61 33 75 33 161 l0 95 105 36 c58 20 141 55 185 79 398 213
+                                        634 657 587 1105 -15 147 -28 184 -71 213 -41 28 -76 29 -117 4z"></path>
+                                                                <path d="M2377 1099 c-107 -25 -208 -114 -248 -217 -16 -42 -22 -80 -22 -143
+                                        0 -75 3 -94 30 -152 37 -78 98 -141 173 -176 48 -23 68 -26 155 -26 87 0 107
+                                        3 150 25 61 30 136 103 164 158 50 99 50 246 0 347 -71 142 -244 221 -402 184z
+                                        m141 -229 c74 -34 103 -137 57 -207 -38 -57 -116 -78 -176 -48 -71 37 -94 154
+                                        -42 216 27 31 74 58 103 58 8 0 34 -8 58 -19z"></path>
+                                                                <path d="M1590 791 c-380 -82 -561 -195 -562 -352 -1 -70 20 -116 72 -167 176
+                                        -169 690 -272 1360 -272 746 0 1289 125 1404 323 95 163 -24 321 -309 410
+                                        -100 31 -303 77 -341 77 -99 0 -148 -128 -75 -194 10 -9 69 -27 132 -41 205
+                                        -45 375 -108 387 -143 5 -17 -120 -74 -233 -105 -250 -70 -582 -107 -966 -107
+                                        -346 0 -663 33 -912 94 -129 32 -287 96 -287 116 0 29 241 117 401 146 82 15
+                                        98 22 128 51 31 31 33 37 28 79 -10 95 -72 118 -227 85z"></path>
+                                                            </g>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <h3>Labour</h3>
+                                                    </div>
+                                                    <div style=" margin-left: 1.5%; margin-top: 0.5%;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+                                                    </div>
+                                                </div>
+                                                <hr />
+
+                                            </button>
+                                        </h2>
+                                    </div>
+
+                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                        <div class="container-table100">
+
+                                            <div class="wrap-table100">
+                                                <div class="table100">
+                                                    <table>
+                                                        <thead>
+                                                            <tr class="table100-head">
+                                                                <th class="column1">Role</th>
+                                                                <th class="column4">Price </th>
+                                                                <th class="column5">Hours</th>
+                                                                <th class="column6">Total</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var i in ViewBag.Labour)
+                                                            {
+                                                                <tr>
+                                                                    <td class="column1">@i.Name</td>
+                                                                    <td class="column4">@i.Price</td>
+                                                                    <td class="column5">x @i.Hours</td>
+                                                                    <td class="column6">$@i.Total</td>
+
+                                                                </tr>
+                                                            }
+
+                                                            <tr>
+                                                                <td class="column1"></td>
+                                                                <td class="column4"></td>
+                                                                <td class="column5" style="color:#7460ee">Total</td>
+                                                                <td class="column6" style="color:#7460ee">$@ViewBag.LabourtTotal</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                            <div class="accordion" id="accordionExample">
+                                <div class="card">
+                                    <div class="card-header" id="headingOne">
+                                        <h2 class="mb-0">
+                                            <button class="collapse-card" style=" color: #7460ee;" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                <div class="details-headings row" style="margin-bottom:0px;">
+                                                    <div class="details-headings-img-container">
+                                                        <svg style="width:100%; height:100%;" version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+                                                            <metadata>
+                                                                Created by potrace 1.16, written by Peter Selinger 2001-2019
+                                                            </metadata>
+                                                            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#7460ee" stroke="none">
+                                                                <path d="M1654 5109 c-86 -25 -181 -122 -204 -210 -7 -25 -10 -133 -8 -282 3
+-235 4 -243 26 -275 13 -18 41 -41 62 -52 38 -19 61 -20 654 -20 410 0 624 4
+643 11 38 14 83 57 99 96 8 18 14 66 14 108 l0 75 401 0 401 0 29 -29 c24 -24
+29 -38 29 -76 l0 -46 -37 8 c-21 4 -92 7 -158 6 -270 -1 -497 -101 -686 -301
+-128 -135 -203 -279 -241 -460 -28 -136 -21 -328 17 -457 98 -335 361 -588
+696 -670 82 -20 288 -30 357 -17 l52 9 0 -1153 0 -1154 -29 -32 -29 -33 -1514
+-3 c-832 -2 -1533 0 -1557 3 -26 4 -53 16 -67 30 l-24 24 0 2149 c0 2101 0
+2150 19 2173 19 24 19 24 310 29 284 5 291 6 313 27 31 31 30 89 -2 115 -22
+18 -40 19 -330 16 l-307 -3 -49 -30 c-33 -21 -60 -48 -81 -85 l-33 -54 0
+-2182 c0 -2380 -4 -2212 56 -2283 15 -18 48 -43 75 -56 l48 -25 1588 0 c1516
+0 1590 1 1628 19 48 22 97 70 122 120 17 34 18 104 21 1233 l2 1198 64 29
+c131 59 271 174 363 296 108 143 181 346 184 512 2 62 -1 69 -26 91 -22 18
+-35 22 -59 18 -52 -11 -65 -33 -77 -131 -22 -197 -107 -366 -253 -502 -156
+-147 -365 -222 -581 -210 -117 7 -191 25 -295 73 -160 74 -296 208 -376 369
+-57 116 -75 186 -81 316 -12 239 75 452 251 616 110 102 217 160 367 199 86
+23 261 23 354 0 70 -18 275 -110 275 -124 0 -4 -112 -119 -250 -257 l-249
+-249 -135 132 c-153 151 -188 171 -287 172 -147 0 -248 -101 -248 -250 -1 -97
+18 -123 277 -383 130 -131 255 -248 277 -260 57 -30 174 -30 230 0 23 12 247
+230 517 500 515 516 517 519 518 623 0 107 -77 213 -176 240 -53 15 -149 9
+-190 -13 -16 -8 -59 -42 -95 -76 l-67 -61 -81 50 c-46 27 -98 54 -117 60 l-34
+12 0 75 c0 98 -15 144 -64 200 -74 84 -64 83 -537 83 l-416 0 -5 83 c-6 109
+-34 172 -104 236 -90 83 -77 81 -648 80 -276 0 -515 -5 -532 -10z m990 -149
+c45 -10 81 -34 110 -74 20 -26 21 -41 21 -239 l0 -212 -587 -3 -588 -2 0 206
+c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
+-21 29 -39 29 -63 0 -30 -40 -73 -475 -508 -471 -471 -475 -475 -515 -475 -40
+0 -46 6 -275 236 -206 206 -235 239 -235 266 0 48 43 93 88 93 33 0 49 -13
+208 -170 169 -168 172 -170 215 -170 l43 0 411 410 c374 374 414 410 444 410
+23 0 41 -9 62 -29z"></path>
+                                                                <path d="M841 3984 c-24 -30 -26 -52 -9 -89 18 -41 64 -47 349 -43 252 3 259
+4 281 25 28 28 29 84 3 113 -17 19 -28 20 -311 20 l-293 0 -20 -26z"></path>
+                                                                <path d="M922 3270 c-113 -57 -166 -144 -166 -275 -1 -65 4 -89 24 -130 113
+-232 437 -234 557 -3 23 45 27 65 27 133 0 131 -53 218 -166 275 -52 26 -72
+30 -138 30 -66 0 -86 -4 -138 -30z m216 -152 c34 -21 71 -84 72 -122 1 -67
+-80 -146 -150 -146 -50 0 -107 37 -130 85 -25 51 -25 69 0 122 35 79 133 108
+208 61z"></path>
+                                                                <path d="M1495 3215 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 489
+0 489 0 21 23 c32 34 30 89 -4 116 -26 21 -36 21 -511 21 l-484 0 -24 -25z"></path>
+                                                                <path d="M1495 2865 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 484
+0 c475 0 485 0 511 21 34 27 37 88 4 119 -21 20 -32 20 -510 20 l-489 0 -24
+-25z"></path>
+                                                                <path d="M957 2366 c-135 -49 -221 -189 -202 -330 14 -108 70 -187 167 -236
+52 -26 72 -30 138 -30 66 0 86 4 139 31 68 34 130 101 153 166 21 63 16 180
+-12 238 -33 68 -99 129 -166 154 -64 24 -160 27 -217 7z m174 -168 c25 -14 46
+-37 59 -63 25 -51 25 -69 1 -121 -53 -117 -220 -111 -266 10 -49 128 86 242
+206 174z"></path>
+                                                                <path d="M1495 2305 c-33 -32 -34 -83 -2 -113 l23 -22 651 0 652 0 20 26 c28
+36 27 79 -4 109 l-24 25 -646 0 -646 0 -24 -25z"></path>
+                                                                <path d="M1495 1955 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 339
+0 339 0 21 23 c30 32 29 87 -1 115 -23 22 -28 22 -361 22 l-337 0 -24 -25z"></path>
+                                                                <path d="M962 1455 c-77 -24 -134 -75 -179 -160 -23 -42 -27 -63 -27 -130 -1
+-68 3 -89 27 -137 112 -228 442 -229 554 0 23 46 27 70 27 132 1 99 -27 163
+-101 230 -82 75 -193 99 -301 65z m157 -160 c41 -20 79 -70 87 -110 9 -47 -29
+-123 -74 -149 -96 -55 -217 15 -217 126 0 104 116 179 204 133z"></path>
+                                                                <path d="M1515 1409 c-51 -28 -61 -90 -22 -127 23 -22 24 -22 515 -22 479 0
+493 1 512 20 28 28 27 90 -1 116 -20 18 -45 19 -503 21 -338 2 -487 -1 -501
+-8z"></path>
+                                                                <path d="M1513 1060 c-47 -19 -58 -92 -20 -128 l23 -22 651 0 652 0 20 26 c26
+33 27 75 2 105 l-19 24 -644 2 c-359 1 -653 -2 -665 -7z"></path>
+                                                            </g>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <h3>Project Info</h3>
+                                                    </div>
+                                                    <div style=" margin-left: 1.5%; margin-top: 0.5%;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                            </button>
+                                        </h2>
+                                    </div>
+
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label>
+                                                        @Html.DisplayNameFor(model => model.Project.Name)
+
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.Project.Name)
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+
+                                                        @Html.DisplayNameFor(model => model.Project.SiteAddressLineOne)
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.Project.SiteAddressLineOne)
+
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+                                                        @Html.DisplayNameFor(model => model.Project.SiteAddressLineTwo)
+
+                                                    </label>
+                                                </div>
+                                                @if (Model.Project.SiteAddressLineTwo != null)
+                                                {
+
+                                                    <div class="col">
+                                                        <p>
+                                                            @Html.DisplayFor(model => model.Project.SiteAddressLineTwo)
+
+                                                        </p>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col">
+                                                        <p>
+                                                            No Address
+                                                        </p>
+                                                    </div>
+                                                }
+
+
+
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+                                                        @Html.DisplayNameFor(model => model.Project.City)
+
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.Project.City)
+
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+                                                        @Html.DisplayNameFor(model => model.Project.Province)
+
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.Project.Province)
+
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" id="headingTwo">
+                                        <h2 class="mb-0">
+                                            <button class="collapse-card collapsed" style=" color: #7460ee; " type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                                <div class="details-headings row" style="margin-bottom:0px;">
+                                                    <div class="details-headings-img-container">
+                                                        <svg style="width:100%;height:100%;" version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+                                                            <metadata>
+                                                                Created by potrace 1.16, written by Peter Selinger 2001-2019
+                                                            </metadata>
+                                                            <g  transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#7460ee" stroke="none">
+                                                                <path d="M2350 5113 c-175 -28 -327 -80 -444 -150 -181 -108 -346 -272 -454
+                                        -450 -56 -92 -106 -220 -134 -338 -29 -125 -36 -375 -14 -501 64 -368 285
+                                        -680 618 -871 328 -188 765 -204 1124 -42 120 54 233 137 350 253 262 262 377
+                                        560 361 928 -15 327 -126 584 -354 815 -182 185 -409 304 -660 348 -79 14
+                                        -327 19 -393 8z m428 -332 c150 -44 286 -127 405 -248 119 -121 185 -232 234
+                                        -390 25 -81 27 -101 27 -258 -1 -155 -3 -178 -27 -258 -46 -151 -113 -263
+                                        -231 -385 -176 -183 -410 -282 -660 -282 -248 1 -452 82 -629 250 -138 131
+                                        -222 264 -269 427 -20 68 -23 100 -22 253 0 162 2 182 28 265 68 221 225 416
+                                        436 541 78 46 154 75 261 99 97 22 351 14 447 -14z"></path>
+                                                                <path d="M1410 2644 c-231 -34 -406 -120 -553 -271 -280 -288 -437 -799 -437
+                                        -1424 0 -264 19 -358 103 -524 31 -61 63 -102 132 -171 98 -99 183 -155 302
+                                        -197 165 -60 110 -58 1639 -55 l1399 3 85 26 c108 34 165 59 237 105 167 106
+                                        290 274 343 464 32 119 41 261 30 480 -50 980 -422 1532 -1055 1567 -136 7
+                                        -138 7 -371 -143 -180 -115 -305 -172 -471 -215 -125 -33 -349 -33 -473 -1
+                                        -177 46 -296 101 -476 218 -66 43 -147 93 -182 111 -58 30 -71 33 -145 32 -45
+                                        -1 -93 -3 -107 -5z m265 -401 c179 -115 312 -180 467 -227 302 -91 588 -85
+                                        889 20 137 47 235 98 412 212 l148 94 61 -6 c369 -42 593 -344 693 -931 30
+                                        -174 48 -499 35 -616 -27 -242 -178 -410 -418 -466 -72 -17 -159 -18 -1412
+                                        -18 -1484 0 -1390 -4 -1539 67 -82 39 -185 140 -223 218 -48 100 -58 162 -58
+356 1 527 124 961 342 1199 84 92 189 151 323 180 113 25 116 24 280 -82z"></path>
+                                                            </g>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <h3>Customer Info</h3>
+                                                    </div>
+                                                    <div style=" margin-left: 1.5%; margin-top: 0.5%;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+                                                    </div>
+                                                </div>
+                                                <hr />
+
+                                            </button>
+                                        </h2>
+                                    </div>
+
+                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label>
+                                                        @Html.DisplayNameFor(model => model.Project.Customer.FirstName)
+
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.Project.Customer.FirstName)
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+                                                        @Html.DisplayNameFor(model => model.Project.Customer.LastName)
+
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.Project.Customer.LastName)
+
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+                                                        @Html.DisplayNameFor(model => model.Project.Customer.MiddleName)
+
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.Project.Customer.MiddleName)
+
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+                                                        @Html.DisplayNameFor(model => model.Project.Customer.OrgName)
+
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.Project.Customer.OrgName)
+
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+                                                        @Html.DisplayNameFor(model => model.Project.Customer.Position)
+
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.Project.Customer.Position)
+
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+
+                                                        @Html.DisplayNameFor(model => model.Project.Customer.Phone)
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.Project.Customer.Phone)
+
+                                                    </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+                                                        @Html.DisplayNameFor(model => model.Project.Customer.Email)
+
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    <p>
+                                                        @Html.DisplayFor(model => model.Project.Customer.Email)
+
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
