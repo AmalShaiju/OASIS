@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Asus\\Source\\Repos\\OASIS\\OASIS.csproj": {}
+    "C:\\OASIS\\OASIS.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Asus\\Source\\Repos\\OASIS\\OASIS.csproj": {
+    "C:\\OASIS\\OASIS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Asus\\Source\\Repos\\OASIS\\OASIS.csproj",
+        "projectUniqueName": "C:\\OASIS\\OASIS.csproj",
         "projectName": "OASIS",
-        "projectPath": "C:\\Users\\Asus\\Source\\Repos\\OASIS\\OASIS.csproj",
-        "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Asus\\Source\\Repos\\OASIS\\obj\\",
+        "projectPath": "C:\\OASIS\\OASIS.csproj",
+        "packagesPath": "C:\\Users\\Amals\\.nuget\\packages\\",
+        "outputPath": "C:\\OASIS\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Amals\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -93,7 +93,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }
