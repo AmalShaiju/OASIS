@@ -152,11 +152,15 @@ namespace OASIS.Controllers
         }
 
         // GET: Employees/Create
-        public IActionResult Create()
+        public IActionResult Create(int? roleID)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
-
             Employee employee = new Employee();
+            if(roleID != null)
+            {
+                employee.RoleID = (int)roleID;
+
+            }
             PopulateDropDownLists(employee);
             return View();
         }
@@ -166,7 +170,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,MiddleName,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email,RoleID")] Employee employee)
+        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,MiddleName,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email,RoleID")] Employee employee, int customerTrue, int projectTrue, int bidTrue)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
 
@@ -177,6 +181,18 @@ namespace OASIS.Controllers
                     _context.Add(employee);
                     await _context.SaveChangesAsync();
                     //return RedirectToAction(nameof(Index));
+                    if (customerTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Customers");
+                    }
+                    if (projectTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Projects");
+                    }
+                    if (bidTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Bids");
+                    }
                     return RedirectToAction("Details", new { employee.ID });
 
                 }

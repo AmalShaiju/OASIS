@@ -81,7 +81,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,LabourCostPerHr,LabourPricePerHr")] Role role)
+        public async Task<IActionResult> Create([Bind("ID,Name,LabourCostPerHr,LabourPricePerHr")] Role role, int employeeTrue, int customerTrue, int projectTrue, int bidTrue)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Roles");
 
@@ -92,7 +92,25 @@ namespace OASIS.Controllers
                     _context.Add(role);
                     await _context.SaveChangesAsync();
                     //return RedirectToAction(nameof(Index));
+                    if (employeeTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Employees", new {roleID = role.ID });
+                    }
+                    if (customerTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Customers");
+                    }
+                    if (projectTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Projects");
+                    }
+                    if (bidTrue == 1)
+                    {
+                        return RedirectToAction(actionName: "Create", controllerName: "Bids");
+                    }
+
                     return RedirectToAction("Details", new { role.ID });
+
                 }
             }
             catch (DbUpdateException dex)
