@@ -140,6 +140,8 @@ namespace OASIS.Controllers
                 .FirstOrDefaultAsync(m => m.ID == id);
 
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+            ViewData["Bids"] = _context.Bids.Where(p => p.DesignerID == id);
+            ViewData["ProjectName"] = _context.Bids.Where(p => p.DesignerID == id).Select(p => p.Project).Distinct(); ;
 
             if (employee == null)
             {

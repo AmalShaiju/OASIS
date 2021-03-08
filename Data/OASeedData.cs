@@ -38,12 +38,12 @@ namespace OASIS.Data
 
                 string[] zipCode = new string[] { "28889", "96459", "35748", "15005", "99625", "71465" };
 
-                bool Checkarrray(List<string> list, string s)
-                {
-                    if (list.Contains(s))
-                        return true;
-                    return false;
-                }
+                //bool Checkarrray(List<string> list, string s)
+                //{
+                //    if (list.Contains(s))
+                //        return true;
+                //    return false;
+                //}
 
 
                 if (!context.Roles.Any())
@@ -433,6 +433,7 @@ namespace OASIS.Data
                 int[] projectID = context.Projects.Select(s => s.ID).ToArray();
                 int[] designerID = context.Employees.Where(p => p.Role.Name == "Designer").Select(p => p.ID).ToArray();
                 int[] salesAssociateID = context.Employees.Where(p => p.Role.Name == "Sales Associate").Select(p => p.ID).ToArray();
+                int[] approvalStatusID = context.ApprovalStatuses.Select(p => p.ID).ToArray();
                 int[] bidStatusID = context.BidStatuses.Select(p => p.ID).ToArray();
                 int ProjectCount = projectID.Count();
                 int designerCount = designerID.Count();
@@ -445,12 +446,14 @@ namespace OASIS.Data
                     {
                         for (int j = 0; j < 5; j++)
                         {
+                            int range = 5 * 365; //5 years
+
                             Bid a = new Bid()
                             {
-                                DateCreated = DateTime.Now,
+                                DateCreated = DateTime.Today.AddDays(random.Next(range)),
                                 EstAmount = random.Next(1000, 100000),
-                                EstBidStartDate = DateTime.Today,
-                                EstBidEndDate = DateTime.Today.AddDays(random.Next(5)),
+                                EstBidStartDate = DateTime.Today.AddDays(random.Next(range)),
+                                EstBidEndDate = DateTime.Today.AddDays(random.Next(range)),
                                 Comments = baconNotes[random.Next(5)],
                                 DesignerID = designerID[random.Next(designerCount)],
                                 SalesAsscociateID = salesAssociateID[random.Next(salesAssociateCount)],
@@ -460,6 +463,9 @@ namespace OASIS.Data
 
                             };
 
+
+                            a.Approval.ClientStatusID = approvalStatusID[random.Next(approvalStatusID.Count())];
+                            a.Approval.DesignerStatusID = approvalStatusID[random.Next(approvalStatusID.Count())];
                             try
                             {
                                 context.Add(a);
@@ -476,7 +482,7 @@ namespace OASIS.Data
                     context.SaveChanges();
                 }
 
-
+              
 
 
                 int[] bidID = context.Bids.Select(s => s.ID).ToArray();

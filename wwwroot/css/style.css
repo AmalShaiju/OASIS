@@ -11,6 +11,10 @@
     --ghostwhite: #f9fafa;
 }
 
+*:focus {
+    outline: none;
+}
+
 form .row {
     margin-left: 10px;
 }
@@ -37,9 +41,10 @@ a {
     cursor:pointer;
 }
 
-
+#ProductTypeLogo path{
+    fill:black;
+}
 /*NAVIGATION*/
-
 .flex-container {
     display: flex;
     height: 15%;
@@ -84,7 +89,7 @@ a p {
 }
 
 .inner-flex-container-right {
-    width: 50%;
+    width: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -370,6 +375,7 @@ header a {
 .nav-item-flex {
     display: flex;
     width: 100%;
+    cursor:pointer;
 }
 
 .nav-item-box-one {
@@ -512,8 +518,8 @@ hr {
 }
 .details-menu {
     display: flex;
-    margin-top: 50px;
-    margin-bottom: 20px;
+    width:51%;
+    margin-left:12%;
 }
 .details-container {
 }
@@ -571,6 +577,7 @@ hr {
         height: 100%;
     }
 
+
     .button-menu input, a {
         width: 100%;
         background-color: transparent;
@@ -579,8 +586,55 @@ hr {
         outline: none;
         border: none
     }
+
+    p a{
+        color: black;
+    }
 /*DETAILS*/
 focusedin {
     background-color: yellow;
+
+}
+.card {
+    border: none;
 }
 
+.card h3{
+    text-decoration:none
+}
+
+.collapse-card {
+    background: transparent;
+    border: none;
+}
+
+.card-header  {
+    width: 100%;
+    border:none;
+    background-color:transparent;
+}
+.card-header h3 {
+    margin-top:2.5%;
+}
+    .card-header button {
+        width: 100%;
+    }
+
+
+/*Bid Create*/
+
+
+.bid-product-card{
+    margin-bottom:50px; 
+    width:100%;
+}
+
+#pills-tab  {
+    width: 30%;
+    margin-top:20px;
+}
+
+    
+
+
+/*Bid Create*/

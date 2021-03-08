@@ -4,144 +4,316 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<form asp-action="Create">
+    <div class="row">
+        <div class="form-row col-10">
+            <div style="width:35px; height:37px; align-self:center;">
+                <img style="width:100%; height:100%;" src="~/resources/add-user-full-fill.png" alt="Alternate Text" />
+            </div>
+            <h2 style="margin-left: 14px; margin-top:5px; color:#7460ee">Add Bid</h2>
 
-<h4>Bid</h4>
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="DateCreated" class="control-label"></label>
-                <input asp-for="DateCreated" class="form-control" />
-                <span asp-validation-for="DateCreated" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EstAmount" class="control-label"></label>
-                <input asp-for="EstAmount" class="form-control" />
-                <span asp-validation-for="EstAmount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectStartDate" class="control-label"></label>
-                <input asp-for="ProjectStartDate" class="form-control" />
-                <span asp-validation-for="ProjectStartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectEndDate" class="control-label"></label>
-                <input asp-for="ProjectEndDate" class="form-control" />
-                <span asp-validation-for="ProjectEndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EstBidStartDate" class="control-label"></label>
-                <input asp-for="EstBidStartDate" class="form-control" />
-                <span asp-validation-for="EstBidStartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EstBidEndDate" class="control-label"></label>
-                <input asp-for="EstBidEndDate" class="form-control" />
-                <span asp-validation-for="EstBidEndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Comments" class="control-label">Notes</label>
-                <textarea asp-for="Comments" class="form-control"></textarea>
-                <span asp-validation-for="Comments" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DesignerID" class="control-label"></label>
-                <select asp-for="DesignerID" class="form-control" asp-items="ViewBag.DesignerID"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="SalesAsscociateID" class="control-label"></label>
-                <select asp-for="SalesAsscociateID" class="form-control" asp-items="ViewBag.SalesAsscociateID"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectID" class="control-label"></label>
-                <select asp-for="ProjectID" class="form-control" asp-items="ViewBag.ProjectID"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="BidStatusID" class="control-label"></label>
-                <select asp-for="BidStatusID" class="form-control" asp-items="ViewBag.BidStatusID"></select>
-            </div>
-            <div class="form-group">
-                <label for="ClientStatusID" class="control-label">Client Status</label>
-                <select name="ClientStatusID" class="form-control" asp-items="ViewBag.ClientStatusID"></select>
-            </div>
-            <div class="form-group">
-                <label for="DesignerStatusID" class="control-label">Designer Status</label>
-                <select name="DesignerStatusID" class="form-control" asp-items="ViewBag.DesignerStatusID"></select>
-            </div>
-            <div class="form-group">
-                <label for="approvalComment" class="control-label">Approval Comments</label>
-                <textarea name="approvalComment" class="form-control">@ViewData["approvalComment"]</textarea>
-                <span asp-validation-for="Approval.Comments" class="text-danger"></span>
-            </div>
+        </div>
 
-            <label class="control-label">Choose Products</label> <button type="button" id="btnProductRemove" class="btn btn-success btn-sm">
-            </button>
-            <div class="form-group col-md-6" style="display:flex">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item">
+                <a style="color:#00adef" class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Bid</a>
+            </li>
+            <li class="nav-item">
+                <a style="color:#00adef"  class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Approvals</a>
+            </li>
+            <li class="nav-item">
+                <a style="color:#00adef"  class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Products</a>
+            </li>
+            <li class="nav-item">
+                <a style="color:#00adef"  class="nav-link" id="pills-bidLabour-tab" data-toggle="pill" href="#pills-bidLabour" role="tab" aria-controls="pills-bidLabour" aria-selected="false">Labour</a>
+            </li>
+        </ul>
+        <div class="col-md-12 tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                <div class="col-md-12">
 
-                @Html.ListBox("selectedProducts", (MultiSelectList)ViewBag.selOpts, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;" })
+                    <div style="margin-top:0px;" class="form-row col-10">
 
+                        <div class="form-group col-5">
+                            <label asp-for="ProjectID" class="control-label"></label>
+                            <select asp-for="ProjectID" class="form-control" asp-items="ViewBag.ProjectID"></select>
+                        </div>
+                        <div class="form-group col-6">
+                            <label asp-for="BidStatusID" class="control-label"></label>
+                            <select asp-for="BidStatusID" class="form-control" asp-items="ViewBag.BidStatusID"></select>
+                        </div>
 
-                @Html.ListBox("selectedQuantity", (MultiSelectList)ViewBag.qntyOpts, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;" })
-            </div>
-
-            <div class="input-group mb-3" style="margin-bottom:60px;">
-                <div class="input-group-prepend">
-                    <select class="btn btn-outline-secondary" id="ProductTypeID" name="ProductTypeID" asp-items="ViewBag.ProductTypeID">
-                        <option value="">All Product Types</option>
-                    </select>
-                </div>
-
-                <div class="input-group mb-3" style="width:80%; margin:0px!important;">
-                    <select style="margin:0" class="form-control" id="ProductID" name="ProductID" asp-items="ViewBag.ProductID">
-                        <option value="">select a Product</option>
-                    </select>
-                    <div class="input-group-append">
-                        <label class="input-group-text" for="inputGroupSelect02">Quantity</label>
                     </div>
-                    <input style="margin:0" id="ProductQuantity" type="number" class="form-control" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1">
-                    <button id="btnAddProduct" class="btn btn-outline-secondary" type="button">+</button>
-                </div>
 
-            </div>
+                    <div class="form-row col-10">
+                        <div class="form-group col-5">
+                            <label asp-for="ProjectStartDate" class="control-label"></label>
+                            <input asp-for="ProjectStartDate" class="form-control" />
+                            <span asp-validation-for="ProjectStartDate" class="text-danger"></span>
+                        </div>
 
-            <label class="control-label">Choose Roles</label> <button type="button" id="btnRoleRemove" class="btn btn-success btn-sm">
-            </button>
-            <div class="form-group col-md-6" style="display:flex">
+                        <div class="form-group col-6">
+                            <label asp-for="ProjectEndDate" class="control-label"></label>
+                            <input asp-for="ProjectEndDate" class="form-control" />
+                            <span asp-validation-for="ProjectEndDate" class="text-danger"></span>
+                        </div>
 
-                @Html.ListBox("selectedRoles", (MultiSelectList)ViewBag.selRoles, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;" })
-
-
-                @Html.ListBox("requiredHours", (MultiSelectList)ViewBag.reqHrs, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;" })
-            </div>
-
-            <div class="input-group mb-3" style="margin-bottom:60px;">
-             
-                <div class="input-group mb-3" style="width:80%; margin:0px!important;">
-                    <select style="margin:0" class="form-control" id="RoleID" name="RoleID" asp-items="ViewBag.RoleID">
-                        <option value="">select a Role</option>
-                    </select>
-                    <div class="input-group-append">
-                        <label class="input-group-text" for="inputGroupSelect02">Quantity</label>
                     </div>
-                    <input style="margin:0" id="roleHours" type="number" class="form-control" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1">
-                    <button id="btnAddRole" class="btn btn-outline-secondary" type="button">+</button>
+
+
+                    <div class="form-row col-10">
+
+                        <div class="form-group col-5">
+                            <label asp-for="EstBidStartDate" class="control-label"></label>
+                            <input asp-for="EstBidStartDate" class="form-control" />
+                            <span asp-validation-for="EstBidStartDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-6">
+                            <label asp-for="EstBidEndDate" class="control-label"></label>
+                            <input asp-for="EstBidEndDate" class="form-control" />
+                            <span asp-validation-for="EstBidEndDate" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-row col-10">
+
+                        <div class="form-group col-5">
+                            <label asp-for="DesignerID" class="control-label"></label>
+                            <select asp-for="DesignerID" class="form-control" asp-items="ViewBag.DesignerID"></select>
+                        </div>
+                        <div class="form-group col-6">
+                            <label asp-for="SalesAsscociateID" class="control-label"></label>
+                            <select asp-for="SalesAsscociateID" class="form-control" asp-items="ViewBag.SalesAsscociateID"></select>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <div class="col-md-12">
+                    <div class="form-row col-10">
+
+                        <div class="form-group col-5">
+                            <label for="ClientStatusID" class="control-label">Client Status</label>
+                            <select name="ClientStatusID" class="form-control" asp-items="ViewBag.ClientStatusID"></select>
+                        </div>
+
+                        <div class="form-group col-6">
+                            <label for="DesignerStatusID" class="control-label">Designer Status</label>
+                            <select name="DesignerStatusID" class="form-control" asp-items="ViewBag.DesignerStatusID"></select>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row col-10">
+
+                        <div class="form-group col-5">
+                            <label for="approvalComment" class="control-label">Approval Comments</label>
+                            <textarea name="approvalComment" class="form-control">@ViewData["approvalComment"]</textarea>
+                            <span asp-validation-for="Approval.Comments" class="text-danger"></span>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-12 tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                <div class="col-md-12">
+
+                    <div class="form-row col-10">
+                        <label style="display:flex; align-items:center;  margin-right:20px" class="control-label">Choose Products</label>
+                        <div style="width:4%; height:28px; margin: 0;" class="button-menu form-group btn btn-danger">
+                            <div id="btnProductRemove" style="width:22px; height:25px;">
+                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+
+                                    <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
+                                        <path d="M2115 5101 c-123 -45 -208 -118 -260 -224 -46 -95 -55 -149 -55 -343
+                                            l0 -164 -600 0 -600 0 0 -305 0 -305 1960 0 1960 0 0 305 0 305 -600 0 -600 0
+                                            0 164 c0 194 -9 248 -55 343 -43 87 -121 163 -215 207 l-65 31 -410 2 c-376 3
+                                            -414 1 -460 -16z m823 -313 c60 -37 72 -79 72 -260 l0 -158 -450 0 -450 0 0
+                                            155 c0 180 11 221 69 261 l36 24 344 0 c334 0 345 -1 379 -22z"></path>
+                                        <path d="M926 3438 c2 -18 63 -710 134 -1538 72 -828 135 -1526 140 -1553 31
+                                            -149 153 -282 302 -329 57 -17 115 -18 1058 -18 943 0 1001 1 1058 18 149 47
+                                            271 180 302 329 5 27 68 725 140 1553 71 828 132 1520 134 1538 l5 32 -1639 0
+                                            -1639 0 5 -32z m1174 -1553 l0 -825 -145 0 -145 0 0 825 0 825 145 0 145 0 0
+                                            -825z m610 0 l0 -825 -150 0 -150 0 0 825 0 825 150 0 150 0 0 -825z m600 0
+                                            l0 -825 -145 0 -145 0 0 825 0 825 145 0 145 0 0 -825z"></path>
+                                    </g>
+                                </svg>
+                            </div>
+
+                        </div>
+                        @*<button type="button" id="btnProductRemove" class="btn btn-danger"> Delete
+                            </button>*@
+                        <div class="bid-product-card" style="display:flex">
+
+                            @Html.ListBox("selectedProducts", (MultiSelectList)ViewBag.selOpts, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;" })
+
+
+                            @Html.ListBox("selectedQuantity", (MultiSelectList)ViewBag.qntyOpts, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;" })
+                        </div>
+
+                        <div class="input-group mb-3" style="margin-bottom:60px;">
+                            <div class="input-group-prepend">
+                                <select class="btn btn-outline-secondary" id="ProductTypeID" name="ProductTypeID" asp-items="ViewBag.ProductTypeID">
+                                    <option value="">All Product Types</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group mb-3" style="width:81%; margin:0px!important;">
+                                <select style="margin:0" class="form-control" id="ProductID" name="ProductID" asp-items="ViewBag.ProductID">
+                                    <option value="">select a Product</option>
+                                </select>
+                                <div class="input-group-append">
+                                    <label class="input-group-text" for="inputGroupSelect02">Quantity</label>
+                                </div>
+                                <input style="margin:0" id="ProductQuantity" type="number" class="form-control" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1">
+                                <button id="btnAddProduct" class="btn btn-outline-success" type="button">+</button>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 tab-pane fade" id="pills-bidLabour" role="tabpanel" aria-labelledby="pills-bidLabour-tab">
+                <div class="col-md-12">
+                    <div class="form-row col-10">
+
+                        <label style="display:flex; align-items:center;  margin-right:20px" class="control-label">Choose Labour</label>
+                        <div style="width:4%; height:28px; margin: 0;" class="button-menu form-group btn btn-danger">
+                            <div id="btnRoleRemove" style="width:22px; height:25px;">
+                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+
+                                    <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
+                                        <path d="M2115 5101 c-123 -45 -208 -118 -260 -224 -46 -95 -55 -149 -55 -343
+                                            l0 -164 -600 0 -600 0 0 -305 0 -305 1960 0 1960 0 0 305 0 305 -600 0 -600 0
+                                            0 164 c0 194 -9 248 -55 343 -43 87 -121 163 -215 207 l-65 31 -410 2 c-376 3
+                                            -414 1 -460 -16z m823 -313 c60 -37 72 -79 72 -260 l0 -158 -450 0 -450 0 0
+                                            155 c0 180 11 221 69 261 l36 24 344 0 c334 0 345 -1 379 -22z"></path>
+                                        <path d="M926 3438 c2 -18 63 -710 134 -1538 72 -828 135 -1526 140 -1553 31
+                                            -149 153 -282 302 -329 57 -17 115 -18 1058 -18 943 0 1001 1 1058 18 149 47
+                                            271 180 302 329 5 27 68 725 140 1553 71 828 132 1520 134 1538 l5 32 -1639 0
+                                            -1639 0 5 -32z m1174 -1553 l0 -825 -145 0 -145 0 0 825 0 825 145 0 145 0 0
+                                            -825z m610 0 l0 -825 -150 0 -150 0 0 825 0 825 150 0 150 0 0 -825z m600 0
+                                            l0 -825 -145 0 -145 0 0 825 0 825 145 0 145 0 0 -825z"></path>
+                                    </g>
+                                </svg>
+                            </div>
+
+                        </div>
+                        <div class="bid-product-card" style="display:flex">
+
+                            @Html.ListBox("selectedRoles", (MultiSelectList)ViewBag.selRoles, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;" })
+
+
+                            @Html.ListBox("requiredHours", (MultiSelectList)ViewBag.reqHrs, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;" })
+                        </div>
+
+                        <div class="input-group mb-3" style="margin-bottom:60px;">
+
+                            <div class="input-group mb-3" style="width:80%; margin:0px!important;">
+                                <select style="margin:0" class="form-control" id="RoleID" name="RoleID" asp-items="ViewBag.RoleID">
+                                    <option value="">select a Role</option>
+                                </select>
+                                <div class="input-group-append">
+                                    <label class="input-group-text" for="inputGroupSelect02">Quantity</label>
+                                </div>
+                                <input style="margin:0" id="roleHours" type="number" class="form-control" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1">
+                                <button id="btnAddRole" class="btn btn-outline-success" type="button">+</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div style="display:flex; margin-top:50px; margin-bottom:20px;">
+                <div id="btnSubmit" style="width:12%; margin-right:3.5%; " class="button-menu form-group btn btn-success">
+                    <div style="width:20px; height:22px;">
+                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                             width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
+                             preserveAspectRatio="xMidYMid meet">
+
+                            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                               fill="white" stroke="none">
+                                <path d="M66 5101 c-15 -10 -37 -32 -47 -47 -18 -28 -19 -96 -19 -2494 0
+                                -2398 1 -2466 19 -2494 10 -15 32 -37 47 -47 28 -18 96 -19 2494 -19 2398 0
+                                2466 1 2494 19 15 10 37 32 47 47 18 28 19 88 19 2095 l0 2066 -29 39 c-34 46
+                                -805 814 -841 838 -21 14 -64 16 -332 16 l-307 0 -3 -742 -3 -743 -22 -35
+                                c-12 -19 -37 -44 -55 -55 -33 -20 -51 -20 -1268 -20 l-1235 0 -35 22 c-19 12
+                                -44 37 -55 55 -19 32 -20 53 -23 776 l-3 742 -407 0 c-382 0 -409 -1 -436 -19z
+                                m3844 -3751 l0 -1050 -1350 0 -1350 0 0 1050 0 1050 1350 0 1350 0 0 -1050z" />
+                                <path d="M1576 2081 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
+                                65 -19 984 -19 919 0 956 1 984 19 46 31 66 69 66 131 0 62 -20 100 -66 131
+                                -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z" />
+                                <path d="M1576 1481 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
+                                65 -19 984 -19 919 0 956 1 984 19 46 31 66 69 66 131 0 62 -20 100 -66 131
+                                -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z" />
+                                <path d="M1576 881 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
+                                65 -19 984 -19 919 0 956 1 984 19 46 31 66 69 66 131 0 62 -20 100 -66 131
+                                -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z" />
+                                <path d="M1210 4470 l0 -650 1050 0 1050 0 0 650 0 650 -1050 0 -1050 0 0
+                                -650z" />
+                            </g>
+                        </svg>
+
+                    </div>
+                    <div>
+                        <input type="submit" value="Create" />
+                    </div>
+                </div>
+
+                <div style="width:11%" class="button-menu form-group btn btn-dark">
+                    <div style="width:20px; height:22px;">
+                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                             width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
+                             preserveAspectRatio="xMidYMid meet">
+
+                            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                               fill="white" stroke="none">
+                                <path d="M2265 5109 c-108 -13 -301 -53 -409 -84 -338 -98 -691 -287 -957
+                                -513 l-106 -90 -214 215 c-248 250 -279 273 -358 273 -89 -1 -154 -38 -202
+                                -115 -18 -29 -19 -65 -19 -838 0 -706 2 -812 15 -845 20 -47 50 -78 100 -105
+                                40 -22 44 -22 805 -25 421 -2 788 0 817 3 62 7 107 36 145 90 42 61 54 121 38
+                                181 -12 44 -36 72 -262 300 l-249 251 63 55 c180 158 436 287 695 353 290 73
+                                645 55 938 -47 616 -214 1057 -752 1140 -1391 96 -739 -309 -1461 -990 -1764
+                                -256 -114 -484 -160 -755 -150 -181 7 -299 27 -465 82 -298 97 -540 257 -749
+                                495 -101 115 -128 131 -193 116 -40 -9 -519 -496 -526 -535 -11 -52 11 -94
+                                100 -194 326 -364 788 -638 1275 -757 225 -55 318 -65 618 -65 300 0 385 9
+                                610 65 352 88 705 261 995 488 116 91 346 328 437 452 286 386 459 820 508
+                                1272 22 205 10 538 -25 728 -74 400 -234 763 -483 1100 -91 124 -321 361 -437
+                                452 -344 270 -755 453 -1190 530 -128 22 -575 33 -710 17z" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div>
+                        <input type="reset" name="name" value="Clear" />
+                    </div>
+                </div>
+                <div style="width:75%;">
+                    <a href='@ViewData["returnURL"]' @*asp-action="Index"*@ style="float:right; width:19%; color:white" class="btn btn-info">
+                        &#8592; Back To List
+                    </a>
                 </div>
 
             </div>
 
-            <div class="form-group">
-                <input type="submit" id="btnSubmit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+
+        </div>
     </div>
-</div>
+</form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -153,5 +325,11 @@
             var URL = "/Bids/GetProducts/" + selectedProduct;
             refreshDDL('ProductID', URL, true);
         });
+    </script>
+    <script type="text/javascript">
+        $('#pills-tab a').on('click', function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
     </script>
 }

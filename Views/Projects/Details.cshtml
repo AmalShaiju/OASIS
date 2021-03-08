@@ -10,10 +10,11 @@
         <div style="width:50px;height:50px; margin-top: 0.8%;">
             <img src="~/resources/details.png" alt="Alternate Text" />
         </div>
-        <div style="margin-left:1.8%">
+        <div style="margin-left:1.8%;">
             <h2 style="color:#7460ee">@Model.Name</h2>
             <p>@Model.Customer.OrgName  </p>
         </div>
+        <partial name="_DetailsMenu">
 
     </div>
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -32,15 +33,17 @@
                         </div>
                     </div>
 
-                    <div class="row" style=" text-align: center; margin-top: 8%;">
+                    <div class="row" style=" text-align: center; margin-top: 8%; height:90%; display:block;">
                         @*For loop through project and display project names*@
-                        <div class="col">
-                            <p>
-                                @Html.DisplayFor(model => model.Customer.FirstName)
-                            </p>
-                        </div>
-                        <div class="w-100"></div>
+                        @foreach (var item in Model.Bids.OrderByDescending(p=> p.DateCreated))
+                        {
+                            <div style="width:100%; height:5%;">
+                                <a asp-action="Details" asp-controller="Bids" asp-route-id="@item.ID" class="btn-link">
+                                    @Html.DisplayFor(model => item.DateCreated) 
+                                </a>
 
+                            </div>
+                        }
                     </div>
                 </div>
 

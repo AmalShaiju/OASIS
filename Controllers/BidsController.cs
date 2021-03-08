@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OASIS.Data;
 using OASIS.Models;
+using OASIS.Utilities;
 using OASIS.ViewModels;
 
 namespace OASIS.Controllers
@@ -21,16 +22,241 @@ namespace OASIS.Controllers
         }
 
         // GET: Bids
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchProjectName, string BidAmountBelow, string BidAmountAbove,
+            string EstStartDateAbove, string EstStartDateBelow, string EstFinishDateBelow, string EstFinishDateAbove,
+            int? BidstatusID, int? DesignerStatusID, int? ClientStatusID, int? DesignerID, int? SalesAsscID,
+            int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "Price")
         {
-            var oasisContext = _context.Bids.Include(b => b.BidStatus)
-                .Include(b => b.Designer).
-                Include(b => b.SalesAsscociate)
-                .Include(b => b.Project)
+
+            var bids = from b in _context.Bids
+                .Include(b => b.BidStatus)
+                .Include(b => b.Designer)
+                .Include(b => b.BidLabours).ThenInclude(b => b.Role)
+                .Include(b => b.SalesAsscociate)
+                .Include(b => b.Project).ThenInclude(p => p.Customer)
                 .Include(b => b.BidProducts)
-                .Include(b => b.BidLabours);
-            return View(await oasisContext.ToListAsync());
+                .Include(b => b.BidLabours)
+                .Include(b => b.Approval).ThenInclude(b => b.ApprovalStatuses)
+                       select b;
+
+            ViewData["Filtering"] = ""; //Assume not filtering
+
+            //DDL
+            ViewData["BidstatusID"] = new SelectList(_context
+             .BidStatuses
+             .OrderBy(c => c.Name), "ID", "Name");
+
+            ViewData["DesignerStatusID"] = new SelectList(_context
+            .ApprovalStatuses
+            .OrderBy(c => c.Name), "ID", "Name");
+
+            ViewData["ClientStatusID"] = new SelectList(_context
+           .ApprovalStatuses
+           .OrderBy(c => c.Name), "ID", "Name");
+
+            ViewData["DesignerID"] = new SelectList(_context
+            .Employees.Where(p => p.Role.Name == "Designer")
+            .OrderBy(c => c.LastName), "ID", "FullName");
+
+            ViewData["SalesAsscID"] = new SelectList(_context
+            .Employees.Where(p => p.Role.Name == "Sales Associate")
+            .OrderBy(c => c.LastName), "ID", "FullName");
+
+
+            //Clear the sort/filter/paging URL Cookie
+            CookieHelper.CookieSet(HttpContext, "CustomersURL", "", -1);
+
+            if (!String.IsNullOrEmpty(SearchProjectName))
+            {
+                bids = bids.Where(p => p.Project.Name.ToUpper().Contains(SearchProjectName.ToUpper()));
+                ViewData["Filtering"] = "show";
+            }
+
+            //Estimated Amount
+            if (!String.IsNullOrEmpty(BidAmountBelow))
+            {
+                bids = bids.Where(p => p.EstAmount < (double)Convert.ToDecimal(BidAmountBelow));
+                ViewData["Filtering"] = "show";
+            }
+
+            if (!String.IsNullOrEmpty(BidAmountAbove))
+            {
+                bids = bids.Where(p => p.EstAmount > (double)Convert.ToDecimal(BidAmountAbove));
+                ViewData["Filtering"] = "show";
+            }
+
+            // Est StartDates
+            if (!String.IsNullOrEmpty(EstStartDateAbove))
+            {
+                bids = bids.Where(p => p.EstBidStartDate > Convert.ToDateTime(EstStartDateAbove));
+                ViewData["Filtering"] = "show";
+            }
+
+            if (!String.IsNullOrEmpty(EstStartDateBelow))
+            {
+                bids = bids.Where(p => p.EstBidStartDate < Convert.ToDateTime(EstStartDateBelow));
+                ViewData["Filtering"] = "show";
+            }
+
+            //Est Finish Date
+            if (!String.IsNullOrEmpty(EstFinishDateBelow))
+            {
+                bids = bids.Where(p => p.EstBidEndDate < Convert.ToDateTime(EstFinishDateBelow));
+                ViewData["Filtering"] = "show";
+            }
+
+            if (!String.IsNullOrEmpty(EstFinishDateAbove))
+            {
+                bids = bids.Where(p => p.EstBidEndDate > Convert.ToDateTime(EstFinishDateAbove));
+                ViewData["Filtering"] = "show";
+            }
+
+            // BidStatus
+            if (BidstatusID.HasValue)
+            {
+                bids = bids.Where(p => p.BidStatusID == BidstatusID);
+                ViewData["Filtering"] = " show";
+            }
+
+            //Designer
+            if (DesignerID.HasValue)
+            {
+                bids = bids.Where(p => p.DesignerID == DesignerID);
+                ViewData["Filtering"] = " show";
+            }
+
+            //Sales Associate
+            if (SalesAsscID.HasValue)
+            {
+                bids = bids.Where(p => p.SalesAsscociateID == SalesAsscID);
+                ViewData["Filtering"] = " show";
+            }
+
+
+            // DesignerStatus
+            if (DesignerStatusID.HasValue)
+            {
+                bids = bids.Where(p => p.Approval.DesignerStatusID == DesignerStatusID);
+                ViewData["Filtering"] = " show";
+            }
+
+            // ClientStatus
+            if (ClientStatusID.HasValue)
+            {
+                bids = bids.Where(p => p.Approval.ClientStatusID == ClientStatusID);
+                ViewData["Filtering"] = " show";
+            }
+
+            //Before we sort, see if we have called for a change of filtering or sorting
+            if (!String.IsNullOrEmpty(actionButton))
+            {
+                if (actionButton != "Filter")
+                {
+                    if (actionButton == sortField)
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;
+                }
+            }
+
+            if (sortField == "Amount")
+            {
+                if (sortDirection == "asc")
+                {
+                    bids = bids
+                        .OrderBy(p => p.EstAmount);
+                }
+                else
+                {
+                    bids = bids
+                       .OrderByDescending(p => p.EstAmount);
+                }
+            }
+            else if (sortField == "Project")
+            {
+                if (sortDirection == "asc")
+                {
+                    bids = bids
+                        .OrderBy(p => p.Project.Name);
+                }
+                else
+                {
+                    bids = bids
+                         .OrderByDescending(p => p.Project.Name);
+                }
+            }
+            else if (sortField == "Organization")
+            {
+                if (sortDirection == "asc")
+                {
+                    bids = bids
+                        .OrderBy(p => p.Project.Customer.OrgName);
+                }
+                else
+                {
+                    bids = bids
+                         .OrderByDescending(p => p.Project.Customer.OrgName);
+                }
+            }
+            else if (sortField == "Designer")
+            {
+                if (sortDirection == "asc")
+                {
+                    bids = bids
+                        .OrderBy(p => p.Designer.LastName)
+                         .ThenBy(p => p.Designer.FirstName);
+
+                }
+                else
+                {
+                    bids = bids
+                         .OrderByDescending(p => p.Designer.LastName)
+                         .ThenByDescending(p => p.Designer.FirstName);
+                }
+            }
+
+            else //Sort By product type:Name
+            {
+                if (sortDirection == "asc")
+                {
+                    bids = bids
+                    .OrderBy(p => p.DateCreated);
+                }
+                else
+                {
+                    bids = bids
+                    .OrderByDescending(p => p.DateCreated);
+                }
+            }
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+
+
+            //For Paging
+            int pageSize;
+            if (pageSizeID.HasValue)
+            {
+                //Value selected from DDL so use and save it to Cookie
+                pageSize = pageSizeID.GetValueOrDefault();
+                CookieHelper.CookieSet(HttpContext, "pageSizeValue", pageSize.ToString(), 30);
+            }
+            else
+            {
+                //Not selected so see if it is in Cookie
+                pageSize = Convert.ToInt32(HttpContext.Request.Cookies["pageSizeValue"]);
+            }
+            pageSize = (pageSize == 0) ? 5 : pageSize;
+            ViewData["pageSizeID"] =
+                new SelectList(new[] { "3", "5", "10", "20", "30", "40", "50", "100", "500" }, pageSize.ToString());
+            var pagedData = await PaginatedList<Bid>.CreateAsync(bids.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
         }
+
+
+
 
         // GET: Bids/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -44,7 +270,11 @@ namespace OASIS.Controllers
                 .Include(b => b.BidStatus)
                 .Include(b => b.Designer)
                 .Include(b => b.SalesAsscociate)
-                .Include(b => b.Project)
+                .Include(b => b.Project).ThenInclude(p => p.Customer)
+                .Include(p=>p.BidProducts).ThenInclude(p => p.Product)
+                .Include(p=>p.BidLabours).ThenInclude(p => p.Role)
+                .Include(p=>p.Approval).ThenInclude(p => p.ApprovalStatuses)
+
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (bid == null)
             {
@@ -70,20 +300,21 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,DateCreated,EstAmount,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
+        public async Task<IActionResult> Create([Bind("ID,DateCreated,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
             int DesignerStatusID, int ClientStatusID, string approvalComment, string[] selectedProducts, string[] selectedQuantity, string[] selectedRoles, string[] requiredHours)
         {
 
-
+            double total = 0;
             if (ModelState.IsValid)
             {
                 _context.Add(bid);
                 await _context.SaveChangesAsync();
-                UpdateBidProducts(selectedProducts, selectedQuantity, bid);
+                total += UpdateBidProducts(selectedProducts, selectedQuantity, bid);
                 UpdateApprovalStatus(bid, DesignerStatusID, ClientStatusID, approvalComment);
-                UpdateBidProducts(selectedProducts, selectedQuantity, bid);
-                //UpdateBidLabours(selectedRoles, requiredHours, bid);
+                total += UpdateBidLabours(selectedRoles, requiredHours, bid);
+                bid.EstAmount = total;
 
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -131,6 +362,8 @@ namespace OASIS.Controllers
         public async Task<IActionResult> Edit(int id, int DesignerStatusID, int ClientStatusID, string approvalComment, string[] selectedProducts, string[] selectedQuantity,
             string[] selectedRoles, string[] requiredHours, Byte[] RowVersion)
         {
+            double total = 0;
+
             var bidToUpdate = await _context.Bids
             .Include(a => a.Approval)
             .ThenInclude(d => d.ApprovalStatuses)
@@ -145,10 +378,12 @@ namespace OASIS.Controllers
             }
             _context.Entry(bidToUpdate).Property("RowVersion").OriginalValue = RowVersion;
 
-            UpdateBidProducts(selectedProducts, selectedQuantity, bidToUpdate);
-            UpdateBidLabours(selectedRoles, requiredHours, bidToUpdate);
+            total += UpdateBidProducts(selectedProducts, selectedQuantity, bidToUpdate);
+            total += UpdateBidLabours(selectedRoles, requiredHours, bidToUpdate);
 
-            if (await TryUpdateModelAsync<Bid>(bidToUpdate, "", p => p.DateCreated, p => p.EstAmount, p => p.ProjectStartDate, p => p.ProjectEndDate, p => p.EstBidEndDate, p => p.EstBidStartDate, p => p.Comments
+            bidToUpdate.EstAmount = total;
+
+            if (await TryUpdateModelAsync<Bid>(bidToUpdate, "", p => p.DateCreated, p => p.ProjectStartDate, p => p.ProjectEndDate, p => p.EstBidEndDate, p => p.EstBidStartDate, p => p.Comments
            , p => p.DesignerID, p => p.SalesAsscociateID, p => p.BidStatusID, p => p.ProjectID))
 
             {
@@ -446,30 +681,34 @@ namespace OASIS.Controllers
             ViewData["qntyOpts"] = new MultiSelectList(AssignedQuantity, "ID", "DisplayText");
         }
 
-        private void UpdateBidProducts(string[] selectedOptions, string[] selectedQuantity, Bid bidToUpdate)
+        private double UpdateBidProducts(string[] selectedOptions, string[] selectedQuantity, Bid bidToUpdate)
         {
-            var allProducts = _context.Products.Select(p => p.ID); // All product ID's
+            double total = 0;
+
+            var allProducts = _context.Products.ToList(); // All product ID's
+            var allProductPrice = _context.Products.Select(p => p.Price); // All product ID's
 
             if (selectedOptions.Length < 1 || selectedQuantity.Length < 1)
             {
                 bidToUpdate.BidProducts = new List<BidProduct>();
-                return;
+                return total ;
             }
 
 
             foreach (var product in allProducts)
             {
                 //if input array contains this product
-                if (selectedOptions.Contains(product.ToString()))
+                if (selectedOptions.Contains(product.ID.ToString()))
                 {
-                    var selctedOptionIndex = Array.IndexOf(selectedOptions, product.ToString()); // index of product in selectedOptions
-                    var inputQnty = Convert.ToInt32(selectedQuantity[selctedOptionIndex]); //  input Qnty
+                    var selctedOptionIndex = Array.IndexOf(selectedOptions, product.ID.ToString()); // index of product in selectedOptions
+                    var inputQnty = Convert.ToDecimal(selectedQuantity[selctedOptionIndex]); //  input Qnty
 
-                    var bidproductrow = bidToUpdate.BidProducts.SingleOrDefault(p => p.ProductID == product); // bid product row
+                    var bidproductrow = bidToUpdate.BidProducts.SingleOrDefault(p => p.ProductID == product.ID); // bid product row
 
                     //if product is alreay assigned to the bid
                     if (bidproductrow != null)
                     {
+                        total += product.Price * (int)inputQnty;
                         // check if the qnty is not same as inputed qnty
                         if (bidproductrow.Quantity != Convert.ToDecimal(selectedQuantity[selctedOptionIndex]))
                         {
@@ -479,11 +718,12 @@ namespace OASIS.Controllers
                     }
                     else // assign the produc to bid
                     {
+                        total += product.Price* (int)inputQnty;
 
                         var specToAdd = new BidProduct
                         {
                             BidID = bidToUpdate.ID,
-                            ProductID = product,
+                            ProductID = product.ID,
                             Quantity = (int)inputQnty
                         };
 
@@ -498,7 +738,7 @@ namespace OASIS.Controllers
                     // try to delete if the product actually is assigned to the bid
                     try
                     {
-                        var specToRemove = bidToUpdate.BidProducts.SingleOrDefault(p => p.ProductID == product);
+                        var specToRemove = bidToUpdate.BidProducts.SingleOrDefault(p => p.ProductID == product.ID);
                         _context.Remove(specToRemove);
                     }
                     catch
@@ -509,8 +749,9 @@ namespace OASIS.Controllers
 
                 }
 
-            }
 
+            }
+            return total;
         }
         private void PopuateSelectedRoles(Bid bid)
         {
@@ -539,30 +780,34 @@ namespace OASIS.Controllers
             ViewData["reqHrs"] = new MultiSelectList(AssignedHours, "ID", "DisplayText");
         }
 
-        private void UpdateBidLabours(string[] selectedRoles, string[] requiredHours, Bid bidToUpdate)
+        private double UpdateBidLabours(string[] selectedRoles, string[] requiredHours, Bid bidToUpdate)
         {
-            var allRoles = _context.Roles.Select(p => p.ID); // All product ID's
+            double total = 0;
+
+            var allRoles = _context.Roles.ToList(); // All product ID's
 
             if (selectedRoles.Length < 1 || requiredHours.Length < 1)
             {
                 bidToUpdate.BidProducts = new List<BidProduct>();
-                return;
-            }
+                return total;
 
+            }
 
             foreach (var role in allRoles)
             {
                 //if input array contains this product
-                if (selectedRoles.Contains(role.ToString()))
+                if (selectedRoles.Contains(role.ID.ToString()))
                 {
-                    var selctedOptionIndex = Array.IndexOf(selectedRoles, role.ToString()); // index of product in selectedRoles
+                    var selctedOptionIndex = Array.IndexOf(selectedRoles, role.ID.ToString()); // index of product in selectedRoles
                     var inputHrs = Convert.ToDecimal(requiredHours[selctedOptionIndex]); //  input hrs
 
-                    var bidRoleRow = bidToUpdate.BidLabours.SingleOrDefault(p => p.RoleID == role); // bid Labour row
+                    var bidRoleRow = bidToUpdate.BidLabours.SingleOrDefault(p => p.RoleID == role.ID); // bid Labour row
 
                     //if product is alreay assigned to the bid
                     if (bidRoleRow != null)
                     {
+                        total += (double)role.LabourPricePerHr * (double)inputHrs;
+
                         // check if the qnty is not same as inputed qnty
                         if ((int)bidRoleRow.Hours != Convert.ToInt32(requiredHours[selctedOptionIndex]))
                         {
@@ -572,11 +817,12 @@ namespace OASIS.Controllers
                     }
                     else // assign the produc to bid
                     {
+                        total += (double)role.LabourPricePerHr * (double)inputHrs;
 
                         var specToAdd = new BidLabour
                         {
                             BidID = bidToUpdate.ID,
-                            RoleID = role,
+                            RoleID = role.ID,
                             Hours = (double)inputHrs
                         };
 
@@ -591,7 +837,7 @@ namespace OASIS.Controllers
                     // try to delete if the product actually is assigned to the bid
                     try
                     {
-                        var specToRemove = bidToUpdate.BidLabours.SingleOrDefault(p => p.RoleID == role);
+                        var specToRemove = bidToUpdate.BidLabours.SingleOrDefault(p => p.RoleID == role.ID);
                         _context.Remove(specToRemove);
                     }
                     catch
@@ -604,9 +850,9 @@ namespace OASIS.Controllers
 
             }
             _context.SaveChangesAsync();
+            return total;
 
         }
-
 
     }
 

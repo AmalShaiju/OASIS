@@ -2,7 +2,7 @@
 
 // Change image based on URL
 var url = window.location.href.toString().toLowerCase();
-console.log(url)
+console.log(url.includes("bidstatus"))
 
 
 //Determines the page and adds it to the status msg
@@ -30,13 +30,54 @@ else if (url.includes("projects")) {
 
 }
 else if (url.includes("roles")) {
-    var homeSideBar = document.getElementById("role-side-bar").style.backgroundColor = "#7460ee";
-    var home = document.getElementById("role").style.backgroundColor = "rgb(116, 96, 238, 0.2)";
-    var text = document.getElementById("v-pills-role-tab").style.color = "#7460ee";
-    $("#roleLogo path").css({ "fill": "#7460ee" });
+    var homeSideBar = document.getElementById("employee-side-bar").style.backgroundColor = "#7460ee";;
+    var home = document.getElementById("employee").style.backgroundColor = "rgb(116, 96, 238, 0.2)";
+    $("#employeeLogo path").css({ "fill": "#7460ee" });
+    var text = document.getElementById("v-pills-employee-tab").style.color = "#7460ee";
     var pagemsg = document.getElementById("page-msg").innerHTML = "Roles";
 
 }
+else if (url.includes("bidstatus")) {
+    var homeSideBar = document.getElementById("bid-side-bar").style.backgroundColor = "#7460ee";
+    var home = document.getElementById("bid").style.backgroundColor = "rgb(116, 96, 238, 0.2)";
+    var text = document.getElementById("v-pills-bid-tab").style.color = "#7460ee";
+    $("#bidLogo path").css({ "fill": "#7460ee" });
+    var pagemsg = document.getElementById("page-msg").innerHTML = "Bid Status";
+}
+else if (url.includes("bids")) {
+    var homeSideBar = document.getElementById("bid-side-bar").style.backgroundColor = "#7460ee";
+    var home = document.getElementById("bid").style.backgroundColor = "rgb(116, 96, 238, 0.2)";
+    var text = document.getElementById("v-pills-bid-tab").style.color = "#7460ee";
+    $("#bidLogo path").css({ "fill": "#7460ee" });
+    var pagemsg = document.getElementById("page-msg").innerHTML = "Bids";
+
+}
+else if (url.includes("products")) {
+    var homeSideBar = document.getElementById("product-side-bar").style.backgroundColor = "#7460ee";
+    var home = document.getElementById("product").style.backgroundColor = "rgb(116, 96, 238, 0.2)";
+    var text = document.getElementById("v-pills-product-tab").style.color = "#7460ee";
+    $("#productLogo path").css({ "fill": "#7460ee" });
+    var pagemsg = document.getElementById("page-msg").innerHTML = "Products";
+
+}
+else if (url.includes("producttypes")) {
+    var homeSideBar = document.getElementById("product-side-bar").style.backgroundColor = "#7460ee";
+    var home = document.getElementById("product").style.backgroundColor = "rgb(116, 96, 238, 0.2)";
+    var text = document.getElementById("v-pills-product-tab").style.color = "#7460ee";
+    $("#productLogo path").css({ "fill": "#7460ee" });
+    var pagemsg = document.getElementById("page-msg").innerHTML = "Product Types";
+
+}
+
+else if (url.includes("approvalstatus")) {
+    var homeSideBar = document.getElementById("bid-side-bar").style.backgroundColor = "#7460ee";
+    var home = document.getElementById("bid").style.backgroundColor = "rgb(116, 96, 238, 0.2)";
+    var text = document.getElementById("v-pills-bid-tab").style.color = "#7460ee";
+    $("#bidLogo path").css({ "fill": "#7460ee" });
+    var pagemsg = document.getElementById("page-msg").innerHTML = "Approval Status";
+
+}
+
 else {
     var homeSideBar = document.getElementById("home-side-bar").style.backgroundColor = "#7460ee";;
     $("#homeLogo path").css({ "fill": "#7460ee" });
