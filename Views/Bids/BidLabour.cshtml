@@ -1,0 +1,71 @@
+﻿<div class="col-md-12 tab-pane fade" id="pills-bidLabour" role="tabpanel" aria-labelledby="pills-bidLabour-tab">
+    <div class="col-md-12">
+        <div class="form-row col-10">
+
+            <h5 style="display:flex; align-items:center;  margin-right:20px" class="control-label">Choose Labour</h5>
+            <div style="width:4%; height:28px; margin: 0;" class="button-menu form-group btn btn-danger">
+                <div id="btnRoleRemove" style="width:22px; height:25px;">
+                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+
+                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
+                            <path d="M2115 5101 c-123 -45 -208 -118 -260 -224 -46 -95 -55 -149 -55 -343
+                                            l0 -164 -600 0 -600 0 0 -305 0 -305 1960 0 1960 0 0 305 0 305 -600 0 -600 0
+                                            0 164 c0 194 -9 248 -55 343 -43 87 -121 163 -215 207 l-65 31 -410 2 c-376 3
+                                            -414 1 -460 -16z m823 -313 c60 -37 72 -79 72 -260 l0 -158 -450 0 -450 0 0
+                                            155 c0 180 11 221 69 261 l36 24 344 0 c334 0 345 -1 379 -22z"></path>
+                            <path d="M926 3438 c2 -18 63 -710 134 -1538 72 -828 135 -1526 140 -1553 31
+                                            -149 153 -282 302 -329 57 -17 115 -18 1058 -18 943 0 1001 1 1058 18 149 47
+                                            271 180 302 329 5 27 68 725 140 1553 71 828 132 1520 134 1538 l5 32 -1639 0
+                                            -1639 0 5 -32z m1174 -1553 l0 -825 -145 0 -145 0 0 825 0 825 145 0 145 0 0
+                                            -825z m610 0 l0 -825 -150 0 -150 0 0 825 0 825 150 0 150 0 0 -825z m600 0
+                                            l0 -825 -145 0 -145 0 0 825 0 825 145 0 145 0 0 -825z"></path>
+                        </g>
+                    </svg>
+                </div>
+
+            </div>
+            <div style="        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        margin-top: 30px;
+  ">
+                <div style="
+    float: left;
+">
+                    <p style="
+    float: left;
+">
+                        Products
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        Quantity
+                    </p>
+                </div>
+            </div>
+            <div class="bid-product-card" style="display:flex">
+
+                @Html.ListBox("selectedRoles", (MultiSelectList)ViewBag.selRoles, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;Height:400px; Cursor: pointer;" })
+
+
+                @Html.ListBox("requiredHours", (MultiSelectList)ViewBag.reqHrs, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;Height:400px;" })
+            </div>
+
+            <div class="input-group mb-3" style="margin-bottom:60px;">
+
+                <div class="input-group mb-3" style="width:80%; margin:0px!important;">
+                    <select style="margin:0" class="form-control" id="RoleID" name="RoleID" asp-items="ViewBag.RoleID">
+                        <option value="">select a Role</option>
+                    </select>
+                    <div class="input-group-append">
+                        <label style="background:white;" class="input-group-text" for="inputGroupSelect02">Hours</label>
+                    </div>
+                    <input style="margin:0" id="roleHours" type="number" class="form-control" placeholder="Example: 2" aria-label="Quantity" aria-describedby="basic-addon1">
+                    <button id="btnAddRole" class="btn btn-outline-success" type="button">+</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

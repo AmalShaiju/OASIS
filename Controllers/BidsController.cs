@@ -617,6 +617,12 @@ namespace OASIS.Controllers
             return Json(ProductSelectList(ID, null));
         }
 
+        [HttpGet]
+        public JsonResult GetProduct(int? ID)
+        {
+            return Json(_context.Products.SingleOrDefault(x => x.ID == ID));
+        }
+
         private bool BidExists(int id)
         {
             return _context.Bids.Any(e => e.ID == id);
@@ -628,13 +634,18 @@ namespace OASIS.Controllers
         }
         private SelectList ProductSelectList(int? ProductTypeID, int? selectedId)
         {
-            var query = from c in _context.Products.Include(c => c.ProductType)
+            var query = from c in _context.Products.Include(c => c.ProductType).Select(x => new {
+                x.ID, 
+                x.ProductTypeID,
+                Display = x.Description +" ["+ x.Code +"]" + " - " + "$"+x.Price
+            
+            })
                         select c;
             if (ProductTypeID.HasValue)
             {
                 query = query.Where(p => p.ProductTypeID == ProductTypeID);
             }
-            return new SelectList(query.OrderBy(p => p.Code), "ID", "Code", selectedId);
+            return new SelectList(query.OrderBy(p => p.Display), "ID", "Display", selectedId);
         }
 
 

@@ -1,17 +1,8 @@
-﻿// 2021-02-26 Amal Shaiju
+﻿// 2021-03-12 Amal Shaiju
 
-var postBack = [];
-var rolePostBack = [];
+//Add 
+var productsAssigned = []
 
-// Add all assigned product to postBack onload
-for (var i = 0; i < $("#selectedProducts option").length; i++) {
-    postBack.push($($("#selectedProducts option")[i]).val())
-}
-
-// Add all assigned roles to rolePostBack onload
-for (var i = 0; i < $("#selectedRoles option").length; i++) {
-    rolePostBack.push($($("#selectedRoles option")[i]).val())
-}
 
 //Add selecetd list product to product select list
 $("#btnAddProduct").click(function () {
@@ -25,132 +16,129 @@ $("#btnAddProduct").click(function () {
     else if (inputQuantity.val() == "") { // check if value is inputed
         alert("Please input a valid quanity");
     }
-    else if (ArrayItemFinder(postBack, inputProduct.val())) { // check if array already has the selected value
+    else if (ArrayItemFinder(productsAssigned, inputProduct.val())) { // check if array already has the selected value
 
         alert("Product is already in the list."+ "\n"+"Delete the product from the list to edit the quantity");
     }
     else {
-        postBack.push(inputProduct.val())
-        $('#selectedProducts').append($(inputProduct).clone());   //clone the selected ddl option  and append it to select list.
-        $('#selectedQuantity').append(new Option(inputQuantity.val(), inputQuantity.val())); // create and append the option to the select list using the inputs
+
+        var id = $("#ProductID").val();
+        var quantity = $("#ProductQuantity").val();
+
+        // call get products
+        $.ajax({
+            type: "GET",
+            url: '../Bids/GetProduct',
+            data: { ID: id },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function () {
+                // Show(); // Show loader icon  
+            },
+            success: function (response) {
+                // Add a new row to the end of the table
+                $("#bidProductTable").find('tbody')
+                    .append($(`<tr id=row-${response.id} >`)
+                        .append($('<td class="column1">').append(`${response.code}`))
+                        .append($('<td class="column2">').append(`${response.description}`))
+                        .append($('<td class="column3">').append(`${response.size}`))
+                        .append($(`<td class="column4" id=price-${response.id}>`).append(`$${response.price}`))
+                        .append($('<td class="column5">').append(`<input type="text" disabled id="txt-${response.id}" value="${quantity}" />`))
+                        //.append($('<td class="column5">').append(`x${quantity}`))
+                        .append($(`<td class="column6" id="total-${response.id}">`).append(`$${response.price * quantity}`))
+                        .append($('<td class="column6">').append(`<input type="button" id="edit-${response.id}" class="btn btn-primary" onclick="editRow(this.id)" value="Edit"/><input type="button" style="display:none" id="save-${response.id}" class="btn btn-success" onclick="saveRow(this.id)" value="Save"/>`))
+                        .append($('<td class="column6">').append(`<input type="button" id="delete-${response.id}" class="btn btn-danger" onclick="deleteRow(this.id)"  value="Delete" />`))
+
+                );
+
+                productsAssigned.push({
+                    productID: response.id,
+                    qnty: parseInt(quantity),
+                });
+
+            },
+            complete: function () {
+                // Hide(); // Hide loader icon  
+                console.log(productsAssigned)
+            },
+            failure: function (jqXHR, textStatus, errorThrown) {
+                alert("HTTP Status: " + jqXHR.status + "; Error Text: " + jqXHR.responseText); // Display error message  
+            }
+        });
+
+
     }
+   
 
 
 });
 
-//Add selecetd Product product to Role select list
+function editRow(id) {
+    // convert editID to different ID's
+    var commonId = id.split('-').pop();
+    var txtboxId = "#txt-" + commonId;
+    var saveBtn = "#save-" + commonId;
+    var editBtnId = "#" + id;
 
-$("#btnAddRole").click(function () {
+    // Make the textbox avialable to edit
+    $(txtboxId).prop("disabled", false);
+    $(txtboxId).css({ "border" : "1px solid black", });
 
-    var inputRole = $("#RoleID option:selected");
-    var inputHours = $("#roleHours");
-
-    if (inputRole.val() == "") { // check option is selected
-        alert("Please Select a role to add");
-    }
-    else if (inputHours.val() == "") { // check if value is inputed
-        alert("Please input a valid Hour");
-    }
-    else if (ArrayItemFinder(rolePostBack, inputRole.val())) { // check if array already has the selected value
-
-        alert("Role is already in the list." + "\n" + "Delete the role from the list to edit the hours");
-    }
-    else {
-        rolePostBack.push(inputRole.val())
-        $('#selectedRoles').append($(inputRole).clone());  //clone the selected ddl option  and append it to select list.
-        $('#requiredHours').append(new Option(inputHours.val(), inputHours.val())); // create and append the option to the select list using the inputs
-    }
+    // Show save button and hide edit button
+    $(saveBtn).show();
+    $(editBtnId).hide();
+}
 
 
-});
+function saveRow(id) {
+    var commonId = id.split('-').pop();
+    var txtboxId = "#txt-" + commonId;
+    var editBtnId = "#edit-" + commonId;
+    var saveBtn = "#" + id;;
 
-//Remove product from select list
-$("#btnProductRemove").click(function () {
-    var selecetdProduct = $("#selectedProducts option:selected");
-    console.log(selecetdProduct)
+    updateTotal(id);
 
-    if (selecetdProduct.length > 1) { // check if multiple option is selected
-        alert("You can only delete one product at a time");
-    }
-    else if (selecetdProduct.length < 1) { //chek if no option is selected
-        alert("No product to delete");
-    }
-    else {
+    // Remove the border after saved
+    $(txtboxId).removeAttr("style");
+    $(txtboxId).prop("disabled", true);
 
-        selectedQuantity[selecetdProduct.index()].remove();
-        var index = postBack.indexOf($(selecetdProduct).val()); 
-        if (index !== -1) {
-            postBack.splice(index, 1);
-        }
-        selecetdProduct.remove();
-    }
-});
-
-// Remove role from select list
-$("#btnRoleRemove").click(function () {
-    var selecetdRole = $("#selectedRoles option:selected");
-
-    if (selecetdRole.length > 1) { // check if multiple option is selected
-        alert("You can only delete one role at a time");
-    }
-    else if (selecetdRole.length < 1) { //chek if no option is selected
-        alert("No role to delete");
-    }
-    else {
-
-        requiredHours[selecetdRole.index()].remove(); // remove the hours option parlel to the option selected
-        var index = rolePostBack.indexOf($(selecetdRole).val());
-        if (index !== -1) {
-            rolePostBack.splice(index, 1);
-        }
-        selecetdRole.remove();
-
-    }
-
-});
+    //after save show edit button
+    $(saveBtn).hide();
+    $(editBtnId).show();
+}
 
 
-$("#btnSubmit").click(function () {
-    $('#selectedProducts option').prop('selected', true);
-    $('#selectedQuantity option').prop('selected', true);
-    $('#selectedRoles option').prop('selected', true);
-    $('#requiredHours option').prop('selected', true);
+function deleteRow(id) {
+    var commonId = id.split('-').pop();
+    var rowID = "#row-" + commonId;
+    console.log('comm - ' + commonId)
+    console.log(productsAssigned[0].productID != parseInt(commonId))
+    $(rowID).remove();
 
-    console.log("Added");
-});
-
-$("#createEmployee").click(function () {
-    $('#selectedProducts option').prop('selected', true);
-    $('#selectedQuantity option').prop('selected', true);
-    $('#selectedRoles option').prop('selected', true);
-    $('#requiredHours option').prop('selected', true);
-
-    console.log("Added");
-});
-
-$("#createCustomer").click(function () {
-    $('#selectedProducts option').prop('selected', true);
-    $('#selectedQuantity option').prop('selected', true);
-    $('#selectedRoles option').prop('selected', true);
-    $('#requiredHours option').prop('selected', true);
-
-    console.log("Added");
-});
+    productsAssigned = productsAssigned.filter(p => p.productID != parseInt(commonId));
+    console.log(productsAssigned);
+}
 
 
-$("#createProject").click(function () {
-    $('#selectedProducts option').prop('selected', true);
-    $('#selectedQuantity option').prop('selected', true);
-    $('#selectedRoles option').prop('selected', true);
-    $('#requiredHours option').prop('selected', true);
+function updateTotal(id) {
+    var commonId = id.split('-').pop();
+    var totalID = "#total-" + commonId;
+    var txtboxId = "#txt-" + commonId;
+    var priceID = "#price-" + commonId;
 
-    console.log("Added");
-});
+    // get the text and remove '$'
+    var price = $(priceID).text().split('$').pop();;
+    var qnty = $(txtboxId).val();
+
+    // tack the total to the <td>
+    $(totalID).text("$"+(parseFloat(price) * parseFloat(qnty)).toString());
+    
+}
 
 //Helper Funtions
 function ArrayItemFinder(ary, item) {
     for (var i = 0; i < ary.length; i++) {
-        if (ary[i] == item)
+        if (ary[i].productID == parseInt(item))
             return true;
     }
 

@@ -725,6 +725,22 @@ tbody tr:nth-child(even) {
     text-align: right;
     padding-right: 62px;
 }
+
+    .column5 input[type=text] {
+        background: white;
+        width: 59px;
+        border:none;
+        height: 27px;
+        text-align: center;
+    }
+
+
+
+
+    .column5 input[type=text]:nth-child(even) {
+        background-color: rgba(116,96,238,0.1)
+    }
+
     
 
 /*Bid Details Table*/

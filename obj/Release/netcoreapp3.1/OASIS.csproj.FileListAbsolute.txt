@@ -248,3 +248,6 @@ C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\ProductTypes\Edit.cshtml.g.cs
 C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\ProductTypes\Index.cshtml.g.cs
 C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\Shared\_CreateMenu.cshtml.g.cs
 C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\Shared\_DetailsMenu.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\Bids\BidProduct.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\Bids\BidLabour.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\Bids\BidApprovals.cshtml.g.cs
