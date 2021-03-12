@@ -24,4 +24,17 @@ function divVisibility(i) {
     }
 }
 
+function showMoreOption() {
+    console.log("red")
+
+    if (document.getElementById("moreOption").style.display != "block") {
+        document.getElementById("moreOption").style.display = "block";
+    }
+
+    else {
+        document.getElementById("moreOption").style.display = "None";
+    }
+
+}
+
 

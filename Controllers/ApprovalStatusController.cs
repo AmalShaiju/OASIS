@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OASIS.Data;
 using OASIS.Models;
+using OASIS.Utilities;
 
 namespace OASIS.Controllers
 {
@@ -32,6 +33,7 @@ namespace OASIS.Controllers
             {
                 return NotFound();
             }
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "ApprovalStatus");
 
             var approvalStatus = await _context.ApprovalStatuses
                 .FirstOrDefaultAsync(m => m.ID == id);
@@ -62,7 +64,7 @@ namespace OASIS.Controllers
                 {
                     _context.Add(approvalStatus);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", new { approvalStatus.ID });
+                    return RedirectToAction("Index", new { approvalStatus.ID });
                 }
             }
             catch (DbUpdateException dex)
@@ -141,7 +143,8 @@ namespace OASIS.Controllers
                     }
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { approvalStatus.ID });
+
             }
             return View(approvalStatus);
         }

@@ -267,6 +267,8 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Bids");
+
             var bid = await _context.Bids
                 .Include(b => b.BidStatus)
                 .Include(b => b.Designer)
@@ -350,7 +352,7 @@ namespace OASIS.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,DateCreated,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
-            int DesignerStatusID, int ClientStatusID, string approvalComment, string[] selectedProducts, string[] selectedQuantity, string[] selectedRoles, string[] requiredHours)
+            int DesignerStatusID, int ClientStatusID, string approvalComment, string[] selectedProducts, string[] selectedQuantity, string[] selectedRoles, string[] requiredHours, int employeeTrue, int customerTrue, int projectTrue)
         {
 
             double total = 0;
@@ -364,8 +366,20 @@ namespace OASIS.Controllers
                 bid.EstAmount = total;
 
                 await _context.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
+                if (employeeTrue == 1)
+                {
+                    return RedirectToAction(actionName: "Create", controllerName: "Employees");
+                }
+                if (customerTrue == 1)
+                {
+                    return RedirectToAction(actionName: "Create", controllerName: "Customers");
+                }
+                if (projectTrue == 1)
+                {
+                    return RedirectToAction(actionName: "Create", controllerName: "Projects");
+                }
+            
+                return RedirectToAction("Details", new { bid.ID });
             }
 
 
@@ -798,8 +812,8 @@ namespace OASIS.Controllers
 
                 }
 
-
             }
+            _context.SaveChangesAsync();
             return total;
         }
         private void PopuateSelectedRoles(Bid bid)
@@ -896,6 +910,8 @@ namespace OASIS.Controllers
 
 
                 }
+
+
 
             }
             _context.SaveChangesAsync();

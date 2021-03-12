@@ -90,7 +90,7 @@ namespace OASIS.Data
 
                 if (!context.Employees.Any())
                 {
-                    for (int i = 0; i < 25; i++)
+                    for (int i = 0; i < 10; i++)
                     {
 
                         var a = new Employee()
@@ -773,7 +773,7 @@ namespace OASIS.Data
                 {
                     foreach (int i in projectID)
                     {
-                        for (int j = 0; j < 5; j++)
+                        for (int j = 0; j < 2; j++)
                         {
                             int range = 5 * 365; //5 years
 

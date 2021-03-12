@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OASIS.Data;
 using OASIS.Models;
+using OASIS.Utilities;
 
 namespace OASIS.Controllers
 {
@@ -32,6 +33,8 @@ namespace OASIS.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "BidStatus");
 
             var bidStatus = await _context.BidStatuses
                 .FirstOrDefaultAsync(m => m.ID == id);
@@ -62,7 +65,7 @@ namespace OASIS.Controllers
                 {
                     _context.Add(bidStatus);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", new { bidStatus.ID });
+                    return RedirectToAction("Index", new { bidStatus.ID });
                 }
             }
             catch (DbUpdateException dex)
@@ -140,7 +143,7 @@ namespace OASIS.Controllers
                     }
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { bidStatus.ID });
             }
             return View(bidStatus);
         }
