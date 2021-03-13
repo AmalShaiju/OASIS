@@ -6,12 +6,12 @@ var productsAssigned = []
 try {
 
     // get al rows to check if there is any product assigned 
-    rows = $("#BidproductTable > tbody > tr")
+    rows = $("#BidproductTable  > tbody > tr")
 
     if (rows.length > 0) {
 
         // Get all input in colum 5 class
-        var txtColumns = $(".column5 :input")
+        var txtColumns = $("#BidproductTable .column5 :input")
 
         for (var i = 0; i < txtColumns.length; i++) {
 
@@ -51,7 +51,7 @@ $("#btnAddProduct").click(function () {
     }
     else if (ArrayItemFinder(productsAssigned, inputProduct.val())) { // check if array already has the selected value
 
-        alert("Product is already in the list." + "\n" + "Delete the product from the list to edit the quantity");
+        alert("Product is already in the list.");
     }
     else {
 
@@ -111,6 +111,8 @@ $("#btnAddProduct").click(function () {
 $("#btnSubmit").click(function () {
 
     $("#ProductsAssigned").val(JSON.stringify(productsAssigned));
+
+    $("#RolesAssigned").val(JSON.stringify(rolesAssigned));
 
 });
 
@@ -214,11 +216,11 @@ function updateQnty(qnty, productID) {
     for (var i = 0; i < productsAssigned.length; i++) {
         if (productID == productsAssigned[i].ProductID) {
             if (productsAssigned[i].Quantity != qnty) {
-                productsAssigned[i].Quantity = qnty;
+                productsAssigned[i].Quantity = parseInt(qnty);
             }
         }
     }
-
+}
     function deleteProductObj(productID) {
         for (var i = 0; i < productsAssigned.length; i++) {
             if (productID == productsAssigned[i].ProductID) {
@@ -230,4 +232,3 @@ function updateQnty(qnty, productID) {
         //check if the product id == obj["ProductID"]
             // change corresponding quantity 
 
-}

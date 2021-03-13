@@ -9,6 +9,8 @@
         <input type="hidden" asp-for="RowVersion" />
         <input type="hidden" asp-for="ID" />
         <input type="hidden" id="ProductsAssigned" name="ProductsAssigned" />
+        <input type="hidden" id="RolesAssigned" name="RolesAssigned" />
+
 
         <div class="form-row col-10">
             <div style="width:35px; height:37px; align-self:center;">
@@ -170,7 +172,7 @@
                     <partial name="BidLabour">
 
 
-                      
+
                         <div style="display:flex; margin-top:50px; margin-bottom:20px;">
                             <button id="btnSubmit" type="submit" style="width: 6%;margin-right:3.5%;" class="button-menu form-group btn btn-success">
                                 <div style="width:20px; height:22px;">
@@ -240,6 +242,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/addProducts.js"></script>
+    <script src="~/js/addRoles.js"></script>
     <script src="~/js/refreshDDL.js"></script>
     <script type="text/javascript">
         $('#ProductTypeID').change(function () {
