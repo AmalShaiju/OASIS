@@ -353,7 +353,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,DateCreated,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
+        public async Task<IActionResult> Create([Bind("ID,DateCreated,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,Comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
             int DesignerStatusID, int ClientStatusID, string approvalComment, string ProductsAssigned, string RolesAssigned, int employeeTrue, int customerTrue, int projectTrue)
         {
 

@@ -153,13 +153,15 @@
 
                     </div>
 
-                    <div class="form-row col-10">
 
-                        <div class="form-group col-11">
-                            <label asp-for="Comments" class="control-label"></label>
+                    <div class="form-row col-9">
 
-                            <textarea style="height: 198px;" name="approvalComment" class="form-control">@Model.Comments</textarea>
-                        </div>
+                        <label asp-for="Comments" class="control-label"></label>
+                        <textarea style="height: 198px;" asp-for="Comments" class="form-control"></textarea>
+                        <span asp-validation-for="Comments" class="text-danger"></span>
+
+
+
                     </div>
 
 
