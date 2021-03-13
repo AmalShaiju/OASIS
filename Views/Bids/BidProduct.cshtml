@@ -1,133 +1,65 @@
 ﻿<div class="col-md-9 tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-   
-                <div id="bidProductTable" class="container-table100 list-group" style="overflow-y: auto; height: 355px;">
 
-                    <div class="wrap-table100">
-                        <div class="table100">
-                            <table>
-                                <thead>
-                                    <tr class="table100-head">
-                                        <th class="column1">Code</th>
-                                        <th class="column2">Description </th>
-                                        <th class="column3">Size</th>
-                                        <th class="column4">Price</th>
-                                        <th class="column5">Quantity</th>
-                                        <th class="column6">Total</th>
-                                        <th class="column6"></th>
-                                        <th class="column6"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                   
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                @*<ul >
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        A list item
-                        <span class="badge bg-primary rounded-pill">14</span>
-                    </li>
-                </ul>*@
+    <div id="bidProductTable" class="container-table100 list-group" style="overflow-y: auto; height: 355px;">
 
-            <div class="input-group m-t-12">
-                <div class="input-group-prepend" style="background:White">
-                    <select class="btn btn-outline-secondary" id="ProductTypeID" name="ProductTypeID" asp-items="ViewBag.ProductTypeID">
-                        <option value="">All Product Types</option>
-                    </select>
-                </div>
+        <div class="wrap-table100">
+            <div class="table100">
+                <table id="BidproductTable">
+                    <thead>
+                        <tr class="table100-head">
+                            <th class="column1">Code</th>
+                            <th class="column2">Description </th>
+                            <th class="column3">Size</th>
+                            <th class="column4">Price</th>
+                            <th class="column5">Quantity</th>
+                            <th class="column6">Total</th>
+                            <th class="column6"></th>
+                            <th class="column6"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.AssignedBidProducts != null)
+                        {
+                            foreach (var item in ViewBag.AssignedBidProducts)
+                            {
+                        <tr id=row-@item.Product.ID>
+                            <td class="column1">@item.Product.Code</td>
+                            <td class="column2">@item.Product.Description</td>
+                            <td class="column3">@item.Product.size</td>
+                            <td class="column4" id="price-@item.Product.ID">$@item.Product.Price</td>
+                            <td class="column5"><input type="text" disabled id="txt-@item.Product.ID" value="@item.Quantity" /></td>
+                            <td class="column6"  id="total-@item.Product.ID">$@(item.Quantity*item.Product.Price)</td>
+                            <td class="column6"><input type="button" id="edit-@item.Product.ID" class="btn btn-primary" onclick="editRow(this.id)" value="Edit" /><input type="button" style="display:none" id="save-@item.Product.ID" class="btn btn-success" onclick="saveRow(this.id)" value="Save" /></td>
+                            <td class="column6"><input type="button" id="delete-@item.Product.ID" class="btn btn-danger" onclick="deleteRow(this.id)" value="Delete" /></td>
+                        </tr>
+                            }
 
-                <div class="input-group mb-3" style="width:79%; background:white; margin:0px!important;">
-                    <select style="margin:0" class="form-control" id="ProductID" name="ProductID" asp-items="ViewBag.ProductID">
-                        <option value="">select a Product</option>
-                    </select>
-                    <div class="input-group-append">
-                        <label class="input-group-text" for="inputGroupSelect02">Quantity</label>
-                    </div>
-                    <input style="margin:0" id="ProductQuantity" type="number" class="form-control" placeholder="Example: 2" aria-label="Quantity" aria-describedby="basic-addon1">
-                    <button id="btnAddProduct" class="btn btn-outline-success" type="button">+</button>
-                </div>
-
+                        }
+                    </tbody>
+                </table>
             </div>
+        </div>
+    </div>
 
 
-    <!--<div class="col-md-12">
+    <div class="input-group m-t-12">
+        <div class="input-group-prepend" style="background:White">
+            <select class="btn btn-outline-secondary" id="ProductTypeID" name="ProductTypeID" asp-items="ViewBag.ProductTypeID">
+                <option value="">All Product Types</option>
+            </select>
+        </div>
 
-        <div class="form-row col-10">
-            <h5 style="display:flex; align-items:center;  margin-right:20px" class="control-label">Choose Products</h5>
-            <div style="width:4%; height:28px; margin: 0;" class="button-menu form-group btn btn-danger">
-                <div id="btnProductRemove" style="width:22px; height:25px;">
-                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
-
-                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
-                            <path d="M2115 5101 c-123 -45 -208 -118 -260 -224 -46 -95 -55 -149 -55 -343
-                                            l0 -164 -600 0 -600 0 0 -305 0 -305 1960 0 1960 0 0 305 0 305 -600 0 -600 0
-                                            0 164 c0 194 -9 248 -55 343 -43 87 -121 163 -215 207 l-65 31 -410 2 c-376 3
-                                            -414 1 -460 -16z m823 -313 c60 -37 72 -79 72 -260 l0 -158 -450 0 -450 0 0
-                                            155 c0 180 11 221 69 261 l36 24 344 0 c334 0 345 -1 379 -22z"></path>
-                            <path d="M926 3438 c2 -18 63 -710 134 -1538 72 -828 135 -1526 140 -1553 31
-                                            -149 153 -282 302 -329 57 -17 115 -18 1058 -18 943 0 1001 1 1058 18 149 47
-                                            271 180 302 329 5 27 68 725 140 1553 71 828 132 1520 134 1538 l5 32 -1639 0
-                                            -1639 0 5 -32z m1174 -1553 l0 -825 -145 0 -145 0 0 825 0 825 145 0 145 0 0
-                                            -825z m610 0 l0 -825 -150 0 -150 0 0 825 0 825 150 0 150 0 0 -825z m600 0
-                                            l0 -825 -145 0 -145 0 0 825 0 825 145 0 145 0 0 -825z"></path>
-                        </g>
-                    </svg>
-                </div>
-
-            </div>-->
-    @*<button type="button" id="btnProductRemove" class="btn btn-danger"> Delete
-        </button>*@
-    <!--<div style="        width: 100%;
-            display: flex;
-            justify-content: space-around;
-            margin-top: 30px;
-      ">
-                    <div style="
-        float: left;
-    ">
-                        <p style="
-        float: left;
-    ">
-                            Products
-                        </p>
-                    </div>
-                    <div>
-                        <p>
-                            Quantity
-                        </p>
-                    </div>
-                </div>
-                <div class="bid-product-card" style="display:flex">
-
-                    @Html.ListBox("selectedProducts", (MultiSelectList)ViewBag.selOpts, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;Height:400px; Cursor: pointer;" })
-
-
-                    @Html.ListBox("selectedQuantity", (MultiSelectList)ViewBag.qntyOpts, new { @size = 5, @class = "form-control", @style = "overflow-y: hidden;Height:400px; " })
-                </div>
-
-                <div class="input-group mb-3" style="margin-bottom:60px;">
-                    <div class="input-group-prepend">
-                        <select class="btn btn-outline-secondary" id="ProductTypeID" name="ProductTypeID" asp-items="ViewBag.ProductTypeID">
-                            <option value="">All Product Types</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group mb-3" style="width:81%; margin:0px!important;">
-                        <select style="margin:0" class="form-control" id="ProductID" name="ProductID" asp-items="ViewBag.ProductID">
-                            <option value="">select a Product</option>
-                        </select>
-                        <div class="input-group-append">
-                            <label class="input-group-text" for="inputGroupSelect02">Quantity</label>
-                        </div>
-                        <input style="margin:0" id="ProductQuantity" type="number" class="form-control" placeholder="Example: 2" aria-label="Quantity" aria-describedby="basic-addon1">
-                        <button id="btnAddProduct" class="btn btn-outline-success" type="button">+</button>
-                    </div>
-
-                </div>
-
-
+        <div class="input-group mb-3" style="width:79%; background:white; margin:0px!important;">
+            <select style="margin:0" class="form-control" id="ProductID" name="ProductID" asp-items="ViewBag.ProductID">
+                <option value="">select a Product</option>
+            </select>
+            <div class="input-group-append">
+                <label class="input-group-text" for="inputGroupSelect02">Quantity</label>
             </div>
-        </div>-->
+            <input style="margin:0" id="ProductQuantity" type="number" class="form-control" placeholder="Example: 2" aria-label="Quantity" aria-describedby="basic-addon1">
+            <button id="btnAddProduct" class="btn btn-outline-success" type="button">+</button>
+        </div>
+
+    </div>
+
 </div>
