@@ -107,24 +107,26 @@ function updateBidBudget() {
 }
 
 function Budgeting(budget, runningTotal, strict) {
-
+    console.log("entered");
     if ((runningTotal > budget) && (budget != 0)) {
 
         $("#bidRoleTotal").css("color", "#ffcccb")
         $("#bidProductTotal").css("color", "#ffcccb")
+
+        if (strict) {
+
+            $('#btnSubmit').attr("disabled", true);
+
+        }
+        else {
+            $('#btnSubmit').attr("disabled", false);
+        }
     }
     else {
         $("#bidRoleTotal").css("color", "#90ee90")
         $("#bidProductTotal").css("color", "#90ee90")
     }
 
-    if (strict) {
-
-        $('#btnSubmit').attr("disabled", true);
-
-    }
-    else {
-        $('#btnSubmit').attr("disabled", false);
-    }
+    
 
 }
