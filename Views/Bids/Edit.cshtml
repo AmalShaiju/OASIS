@@ -159,12 +159,18 @@
                             <label asp-for="Budget" class="control-label"></label>
                             <div class="input-group mb-3 budget-lock">
                                 <div class="input-group-prepend">
+                                    <span class="input-group-text">$</span>
+                                </div>
+                                <input asp-for="Budget" class="form-control" aria-label="Text input with checkbox">
+
+                                <div class="input-group-append">
                                     <div class="input-group-text lock">
                                     </div>
                                 </div>
-                                <input asp-for="Budget" class="form-control" aria-label="Text input with checkbox">
                             </div>
                         </div>
+
+
 
 
                     </div>

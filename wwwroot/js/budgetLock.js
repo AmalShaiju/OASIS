@@ -3,17 +3,28 @@
 var strict = false;
 var budget = 0;
 
+//lock if the record already has a budget
+Updatelock()
+Budgeting(budget, runningTotal, strict);
+
 $(".lock").click(function () {
 
-    console.log($(this).css("background-image").replace('url(', '').replace(')', '').replace(/\"/gi, ""));
+    Updatelock();
+    Budgeting(budget, runningTotal, strict);
 
-    if ($(this).css("background-image").replace('url(', '').replace(')', '').replace(/\"/gi, "") == "http://localhost:63341/resources/svg/lock-open.svg") {
+});
 
-        //lock 
-        $(this).css('background', `url("${getBaseUrl()}resources/svg/lock-closed.svg") center no-repeat`);
+$('#Budget').change(function () {
 
-        // Disable the input
-        $("#Budget").attr("disabled", true)
+    updateBidBudget();
+    Budgeting(budget, runningTotal, strict)
+
+});
+
+function Updatelock() {
+
+    if ($(".lock").css("background-image").replace('url(', '').replace(')', '').replace(/\"/gi, "") == "http://localhost:63341/resources/svg/lock-open.svg") {
+
 
         inputTxt = $("#Budget").val();
 
@@ -21,20 +32,32 @@ $(".lock").click(function () {
         if (inputTxt == "") {
 
             //Empty input add display "$0" 
-            $("#Budget").val("$" + 0)
+            //alert("Please Insert a budget before locking")
         }
         else {
 
+            //lock icon 
+            $(".lock").css('background', `url("${getBaseUrl()}resources/svg/lock-closed.svg") center no-repeat`);
+
+            // Disable the input
+            $("#Budget").attr("disabled", true)
+
             // Add "$" to input and display
-            $("#Budget").val("$" + $("#Budget").val())
+            $("#Budget").val($("#Budget").val())
+
+
+            strict = true; 
+
+            //Populate bid budget in table
+            updateBidBudget();
+
         }
-        strict = true;
 
 
     }
     else {
         //open
-        $(this).css('background', `url("${getBaseUrl()}resources/svg/lock-open.svg") center no-repeat`);
+        $(".lock").css('background', `url("${getBaseUrl()}resources/svg/lock-open.svg") center no-repeat`);
 
         // Make the input avaiable to edit
         $("#Budget").attr("disabled", false)
@@ -56,11 +79,11 @@ $(".lock").click(function () {
 
 
     }
-    Budgeting(budget, runningTotal, strict) 
 
-});
+}
 
-$('#Budget').change(function () {
+function updateBidBudget() {
+
 
     if ($("#Budget").val() == "") {
 
@@ -71,44 +94,37 @@ $('#Budget').change(function () {
         budget = 0;
     }
     else {
+        console.log("before - " + $("#Budget").val());
+
         //Change budget since input changed
         $(".budget").text(`B: $${$("#Budget").val()} `);
 
+
         // change budget variable to new input
-        budget = parseFloat($("#Budget").val());
+        budget = parseFloat($("#Budget").val().split("$").pop());
 
     }
-});
+}
 
 function Budgeting(budget, runningTotal, strict) {
+
+    if ((runningTotal > budget) && (budget != 0)) {
+
+        $("#bidRoleTotal").css("color", "#ffcccb")
+        $("#bidProductTotal").css("color", "#ffcccb")
+    }
+    else {
+        $("#bidRoleTotal").css("color", "#90ee90")
+        $("#bidProductTotal").css("color", "#90ee90")
+    }
+
     if (strict) {
 
-        if ((runningTotal > budget) && (budget != 0)) {
-
-            $("#bidRoleTotal").css("color", "red")
-            $("#bidProductTotal").css("color", "red")
-
-            $('#btnSubmit').attr("disabled", true);
-
-        }
-        else {
-
-            $("#bidRoleTotal").removeAttr('style');
-            $("#bidProductTotal").removeAttr('style');
-
-            $('#btnSubmit').attr("disabled", false);
-
-        }
-
+        $('#btnSubmit').attr("disabled", true);
 
     }
     else {
-
-        $("#bidRoleTotal").removeAttr('style');
-        $("#bidProductTotal").removeAttr('style');
-
         $('#btnSubmit').attr("disabled", false);
-
     }
 
 }

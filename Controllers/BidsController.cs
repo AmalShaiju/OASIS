@@ -765,10 +765,9 @@ namespace OASIS.Controllers
                 a.Add(ProductsToAdd[i].ProductID.ToString());
                 b.Add(ProductsToAdd[i].Quantity.ToString());
             }
-            
 
-            var selectedQuantity = b.ToArray();
             var selectedOptions = a.ToArray();
+            var selectedQuantity = b.ToArray();
 
 
 
@@ -817,6 +816,8 @@ namespace OASIS.Controllers
                         };
 
                         _context.BidProducts.Add(specToAdd);
+                        _context.SaveChangesAsync();
+
                     }
 
 
@@ -829,6 +830,8 @@ namespace OASIS.Controllers
                     {
                         var specToRemove = bidToUpdate.BidProducts.SingleOrDefault(p => p.ProductID == product.ID);
                         _context.Remove(specToRemove);
+                        _context.SaveChangesAsync();
+
                     }
                     catch
                     {
@@ -839,7 +842,6 @@ namespace OASIS.Controllers
                 }
 
             }
-            _context.SaveChangesAsync();
             return total;
         }
         private void PopuateSelectedRoles(Bid bid)
