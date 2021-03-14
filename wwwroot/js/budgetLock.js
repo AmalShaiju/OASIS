@@ -125,6 +125,9 @@ function Budgeting(budget, runningTotal, strict) {
     else {
         $("#bidRoleTotal").css("color", "#90ee90")
         $("#bidProductTotal").css("color", "#90ee90")
+
+        $('#btnSubmit').attr("disabled", false);
+
     }
 
     

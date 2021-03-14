@@ -252,7 +252,15 @@ function UpdateRunningTotal() {
     }
     else {
         for (var i = 0; i < totalColumns.length; i++) {
-            runningTotal += parseFloat($(totalColumns[i]).text().split('$').pop()).toFixed(2);
+            runningTotal += parseFloat($(totalColumns[i]).text().split('$').pop())
+
+            try {
+                runningTotal = parseFloat(runningTotal.toFixed(2));
+
+            }
+            catch {
+
+            }
         }
     }
 

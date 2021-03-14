@@ -464,7 +464,7 @@ namespace OASIS.Controllers
                 {
                     await _context.SaveChangesAsync();
                     UpdateApprovalStatus(bidToUpdate, DesignerStatusID, ClientStatusID, approvalComment);
-                    return RedirectToAction(nameof(Index)); 
+                   // return RedirectToAction(nameof(Index)); 
                     return RedirectToAction("Details", new { bidToUpdate.ID });
 
 
