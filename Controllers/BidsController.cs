@@ -464,7 +464,7 @@ namespace OASIS.Controllers
                 {
                     await _context.SaveChangesAsync();
                     UpdateApprovalStatus(bidToUpdate, DesignerStatusID, ClientStatusID, approvalComment);
-                    //return RedirectToAction(nameof(Index)); 
+                    return RedirectToAction(nameof(Index)); 
                     return RedirectToAction("Details", new { bidToUpdate.ID });
 
 
@@ -816,7 +816,6 @@ namespace OASIS.Controllers
                         };
 
                         _context.BidProducts.Add(specToAdd);
-                        _context.SaveChangesAsync();
 
                     }
 
@@ -830,7 +829,6 @@ namespace OASIS.Controllers
                     {
                         var specToRemove = bidToUpdate.BidProducts.SingleOrDefault(p => p.ProductID == product.ID);
                         _context.Remove(specToRemove);
-                        _context.SaveChangesAsync();
 
                     }
                     catch
@@ -842,6 +840,8 @@ namespace OASIS.Controllers
                 }
 
             }
+            _context.SaveChangesAsync();
+
             return total;
         }
         private void PopuateSelectedRoles(Bid bid)
@@ -873,7 +873,7 @@ namespace OASIS.Controllers
 
             if (selectedRoles.Length < 1 || requiredHours.Length < 1)
             {
-                bidToUpdate.BidProducts = new List<BidProduct>();
+                bidToUpdate.BidLabours = new List<BidLabour>();
                 return total;
 
             }

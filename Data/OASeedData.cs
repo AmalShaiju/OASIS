@@ -887,7 +887,7 @@ namespace OASIS.Data
 
                 Thread.Sleep(2000);
                 //loop over bids 
-                if (!context.BidProducts.Any())
+                if (context.BidProducts.Any())
                 {
                     var allBids = context.Bids.ToList();
 
