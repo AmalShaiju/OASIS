@@ -1,7 +1,7 @@
 ﻿// 2021-03-13 Amal Shaiju
 
 var rolesAssigned = []
-$(".budget").text("B :$250");
+
 //Populate with already assigned products
 try {
 

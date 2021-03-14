@@ -178,7 +178,6 @@ function updateTotal(id) {
     $(totalID).text("$" + (parseFloat(price) * parseFloat(qnty)).toFixed(2).toString());
     UpdateRunningTotal()
 
-
 }
 
 //Helper Funtions
@@ -244,6 +243,11 @@ function UpdateRunningTotal() {
 
     $("#bidRoleTotal").text("RT: $" + runningTotal.toString());
     $("#bidProductTotal").text("RT: $" + runningTotal.toString());
+
+    // Check if budget value is to be follwed strictly
+
+    Budgeting(budget, runningTotal, strict)
+
     console.log(runningTotal);
 
 }

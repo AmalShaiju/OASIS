@@ -756,3 +756,17 @@ tbody tr:nth-child(even) {
     
 
 /*Bid Details Table*/
+
+
+.budget-lock input[type= text]{
+    margin:0;
+}
+
+.lock {
+    background: url(../resources/svg/lock-open.svg) center no-repeat;
+    width: 50px;
+}
+
+    .lock:hover {
+        background: url(../resources/svg/lock-open.svg) center no-repeat;
+    }

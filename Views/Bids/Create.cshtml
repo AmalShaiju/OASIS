@@ -152,7 +152,20 @@
 
 
                     </div>
+                    <div class="form-row col-10 ">
+                        <div class="form-group col-5">
+                            <label asp-for="Budget" class="control-label"></label>
+                            <div class="input-group mb-3 budget-lock">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text lock">
+                                    </div>
+                                </div>
+                                <input asp-for="Budget" class="form-control" aria-label="Text input with checkbox">
+                            </div>
+                        </div>
 
+
+                    </div>
                     <div class="form-row col-9">
 
                         <label asp-for="Comments" class="control-label"></label>
@@ -162,6 +175,8 @@
 
 
                     </div>
+
+
                 </div>
             </div>
 
@@ -385,6 +400,7 @@ c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
     <script src="~/js/addProducts.js"></script>
     <script src="~/js/addRoles.js"></script>
     <script src="~/js/refreshDDL.js"></script>
+    <script src="~/js/budgetLock.js"></script>
     <script type="text/javascript">
         $('#ProductTypeID').change(function () {
             var selectedProduct = $("#ProductTypeID").val();

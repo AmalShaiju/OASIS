@@ -9,7 +9,7 @@ using OASIS.Data;
 namespace OASIS.Data.OASISMigrations
 {
     [DbContext(typeof(OasisContext))]
-    [Migration("20210305231649_Initial")]
+    [Migration("20210314002446_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,6 +79,9 @@ namespace OASIS.Data.OASISMigrations
 
                     b.Property<int?>("BidStatusID")
                         .HasColumnType("INTEGER");
+
+                    b.Property<double?>("Budget")
+                        .HasColumnType("decimal(9,2)");
 
                     b.Property<string>("Comments")
                         .HasColumnType("TEXT");
