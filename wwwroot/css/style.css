@@ -695,7 +695,13 @@ tbody tr:nth-child(even) {
     background-color: rgba(116,96,238,0.1)
 }
 
+#BidproductTable tr:nth-child(even) {
+    background-color: rgba(116,96,238,0.1)
+}
 
+#BidLabourTable tr:nth-child(even) {
+    background-color: rgba(116,96,238,0.1)
+}
 
 .column1 {
     width: 160px;
@@ -721,6 +727,12 @@ tbody tr:nth-child(even) {
 }
 
 .column6 {
+    width: 222px;
+    text-align: right;
+    padding-right: 62px;
+}
+
+.column7 {
     width: 222px;
     text-align: right;
     padding-right: 62px;

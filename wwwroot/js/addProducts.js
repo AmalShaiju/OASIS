@@ -1,6 +1,7 @@
 ﻿// 2021-03-12 Amal Shaiju
 
 var productsAssigned = []
+var runningTotal = 0;
 
 //Populate with already assigned products
 try {
@@ -28,7 +29,6 @@ try {
                 ProductID: commonId
             });
 
-            console.log(productsAssigned);
         }
     }
 }
@@ -78,10 +78,10 @@ $("#btnAddProduct").click(function () {
                         .append($(`<td class="column4" id=price-${response.id}>`).append(`$${response.price}`))
                         .append($('<td class="column5">').append(`<input type="text" disabled id="txt-${response.id}" value="${quantity}" />`))
                         .append($(`<td class="column6" id="total-${response.id}">`).append(`$${response.price * quantity}`))
-                        .append($('<td class="column6">').append(`<input type="button" id="edit-${response.id}" class="btn btn-primary" onclick="editRow(this.id)" value="Edit"/><input type="button" style="display:none" id="save-${response.id}" class="btn btn-success" onclick="saveRow(this.id)" value="Save"/>`))
-                        .append($('<td class="column6">').append(`<input type="button" id="delete-${response.id}" class="btn btn-danger" onclick="deleteRow(this.id)"  value="Delete" />`))
+                        .append($('<td class="column7">').append(`<input type="button" id="edit-${response.id}" class="btn btn-primary" onclick="editRow(this.id)" value="Edit"/><input type="button" style="display:none" id="save-${response.id}" class="btn btn-success" onclick="saveRow(this.id)" value="Save"/>`))
+                        .append($('<td class="column7">').append(`<input type="button" id="delete-${response.id}" class="btn btn-danger" onclick="deleteRow(this.id)"  value="Delete" />`))
 
-                );
+                    );
 
 
 
@@ -90,11 +90,11 @@ $("#btnAddProduct").click(function () {
                     ProductID: response.id,
                 });
 
-                console.log(productsAssigned);
+                UpdateRunningTotal()
+
             },
             complete: function () {
                 // Hide(); // Hide loader icon  
-                console.log(productsAssigned)
             },
             failure: function (jqXHR, textStatus, errorThrown) {
                 alert("HTTP Status: " + jqXHR.status + "; Error Text: " + jqXHR.responseText); // Display error message  
@@ -157,12 +157,10 @@ function saveRow(id) {
 function deleteRow(id) {
     var commonId = id.split('-').pop();
     var rowID = "#row-" + commonId;
-    console.log('comm - ' + commonId)
-    console.log(productsAssigned[0].ProductID != parseInt(commonId))
     $(rowID).remove();
 
     productsAssigned = productsAssigned.filter(p => p.ProductID != parseInt(commonId));
-    console.log(productsAssigned);
+    UpdateRunningTotal()
 }
 
 
@@ -178,6 +176,8 @@ function updateTotal(id) {
 
     // tack the total to the <td>
     $(totalID).text("$" + (parseFloat(price) * parseFloat(qnty)).toFixed(2).toString());
+    UpdateRunningTotal()
+
 
 }
 
@@ -212,7 +212,6 @@ function getBaseUrl() {
 }
 
 function updateQnty(qnty, productID) {
-    //loop over array
     for (var i = 0; i < productsAssigned.length; i++) {
         if (productID == productsAssigned[i].ProductID) {
             if (productsAssigned[i].Quantity != qnty) {
@@ -221,14 +220,30 @@ function updateQnty(qnty, productID) {
         }
     }
 }
-    function deleteProductObj(productID) {
-        for (var i = 0; i < productsAssigned.length; i++) {
-            if (productID == productsAssigned[i].ProductID) {
-                productsAssigned.splice(i, i); 
-            }
-        }
-        console.log(productsAssigned);
-    }
-        //check if the product id == obj["ProductID"]
-            // change corresponding quantity 
 
+function deleteProductObj(productID) {
+    for (var i = 0; i < productsAssigned.length; i++) {
+        if (productID == productsAssigned[i].ProductID) {
+            productsAssigned.splice(i, i);
+        }
+    }
+}
+
+function UpdateRunningTotal() {
+    runningTotal = 0;
+
+    var totalColumns = $("tbody tr td.column6 ");
+    if (totalColumns.length < 1) {
+        runningTotal = 0;
+    }
+    else {
+        for (var i = 0; i < totalColumns.length; i++) {
+            runningTotal += parseFloat($(totalColumns[i]).text().split('$').pop());
+        }
+    }
+
+    $("#bidRoleTotal").text("RT: $" + runningTotal.toString());
+    $("#bidProductTotal").text("RT: $" + runningTotal.toString());
+    console.log(runningTotal);
+
+}

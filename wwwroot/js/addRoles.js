@@ -1,7 +1,7 @@
 ﻿// 2021-03-13 Amal Shaiju
 
 var rolesAssigned = []
-
+$(".budget").text("B :$250");
 //Populate with already assigned products
 try {
 
@@ -75,8 +75,8 @@ $("#btnAddRole").click(function () {
                         .append($(`<td class="column4" id="labourPrice-${response.id}">`).append(`$${response.labourPricePerHr}`))
                         .append($('<td class="column5">').append(`<input type="text" disabled id="labourTxt-${response.id}" value="${hours}" />`))
                         .append($(`<td class="column6" id="labourTotal-${response.id}">`).append(`$${response.labourPricePerHr * hours}`))
-                        .append($('<td class="column6">').append(`<input type="button" id="labourEdit-${response.id}" class="btn btn-primary" onclick="labourEditRow(this.id)" value="Edit"/><input type="button" style="display:none" id="labourSave-${response.id}" class="btn btn-success" onclick="labourSaveRow(this.id)" value="Save"/>`))
-                        .append($('<td class="column6">').append(`<input type="button" id="labourDelete-${response.id}" class="btn btn-danger" onclick="labourDeleteRow(this.id)"  value="Delete" />`))
+                        .append($('<td class="column7">').append(`<input type="button" id="labourEdit-${response.id}" class="btn btn-primary" onclick="labourEditRow(this.id)" value="Edit"/><input type="button" style="display:none" id="labourSave-${response.id}" class="btn btn-success" onclick="labourSaveRow(this.id)" value="Save"/>`))
+                        .append($('<td class="column7">').append(`<input type="button" id="labourDelete-${response.id}" class="btn btn-danger" onclick="labourDeleteRow(this.id)"  value="Delete" />`))
 
                     );
 
@@ -87,6 +87,7 @@ $("#btnAddRole").click(function () {
                     RoleID: response.id,
                 });
 
+                UpdateRunningTotal()
                 console.log(rolesAssigned);
             },
             complete: function () {
@@ -151,6 +152,7 @@ function labourDeleteRow(id) {
 
     rolesAssigned = rolesAssigned.filter(p => p.RoleID != parseInt(commonId));
     console.log(rolesAssigned);
+    UpdateRunningTotal()
 }
 
 
@@ -166,6 +168,8 @@ function labourUpdateTotal(id) {
 
     // tack the total to the <td>
     $(totalID).text("$" + (parseFloat(price) * parseFloat(qnty)).toFixed(2).toString());
+    UpdateRunningTotal()
+
 
 }
 

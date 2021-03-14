@@ -9,8 +9,8 @@
                             <th class="column4">Price </th>
                             <th class="column5">Hours</th>
                             <th class="column6">Total</th>
-                            <th class="column6"></th>
-                            <th class="column6"></th>
+                            <th class="column6 budget"></th>
+                            <th class="column6" id="bidRoleTotal"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -23,8 +23,8 @@
                                     <td class="column4" id="labourPrice-@i.Role.ID">$@i.Role.LabourPricePerHr</td>
                                     <td class="column5"><input type="text" disabled id="labourTxt-@i.Role.ID" value="@i.Hours" /></td>
                                     <td class="column6" id="labourTotal-@i.Role.ID">$@((double)i.Role.LabourPricePerHr * i.Hours)</td>
-                                    <td class="column6"><input type="button" id="labourEdit-@i.Role.ID" class="btn btn-primary" onclick="labourEditRow(this.id)" value="Edit" /><input type="button" style="display:none" id="labourSave-@i.Role.ID" class="btn btn-success" onclick="labourSaveRow(this.id)" value="Save" /></td>
-                                    <td class="column6"><input type="button" id="labourDelete-@i.Role.ID" class="btn btn-danger" onclick="labourDeleteRow(this.id)" value="Delete" /></td>
+                                    <td class="column7"><input type="button" id="labourEdit-@i.Role.ID" class="btn btn-primary" onclick="labourEditRow(this.id)" value="Edit" /><input type="button" style="display:none" id="labourSave-@i.Role.ID" class="btn btn-success" onclick="labourSaveRow(this.id)" value="Save" /></td>
+                                    <td class="column7"><input type="button" id="labourDelete-@i.Role.ID" class="btn btn-danger" onclick="labourDeleteRow(this.id)" value="Delete" /></td>
                                 </tr>
                             }
                         }

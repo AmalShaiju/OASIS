@@ -13,8 +13,8 @@
                             <th class="column4">Price</th>
                             <th class="column5">Quantity</th>
                             <th class="column6">Total</th>
-                            <th class="column6"></th>
-                            <th class="column6"></th>
+                            <th class="column6 budget" ></th>
+                            <th class="column6" id="bidProductTotal"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -29,8 +29,8 @@
                             <td class="column4" id="price-@item.Product.ID">$@item.Product.Price</td>
                             <td class="column5"><input type="text" disabled id="txt-@item.Product.ID" value="@item.Quantity" /></td>
                             <td class="column6"  id="total-@item.Product.ID">$@(item.Quantity*item.Product.Price)</td>
-                            <td class="column6"><input type="button" id="edit-@item.Product.ID" class="btn btn-primary" onclick="editRow(this.id)" value="Edit" /><input type="button" style="display:none" id="save-@item.Product.ID" class="btn btn-success" onclick="saveRow(this.id)" value="Save" /></td>
-                            <td class="column6"><input type="button" id="delete-@item.Product.ID" class="btn btn-danger" onclick="deleteRow(this.id)" value="Delete" /></td>
+                            <td class="column7"><input type="button" id="edit-@item.Product.ID" class="btn btn-primary" onclick="editRow(this.id)" value="Edit" /><input type="button" style="display:none" id="save-@item.Product.ID" class="btn btn-success" onclick="saveRow(this.id)" value="Save" /></td>
+                            <td class="column7"><input type="button" id="delete-@item.Product.ID" class="btn btn-danger" onclick="deleteRow(this.id)" value="Delete" /></td>
                         </tr>
                             }
 
