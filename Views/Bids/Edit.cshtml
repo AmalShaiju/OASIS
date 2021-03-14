@@ -154,14 +154,25 @@
                     </div>
 
 
+                    <div class="form-row col-10 ">
+                        <div class="form-group col-5">
+                            <label asp-for="Budget" class="control-label"></label>
+                            <div class="input-group mb-3 budget-lock">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text lock">
+                                    </div>
+                                </div>
+                                <input asp-for="Budget" class="form-control" aria-label="Text input with checkbox">
+                            </div>
+                        </div>
+
+
+                    </div>
                     <div class="form-row col-9">
 
                         <label asp-for="Comments" class="control-label"></label>
                         <textarea style="height: 198px;" asp-for="Comments" class="form-control"></textarea>
                         <span asp-validation-for="Comments" class="text-danger"></span>
-
-
-
                     </div>
 
 
@@ -246,6 +257,7 @@
     <script src="~/js/addProducts.js"></script>
     <script src="~/js/addRoles.js"></script>
     <script src="~/js/refreshDDL.js"></script>
+    <script src="~/js/budgetLock.js"></script>
     <script type="text/javascript">
         $('#ProductTypeID').change(function () {
             var selectedProduct = $("#ProductTypeID").val();

@@ -2,12 +2,15 @@
 
 var strict = false;
 var budget = 0;
+
 $(".lock").click(function () {
+
+    console.log($(this).css("background-image").replace('url(', '').replace(')', '').replace(/\"/gi, ""));
 
     if ($(this).css("background-image").replace('url(', '').replace(')', '').replace(/\"/gi, "") == "http://localhost:63341/resources/svg/lock-open.svg") {
 
         //lock 
-        $(this).css('background', 'url("../resources/svg/lock-closed.svg") center no-repeat');
+        $(this).css('background', `url("${getBaseUrl()}resources/svg/lock-closed.svg") center no-repeat`);
 
         // Disable the input
         $("#Budget").attr("disabled", true)
@@ -31,7 +34,7 @@ $(".lock").click(function () {
     }
     else {
         //open
-        $(this).css('background', 'url("../resources/svg/lock-open.svg") center no-repeat');
+        $(this).css('background', `url("${getBaseUrl()}resources/svg/lock-open.svg") center no-repeat`);
 
         // Make the input avaiable to edit
         $("#Budget").attr("disabled", false)
@@ -78,7 +81,6 @@ $('#Budget').change(function () {
 });
 
 function Budgeting(budget, runningTotal, strict) {
-    console.log("budgeted")
     if (strict) {
 
         if ((runningTotal > budget) && (budget != 0)) {
@@ -86,17 +88,27 @@ function Budgeting(budget, runningTotal, strict) {
             $("#bidRoleTotal").css("color", "red")
             $("#bidProductTotal").css("color", "red")
 
+            $('#btnSubmit').attr("disabled", true);
+
         }
         else {
 
             $("#bidRoleTotal").removeAttr('style');
             $("#bidProductTotal").removeAttr('style');
+
+            $('#btnSubmit').attr("disabled", false);
+
         }
+
+
     }
     else {
 
         $("#bidRoleTotal").removeAttr('style');
         $("#bidProductTotal").removeAttr('style');
+
+        $('#btnSubmit').attr("disabled", false);
+
     }
 
 }

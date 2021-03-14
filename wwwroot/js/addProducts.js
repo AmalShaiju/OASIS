@@ -36,6 +36,14 @@ catch {
 
 }
 
+//Udpate Running total for edit
+try {
+    UpdateRunningTotal();
+}
+catch {
+
+}
+
 
 //Add selecetd list product to product select list
 $("#btnAddProduct").click(function () {
@@ -113,6 +121,13 @@ $("#btnSubmit").click(function () {
     $("#ProductsAssigned").val(JSON.stringify(productsAssigned));
 
     $("#RolesAssigned").val(JSON.stringify(rolesAssigned));
+
+    if (strict) {
+
+        //remove "$" from input before saving
+        $("#Budget").attr("disabled", false)
+        $("#Budget").val($("#Budget").val().split('$').pop());
+    }
 
 });
 
