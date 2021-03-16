@@ -61,6 +61,11 @@ namespace OASIS.Models
         [DataType(DataType.MultilineText)]
         public string Comments { get; set; }
 
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(9,2)")]
+        [Range(0, 9999999.99, ErrorMessage = "Invalid Amount.")]
+        public double? Budget { get; set; }
+
         [Required(ErrorMessage = "Please select a designer")]
         [Display(Name = "Designer")]
         public int DesignerID { get; set; }

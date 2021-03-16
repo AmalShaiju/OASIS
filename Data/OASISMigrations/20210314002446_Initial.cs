@@ -199,6 +199,7 @@ namespace OASIS.Data.OASISMigrations
                     EstBidStartDate = table.Column<DateTime>(nullable: false),
                     EstBidEndDate = table.Column<DateTime>(nullable: false),
                     Comments = table.Column<string>(nullable: true),
+                    Budget = table.Column<double>(type: "decimal(9,2)", nullable: true),
                     DesignerID = table.Column<int>(nullable: false),
                     SalesAsscociateID = table.Column<int>(nullable: false),
                     ProjectID = table.Column<int>(nullable: false),

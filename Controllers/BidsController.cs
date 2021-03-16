@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OASIS.Data;
 using OASIS.Models;
 using OASIS.Utilities;
 using OASIS.ViewModels;
-
 namespace OASIS.Controllers
 {
     public class BidsController : Controller
@@ -274,9 +276,9 @@ namespace OASIS.Controllers
                 .Include(b => b.Designer)
                 .Include(b => b.SalesAsscociate)
                 .Include(b => b.Project).ThenInclude(p => p.Customer)
-                .Include(p=>p.BidProducts).ThenInclude(p => p.Product)
-                .Include(p=>p.BidLabours).ThenInclude(p => p.Role)
-                .Include(p=>p.Approval).ThenInclude(p => p.ApprovalStatuses)
+                .Include(p => p.BidProducts).ThenInclude(p => p.Product)
+                .Include(p => p.BidLabours).ThenInclude(p => p.Role)
+                .Include(p => p.Approval).ThenInclude(p => p.ApprovalStatuses)
 
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (bid == null)
@@ -286,7 +288,7 @@ namespace OASIS.Controllers
 
             ViewData["ClientStatus"] = _context.ApprovalStatuses.SingleOrDefault(p => p.ID == bid.Approval.ClientStatusID).Name;
             ViewData["DesignerStatus"] = _context.ApprovalStatuses.SingleOrDefault(p => p.ID == bid.Approval.DesignerStatusID).Name;
-            var productIDs = _context.BidProducts.Where(p => p.BidID == bid.ID) ;
+            var productIDs = _context.BidProducts.Where(p => p.BidID == bid.ID);
             var labourIDs = _context.BidLabours.Where(p => p.BidID == bid.ID);
 
             List<BidProductDetails> outputProducts = new List<BidProductDetails>();
@@ -300,10 +302,10 @@ namespace OASIS.Controllers
                 {
                     Code = _context.Products.SingleOrDefault(p => p.ID == i.ProductID).Code,
                     Description = _context.Products.SingleOrDefault(p => p.ID == i.ProductID).Description,
-                    Price = Math.Round(_context.Products.SingleOrDefault(p => p.ID == i.ProductID).Price,2),
+                    Price = Math.Round(_context.Products.SingleOrDefault(p => p.ID == i.ProductID).Price, 2),
                     Size = _context.Products.SingleOrDefault(p => p.ID == i.ProductID).size,
                     Quantity = i.Quantity,
-                    Total = Math.Round(_context.Products.SingleOrDefault(p => p.ID == i.ProductID).Price * i.Quantity,2)
+                    Total = Math.Round(_context.Products.SingleOrDefault(p => p.ID == i.ProductID).Price * i.Quantity, 2)
                 });
             }
 
@@ -314,17 +316,17 @@ namespace OASIS.Controllers
                 outputLabour.Add(new BidLabourDetails
                 {
                     Name = _context.Roles.SingleOrDefault(p => p.ID == i.RoleID).Name,
-                    Price = Math.Round((double)_context.Roles.SingleOrDefault(p => p.ID == i.RoleID).LabourPricePerHr,2),
+                    Price = Math.Round((double)_context.Roles.SingleOrDefault(p => p.ID == i.RoleID).LabourPricePerHr, 2),
                     Hours = i.Hours,
-                    Total = Math.Round((double)_context.Roles.SingleOrDefault(p => p.ID == i.RoleID).LabourPricePerHr * i.Hours,2 )
+                    Total = Math.Round((double)_context.Roles.SingleOrDefault(p => p.ID == i.RoleID).LabourPricePerHr * i.Hours, 2)
 
                 });
             }
 
             ViewData["Labour"] = outputLabour;
             ViewData["products"] = outputProducts;
-            ViewData["productTotal"] = Math.Round(productTotal,2);
-            ViewData["LabourtTotal"] = Math.Round(LabourtTotal,2);
+            ViewData["productTotal"] = Math.Round(productTotal, 2);
+            ViewData["LabourtTotal"] = Math.Round(LabourtTotal, 2);
 
 
 
@@ -351,18 +353,22 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,DateCreated,ProjectStartDate,ProjectEndDate,EstBidStartDate,EstBidEndDate,comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
-            int DesignerStatusID, int ClientStatusID, string approvalComment, string[] selectedProducts, string[] selectedQuantity, string[] selectedRoles, string[] requiredHours, int employeeTrue, int customerTrue, int projectTrue)
+        public async Task<IActionResult> Create([Bind("ID,DateCreated,ProjectStartDate,ProjectEndDate,EstBidStartDate,Budget,EstBidEndDate,Comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
+            int DesignerStatusID, int ClientStatusID, string approvalComment, string ProductsAssigned, string RolesAssigned, int employeeTrue, int customerTrue, int projectTrue)
         {
 
             double total = 0;
             if (ModelState.IsValid)
             {
+                
                 _context.Add(bid);
                 await _context.SaveChangesAsync();
-                total += UpdateBidProducts(selectedProducts, selectedQuantity, bid);
+                List<ProductDeserialize> ProductsToAdd = JsonConvert.DeserializeObject<List<ProductDeserialize>>(ProductsAssigned);
+                List<RoleDeserialize> rolesToAdd = JsonConvert.DeserializeObject<List<RoleDeserialize>>(RolesAssigned);
+                total += UpdateBidProducts(ProductsToAdd, bid);
+                total += UpdateBidLabours(rolesToAdd, bid);
                 UpdateApprovalStatus(bid, DesignerStatusID, ClientStatusID, approvalComment);
-                total += UpdateBidLabours(selectedRoles, requiredHours, bid);
+                //total += UpdateBidLabours(selectedRoles, requiredHours, bid);
                 bid.EstAmount = total;
 
                 await _context.SaveChangesAsync();
@@ -378,7 +384,7 @@ namespace OASIS.Controllers
                 {
                     return RedirectToAction(actionName: "Create", controllerName: "Projects");
                 }
-            
+
                 return RedirectToAction("Details", new { bid.ID });
             }
 
@@ -422,8 +428,8 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, int DesignerStatusID, int ClientStatusID, string approvalComment, string[] selectedProducts, string[] selectedQuantity,
-            string[] selectedRoles, string[] requiredHours, Byte[] RowVersion)
+        public async Task<IActionResult> Edit(int id, int DesignerStatusID, int ClientStatusID, string approvalComment, string ProductsAssigned,
+            string RolesAssigned, Byte[] RowVersion)
         {
             double total = 0;
 
@@ -441,12 +447,16 @@ namespace OASIS.Controllers
             }
             _context.Entry(bidToUpdate).Property("RowVersion").OriginalValue = RowVersion;
 
-            total += UpdateBidProducts(selectedProducts, selectedQuantity, bidToUpdate);
-            total += UpdateBidLabours(selectedRoles, requiredHours, bidToUpdate);
+            List<ProductDeserialize> ProductsToAdd = JsonConvert.DeserializeObject<List<ProductDeserialize>>(ProductsAssigned);
+            List<RoleDeserialize> rolesToAdd = JsonConvert.DeserializeObject<List<RoleDeserialize>>(RolesAssigned);
+
+            total += UpdateBidProducts(ProductsToAdd, bidToUpdate);
+            total += UpdateBidLabours(rolesToAdd, bidToUpdate);
+            //total += UpdateBidLabours(selectedRoles, requiredHours, bidToUpdate);
 
             bidToUpdate.EstAmount = total;
 
-            if (await TryUpdateModelAsync<Bid>(bidToUpdate, "", p => p.DateCreated, p => p.ProjectStartDate, p => p.ProjectEndDate, p => p.EstBidEndDate, p => p.EstBidStartDate, p => p.Comments
+            if (await TryUpdateModelAsync<Bid>(bidToUpdate, "", p => p.DateCreated, p => p.ProjectStartDate, p => p.ProjectEndDate, p => p.EstBidEndDate, p => p.EstBidStartDate, p => p.Comments, P => P.Budget
            , p => p.DesignerID, p => p.SalesAsscociateID, p => p.BidStatusID, p => p.ProjectID))
 
             {
@@ -454,7 +464,7 @@ namespace OASIS.Controllers
                 {
                     await _context.SaveChangesAsync();
                     UpdateApprovalStatus(bidToUpdate, DesignerStatusID, ClientStatusID, approvalComment);
-                    //return RedirectToAction(nameof(Index)); 
+                   // return RedirectToAction(nameof(Index)); 
                     return RedirectToAction("Details", new { bidToUpdate.ID });
 
 
@@ -617,6 +627,21 @@ namespace OASIS.Controllers
             return Json(ProductSelectList(ID, null));
         }
 
+        // send product object requested by ajax
+        [HttpGet]
+        public JsonResult GetProduct(int? ID)
+        {
+            return Json(_context.Products.SingleOrDefault(x => x.ID == ID));
+        }
+
+        [HttpGet]
+        public JsonResult GetRole(int? ID)
+        {
+            return Json(_context.Roles.SingleOrDefault(x => x.ID == ID));
+        }
+
+
+
         private bool BidExists(int id)
         {
             return _context.Bids.Any(e => e.ID == id);
@@ -628,13 +653,19 @@ namespace OASIS.Controllers
         }
         private SelectList ProductSelectList(int? ProductTypeID, int? selectedId)
         {
-            var query = from c in _context.Products.Include(c => c.ProductType)
+            var query = from c in _context.Products.Include(c => c.ProductType).Select(x => new
+            {
+                x.ID,
+                x.ProductTypeID,
+                Display = x.Description + " [" + x.Code + "]" + " - " + "$" + x.Price
+
+            })
                         select c;
             if (ProductTypeID.HasValue)
             {
                 query = query.Where(p => p.ProductTypeID == ProductTypeID);
             }
-            return new SelectList(query.OrderBy(p => p.Code), "ID", "Code", selectedId);
+            return new SelectList(query.OrderBy(p => p.Display), "ID", "Display", selectedId);
         }
 
 
@@ -690,8 +721,6 @@ namespace OASIS.Controllers
 
         }
 
-
-
         private void UpdateApprovalStatus(Bid bid, int designerID, int clientID, string comments)
         {
             var approval = _context.Approvals.SingleOrDefault(p => p.BidID == bid.ID);
@@ -719,33 +748,29 @@ namespace OASIS.Controllers
 
         private void PopuateSelectedProducts(Bid bid)
         {
-            var allBidProducts = new HashSet<BidProduct>(_context.BidProducts.Where(p => p.BidID == bid.ID)); // All BidProduct Model
-            var AssignedProducts = new List<ListOptionVM>();
-            var AssignedQuantity = new List<ListOptionVM>();
 
-            foreach (var s in allBidProducts)
-            {
-                AssignedProducts.Add(new ListOptionVM
-                {
-                    ID = s.ProductID,
-                    DisplayText = _context.Products.SingleOrDefault(p => p.ID == s.ProductID).Code
-                });
+            var query = _context.BidProducts.Include(p => p.Product).Where(p => p.BidID == bid.ID).ToList();
 
-                AssignedQuantity.Add(new ListOptionVM
-                {
-                    ID = s.Quantity,
-                    DisplayText = s.Quantity.ToString()
-                });
-            }
-
-
-
-            ViewData["selOpts"] = new MultiSelectList(AssignedProducts, "ID", "DisplayText");
-            ViewData["qntyOpts"] = new MultiSelectList(AssignedQuantity, "ID", "DisplayText");
+            ViewData["AssignedBidProducts"] = query;
+          
         }
 
-        private double UpdateBidProducts(string[] selectedOptions, string[] selectedQuantity, Bid bidToUpdate)
+        private double UpdateBidProducts(List<ProductDeserialize> ProductsToAdd , Bid bidToUpdate)
         {
+            List<string> a = new List<string>();
+            List<string> b = new List<string>();
+
+            for (int i = 0; i < ProductsToAdd.Count; i++)
+            {
+                a.Add(ProductsToAdd[i].ProductID.ToString());
+                b.Add(ProductsToAdd[i].Quantity.ToString());
+            }
+
+            var selectedOptions = a.ToArray();
+            var selectedQuantity = b.ToArray();
+
+
+
             double total = 0;
 
             var allProducts = _context.Products.ToList(); // All product ID's
@@ -754,7 +779,7 @@ namespace OASIS.Controllers
             if (selectedOptions.Length < 1 || selectedQuantity.Length < 1)
             {
                 bidToUpdate.BidProducts = new List<BidProduct>();
-                return total ;
+                return total;
             }
 
 
@@ -781,7 +806,7 @@ namespace OASIS.Controllers
                     }
                     else // assign the produc to bid
                     {
-                        total += product.Price* (int)inputQnty;
+                        total += product.Price * (int)inputQnty;
 
                         var specToAdd = new BidProduct
                         {
@@ -791,6 +816,7 @@ namespace OASIS.Controllers
                         };
 
                         _context.BidProducts.Add(specToAdd);
+
                     }
 
 
@@ -803,6 +829,7 @@ namespace OASIS.Controllers
                     {
                         var specToRemove = bidToUpdate.BidProducts.SingleOrDefault(p => p.ProductID == product.ID);
                         _context.Remove(specToRemove);
+
                     }
                     catch
                     {
@@ -814,44 +841,39 @@ namespace OASIS.Controllers
 
             }
             _context.SaveChangesAsync();
+
             return total;
         }
         private void PopuateSelectedRoles(Bid bid)
         {
-            var allBidLabours = new HashSet<BidLabour>(_context.BidLabours.Where(p => p.BidID == bid.ID)); // All BidLabour Model
-            var AssignedLabours = new List<ListOptionVM>();
-            var AssignedHours = new List<ListOptionVM>();
+            var query = _context.BidLabours.Include(p => p.Role).Where(p => p.BidID == bid.ID).ToList();
 
-            foreach (var s in allBidLabours)
+            ViewData["AssignedBidlabours"] = query;
+        }
+
+        private double UpdateBidLabours(List<RoleDeserialize> rolesToAdd , Bid bidToUpdate)
+        {
+
+            List<string> a = new List<string>();
+            List<string> b = new List<string>();
+
+            for (int i = 0; i < rolesToAdd.Count; i++)
             {
-                AssignedLabours.Add(new ListOptionVM
-                {
-                    ID = s.RoleID,
-                    DisplayText = _context.Roles.SingleOrDefault(p => p.ID == s.RoleID).Name
-                });
-
-                AssignedHours.Add(new ListOptionVM
-                {
-                    ID = (int)s.Hours,
-                    DisplayText = s.Hours.ToString()
-                });
+                a.Add(rolesToAdd[i].RoleID.ToString());
+                b.Add(rolesToAdd[i].Hours.ToString());
             }
 
 
+            var selectedRoles = a.ToArray();
+            var requiredHours = b.ToArray();
 
-            ViewData["selRoles"] = new MultiSelectList(AssignedLabours, "ID", "DisplayText");
-            ViewData["reqHrs"] = new MultiSelectList(AssignedHours, "ID", "DisplayText");
-        }
-
-        private double UpdateBidLabours(string[] selectedRoles, string[] requiredHours, Bid bidToUpdate)
-        {
             double total = 0;
 
             var allRoles = _context.Roles.ToList(); // All product ID's
 
             if (selectedRoles.Length < 1 || requiredHours.Length < 1)
             {
-                bidToUpdate.BidProducts = new List<BidProduct>();
+                bidToUpdate.BidLabours = new List<BidLabour>();
                 return total;
 
             }
@@ -919,7 +941,37 @@ namespace OASIS.Controllers
 
         }
 
+        public void PostProducts(string product)
+        {
+            List<ProductDeserialize> ProductsToAdd = JsonConvert.DeserializeObject<List<ProductDeserialize>>(product);
+            int BidId = _context.Bids.OrderByDescending(p => p.ID).FirstOrDefault().ID;
+
+            //loop over the object
+            foreach (var i in ProductsToAdd)
+            {
+
+                // create a new bidProduct Object and assign the values
+                var a = new BidProduct
+                {
+                    ProductID = i.ProductID,
+                    Quantity = i.Quantity,
+                    BidID = BidId
+
+                };
+
+                //                    Add the object to the context
+
+                _context.BidProducts.Add(a);
+                //                  Save changes
+
+                _context.SaveChangesAsync();
+
+
+            }
+        }
+
     }
+
 
 
 

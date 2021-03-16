@@ -78,6 +78,9 @@ namespace OASIS.Data.OASISMigrations
                     b.Property<int?>("BidStatusID")
                         .HasColumnType("INTEGER");
 
+                    b.Property<double?>("Budget")
+                        .HasColumnType("decimal(9,2)");
+
                     b.Property<string>("Comments")
                         .HasColumnType("TEXT");
 

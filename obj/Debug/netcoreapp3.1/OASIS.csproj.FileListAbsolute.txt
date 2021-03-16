@@ -1662,3 +1662,6 @@ C:\Users\Amals\OneDrive - NC\OASIS\obj\Debug\netcoreapp3.1\OASIS.csproj.CopyComp
 C:\Users\Amals\OneDrive - NC\OASIS\obj\Debug\netcoreapp3.1\OASIS.dll
 C:\Users\Amals\OneDrive - NC\OASIS\obj\Debug\netcoreapp3.1\OASIS.pdb
 C:\Users\Amals\OneDrive - NC\OASIS\obj\Debug\netcoreapp3.1\OASIS.genruntimeconfig.cache
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Bids\BidApprovals.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Bids\BidLabour.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Bids\BidProduct.cshtml.g.cs

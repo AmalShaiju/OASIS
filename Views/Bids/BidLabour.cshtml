@@ -1,0 +1,51 @@
+﻿<div class="col-md-9 tab-pane fade" id="pills-bidLabour" role="tabpanel" aria-labelledby="pills-bidLabour-tab">
+    <div id="bidRolesTable" class="container-table100 list-group" style="overflow-y: auto; height: 355px; margin-bottom: 2%;">
+        <div class="wrap-table100">
+            <div class="table100">
+                <table id="BidLabourTable">
+                    <thead>
+                        <tr class="table100-head">
+                            <th class="column1">Role</th>
+                            <th class="column4">Price </th>
+                            <th class="column5">Hours</th>
+                            <th class="column6">Total</th>
+                            <th class="column6 budget"></th>
+                            <th class="column6" id="bidRoleTotal"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.AssignedBidlabours != null)
+                        {
+                            foreach (var i in ViewBag.AssignedBidlabours)
+                            {
+                                <tr id=labourRow-@i.Role.ID>
+                                    <td class="column1">@i.Role.Name</td>
+                                    <td class="column4" id="labourPrice-@i.Role.ID">$@i.Role.LabourPricePerHr</td>
+                                    <td class="column5"><input type="text" disabled id="labourTxt-@i.Role.ID" value="@i.Hours" /></td>
+                                    <td class="column6" id="labourTotal-@i.Role.ID">$@((double)i.Role.LabourPricePerHr * i.Hours)</td>
+                                    <td class="column7"><input type="button" id="labourEdit-@i.Role.ID" class="btn btn-primary" onclick="labourEditRow(this.id)" value="Edit" /><input type="button" style="display:none" id="labourSave-@i.Role.ID" class="btn btn-success" onclick="labourSaveRow(this.id)" value="Save" /></td>
+                                    <td class="column7"><input type="button" id="labourDelete-@i.Role.ID" class="btn btn-danger" onclick="labourDeleteRow(this.id)" value="Delete" /></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group " style="margin-bottom:60px;">
+
+        <div class="input-group mb-3" style="width:100%; margin:0px!important;">
+            <select style="margin:0" class="form-control" id="RoleID" name="RoleID" asp-items="ViewBag.RoleID">
+                <option value="">select a Role</option>
+            </select>
+            <div class="input-group-append">
+                <label style="background:white;" class="input-group-text" for="inputGroupSelect02">Hours</label>
+            </div>
+            <input style="margin:0" id="roleHours" type="number" class="form-control" placeholder="Example: 2" aria-label="Quantity" aria-describedby="basic-addon1">
+            <button id="btnAddRole" class="btn btn-outline-success" type="button">+</button>
+        </div>
+
+    </div>
+</div>
