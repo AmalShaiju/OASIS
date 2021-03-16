@@ -99,10 +99,14 @@
                         <div class="form-group col-5">
                             <label asp-for="ProjectID" class="control-label"></label>
                             <select asp-for="ProjectID" class="form-control" asp-items="ViewBag.ProjectID"></select>
+                            <span asp-validation-for="ProjectID" class="text-danger"></span>
+
                         </div>
                         <div class="form-group col-6">
                             <label asp-for="BidStatusID" class="control-label"></label>
                             <select asp-for="BidStatusID" class="form-control" asp-items="ViewBag.BidStatusID"></select>
+                            <span asp-validation-for="BidStatusID" class="text-danger"></span>
+
                         </div>
 
                     </div>
@@ -110,13 +114,13 @@
                     <div class="form-row col-10">
                         <div class="form-group col-5">
                             <label asp-for="ProjectStartDate" class="control-label"></label>
-                            <input asp-for="ProjectStartDate" class="form-control" />
+                            <input asp-for="ProjectStartDate" placeholder="Example: 2020-03-21" class="form-control" />
                             <span asp-validation-for="ProjectStartDate" class="text-danger"></span>
                         </div>
 
                         <div class="form-group col-6">
                             <label asp-for="ProjectEndDate" class="control-label"></label>
-                            <input asp-for="ProjectEndDate" class="form-control" />
+                            <input asp-for="ProjectEndDate" placeholder="Example: 2020-03-21" class="form-control" />
                             <span asp-validation-for="ProjectEndDate" class="text-danger"></span>
                         </div>
 
@@ -127,13 +131,13 @@
 
                         <div class="form-group col-5">
                             <label asp-for="EstBidStartDate" class="control-label"></label>
-                            <input asp-for="EstBidStartDate" class="form-control" />
+                            <input asp-for="EstBidStartDate" placeholder="Example: 2020-03-21" class="form-control" />
                             <span asp-validation-for="EstBidStartDate" class="text-danger"></span>
                         </div>
 
                         <div class="form-group col-6">
                             <label asp-for="EstBidEndDate" class="control-label"></label>
-                            <input asp-for="EstBidEndDate" class="form-control" />
+                            <input asp-for="EstBidEndDate" placeholder="Example: 2020-03-21" class="form-control" />
                             <span asp-validation-for="EstBidEndDate" class="text-danger"></span>
                         </div>
 
@@ -143,11 +147,21 @@
 
                         <div class="form-group col-5">
                             <label asp-for="DesignerID" class="control-label"></label>
-                            <select asp-for="DesignerID" class="form-control" asp-items="ViewBag.DesignerID"></select>
+                            <select asp-for="DesignerID" class="form-control" asp-items="ViewBag.DesignerID">
+                                <option value="">Select an employee</option>
+
+                            </select>
+                            <span asp-validation-for="DesignerID" class="text-danger"></span>
+
                         </div>
                         <div class="form-group col-6">
                             <label asp-for="SalesAsscociateID" class="control-label"></label>
-                            <select asp-for="SalesAsscociateID" class="form-control" asp-items="ViewBag.SalesAsscociateID"></select>
+                            <select asp-for="SalesAsscociateID" class="form-control" asp-items="ViewBag.SalesAsscociateID">
+                                <option value="">Select an employee</option>
+
+                            </select>
+                            <span asp-validation-for="SalesAsscociateID" class="text-danger"></span>
+
                         </div>
 
 
