@@ -46,7 +46,7 @@
     <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> 
     @if (String.IsNullOrEmpty(ViewData["returnURL"]?.ToString()))
     {
-        <a asp-action="Index">Back to List of Products</a>
+        <a asp-action="Index" data-toggle="tooltip" data-placement="top" title="Return to Products Page">Back to List of Products</a>
     }
     else
     {

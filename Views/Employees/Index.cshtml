@@ -13,9 +13,9 @@
 
         <div class="inner-flex-container-right">
 
-            <button type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" class="inner-flex-container-right-items" style=" width:15%; background-color:white">
+            <button type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" data-toggle="tooltip" data-placement="top" title="Filter" class="inner-flex-container-right-items" style=" width:15%; background-color:white">
 
-                
+
                 <div style="width:40%;">
                     <svg style="width:50%; height:50%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg" version="1.1" width="400" height="400" viewBox="0, 0, 400,400">
                         <g id="svgg">
@@ -92,7 +92,7 @@ l-25 -37 -89 0 -90 0 -27 41 c-22 34 -24 42 -12 49 7 5 39 27 69 49 30 22 56
             </a>
 
             <div class="inner-flex-container-right-items" id="moreOptions" style="width:5%;background-color: rgba(39,169,248,0.25)">
-                <a asp-controller="roles" asp-action="Index" style="width:100%">
+                <a asp-controller="roles" asp-action="Index" style="width:100%" data-toggle="tooltip" data-placement="top" title="Roles">
                     <svg style="width:100%; height:100%" version="1.0" xmlns="http://www.w3.org/2000/svg"
                          width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
                          preserveAspectRatio="xMidYMid meet">
@@ -194,11 +194,11 @@ l-25 -37 -89 0 -90 0 -27 41 c-22 34 -24 42 -12 49 7 5 39 27 69 49 30 22 56
                 <th>
                     @if (ViewData["sortField"].ToString().Contains("Employee"))
                     {
-                        <input type="submit" style="color:gold" name="actionButton" value="Employee (@Model.Count())" class="btn btn-link" /> 
+                        <input type="submit" style="color:gold" name="actionButton" value="Employee (@Model.Count())" class="btn btn-link" />
                     }
                     else
                     {
-                        <input type="submit" name="actionButton" value="Employee  (@Model.Count())" class="btn btn-link" /> 
+                        <input type="submit" name="actionButton" value="Employee  (@Model.Count())" class="btn btn-link" />
 
                     }
                 </th>
@@ -208,7 +208,7 @@ l-25 -37 -89 0 -90 0 -27 41 c-22 34 -24 42 -12 49 7 5 39 27 69 49 30 22 56
                     @if (ViewData["sortField"].ToString() == "Designation")
                     {
 
-                        <input type="submit"  style="color:gold" name="actionButton" value="Designation" class="btn btn-link" /> 
+                        <input type="submit" style="color:gold" name="actionButton" value="Designation" class="btn btn-link" />
                     }
                     else
                     {
@@ -356,7 +356,7 @@ l-25 -37 -89 0 -90 0 -27 41 c-22 34 -24 42 -12 49 7 5 39 27 69 49 30 22 56
                                 <p>Details</p>
                             </a>
 
-                           
+
                         </div>
                     </td>
 
