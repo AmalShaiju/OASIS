@@ -116,10 +116,16 @@ function Budgeting(budget, runningTotal, strict) {
         if (strict) {
 
             $('#btnSubmit').attr("disabled", true);
+            $('#createEmployee').attr("disabled", true);
+            $('#createCustomer').attr("disabled", true);
+            $('#createProject').attr("disabled", true);
 
         }
         else {
             $('#btnSubmit').attr("disabled", false);
+            $('#createEmployee').attr("disabled", false);
+            $('#createCustomer').attr("disabled", false);
+            $('#createProject').attr("disabled", false);
         }
     }
     else {

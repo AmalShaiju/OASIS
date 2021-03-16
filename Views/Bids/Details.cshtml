@@ -106,7 +106,7 @@ c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
                             </svg>
                         </a>
                     </li>
-                   
+
                 </ul>
 
                 <div class="container" style="margin-left:0">
@@ -162,6 +162,29 @@ c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
                                                         @Html.DisplayFor(model => model.BidStatus.Name)
 
                                                     </p>
+                                                </div>
+                                                <div class="w-100"></div>
+                                                <div class="col">
+                                                    <label>
+                                                        @Html.DisplayNameFor(model => model.Budget)
+
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    @if (Model.Budget != null)
+                                                    {
+                                                        <p>
+                                                            @Html.DisplayFor(model => model.Budget)
+                                                        </p>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>
+                                                            No Budget
+                                                        </p>
+                                                    }
+
                                                 </div>
                                                 <div class="w-100"></div>
                                                 <div class="col">
@@ -460,7 +483,7 @@ c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
                                                             <metadata>
                                                                 Created by potrace 1.16, written by Peter Selinger 2001-2019
                                                             </metadata>
-                                                            <g  transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#7460ee" stroke="none">
+                                                            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#7460ee" stroke="none">
                                                                 <path d="M1660 5109 c-132 -20 -240 -95 -267 -184 -7 -21 -38 -188 -69 -374
                                         -32 -185 -61 -341 -66 -348 -5 -7 -33 -19 -61 -29 -112 -36 -240 -107 -303
                                         -169 -74 -73 -96 -118 -96 -202 1 -124 82 -219 267 -308 319 -156 832 -237
@@ -746,7 +769,7 @@ c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
                                                             <metadata>
                                                                 Created by potrace 1.16, written by Peter Selinger 2001-2019
                                                             </metadata>
-                                                            <g  transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#7460ee" stroke="none">
+                                                            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#7460ee" stroke="none">
                                                                 <path d="M2350 5113 c-175 -28 -327 -80 -444 -150 -181 -108 -346 -272 -454
                                         -450 -56 -92 -106 -220 -134 -338 -29 -125 -36 -375 -14 -501 64 -368 285
                                         -680 618 -871 328 -188 765 -204 1124 -42 120 54 233 137 350 253 262 262 377

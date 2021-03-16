@@ -116,7 +116,7 @@ $("#btnAddProduct").click(function () {
 
 });
 
-$("#btnSubmit").click(function () {
+$("#btnSubmit,#createEmployee,#createCustomer,#createProject").click(function () {
 
     $("#ProductsAssigned").val(JSON.stringify(productsAssigned));
 

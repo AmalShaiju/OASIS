@@ -11,6 +11,26 @@
     --ghostwhite: #f9fafa;
 }
 
+/*Scrool Bar*/
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #7460ee;
+    border-radius: 10px;
+    height: 10px;
+}
+
+/*Scrool Bar*/
+
 *:focus {
     outline: none;
 }
