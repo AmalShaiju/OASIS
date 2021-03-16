@@ -11,6 +11,26 @@
     --ghostwhite: #f9fafa;
 }
 
+/*Scrool Bar*/
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #7460ee;
+    border-radius: 10px;
+    height: 10px;
+}
+
+/*Scrool Bar*/
+
 *:focus {
     outline: none;
 }
@@ -695,7 +715,13 @@ tbody tr:nth-child(even) {
     background-color: rgba(116,96,238,0.1)
 }
 
+#BidproductTable tr:nth-child(even) {
+    background-color: rgba(116,96,238,0.1)
+}
 
+#BidLabourTable tr:nth-child(even) {
+    background-color: rgba(116,96,238,0.1)
+}
 
 .column1 {
     width: 160px;
@@ -725,6 +751,42 @@ tbody tr:nth-child(even) {
     text-align: right;
     padding-right: 62px;
 }
+
+.column7 {
+    width: 222px;
+    text-align: right;
+    padding-right: 62px;
+}
+
+    .column5 input[type=text] {
+        background: white;
+        width: 59px;
+        border:none;
+        height: 27px;
+        text-align: center;
+    }
+
+
+
+
+    .column5 input[type=text]:nth-child(even) {
+        background-color: rgba(116,96,238,0.1)
+    }
+
     
 
 /*Bid Details Table*/
+
+
+.budget-lock input[type= text]{
+    margin:0;
+}
+
+.lock {
+    background: url(../resources/svg/lock-open.svg) center no-repeat;
+    width: 50px;
+}
+
+    .lock:hover {
+        background: url(../resources/svg/lock-open.svg) center no-repeat;
+    }

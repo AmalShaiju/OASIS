@@ -1,0 +1,65 @@
+﻿<div class="col-md-9 tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+
+    <div id="bidProductTable" class="container-table100 list-group" style="overflow-y: auto; height: 355px; margin-bottom: 2%;">
+
+        <div class="wrap-table100">
+            <div class="table100">
+                <table id="BidproductTable">
+                    <thead>
+                        <tr class="table100-head">
+                            <th class="column1">Code</th>
+                            <th class="column2">Description </th>
+                            <th class="column3">Size</th>
+                            <th class="column4">Price</th>
+                            <th class="column5">Quantity</th>
+                            <th class="column6">Total</th>
+                            <th class="column6 budget" ></th>
+                            <th class="column6" id="bidProductTotal"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.AssignedBidProducts != null)
+                        {
+                            foreach (var item in ViewBag.AssignedBidProducts)
+                            {
+                        <tr id=row-@item.Product.ID>
+                            <td class="column1">@item.Product.Code</td>
+                            <td class="column2">@item.Product.Description</td>
+                            <td class="column3">@item.Product.size</td>
+                            <td class="column4" id="price-@item.Product.ID">$@item.Product.Price</td>
+                            <td class="column5"><input type="text" disabled id="txt-@item.Product.ID" value="@item.Quantity" /></td>
+                            <td class="column6"  id="total-@item.Product.ID">$@Math.Round((item.Quantity*item.Product.Price),2)</td>
+                            <td class="column7"><input type="button" id="edit-@item.Product.ID" class="btn btn-primary" onclick="editRow(this.id)" value="Edit" /><input type="button" style="display:none" id="save-@item.Product.ID" class="btn btn-success" onclick="saveRow(this.id)" value="Save" /></td>
+                            <td class="column7"><input type="button" id="delete-@item.Product.ID" class="btn btn-danger" onclick="deleteRow(this.id)" value="Delete" /></td>
+                        </tr>
+                            }
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="input-group m-t-12">
+        <div class="input-group-prepend" style="background:White">
+            <select class="btn btn-outline-secondary" id="ProductTypeID" name="ProductTypeID" asp-items="ViewBag.ProductTypeID">
+                <option value="">All Product Types</option>
+            </select>
+        </div>
+
+        <div class="input-group mb-3" style="width:79%; background:white; margin:0px!important;">
+            <select style="margin:0" class="form-control" id="ProductID" name="ProductID" asp-items="ViewBag.ProductID">
+                <option value="">select a Product</option>
+            </select>
+            <div class="input-group-append">
+                <label class="input-group-text" for="inputGroupSelect02">Quantity</label>
+            </div>
+            <input style="margin:0" id="ProductQuantity" type="number" class="form-control" placeholder="Example: 2" aria-label="Quantity" aria-describedby="basic-addon1">
+            <button id="btnAddProduct" class="btn btn-outline-success" type="button">+</button>
+        </div>
+
+    </div>
+
+</div>
