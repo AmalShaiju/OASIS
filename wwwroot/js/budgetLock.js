@@ -23,7 +23,7 @@ $('#Budget').change(function () {
 
 function Updatelock() {
 
-    if ($(".lock").css("background-image").replace('url(', '').replace(')', '').replace(/\"/gi, "") == "http://localhost:63341/resources/svg/lock-open.svg") {
+    if (($(".lock").css("background-image").replace('url(', '').replace(')', '').replace(/\"/gi, "")).includes("lock-open.svg")) {
 
 
         inputTxt = $("#Budget").val();
@@ -46,7 +46,7 @@ function Updatelock() {
             $("#Budget").val($("#Budget").val())
 
 
-            strict = true; 
+            strict = true;
 
             //Populate bid budget in table
             updateBidBudget();
@@ -133,9 +133,12 @@ function Budgeting(budget, runningTotal, strict) {
         $("#bidProductTotal").css("color", "#90ee90")
 
         $('#btnSubmit').attr("disabled", false);
+        $('#createEmployee').attr("disabled", false);
+        $('#createCustomer').attr("disabled", false);
+        $('#createProject').attr("disabled", false);
 
     }
 
-    
+
 
 }

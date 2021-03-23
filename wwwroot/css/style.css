@@ -44,7 +44,7 @@ body {
     padding: 0;
     box-sizing: border-box;
     background-color: #f4f8f9;
-    overflow-x:hidden;
+    overflow-x: hidden;
 }
 
 button:focus {
@@ -58,11 +58,11 @@ button:focus {
 a {
     text-decoration: none;
     color: #007bff;
-    cursor:pointer;
+    cursor: pointer;
 }
 
-#ProductTypeLogo path{
-    fill:black;
+#ProductTypeLogo path {
+    fill: black;
 }
 /*NAVIGATION*/
 .flex-container {
@@ -159,9 +159,9 @@ a p {
     transition: 0.4s ease-in;
     transform: translateX(79%);
 }
+
 quickLink-tab {
     position: absolute;
-   
 }
 
 .accesiblity-controller {
@@ -174,8 +174,7 @@ quickLink-tab {
     .accesiblity-controller svg {
         width: 100%;
         height: 100%;
-        cursor:pointer;
-        
+        cursor: pointer;
     }
 
 .accesiblity-body {
@@ -192,7 +191,7 @@ quickLink-tab {
         text-decoration: none;
         list-style: none;
         display: flex;
-        padding:0px 20px 0px 20px;
+        padding: 0px 20px 0px 20px;
         justify-content: space-around;
         flex-direction: column !important;
     }
@@ -201,14 +200,14 @@ quickLink-tab {
             text-decoration: none;
             list-style: none;
             display: flex;
-            padding-left:5px;
+            padding-left: 5px;
             align-items: center;
-            cursor:pointer;
+            cursor: pointer;
         }
 
             .accesiblity-body ul li span {
                 margin-left: 10px;
-                font-size:13px;
+                font-size: 13px;
             }
 
 /*NAVIGATION*/
@@ -264,13 +263,12 @@ td a {
     height: 60px;
     padding-top: 0px;
     margin-right: 10px;
-    cursor:pointer;
+    cursor: pointer;
 }
 
     .table-row-img img {
         width: 100%;
         height: 100%;
-        
     }
 
 .index-drop-down-menu {
@@ -397,7 +395,7 @@ header a {
 .nav-item-flex {
     display: flex;
     width: 100%;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .nav-item-box-one {
@@ -538,11 +536,13 @@ col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .co
 hr {
     margin-bottom: 1.5rem;
 }
+
 .details-menu {
     display: flex;
-    width:51%;
-    margin-left:12%;
+    width: 51%;
+    margin-left: 12%;
 }
+
 .details-container {
 }
 
@@ -609,48 +609,51 @@ hr {
         border: none
     }
 
-    p a{
-        color: black;
-    }
+p a {
+    color: black;
+}
 /*DETAILS*/
 focusedin {
     background-color: yellow;
-
 }
+
 .card {
     border: none;
 }
 
-.card h3{
-    text-decoration:none
-}
+    .card h3 {
+        text-decoration: none
+    }
 
 .collapse-card {
     background: transparent;
     border: none;
 }
 
-.card-header  {
+.card-header {
     width: 100%;
-    border:none;
-    background-color:transparent;
+    border: none;
+    background-color: transparent;
 }
-.card-header h3 {
-    margin-top:3.5%;
-}
+
+    .card-header h3 {
+        margin-top: 3.5%;
+    }
+
     .card-header button {
         width: 100%;
     }
+
 .bid-tab-link {
     width: 50%;
     height: 50%;
 }
 
-.bid-tab-link svg {
-    background: white;
-    width: 100%;
-    height: 100%;
-}
+    .bid-tab-link svg {
+        background: white;
+        width: 100%;
+        height: 100%;
+    }
 
 /*Bid Create*/
 .bid-product-card {
@@ -658,30 +661,32 @@ focusedin {
     width: 100%;
 }
 
-#pills-tab  {
+#pills-tab {
     width: 30%;
-    margin-top:20px;
+    margin-top: 20px;
 }
 
-.nav-item a{
-    width:15%;
+.nav-item a {
+    width: 15%;
 }
 
-#pills-tab li{
+#pills-tab li {
+    width: 15%;
+}
 
-    width:15%;
-}
-#pills-tab li a {
-    width: 50%;
-}
-    #pills-tab li a svg {
-        fill:red
+    #pills-tab li a {
+        width: 50%;
     }
+
+        #pills-tab li a svg {
+            fill: red
+        }
 /*Bid Create*/
 /*Bid Details Table*/
 .wrap-table100 {
     width: 100%;
 }
+
     .wrap-table100 table {
         width: 100%;
         border-collapse: collapse;
@@ -758,13 +763,13 @@ tbody tr:nth-child(even) {
     padding-right: 62px;
 }
 
-    .column5 input[type=text] {
-        background: white;
-        width: 59px;
-        border:none;
-        height: 27px;
-        text-align: center;
-    }
+.column5 input[type=text] {
+    background: transparent;
+    width: 59px;
+    border: none;
+    height: 27px;
+    text-align: center;
+}
 
 
 
@@ -773,13 +778,13 @@ tbody tr:nth-child(even) {
         background-color: rgba(116,96,238,0.1)
     }
 
-    
+
 
 /*Bid Details Table*/
 
 
-.budget-lock input[type= text]{
-    margin:0;
+.budget-lock input[type= text] {
+    margin: 0;
 }
 
 .lock {

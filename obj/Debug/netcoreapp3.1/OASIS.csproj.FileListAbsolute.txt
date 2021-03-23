@@ -1665,3 +1665,5 @@ C:\Users\Amals\OneDrive - NC\OASIS\obj\Debug\netcoreapp3.1\OASIS.genruntimeconfi
 C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Bids\BidApprovals.cshtml.g.cs
 C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Bids\BidLabour.cshtml.g.cs
 C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Bids\BidProduct.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\UserRoles\Index.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\UserRoles\Create.cshtml.g.cs
