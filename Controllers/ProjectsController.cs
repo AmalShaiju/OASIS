@@ -390,12 +390,19 @@ namespace OASIS.Controllers
             return _context.Projects.Any(e => e.ID == id);
         }
 
+        //Customers selectList
+        private SelectList CustomerSelectList(int? selectedId)
+        {
+            return new SelectList(_context.Customers
+                .OrderBy(d => d.FirstName).ThenBy(d => d.LastName)
+                , "ID", "FirstName", selectedId);
+        }
+
         private void PopulateDropDownLists(Project project = null)
         {
-            var dQuery = from d in _context.Customers
-                         orderby d.LastName, d.FirstName
-                         select d;
-            ViewData["CustomerID"] = new SelectList(dQuery, "ID", "FormalName", project?.CustomerID);
+            ViewData["CustomerID"] = CustomerSelectList(project?.CustomerID);
         }
+
+
     }
 }

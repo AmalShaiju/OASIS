@@ -668,7 +668,13 @@ namespace OASIS.Controllers
             return new SelectList(query.OrderBy(p => p.Display), "ID", "Display", selectedId);
         }
 
-
+        //Projects selectList
+        private SelectList ProjectSelectList(int? selectedId)
+        {
+            return new SelectList(_context.Projects
+                .OrderBy(d => d.Name)
+                , "ID", "Name", selectedId);
+        }
         private void PopulateDropDownLists(Bid bid = null, int designerStatusID = 1, int clientStatusID = 1, string note = "No Comment")
         {
             // Bid Status
@@ -968,6 +974,14 @@ namespace OASIS.Controllers
 
 
             }
+        }
+
+        //Now we can use the SelectList method to get the data
+        //for our Pop-up
+        [HttpGet]
+        public JsonResult GetProjects(int? id)
+        {
+            return Json(ProjectSelectList(id));
         }
 
     }

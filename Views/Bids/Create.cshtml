@@ -4,6 +4,9 @@
     ViewData["Title"] = "Create";
 }
 
+<hr />
+<partial name="_AddProjectModal" />
+
 <form asp-action="Create">
     <input type="hidden" id="employeeTrue" name="employeeTrue" value="0" />
     <input type="hidden" id="customerTrue" name="customerTrue" value="0" />
@@ -94,16 +97,22 @@
             <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                 <div class="col-md-12">
 
+
                     <div style="margin-top:0px;" class="form-row col-10">
 
                         <div class="form-group col-5">
                             <label asp-for="ProjectID" class="control-label"></label>
-                            <select asp-for="ProjectID" class="form-control" asp-items="ViewBag.ProjectID">
-                                <option value="">Select a project</option>
-                            </select>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary" id="nowAddProject" data-toggle="modal" data-target="#addProjectModal" type="button"><strong>+</strong></button>
+                                </div>
+                                <select asp-for="ProjectID" class="form-control" asp-items="ViewBag.ProjectID">
+                                    <option value="">Select a project</option>
+                                </select>
+                            </div>
                             <span asp-validation-for="ProjectID" class="text-danger"></span>
-
                         </div>
+
                         <div class="form-group col-6">
                             <label asp-for="BidStatusID" class="control-label"></label>
                             <select asp-for="BidStatusID" class="form-control" asp-items="ViewBag.BidStatusID">
@@ -119,13 +128,13 @@
                     <div class="form-row col-10">
                         <div class="form-group col-5">
                             <label asp-for="ProjectStartDate" class="control-label"></label>
-                            <input asp-for="ProjectStartDate" placeholder="Example :2020-01-23"  class="form-control" />
+                            <input asp-for="ProjectStartDate" placeholder="Example :2020-01-23" class="form-control" />
                             <span asp-validation-for="ProjectStartDate" class="text-danger"></span>
                         </div>
 
                         <div class="form-group col-6">
                             <label asp-for="ProjectEndDate" class="control-label"></label>
-                            <input asp-for="ProjectEndDate" placeholder="Example :2020-01-23"  class="form-control" />
+                            <input asp-for="ProjectEndDate" placeholder="Example :2020-01-23" class="form-control" />
                             <span asp-validation-for="ProjectEndDate" class="text-danger"></span>
                         </div>
 
@@ -136,13 +145,13 @@
 
                         <div class="form-group col-5">
                             <label asp-for="EstBidStartDate" class="control-label"></label>
-                            <input asp-for="EstBidStartDate" placeholder="Example :2020-01-23"  class="form-control" />
+                            <input asp-for="EstBidStartDate" placeholder="Example :2020-01-23" class="form-control" />
                             <span asp-validation-for="EstBidStartDate" class="text-danger"></span>
                         </div>
 
                         <div class="form-group col-6">
                             <label asp-for="EstBidEndDate" class="control-label"></label>
-                            <input asp-for="EstBidEndDate"  placeholder="Example :2020-01-23" class="form-control" />
+                            <input asp-for="EstBidEndDate" placeholder="Example :2020-01-23" class="form-control" />
                             <span asp-validation-for="EstBidEndDate" class="text-danger"></span>
                         </div>
 
@@ -185,7 +194,7 @@
                             </div>
                         </div>
 
-                       
+
 
 
                     </div>
@@ -445,13 +454,36 @@ c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
             $('#bidTrue').val(1)
         });
 
-        $('#createProject').click(function () {
-            $('#projectTrue').val(1)
-        });
-
         $('#createCustomer').click(function () {
             $('#customerTrue').val(1)
         });
+    </script>
+
+    <script type="text/javascript">
+        $('#submitCreate').click(function (event) {
+            event.preventDefault();
+            var form = $('#createProjectForm');
+            if (form.valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function () {
+                        $('#addProjectModal').modal('hide');
+                    },
+                    error: function () {
+                        alert("Create Failed.  There was a problem adding the record.");
+                    }
+                });
+            }
+            return false;
+        });
+        $('#addProjectModal').on('hide.bs.modal', function () {
+            $('#createProjectForm').find("input[type=text], textarea, select").val("");//to clear the data in the popup
+            refreshDDL('ProjectID', 'Bids/GetProjects', true, 'Select a Project', true);
+        });
+
+      
 
     </script>
 }

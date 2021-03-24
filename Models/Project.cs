@@ -12,7 +12,7 @@ namespace OASIS.Models
 
         [Display(Name = "Project Name")]
         [Required(ErrorMessage = "You cannot leave the Project Name blank.")]
-        [StringLength(100, ErrorMessage = "Project Name cannot be more than 20 characters long.")]
+        [StringLength(20, ErrorMessage = "Project Name cannot be more than 20 characters long.")]
         public string Name { get; set; }
 
         [Display(Name = "Address Line 1")]

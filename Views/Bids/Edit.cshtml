@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<hr />
+<partial name="_AddProjectModal" />
 
 <form asp-action="Edit">
     <div class="row">
@@ -98,10 +100,16 @@
 
                         <div class="form-group col-5">
                             <label asp-for="ProjectID" class="control-label"></label>
-                            <select asp-for="ProjectID" class="form-control" asp-items="ViewBag.ProjectID"></select>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary" id="nowAddProject" data-toggle="modal" data-target="#addProjectModal" type="button"><strong>+</strong></button>
+                                </div>
+                                <select asp-for="ProjectID" class="form-control" asp-items="ViewBag.ProjectID"></select>
+                            </div>
                             <span asp-validation-for="ProjectID" class="text-danger"></span>
-
                         </div>
+
+
                         <div class="form-group col-6">
                             <label asp-for="BidStatusID" class="control-label"></label>
                             <select asp-for="BidStatusID" class="form-control" asp-items="ViewBag.BidStatusID"></select>
@@ -278,17 +286,44 @@
     <script src="~/js/addRoles.js"></script>
     <script src="~/js/refreshDDL.js"></script>
     <script src="~/js/budgetLock.js"></script>
+
     <script type="text/javascript">
         $('#ProductTypeID').change(function () {
             var selectedProduct = $("#ProductTypeID").val();
             var URL = "/Bids/GetProducts/" + selectedProduct;
             refreshDDL('ProductID', URL, true);
         });
-    </script>
-    <script type="text/javascript">
+
+
+
         $('#pills-tab a').on('click', function (e) {
             e.preventDefault()
             $(this).tab('show')
-        })
+        });
+
+
+        $('#submitCreate').click(function (event) {
+            event.preventDefault();
+            var form = $('#createProjectForm');
+            if (form.valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function () {
+                        $('#addProjectModal').modal('hide');
+                    },
+                    error: function () {
+                        alert("Create Failed.  There was a problem adding the record.");
+                    }
+                });
+            }
+            return false;
+        });
+        $('#addProjectModal').on('hide.bs.modal', function () {
+            $('#createProjectForm').find("input[type=text], textarea, select").val(""); //to clear the data in the popup
+            refreshDDL('ProjectID', 'Bids/GetProjects', false, '');
+        });
+
     </script>
 }

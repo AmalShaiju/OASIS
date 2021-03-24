@@ -1,0 +1,48 @@
+﻿@model OASIS.Models.Project
+<form asp-action="Create" asp-controller="Projects" id="createProjectForm">
+    <div class="row">
+        <div class="form-group">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SiteAddressLineOne" class="control-label"></label>
+                <input asp-for="SiteAddressLineOne" class="form-control" />
+                <span asp-validation-for="SiteAddressLineOne" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SiteAddressLineTwo" class="control-label"></label>
+                <input asp-for="SiteAddressLineTwo" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Province" class="control-label"></label>
+                <input asp-for="Province" class="form-control" />
+                <span asp-validation-for="Province" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Country" class="control-label"></label>
+                <input asp-for="Country" class="form-control" />
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Create" id="submitCreate" class="btn btn-outline-dark" />
+            </div>
+        </div>
+    </div>
+</form>
+
+
