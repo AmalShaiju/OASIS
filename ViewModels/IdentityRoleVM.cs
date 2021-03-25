@@ -8,9 +8,9 @@ namespace OASIS.ViewModels
     public class IdentityRoleVM
     {
         public string RoleID { get; set; }
-
         public string RoleName { get; set; }
+        public List<IdentityUserVM> AssignedUsers { get; set; }
+        public int AssignedCount { get; set; }
 
-        public IList<string> Users { get; set; }
     }
 }

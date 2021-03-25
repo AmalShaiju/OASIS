@@ -27,42 +27,36 @@ namespace OASIS.Controllers
         public async Task<IActionResult> Index()
         {
 
-
-            //Task : get all roles with assigned users count
-
-            var roleToAssign = await _roleManager.FindByNameAsync("SAMPLE ROLE");
-
+            // Create a list of user with thier roles assigned
+            List<IdentityUserVM> users = new List<IdentityUserVM>();
             foreach (var i in _context.Users)
             {
-                await _userManager.AddToRoleAsync(i, roleToAssign.Name);
-
+                users.Add(new IdentityUserVM { UserID = i.Id, UserName = i.UserName, Roles = await _userManager.GetRolesAsync(i) });
             }
 
-
-            // Returns all roles with the number of users assigned
-
+            // Return all roles with the number of users assigned
             var roles =
-            from r in _context.Roles
-            join ur in _context.UserRoles on r.Id equals ur.RoleId into joined
+            from r in _context.Roles.AsEnumerable()
+            join ur in _context.UserRoles on r.Id equals ur.RoleId
+            join u in _context.Users on ur.UserId equals u.Id into joined
             from grp in joined.DefaultIfEmpty()
             group r by new { r.Id, r.Name } into grp
             orderby grp.Count() descending
-            select new IdentityUserRoleVM
+            select new IdentityRoleVM
             {
                 RoleID = grp.Key.Id,
                 RoleName = grp.Key.Name,
-                Assigned = grp.Count() 
+                AssignedUsers = users.Where(p => p.Roles.Contains(grp.Key.Name)).ToList(),
+                AssignedCount = users.Where(p => p.Roles.Contains(grp.Key.Name)).Count()
             };
-
-
             
-            return View(roles);
+            return View("Index",roles);
         }
 
         // GET: Bids/Create
         public IActionResult Create()
         {
-            IdentityUserRoleVM role = new IdentityUserRoleVM();
+            IdentityRoleVM role = new IdentityRoleVM();
 
             return View(role);
         }
@@ -72,23 +66,20 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("RoleName")] IdentityUserRoleVM role)
+        public IActionResult Create([Bind("RoleName")] IdentityRoleVM role)
         {
             if (ModelState.IsValid)
             {
                 UpateRole(role.RoleName);
                 return RedirectToAction(nameof(Index));
             }
-           
+
             return View(role);
         }
 
-
-
-
         public async void UpateRole(string Role)
         {
-            if(Role != null)
+            if (Role != null)
             {
                 //check if role exist in db
                 if (await _roleManager.RoleExistsAsync(Role))
@@ -104,8 +95,17 @@ namespace OASIS.Controllers
                 }
 
             }
-            
 
+
+        }
+
+        public IQueryable<IdentityUserVM> GetUserByRole(string RoleName)
+        {
+            return from r in _context.Roles
+                   join ur in _context.UserRoles on r.Id equals ur.RoleId  //into joined
+                   join u in _context.Users on ur.UserId equals u.Id
+                   where r.Name.Contains(RoleName)
+                   select new IdentityUserVM { UserName = u.UserName, UserID = u.Id };
         }
 
 
