@@ -8,121 +8,163 @@
     <input type="hidden" id="customerTrue" name="customerTrue" value="0" />
     <input type="hidden" id="projectTrue" name="projectTrue" value="0" />
     <input type="hidden" id="bidTrue" name="bidTrue" value="0" />
-    <div class="row">
-        <div class="form-row col-10">
-            <div style="width:35px; height:37px; align-self:center;">
-                <img style="width:100%; height:100%;" src="~/resources/add-user-full-fill.png" alt="Alternate Text" />
-            </div>
-            <h2 style="margin-left: 14px; margin-top:5px; color:#7460ee">Add Employee</h2>
 
+    <div class="card col-8 p-0 mb-5" style=" border-radius:25px">
+        <div style=" border-top-left-radius: 25px; border-top-right-radius: 25px;" class="row card-header m-0">
+            <div class="col-1" data-toggle="collapse">
+                <svg style="height:50%; width:50%;" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" /></svg>
+            </div>
+            <div class="col-10">
+                <h5>Personal information</h5>
+            </div>
+            <div class="col-1"  >
+                <button type="button" style="padding:0;width:50%;" class="btn btn-outline-light" data-toggle="collapse" data-target="#collapse-personal" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+                </button>
+            </div>
         </div>
-        <div class="col-md-12">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-row col-10">
+        <div class="card-body" id="collapse-personal" style="background: rgba(184, 175, 247, 0.2); border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;">
+            <div class="form-group row">
+                <label asp-for="FirstName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="FirstName" tabindex="1" placeholder="Example: John" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
 
-                <div style=" padding-left: 1px;" class="form-group col-5">
-                    <h3> Personal Information</h3>
                 </div>
-                <div style=" padding-left: 1px;" class="form-group col-6">
-                    <h3> Address Information</h3>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="MiddleName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="MiddleName" tabindex="3" placeholder="Example: James" class="form-control" />
+                    <span asp-validation-for="MiddleName" class="text-danger"></span>
+
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="LastName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="LastName" tabindex="5" placeholder="Example: Doe" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Role</label>
+                <div class="col-sm-8">
+                    <select asp-for="RoleID" tabindex="7" class="form-control" asp-items="ViewBag.RoleID">
+                        <option value="Choose option">Select a Role</option>
+                    </select>
+                    <span asp-validation-for="RoleID" class="text-danger"></span>
+
                 </div>
 
             </div>
-            <div style="margin-top:0px;" class="col-md-12">
-                <div style="margin-top:0px;" class="form-row col-10">
 
-                    <div class="form-group col-5">
-                        <label asp-for="FirstName" class="control-label"></label>
-                        <input asp-for="FirstName" tabindex="1" placeholder="Example: John" class="form-control" />
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-6">
-                        <label asp-for="AddressLineOne" class="control-label"></label>
-                        <input asp-for="AddressLineOne" tabindex="2" placeholder="Example: 123 Road Street" class="form-control" />
-                        <span asp-validation-for="AddressLineOne" class="text-danger"></span>
-                    </div>
+            <div class="form-group row">
+                <label asp-for="Phone" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="Phone" tabindex="9" placeholder="Example: 9051234567" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
 
                 </div>
-
-                <div class="form-row col-10">
-                    <div class="form-group col-5">
-                        <label asp-for="MiddleName" class="control-label"></label>
-                        <input asp-for="MiddleName" tabindex="3" placeholder="Example: James" class="form-control" />
-                        <span asp-validation-for="MiddleName" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group col-6">
-                        <label asp-for="AddressLineTwo" class="control-label"></label>
-                        <input asp-for="AddressLineTwo" tabindex="4" placeholder="Example: 125 Apple Road" class="form-control" />
-                        <span asp-validation-for="AddressLineTwo" class="text-danger"></span>
-                    </div>
-
-                </div>
-
-                <div class="form-row col-10">
-
-                    <div class="form-group col-5">
-                        <label asp-for="LastName" class="control-label"></label>
-                        <input asp-for="LastName" tabindex="5" placeholder="Example: Doe" class="form-control" />
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group col-6">
-                        <label asp-for="ApartmentNumber" class="control-label"></label>
-                        <input asp-for="ApartmentNumber" tabindex="6" placeholder="Example: Suite 1 / Suite A " class="form-control" />
-                        <span asp-validation-for="ApartmentNumber" class="text-danger"></span>
-                    </div>
-
-                </div>
-                <div class="form-row col-10">
-
-                    <div class="form-group col-5">
-                        <label asp-for="RoleID" class="control-label"></label>
-                        <select asp-for="RoleID" tabindex="7" class="form-control" asp-items="ViewBag.RoleID">
-                            <option value="Choose option">Select an Employee</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-6">
-                        <label asp-for="City" class="control-label"></label>
-                        <input asp-for="City" tabindex="8" placeholder="Example: Welland" class="form-control" />
-                        <span asp-validation-for="City" class="text-danger"></span>
-                    </div>
-
-
-                </div>
-
-                <div class="form-row col-10">
-
-                    <div class="form-group col-5">
-                        <label asp-for="Phone" class="control-label"></label>
-                        <input asp-for="Phone" tabindex="9" placeholder="Example: 9051234567" class="form-control" />
-                        <span asp-validation-for="Phone" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-6">
-                        <label asp-for="Province" class="control-label"></label>
-                        <input asp-for="Province" tabindex="10" placeholder="Example: Ontario" class="form-control" />
-                        <span asp-validation-for="Province" class="text-danger"></span>
-                    </div>
-
-                </div>
-
-                <div class="form-row col-10">
-
-                    <div class="form-group col-5">
-                        <label asp-for="Email" class="control-label"></label>
-                        <input asp-for="Email" tabindex="11" placeholder="Example: email@address.com" class="form-control" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-6">
-                        <label asp-for="Country" class="control-label"></label>
-                        <input asp-for="Country" tabindex="12" placeholder="Example: Canada" class="form-control" />
-                        <span asp-validation-for="Country" class="text-danger"></span>
-                    </div>
-
-                </div>
-
 
             </div>
+
+            <div class="form-group row">
+                <label asp-for="Email" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="Email" tabindex="11" placeholder="Example: email@address.com" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="IsUser" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-1">
+                    <input asp-for="IsUser" tabindex="11" placeholder="Example: email@address.com" class="form-control col-5" />
+                </div>
+            </div>
+          
+        </div>
+    </div>
+
+    <div class="card col-8 p-0" style=" border-radius:25px">
+        <div style=" border-top-left-radius: 25px; border-top-right-radius: 25px;" class="row card-header m-0">
+            <div class="col-1" data-toggle="collapse">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
+            </div>
+            <div class="col-10">
+                <h5>Address information</h5>
+            </div>
+            <div class="col-1" >
+                <button type="button" style="padding:0;width:50%;" class="btn btn-outline-light" data-toggle="collapse" data-target="#collapse-address" aria-expanded="false"> 
+                    <svg style="width:80%;height:80%" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+                </button>
+            </div>
+        </div>
+        <div class="card-body collapse" id="collapse-address" style="background: rgba(184, 175, 247, 0.2); border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;">
+            <div class="form-group row">
+                <label asp-for="AddressLineOne" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="AddressLineOne" tabindex="2" placeholder="Example: 123 Road Street" class="form-control" />
+                    <span asp-validation-for="AddressLineOne" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="AddressLineTwo" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="AddressLineTwo" tabindex="4" placeholder="Example: 125 Apple Road" class="form-control" />
+                    <span asp-validation-for="AddressLineTwo" class="text-danger"></span>
+
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Suite Number (Optional)</label>
+                <div class="col-sm-8">
+                    <input asp-for="ApartmentNumber" tabindex="6" placeholder="Example: Suite 1 / Suite A " class="form-control" />
+                    <span asp-validation-for="ApartmentNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="City" class="col-sm-3 col-form-label"></label>
+
+                <div class="col-sm-8">
+                    <input asp-for="City" tabindex="8" placeholder="Example: Welland" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="Province" class="col-sm-3 col-form-label"></label>
+
+                <div class="col-sm-8">
+                    <input asp-for="Province" tabindex="10" placeholder="Example: Ontario" class="form-control" />
+                    <span asp-validation-for="Province" class="text-danger"></span>
+
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="Country" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="Country" tabindex="12" placeholder="Example: Canada" class="form-control" />
+                    <span asp-validation-for="Country" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  
 
 
 
@@ -276,8 +318,6 @@ c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
                 </div>
 
             </div>
-        </div>
-    </div>
 </form>
 
 
@@ -302,7 +342,7 @@ c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
             $('#customerTrue').val(1)
         });
 
-
+       
     </script>
 
 }

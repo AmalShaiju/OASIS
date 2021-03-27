@@ -11,6 +11,16 @@
     --ghostwhite: #f9fafa;
 }
 
+
+
+/*Bootstrap*/
+.card-header {
+    height: 70px;
+    background: rgba(184,175,247,1.2);
+}
+
+/*Bootstrap*/
+
 /*Scrool Bar*/
 
 ::-webkit-scrollbar {
@@ -504,9 +514,7 @@ col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .co
 }
 
 .form-control {
-    background: var(--backgroundShade-light);
     border: none;
-    margin-top: 2.5%;
 }
 
     .form-control input[type=text]:-webkit-autofill {
@@ -630,19 +638,7 @@ focusedin {
     border: none;
 }
 
-.card-header {
-    width: 100%;
-    border: none;
-    background-color: transparent;
-}
 
-    .card-header h3 {
-        margin-top: 3.5%;
-    }
-
-   /* .card-header button {
-        width: 100%;
-    }*/
 
 .bid-tab-link {
     width: 50%;
@@ -783,6 +779,8 @@ tbody tr:nth-child(even) {
 /*Bid Details Table*/
 
 
+
+/*Bid Create BidProduct*/
 .budget-lock input[type= text] {
     margin: 0;
 }
@@ -795,3 +793,17 @@ tbody tr:nth-child(even) {
     .lock:hover {
         background: url(../resources/svg/lock-open.svg) center no-repeat;
     }
+
+/*Bid Create BidProduct*/
+
+
+/*User Roles*/
+
+.UserRoleList{
+    list-style :none;
+}
+
+.UserRoleList li {
+    list-style: none;
+}
+

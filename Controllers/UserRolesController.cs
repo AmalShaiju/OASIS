@@ -15,45 +15,24 @@ namespace OASIS.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<IdentityRole> _signInManager;
 
-        public UserRolesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserRolesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<IdentityRole> signInManager)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
         }
 
         // GET: UserRoles
         public async Task<IActionResult> Index()
         {
-
-            // Create a list of user with thier roles assigned
-            List<IdentityUserVM> users = new List<IdentityUserVM>();
-            foreach (var i in _context.Users)
-            {
-                users.Add(new IdentityUserVM { UserID = i.Id, UserName = i.UserName, Roles = await _userManager.GetRolesAsync(i) });
-            }
-
-            // Return all roles with the number of users assigned
-            var roles =
-            from r in _context.Roles.AsEnumerable()
-            join ur in _context.UserRoles on r.Id equals ur.RoleId
-            join u in _context.Users on ur.UserId equals u.Id into joined
-            from grp in joined.DefaultIfEmpty()
-            group r by new { r.Id, r.Name } into grp
-            orderby grp.Count() descending
-            select new IdentityRoleVM
-            {
-                RoleID = grp.Key.Id,
-                RoleName = grp.Key.Name,
-                AssignedUsers = users.Where(p => p.Roles.Contains(grp.Key.Name)).ToList(),
-                AssignedCount = users.Where(p => p.Roles.Contains(grp.Key.Name)).Count()
-            };
-            
-            return View("Index",roles);
+            List<IdentityRoleVM> userRoles = await GetAllRoles();
+            return View("Index", userRoles);
         }
 
-        // GET: Bids/Create
+        // GET: UserRoles/Create
         public IActionResult Create()
         {
             IdentityRoleVM role = new IdentityRoleVM();
@@ -61,7 +40,7 @@ namespace OASIS.Controllers
             return View(role);
         }
 
-        // POST: Approvals/Create
+        // POST: UserRoles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -70,51 +49,105 @@ namespace OASIS.Controllers
         {
             if (ModelState.IsValid)
             {
-                UpateRole(role.RoleName);
+                CreateRole(role.RoleName);
                 return RedirectToAction(nameof(Index));
             }
 
             return View(role);
         }
 
-        public async void UpateRole(string Role)
+        public async void CreateRole(string Role)
         {
             if (Role != null)
             {
                 //check if role exist in db
-                if (await _roleManager.RoleExistsAsync(Role))
-                {
-                    // change name if role exist
-                    var roleToAdd = await _roleManager.FindByNameAsync(Role);
-                    roleToAdd.Name = Role;
-                    await _roleManager.UpdateAsync(roleToAdd);
-                }
-                else  // role does not exist add role to db
+                if (!await _roleManager.RoleExistsAsync(Role))
                 {
                     await _roleManager.CreateAsync((new IdentityRole(Role)));
-                }
 
+                }
+            }
+
+        }
+
+        // POST: UserRoles/Authorization
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> Authorization(UserAuthenticationVM Loginuser)
+        {
+
+            var result = await _signInManager.PasswordSignInAsync(Loginuser.Username,
+               Loginuser.Password, Loginuser.RememberMe, false);
+
+            if (result.Succeeded)
+            {
+                if (!string.IsNullOrEmpty(Loginuser.ReturnUrl) && Url.IsLocalUrl(Loginuser.ReturnUrl))
+                {
+                    return Json(Loginuser.ReturnUrl);
+                }
+                else
+                {
+                    return Json("Url is not valid");
+                }
+            }
+
+            return Json("faied to sign in user");
+        }
+
+
+
+
+
+
+        public async Task<List<IdentityRoleVM>> GetAllRoles()
+        {
+            List<IdentityUserVM> users = new List<IdentityUserVM>();
+            List<IdentityRoleVM> roles = new List<IdentityRoleVM>();
+
+            foreach (var i in _context.Users)
+            {
+                users.Add(new IdentityUserVM
+                {
+                    UserID = i.Id,
+                    UserName = i.UserName,
+                    Roles = await _userManager.GetRolesAsync(i)
+                });
+            }
+
+            foreach (var i in _context.Roles)
+            {
+                roles.Add(new IdentityRoleVM
+                {
+                    RoleID = i.Id,
+                    RoleName = i.Name,
+                    AssignedCount = users.Where(p => p.Roles.Contains(i.Name)).Count(),
+                    AssignedUsers = users.Where(p => p.Roles.Contains(i.Name)).ToList()
+                });
+            }
+
+            return roles;
+        }
+
+        // get all users in a role
+        public async Task<List<IdentityUserVM>> GetUserByRole(IdentityRoleVM role)
+        {
+            List<IdentityUserVM> users = new List<IdentityUserVM>();
+
+            foreach (var i in _context.Users)
+            {
+                users.Add(new IdentityUserVM
+                {
+                    UserID = i.Id,
+                    UserName = i.UserName,
+                    Roles = await _userManager.GetRolesAsync(i)
+                });
             }
 
 
+            return users.Where(u => u.Roles.Contains(role.RoleName)).ToList();
         }
-
-        public IQueryable<IdentityUserVM> GetUserByRole(string RoleName)
-        {
-            return from r in _context.Roles
-                   join ur in _context.UserRoles on r.Id equals ur.RoleId  //into joined
-                   join u in _context.Users on ur.UserId equals u.Id
-                   where r.Name.Contains(RoleName)
-                   select new IdentityUserVM { UserName = u.UserName, UserID = u.Id };
-        }
-
-
-
-
-
-
-
-
 
     }
 

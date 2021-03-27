@@ -9,7 +9,7 @@ using OASIS.Data;
 namespace OASIS.Data.OASISMigrations
 {
     [DbContext(typeof(OasisContext))]
-    [Migration("20210322170550_Initial")]
+    [Migration("20210326191837_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -337,6 +337,9 @@ namespace OASIS.Data.OASISMigrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(50);
 
+                    b.Property<bool>("IsUser")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -345,6 +348,9 @@ namespace OASIS.Data.OASISMigrations
                     b.Property<string>("MiddleName")
                         .HasColumnType("TEXT")
                         .HasMaxLength(50);
+
+                    b.Property<string>("Password")
+                        .HasColumnType("TEXT");
 
                     b.Property<long>("Phone")
                         .HasColumnType("INTEGER");

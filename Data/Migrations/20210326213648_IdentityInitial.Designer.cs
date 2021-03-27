@@ -9,8 +9,8 @@ using OASIS.Data;
 namespace OASIS.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210322172017_Initial")]
-    partial class Initial
+    [Migration("20210326213648_IdentityInitial")]
+    partial class IdentityInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

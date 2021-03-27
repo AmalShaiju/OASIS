@@ -4,16 +4,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using OASIS.Data;
+using OASIS.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static OASIS.Utilities.EmailService;
 
 namespace OASIS
 {
@@ -73,6 +76,13 @@ namespace OASIS
         options.UseSqlite(Configuration.GetConnectionString("OasisContext")));
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+
+            //For email service
+            services.AddSingleton<IEmailConfiguration>(Configuration
+                .GetSection("EmailConfiguration").Get<EmailConfiguration>());
+
+            //For the Identity System
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

@@ -4,71 +4,73 @@
     ViewBag.Title = "Index";
 }
 
-
-
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
 <div class="container">
-    <div class="row">
+    <ul class="row UserRoleList" id="sortable">
         @foreach (var Role in Model)
         {
-            <div class="col-sm">
-
-                <div style="height:382px" class="card">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-11">
-                                @Html.DisplayFor(modelItem => Role.RoleName)<span> (@Html.DisplayFor(modelItem => Role.AssignedCount))</span>
-                            </div>
-                            <div class="col-1">
-                                <button style="padding:0" class="btn btn-outline-primary">
-                                    <svg style="width:80%; height:80%;" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><g style="fill:white"><path d="M0 0h24v24H0z" fill="none" /><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" /></g></svg>
-                                </button>
-                            </div>
-                        </div>
-
-                        <ul class="list-group list-group-flush" id="sortable">
-                            @foreach (var user in Role.AssignedUsers)
-                            {
-                                <li class="row">
-                                    <div class="col-1 role-handler">
-                                        <svg style="width:100%; height:100%;" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" /></svg>
+            <li class="col-12 " aria-expanded="true" >
+                <div class="row">
+                    <div style="display:flex; cursor:move; justify-content: space-evenly; align-self:start" class="col-1 role-handler">
+                        <svg style="width:50%; height:50%;" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" /></svg>
+                    </div>
+                    <div class="col-11">
+                        <div class="card">
+                            <div style="background-color: rgba(184,175,247,0.6);cursor:move" class="card-header">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <h2 style="font-size: 20px; padding-left: 15px;">
+                                            @Html.DisplayFor(modelItem => Role.RoleName)<span> (@Html.DisplayFor(modelItem => Role.AssignedCount))</span>
+                                        </h2>
                                     </div>
-                                    <div class="col-11">
-                                        <div class="list-group-item ">@Html.DisplayFor(modelItem => user.UserName)</div>
+                                    <div class="col-1">
+                                        <button style="padding:0; width:50%" class="btn btn-outline-light">
+                                            <svg style="width:80%; height:80%;" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><g style="fill:black"><path d="M0 0h24v24H0z" fill="none" /><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" /></g></svg>
+                                        </button>
                                     </div>
-                                </li>
-                            }
-
-                        </ul>
-                        <div class="input-group " style="margin-top:60px; ">
-                            <div class="input-group m-t-12" style="justify-content: center;">
-                                <div class="input-group-prepend" style="background:White">
-                                    <select class="btn btn-outline-secondary" id="ProductTypeID" @*name="ProductTypeID" asp-items="ViewBag.ProductTypeID"*@>
-                                        <option value="">All Roles</option>
-                                    </select>
+                                    <div class="col-1" data-toggle="collapse" data-target="#collapse-@Role.RoleName">
+                                        <button style="padding:0;width:50%;" class="btn btn-outline-light">
+                                            <svg style="width:80%;height:80%" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+                                        </button>
+                                    </div>
                                 </div>
 
-                                <div class="input-group mb-3" style="width:72%; background:white; margin:0px!important;">
-                                    <select style="margin:0" class="form-control" id="ProductID" @*name="ProductID" asp-items="ViewBag.ProductID"*@>
-                                        <option value="">select a Product</option>
-                                    </select>
-                                    <button id="btnAddProduct" class="btn btn-outline-success" type="button" data-toggle="tooltip" data-placement="top" title="Add Product">+</button>
+                            </div>
+                            <div class="collapse show" id="collapse-@Role.RoleName">
+                                <ul class="list-group list-group-flush">
+                                    @foreach (var user in Role.AssignedUsers)
+                                    {
+
+                                        <li class="col-11">
+                                            <div class="list-group-item ">@Html.DisplayFor(modelItem => user.UserName)</div>
+                                        </li>
+                                    }
+
+                                </ul>
+                                <div class="input-group" style="margin-top:60px; ">
+                                    <div class="input-group m-t-12" style="justify-content: start; padding-left: 20px;">
+                                        <div class="input-group-prepend" style="background:White">
+                                            <select class="btn btn-outline-secondary" id="ProductTypeID" @*name="ProductTypeID" asp-items="ViewBag.ProductTypeID"*@>
+                                                <option value="">All Roles</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="input-group mb-3" style="width:79%; background:white; margin:0px!important;">
+                                            <select style="margin:0" class="form-control" id="ProductID" @*name="ProductID" asp-items="ViewBag.ProductID"*@>
+                                                <option value="">select a Product</option>
+                                            </select>
+                                            <button id="btnAddProduct" class="btn btn-outline-success" type="button" data-toggle="tooltip" data-placement="top" title="Add Product">+</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-            </div>
+            </li>
 
         }
 
-    </div>
+    </ul>
 </div>
 
 @section scripts{
@@ -83,7 +85,6 @@
                 connectToSortable: "#sortable",
                 helper: "clone",
                 revert: "invalid",
-                handle: "li.role-handler"
             });
             $("ul, li").disableSelection();
         });

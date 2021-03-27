@@ -104,7 +104,8 @@ namespace OASIS.Data
                             Country = countryList[random.Next(countryList.Count())],
                             Phone = 1234567890,
                             Email = _firstName[random.Next(_firstName.Count())] + _lastName[random.Next(_lastName.Count())] + "@outlook.com",
-                            RoleID = roleID[random.Next(roleID.Count())]
+                            RoleID = roleID[random.Next(roleID.Count())],
+                       
                         };
 
                         try

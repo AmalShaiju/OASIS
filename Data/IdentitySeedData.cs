@@ -13,7 +13,7 @@ namespace OASIS.Data
         {
             //Create Roles
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            string[] roleNames = { "Admin", "Supervisor" };
+            string[] roleNames = { "Admin", "SuperAdmin" };
 
             IdentityResult roleResult;
             foreach (var roleName in roleNames)
@@ -53,7 +53,7 @@ namespace OASIS.Data
 
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, "Supervisor").Wait();
+                    userManager.AddToRoleAsync(user, "SuperAdmin").Wait();
                 }
             }
             if (userManager.FindByEmailAsync("user1@outlook.com").Result == null)

@@ -2,22 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OASIS.Data;
 using OASIS.Models;
 using OASIS.Utilities;
+using OASIS.ViewModels;
 
 namespace OASIS.Controllers
 {
     public class EmployeesController : Controller
     {
         private readonly OasisContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
-        public EmployeesController(OasisContext context)
+        public EmployeesController(OasisContext context, UserManager<IdentityUser> userManager, IEmailSender emailSender)
         {
             _context = context;
+            _userManager = userManager;
+            _emailSender = emailSender;
         }
 
         // GET: Employees
@@ -170,7 +177,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,MiddleName,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email,RoleID")] Employee employee, int customerTrue, int projectTrue, int bidTrue)
+        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,MiddleName,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email,RoleID,IsUser")] Employee employee, int customerTrue, int projectTrue, int bidTrue)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
 
@@ -180,6 +187,12 @@ namespace OASIS.Controllers
                 {
                     _context.Add(employee);
                     await _context.SaveChangesAsync();
+
+                    if (employee.IsUser)
+                        UpdateUserAccount(employee);
+                    else
+                        DeleteUserAccount(employee);
+
                     //return RedirectToAction(nameof(Index));
                     if (customerTrue == 1)
                     {
@@ -249,10 +262,11 @@ namespace OASIS.Controllers
             }
             _context.Entry(employeeToUpdate).Property("RowVersion").OriginalValue = RowVersion;
             if (await TryUpdateModelAsync<Employee>(employeeToUpdate, "", p => p.FirstName, p => p.LastName, p => p.MiddleName, p =>
-                 p.AddressLineOne, p => p.AddressLineTwo, p => p.Province, p => p.Country, p => p.City, p => p.Phone, p => p.Email, p => p.RoleID))
+                 p.AddressLineOne, p => p.AddressLineTwo, p => p.Province, p => p.Country, p => p.City, p => p.Phone, p => p.Email, p => p.RoleID, p=> p.Password, p=>p.IsUser))
             {
                 try
                 {
+                    UpdateUserAccount(employeeToUpdate);
                     await _context.SaveChangesAsync();
                     //return RedirectToAction(nameof(Index));
                     return RedirectToAction("Details", new { employeeToUpdate.ID });
@@ -369,6 +383,7 @@ namespace OASIS.Controllers
                 var employee = await _context.Employees.FindAsync(id);
                 _context.Employees.Remove(employee);
                 await _context.SaveChangesAsync();
+                DeleteUserAccount(employee);
                 return Redirect(ViewData["returnURL"].ToString());
 
             }
@@ -399,6 +414,64 @@ namespace OASIS.Controllers
                          orderby  d.Name
                          select d;
             ViewData["RoleID"] = new SelectList(dQuery, "ID", "Name", employee?.RoleID);
+        }
+
+        private async void UpdateUserAccount(Employee employee)
+        {
+            if (employee.IsUser)
+            {
+                // check if user exist in db
+                if (_userManager.FindByEmailAsync(employee.Email).Result == null && _userManager.FindByNameAsync(employee.UserName).Result == null)
+                {
+                    // Create a new user
+                    IdentityUser user = new IdentityUser
+                    {
+                        UserName = employee.UserName,
+                        Email = employee.Email
+                    };
+
+                    await _userManager.CreateAsync(user, employee.UserName);
+
+                    var msg = new EmailMessage()
+                    {
+                        ToAddress =user.Email,
+                        Subject = "Set up user account for OASIS",
+                        Content = "<p> Congragulation You have been invited to set up an account with OASIS.</P>" +
+                              "<p>Follow the link given below to get started</p>" +
+                              "<a>http://oasis-analytics.azurewebsites.net/</a>"
+
+                    };
+
+                    await _emailSender.SendEmailAsync(msg.ToAddress, msg.Subject, msg.Content);
+
+                }
+                else
+                {
+                    // Update user Credimentals
+                    IdentityUser user = await _userManager.FindByEmailAsync(employee.Email);
+                    user.UserName = employee.UserName;
+                    await _userManager.UpdateAsync(user);
+
+                    // update user password
+                    var passResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    await _userManager.ResetPasswordAsync(user,passResetToken,employee.Password);
+
+                }
+
+                
+
+                await _context.SaveChangesAsync();
+            }
+
+
+        }
+
+        private async void DeleteUserAccount(Employee employee)
+        {
+            if (!employee.IsUser)
+            {
+                await _userManager.DeleteAsync(await _userManager.FindByEmailAsync(employee.Email));
+            }
         }
 
     }
