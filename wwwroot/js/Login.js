@@ -1,26 +1,40 @@
 ﻿// Amal Shaiju 2021-03-26
 
+
 $("#btn-login").click(function () {
     console.log('clicked');
 
-    var UserAuthenticationVM = new Object();
-    UserAuthenticationVM.Username = $('#txtUserName').val();
-    UserAuthenticationVM.Password = $('#txtPassword').val();
-    UserAuthenticationVM.RememberMe = false;
-    UserAuthenticationVM.ReturnUrl = "http://localhost:63341/Employees"
+    var UserToLogin = new Object();
+    UserToLogin.Username = ($('#txtUserName').val()).toString();
+    UserToLogin.Password = ($('#txtPassword').val()).toString();
+    UserToLogin.RememberMe = false;
+    UserToLogin.ReturnUrl = "http://localhost:63341/Employees"
 
-    console.log(UserAuthenticationVM)
+    console.log(UserToLogin)
 
-    if (UserAuthenticationVM != null) {
+    // Controller should contain [From Body]
+    // Data should be stringified
+
+    if (UserToLogin != null) {
         $.ajax({
             type: "POST",
-            url: "/UserRoles/Authorization",
-            data: JSON.stringify(UserAuthenticationVM),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
+            url: "/UserRoles/LoginUser",
+            data: JSON.stringify(UserToLogin),
+            contentType: "application/json;",
             success: function (response) {
                 if (response != null) {
-                    alert(response.responseText());
+
+                    console.log(JSON.parse(response));
+
+                    // if user logged in 
+                    if (JSON.parse(response)) {
+                        window.location.replace(getBaseUrl() + "Employees");
+                    }
+                    else {
+                        $("#login-error").css({ "display": "block"})
+                    }
+
+
                 } else {
                     alert("Something went wrong");
                 }
@@ -29,7 +43,9 @@ $("#btn-login").click(function () {
                 alert("failed");
             },
             error: function (response) {
-                alert(response.responseText);
+                alert(response);
+                console.log(response);
+
             }
         });
     }

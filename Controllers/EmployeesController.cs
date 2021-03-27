@@ -16,12 +16,14 @@ namespace OASIS.Controllers
 {
     public class EmployeesController : Controller
     {
+        private readonly ApplicationDbContext _applicationContext;
         private readonly OasisContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IEmailSender _emailSender;
 
-        public EmployeesController(OasisContext context, UserManager<IdentityUser> userManager, IEmailSender emailSender)
+        public EmployeesController(ApplicationDbContext applicationContext, OasisContext context, UserManager<IdentityUser> userManager, IEmailSender emailSender)
         {
+            _applicationContext = applicationContext;
             _context = context;
             _userManager = userManager;
             _emailSender = emailSender;
@@ -32,8 +34,8 @@ namespace OASIS.Controllers
             string actionButton, int? page, int? pageSizeID, string sortDirection = "asc", string sortField = "Employee")
         {
             var employee = from p in _context.Employees
-                           .Include(p=> p.Role)
-                          select p;
+                           .Include(p => p.Role)
+                           select p;
 
             ViewData["RoleID"] = new SelectList(_context
                  .Roles
@@ -92,7 +94,7 @@ namespace OASIS.Controllers
                         .ThenByDescending(p => p.FirstName);
                 }
             }
-           
+
             else //Sorting by Patient Name
             {
                 if (sortDirection == "asc")
@@ -131,7 +133,7 @@ namespace OASIS.Controllers
 
             return View(pagedData);
 
-        
+
         }
 
         // GET: Employees/Details/5
@@ -163,7 +165,7 @@ namespace OASIS.Controllers
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
             Employee employee = new Employee();
-            if(roleID != null)
+            if (roleID != null)
             {
                 employee.RoleID = (int)roleID;
 
@@ -186,12 +188,21 @@ namespace OASIS.Controllers
                 if (ModelState.IsValid)
                 {
                     _context.Add(employee);
-                    await _context.SaveChangesAsync();
 
                     if (employee.IsUser)
-                        UpdateUserAccount(employee);
-                    else
-                        DeleteUserAccount(employee);
+                    {
+                        try
+                        {
+                            employee.UserName = employee.SetUserName;
+                            UpdateUserAccount(employee);
+                        }
+                        catch
+                        {
+                            ModelState.AddModelError("", "Employee User Account Could not be created");
+                        }
+                    }
+
+                    await _context.SaveChangesAsync();
 
                     //return RedirectToAction(nameof(Index));
                     if (customerTrue == 1)
@@ -262,12 +273,15 @@ namespace OASIS.Controllers
             }
             _context.Entry(employeeToUpdate).Property("RowVersion").OriginalValue = RowVersion;
             if (await TryUpdateModelAsync<Employee>(employeeToUpdate, "", p => p.FirstName, p => p.LastName, p => p.MiddleName, p =>
-                 p.AddressLineOne, p => p.AddressLineTwo, p => p.Province, p => p.Country, p => p.City, p => p.Phone, p => p.Email, p => p.RoleID, p=> p.Password, p=>p.IsUser))
+                 p.AddressLineOne, p => p.AddressLineTwo, p => p.Province, p => p.Country, p => p.City, p => p.Phone, p => p.Email, p => p.RoleID, p => p.Password, p => p.IsUser))
             {
                 try
                 {
+                    // set new user name if first and last name changed changed
+                    employeeToUpdate.UserName = employeeToUpdate.SetUserName;
                     UpdateUserAccount(employeeToUpdate);
                     await _context.SaveChangesAsync();
+
                     //return RedirectToAction(nameof(Index));
                     return RedirectToAction("Details", new { employeeToUpdate.ID });
 
@@ -344,7 +358,7 @@ namespace OASIS.Controllers
                     }
                 }
 
-             
+
             }
             PopulateDropDownLists(employeeToUpdate);
             return View(employeeToUpdate);
@@ -383,7 +397,6 @@ namespace OASIS.Controllers
                 var employee = await _context.Employees.FindAsync(id);
                 _context.Employees.Remove(employee);
                 await _context.SaveChangesAsync();
-                DeleteUserAccount(employee);
                 return Redirect(ViewData["returnURL"].ToString());
 
             }
@@ -398,7 +411,7 @@ namespace OASIS.Controllers
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                 }
             }
-         
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -411,7 +424,7 @@ namespace OASIS.Controllers
         private void PopulateDropDownLists(Employee employee = null)
         {
             var dQuery = from d in _context.Roles
-                         orderby  d.Name
+                         orderby d.Name
                          select d;
             ViewData["RoleID"] = new SelectList(dQuery, "ID", "Name", employee?.RoleID);
         }
@@ -423,56 +436,68 @@ namespace OASIS.Controllers
                 // check if user exist in db
                 if (_userManager.FindByEmailAsync(employee.Email).Result == null && _userManager.FindByNameAsync(employee.UserName).Result == null)
                 {
-                    // Create a new user
-                    IdentityUser user = new IdentityUser
+                    try
                     {
-                        UserName = employee.UserName,
-                        Email = employee.Email
-                    };
+                        // Create a new user
+                        IdentityUser user = new IdentityUser
+                        {
+                            UserName = employee.UserName,
+                            Email = employee.Email
+                        };
 
-                    await _userManager.CreateAsync(user, employee.UserName);
+                        await _userManager.CreateAsync(user, "password");
 
-                    var msg = new EmailMessage()
+                        var msg = new EmailMessage()
+                        {
+                            ToAddress = user.Email,
+                            Subject = "Set up user account for OASIS",
+                            Content = "<p> Congragulation You have been invited to set up an account with OASIS.</P>" +
+                                  "<p>Follow the link given below to get started</p>" +
+                                  "<a>http://oasis-analytics.azurewebsites.net/</a>" +
+                                  $"<p>UserName : {user.UserName}</p>" +
+                                  $"<p>Password : password </p>"
+                        };
+
+                        await _emailSender.SendEmailAsync(msg.ToAddress, msg.Subject, msg.Content);
+                    }
+                    catch
                     {
-                        ToAddress =user.Email,
-                        Subject = "Set up user account for OASIS",
-                        Content = "<p> Congragulation You have been invited to set up an account with OASIS.</P>" +
-                              "<p>Follow the link given below to get started</p>" +
-                              "<a>http://oasis-analytics.azurewebsites.net/</a>"
+                        ModelState.AddModelError("IsUser", "User Creation Failed");
+                    }
 
-                    };
-
-                    await _emailSender.SendEmailAsync(msg.ToAddress, msg.Subject, msg.Content);
 
                 }
                 else
                 {
-                    // Update user Credimentals
-                    IdentityUser user = await _userManager.FindByEmailAsync(employee.Email);
-                    user.UserName = employee.UserName;
-                    await _userManager.UpdateAsync(user);
+                    try
+                    {
+                        // Update user Credimentals
+                        IdentityUser user = await _userManager.FindByEmailAsync(employee.Email);
+                        user.UserName = employee.UserName;
 
-                    // update user password
-                    var passResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
-                    await _userManager.ResetPasswordAsync(user,passResetToken,employee.Password);
+                        // update user password
+                        var passResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                        await _userManager.ResetPasswordAsync(user, passResetToken, "password");
+                        await _userManager.UpdateAsync(user);
+
+                        _applicationContext.SaveChanges();
+                    }
+                    catch
+                    {
+                        ModelState.AddModelError("Password", "User Updation Failed");
+                    }
+
 
                 }
-
-                
-
-                await _context.SaveChangesAsync();
             }
+
+
+
 
 
         }
 
-        private async void DeleteUserAccount(Employee employee)
-        {
-            if (!employee.IsUser)
-            {
-                await _userManager.DeleteAsync(await _userManager.FindByEmailAsync(employee.Email));
-            }
-        }
+
 
     }
 }

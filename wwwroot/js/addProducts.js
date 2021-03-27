@@ -216,14 +216,6 @@ Array.prototype.remove = function () {
     return this;
 };
 
-function getBaseUrl() {
-    var pathArray = location.href.split('/');
-    var protocol = pathArray[0];
-    var host = pathArray[2];
-    var url = protocol + '//' + host + '/';
-
-    return url;
-}
 
 function updateQnty(qnty, productID) {
     for (var i = 0; i < productsAssigned.length; i++) {

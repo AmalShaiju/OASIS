@@ -39,12 +39,12 @@ namespace OASIS.Models
             }
         }
 
-        public string UserName
+        public string SetUserName 
         {
             get
             {
-                return FirstName[0] + LastName + random.Next(1,100);
-            } 
+                return FirstName[0] + LastName + random.Next(1, 100);
+            }
         }
 
         [Display(Name = "First Name")]
@@ -104,6 +104,7 @@ namespace OASIS.Models
         public int RoleID { get; set; }
         public Role Role { get; set; }
 
+        public string UserName { get; set; }
         public string Password { get; set; }
         public bool IsUser { get; set; }
 

@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using OASIS.ViewModels;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Security.Cryptography;
 
 namespace OASIS.Controllers
 {
@@ -15,9 +17,9 @@ namespace OASIS.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly SignInManager<IdentityRole> _signInManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public UserRolesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<IdentityRole> signInManager)
+        public UserRolesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<IdentityUser> signInManager)
         {
             _context = context;
             _userManager = userManager;
@@ -74,26 +76,18 @@ namespace OASIS.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<JsonResult> Authorization(UserAuthenticationVM Loginuser)
+        public async Task<JsonResult> LoginUser([FromBody] UserAuthenticationVM Loginuser)
         {
-
+           
             var result = await _signInManager.PasswordSignInAsync(Loginuser.Username,
-               Loginuser.Password, Loginuser.RememberMe, false);
+            Loginuser.Password, Loginuser.RememberMe, false);
 
             if (result.Succeeded)
             {
-                if (!string.IsNullOrEmpty(Loginuser.ReturnUrl) && Url.IsLocalUrl(Loginuser.ReturnUrl))
-                {
-                    return Json(Loginuser.ReturnUrl);
-                }
-                else
-                {
-                    return Json("Url is not valid");
-                }
+                return Json(true);
             }
 
-            return Json("faied to sign in user");
+            return Json(false);
         }
 
 
@@ -149,8 +143,10 @@ namespace OASIS.Controllers
             return users.Where(u => u.Roles.Contains(role.RoleName)).ToList();
         }
 
+
     }
 
-
-
 }
+
+
+

@@ -40,6 +40,7 @@ namespace OASIS
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.

@@ -41,6 +41,18 @@
         <script src="~/js/accesiblity.js" asp-append-version="true"></script>
         <script src="~/js/headerMenu.js" asp-append-version="true"></script>
         <script src="~/js/Login.js" asp-append-version="true"></script>
+
+        <script type="text/javascript">
+            function getBaseUrl() {
+                var pathArray = location.href.split('/');
+                var protocol = pathArray[0];
+                var host = pathArray[2];
+                var url = protocol + '//' + host + '/';
+
+                return url;
+            }
+
+        </script>
         @RenderSection("Scripts", required: false)
 </body>
 </html>
