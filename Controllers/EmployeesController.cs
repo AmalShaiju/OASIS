@@ -277,8 +277,6 @@ namespace OASIS.Controllers
             {
                 try
                 {
-                    // set new user name if first and last name changed changed
-                    employeeToUpdate.UserName = employeeToUpdate.SetUserName;
                     UpdateUserAccount(employeeToUpdate);
                     await _context.SaveChangesAsync();
 
@@ -471,13 +469,12 @@ namespace OASIS.Controllers
                 {
                     try
                     {
-                        // Update user Credimentals
+                        // Update user password
                         IdentityUser user = await _userManager.FindByEmailAsync(employee.Email);
-                        user.UserName = employee.UserName;
 
                         // update user password
                         var passResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
-                        await _userManager.ResetPasswordAsync(user, passResetToken, "password");
+                        await _userManager.ResetPasswordAsync(user, passResetToken, employee.Password);
                         await _userManager.UpdateAsync(user);
 
                         _applicationContext.SaveChanges();

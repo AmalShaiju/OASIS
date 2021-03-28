@@ -51,7 +51,8 @@ namespace OASIS.Controllers
                 return NotFound();
             }
 
-            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, $"Profiles/Details?userName={userName}");
+
 
             Employee employee = _context.Employees
                .FirstOrDefault(p => p.UserName == userName);
@@ -72,9 +73,11 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string userName, Byte[] RowVersion)
         {
-            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, $"Profiles/Details?userName={userName}");
 
-            var employeeToUpdate = _context.Employees.SingleOrDefault(p => p.UserName == userName);
+
+            Employee employeeToUpdate = _context.Employees
+             .FirstOrDefault(p => p.UserName == userName);
 
             if (employeeToUpdate == null)
             {
@@ -87,13 +90,11 @@ namespace OASIS.Controllers
             {
                 try
                 {
-                    // set new user name if first and last name changed changed
-                    employeeToUpdate.UserName = employeeToUpdate.SetUserName;
                     UpdateUserAccount(employeeToUpdate);
                     await _context.SaveChangesAsync();
 
                     //return RedirectToAction(nameof(Index));
-                    return RedirectToAction("Index", new { employeeToUpdate.UserName });
+                    return RedirectToAction("Details", new { employeeToUpdate.UserName });
 
 
                 }

@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="card-body" id="collapse-personal" style="background: rgba(184, 175, 247, 0.2); border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;">
-            <div class="form-group row">
+            <div class="form-group row ml-3">
                 <label asp-for="FirstName" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-8">
                     <input asp-for="FirstName" tabindex="1" placeholder="Example: John" class="form-control" />
@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row ml-3">
                 <label asp-for="MiddleName" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-8">
                     <input asp-for="MiddleName" tabindex="3" placeholder="Example: James" class="form-control" />
@@ -46,7 +46,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row ml-3">
                 <label asp-for="LastName" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-8">
                     <input asp-for="LastName" tabindex="5" placeholder="Example: Doe" class="form-control" />
@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row ml-3">
                 <label class="col-sm-3 col-form-label">Role</label>
                 <div class="col-sm-8">
                     <select asp-for="RoleID" tabindex="7" class="form-control" asp-items="ViewBag.RoleID">
@@ -67,7 +67,7 @@
 
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row ml-3">
                 <label asp-for="Phone" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-8">
                     <input asp-for="Phone" tabindex="9" placeholder="Example: 9051234567" class="form-control" />
@@ -77,7 +77,7 @@
 
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row ml-3">
                 <label asp-for="Email" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-8">
                     <input asp-for="Email" tabindex="11" placeholder="Example: email@address.com" class="form-control" />
@@ -86,7 +86,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row ml-3">
                 <label asp-for="IsUser" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-1">
                     <input asp-for="IsUser" tabindex="11" placeholder="Example: email@address.com" class="form-control col-5" />
@@ -109,60 +109,60 @@
                 </button>
             </div>
         </div>
-        <div class="card-body collapse" id="collapse-address" style="background: rgba(184, 175, 247, 0.2); border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;">
-            <div class="form-group row">
-                <label asp-for="AddressLineOne" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-8">
-                    <input asp-for="AddressLineOne" tabindex="2" placeholder="Example: 123 Road Street" class="form-control" />
-                    <span asp-validation-for="AddressLineOne" class="text-danger"></span>
-                </div>
+    </div>
+    <div class="card-body collapse" id="collapse-address" style="background: rgba(184, 175, 247, 0.2); border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;">
+        <div class="form-group row ml-3">
+            <label asp-for="AddressLineOne" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-8">
+                <input asp-for="AddressLineOne" tabindex="2" placeholder="Example: 123 Road Street" class="form-control" />
+                <span asp-validation-for="AddressLineOne" class="text-danger"></span>
             </div>
+        </div>
 
-            <div class="form-group row">
-                <label asp-for="AddressLineTwo" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-8">
-                    <input asp-for="AddressLineTwo" tabindex="4" placeholder="Example: 125 Apple Road" class="form-control" />
-                    <span asp-validation-for="AddressLineTwo" class="text-danger"></span>
-
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label class="col-sm-3 col-form-label">Suite Number (Optional)</label>
-                <div class="col-sm-8">
-                    <input asp-for="ApartmentNumber" tabindex="6" placeholder="Example: Suite 1 / Suite A " class="form-control" />
-                    <span asp-validation-for="ApartmentNumber" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label asp-for="City" class="col-sm-3 col-form-label"></label>
-
-                <div class="col-sm-8">
-                    <input asp-for="City" tabindex="8" placeholder="Example: Welland" class="form-control" />
-                    <span asp-validation-for="City" class="text-danger"></span>
-
-                </div>
+        <div class="form-group row ml-3">
+            <label asp-for="AddressLineTwo" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-8">
+                <input asp-for="AddressLineTwo" tabindex="4" placeholder="Example: 125 Apple Road" class="form-control" />
+                <span asp-validation-for="AddressLineTwo" class="text-danger"></span>
 
             </div>
+        </div>
 
-            <div class="form-group row">
-                <label asp-for="Province" class="col-sm-3 col-form-label"></label>
+        <div class="form-group row ml-3">
+            <label class="col-sm-3 col-form-label">Suite Number (Optional)</label>
+            <div class="col-sm-8">
+                <input asp-for="ApartmentNumber" tabindex="6" placeholder="Example: Suite 1 / Suite A " class="form-control" />
+                <span asp-validation-for="ApartmentNumber" class="text-danger"></span>
+            </div>
+        </div>
 
-                <div class="col-sm-8">
-                    <input asp-for="Province" tabindex="10" placeholder="Example: Ontario" class="form-control" />
-                    <span asp-validation-for="Province" class="text-danger"></span>
+        <div class="form-group row ml-3">
+            <label asp-for="City" class="col-sm-3 col-form-label"></label>
 
-                </div>
+            <div class="col-sm-8">
+                <input asp-for="City" tabindex="8" placeholder="Example: Welland" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
 
             </div>
 
-            <div class="form-group row">
-                <label asp-for="Country" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-8">
-                    <input asp-for="Country" tabindex="12" placeholder="Example: Canada" class="form-control" />
-                    <span asp-validation-for="Country" class="text-danger"></span>
-                </div>
+        </div>
+
+        <div class="form-group row ml-3">
+            <label asp-for="Province" class="col-sm-3 col-form-label"></label>
+
+            <div class="col-sm-8">
+                <input asp-for="Province" tabindex="10" placeholder="Example: Ontario" class="form-control" />
+                <span asp-validation-for="Province" class="text-danger"></span>
+
+            </div>
+
+        </div>
+
+        <div class="form-group row ml-3">
+            <label asp-for="Country" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-8">
+                <input asp-for="Country" tabindex="12" placeholder="Example: Canada" class="form-control" />
+                <span asp-validation-for="Country" class="text-danger"></span>
             </div>
         </div>
     </div>
@@ -226,24 +226,24 @@
 
         </button>
 
+    </div>
 
+    <button type="submit" id="createCustomer" style="width: 6%;margin-left:3.5%;" class="button-menu form-group btn btn-danger" data-toggle="tooltip" data-placement="top" title="Save and Create Customer">
+        <div style="width:35px; height:30px;">
 
-        <button type="submit" id="createCustomer" style="width: 6%;margin-left:3.5%;" class="button-menu form-group btn btn-danger" data-toggle="tooltip" data-placement="top" title="Save and Create Customer">
-            <div style="width:35px; height:30px;">
+            <svg viewBox="-42 0 512 512.001" xmlns="http://www.w3.org/2000/svg"><g fill="white"><path d="m210.351562 246.632812c33.882813 0 63.21875-12.152343 87.195313-36.128906 23.96875-23.972656 36.125-53.304687 36.125-87.191406 0-33.875-12.152344-63.210938-36.128906-87.191406-23.976563-23.96875-53.3125-36.121094-87.191407-36.121094-33.886718 0-63.21875 12.152344-87.191406 36.125s-36.128906 53.308594-36.128906 87.1875c0 33.886719 12.15625 63.222656 36.128906 87.195312 23.980469 23.96875 53.316406 36.125 87.191406 36.125zm-65.972656-189.292968c18.394532-18.394532 39.972656-27.335938 65.972656-27.335938 25.996094 0 47.578126 8.941406 65.976563 27.335938 18.394531 18.398437 27.339844 39.980468 27.339844 65.972656 0 26-8.945313 47.578125-27.339844 65.976562-18.398437 18.398438-39.980469 27.339844-65.976563 27.339844-25.992187 0-47.570312-8.945312-65.972656-27.339844-18.398437-18.394531-27.34375-39.976562-27.34375-65.976562 0-25.992188 8.945313-47.574219 27.34375-65.972656zm0 0" /><path d="m426.128906 393.703125c-.691406-9.976563-2.089844-20.859375-4.148437-32.351563-2.078125-11.578124-4.753907-22.523437-7.957031-32.527343-3.3125-10.339844-7.808594-20.550781-13.375-30.335938-5.769532-10.15625-12.550782-19-20.160157-26.277343-7.957031-7.613282-17.699219-13.734376-28.964843-18.199219-11.226563-4.441407-23.667969-6.691407-36.976563-6.691407-5.226563 0-10.28125 2.144532-20.042969 8.5-6.007812 3.917969-13.035156 8.449219-20.878906 13.460938-6.707031 4.273438-15.792969 8.277344-27.015625 11.902344-10.949219 3.542968-22.066406 5.339844-33.042969 5.339844-10.96875 0-22.085937-1.796876-33.042968-5.339844-11.210938-3.621094-20.300782-7.625-26.996094-11.898438-7.769532-4.964844-14.800782-9.496094-20.898438-13.46875-9.753906-6.355468-14.808594-8.5-20.035156-8.5-13.3125 0-25.75 2.253906-36.972656 6.699219-11.257813 4.457031-21.003906 10.578125-28.96875 18.199219-7.609375 7.28125-14.390625 16.121094-20.15625 26.273437-5.558594 9.785157-10.058594 19.992188-13.371094 30.339844-3.199219 10.003906-5.875 20.945313-7.953125 32.523437-2.0625 11.476563-3.457031 22.363282-4.148437 32.363282-.679688 9.777344-1.023438 19.953125-1.023438 30.234375 0 26.726562 8.496094 48.363281 25.25 64.320312 16.546875 15.746094 38.4375 23.730469 65.066406 23.730469h246.53125c26.621094 0 48.511719-7.984375 65.0625-23.730469 16.757813-15.945312 25.253906-37.589843 25.253906-64.324219-.003906-10.316406-.351562-20.492187-1.035156-30.242187zm-44.90625 72.828125c-10.933594 10.40625-25.449218 15.464844-44.378906 15.464844h-246.527344c-18.933594 0-33.449218-5.058594-44.378906-15.460938-10.722656-10.207031-15.933594-24.140625-15.933594-42.585937 0-9.59375.316406-19.066407.949219-28.160157.617187-8.921874 1.878906-18.722656 3.75-29.136718 1.847656-10.285156 4.199219-19.9375 6.996094-28.675782 2.683593-8.378906 6.34375-16.675781 10.882812-24.667968 4.332031-7.617188 9.316407-14.152344 14.816407-19.417969 5.144531-4.925781 11.628906-8.957031 19.269531-11.980469 7.066406-2.796875 15.007812-4.328125 23.628906-4.558594 1.050781.558594 2.921875 1.625 5.953125 3.601563 6.167969 4.019531 13.277344 8.605469 21.136719 13.625 8.859375 5.648437 20.273437 10.75 33.910156 15.152344 13.941406 4.507812 28.160156 6.796875 42.273437 6.796875 14.113282 0 28.335938-2.289063 42.269532-6.792969 13.648437-4.410156 25.058594-9.507813 33.929687-15.164063 8.042969-5.140624 14.953125-9.59375 21.121094-13.617187 3.03125-1.972656 4.902344-3.042969 5.953125-3.601563 8.625.230469 16.566406 1.761719 23.636719 4.558594 7.636719 3.023438 14.121093 7.058594 19.265625 11.980469 5.5 5.261719 10.484375 11.796875 14.816406 19.421875 4.542969 7.988281 8.207031 16.289062 10.886719 24.660156 2.800781 8.75 5.15625 18.398438 7 28.675782 1.867187 10.433593 3.132812 20.238281 3.75 29.144531v.007812c.636719 9.058594.957031 18.527344.960937 28.148438-.003906 18.449219-5.214844 32.378906-15.9375 42.582031zm0 0" /></g></svg>
+        </div>
 
-                <svg viewBox="-42 0 512 512.001" xmlns="http://www.w3.org/2000/svg"><g fill="white"><path d="m210.351562 246.632812c33.882813 0 63.21875-12.152343 87.195313-36.128906 23.96875-23.972656 36.125-53.304687 36.125-87.191406 0-33.875-12.152344-63.210938-36.128906-87.191406-23.976563-23.96875-53.3125-36.121094-87.191407-36.121094-33.886718 0-63.21875 12.152344-87.191406 36.125s-36.128906 53.308594-36.128906 87.1875c0 33.886719 12.15625 63.222656 36.128906 87.195312 23.980469 23.96875 53.316406 36.125 87.191406 36.125zm-65.972656-189.292968c18.394532-18.394532 39.972656-27.335938 65.972656-27.335938 25.996094 0 47.578126 8.941406 65.976563 27.335938 18.394531 18.398437 27.339844 39.980468 27.339844 65.972656 0 26-8.945313 47.578125-27.339844 65.976562-18.398437 18.398438-39.980469 27.339844-65.976563 27.339844-25.992187 0-47.570312-8.945312-65.972656-27.339844-18.398437-18.394531-27.34375-39.976562-27.34375-65.976562 0-25.992188 8.945313-47.574219 27.34375-65.972656zm0 0" /><path d="m426.128906 393.703125c-.691406-9.976563-2.089844-20.859375-4.148437-32.351563-2.078125-11.578124-4.753907-22.523437-7.957031-32.527343-3.3125-10.339844-7.808594-20.550781-13.375-30.335938-5.769532-10.15625-12.550782-19-20.160157-26.277343-7.957031-7.613282-17.699219-13.734376-28.964843-18.199219-11.226563-4.441407-23.667969-6.691407-36.976563-6.691407-5.226563 0-10.28125 2.144532-20.042969 8.5-6.007812 3.917969-13.035156 8.449219-20.878906 13.460938-6.707031 4.273438-15.792969 8.277344-27.015625 11.902344-10.949219 3.542968-22.066406 5.339844-33.042969 5.339844-10.96875 0-22.085937-1.796876-33.042968-5.339844-11.210938-3.621094-20.300782-7.625-26.996094-11.898438-7.769532-4.964844-14.800782-9.496094-20.898438-13.46875-9.753906-6.355468-14.808594-8.5-20.035156-8.5-13.3125 0-25.75 2.253906-36.972656 6.699219-11.257813 4.457031-21.003906 10.578125-28.96875 18.199219-7.609375 7.28125-14.390625 16.121094-20.15625 26.273437-5.558594 9.785157-10.058594 19.992188-13.371094 30.339844-3.199219 10.003906-5.875 20.945313-7.953125 32.523437-2.0625 11.476563-3.457031 22.363282-4.148437 32.363282-.679688 9.777344-1.023438 19.953125-1.023438 30.234375 0 26.726562 8.496094 48.363281 25.25 64.320312 16.546875 15.746094 38.4375 23.730469 65.066406 23.730469h246.53125c26.621094 0 48.511719-7.984375 65.0625-23.730469 16.757813-15.945312 25.253906-37.589843 25.253906-64.324219-.003906-10.316406-.351562-20.492187-1.035156-30.242187zm-44.90625 72.828125c-10.933594 10.40625-25.449218 15.464844-44.378906 15.464844h-246.527344c-18.933594 0-33.449218-5.058594-44.378906-15.460938-10.722656-10.207031-15.933594-24.140625-15.933594-42.585937 0-9.59375.316406-19.066407.949219-28.160157.617187-8.921874 1.878906-18.722656 3.75-29.136718 1.847656-10.285156 4.199219-19.9375 6.996094-28.675782 2.683593-8.378906 6.34375-16.675781 10.882812-24.667968 4.332031-7.617188 9.316407-14.152344 14.816407-19.417969 5.144531-4.925781 11.628906-8.957031 19.269531-11.980469 7.066406-2.796875 15.007812-4.328125 23.628906-4.558594 1.050781.558594 2.921875 1.625 5.953125 3.601563 6.167969 4.019531 13.277344 8.605469 21.136719 13.625 8.859375 5.648437 20.273437 10.75 33.910156 15.152344 13.941406 4.507812 28.160156 6.796875 42.273437 6.796875 14.113282 0 28.335938-2.289063 42.269532-6.792969 13.648437-4.410156 25.058594-9.507813 33.929687-15.164063 8.042969-5.140624 14.953125-9.59375 21.121094-13.617187 3.03125-1.972656 4.902344-3.042969 5.953125-3.601563 8.625.230469 16.566406 1.761719 23.636719 4.558594 7.636719 3.023438 14.121093 7.058594 19.265625 11.980469 5.5 5.261719 10.484375 11.796875 14.816406 19.421875 4.542969 7.988281 8.207031 16.289062 10.886719 24.660156 2.800781 8.75 5.15625 18.398438 7 28.675782 1.867187 10.433593 3.132812 20.238281 3.75 29.144531v.007812c.636719 9.058594.957031 18.527344.960937 28.148438-.003906 18.449219-5.214844 32.378906-15.9375 42.582031zm0 0" /></g></svg>
-            </div>
+    </button>
 
-        </button>
-
-        <button type="submit" id="createProject" style="width: 6%;margin-left:3.5%;" class="button-menu form-group btn btn-danger" data-toggle="tooltip" data-placement="top" title="Save and Create Project">
-            <div style="width:35px; height:30px;">
-                <svg style="width:100%; height:100%;" version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
-                    <metadata>
-                        Created by potrace 1.16, written by Peter Selinger 2001-2019
-                    </metadata>
-                    <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#f8f9fa" stroke="none">
-                        <path d="M1654 5109 c-86 -25 -181 -122 -204 -210 -7 -25 -10 -133 -8 -282 3
+    <button type="submit" id="createProject" style="width: 6%;margin-left:3.5%;" class="button-menu form-group btn btn-danger" data-toggle="tooltip" data-placement="top" title="Save and Create Project">
+        <div style="width:35px; height:30px;">
+            <svg style="width:100%; height:100%;" version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+                <metadata>
+                    Created by potrace 1.16, written by Peter Selinger 2001-2019
+                </metadata>
+                <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#f8f9fa" stroke="none">
+                    <path d="M1654 5109 c-86 -25 -181 -122 -204 -210 -7 -25 -10 -133 -8 -282 3
 -235 4 -243 26 -275 13 -18 41 -41 62 -52 38 -19 61 -20 654 -20 410 0 624 4
 643 11 38 14 83 57 99 96 8 18 14 66 14 108 l0 75 401 0 401 0 29 -29 c24 -24
 29 -38 29 -76 l0 -46 -37 8 c-21 4 -92 7 -158 6 -270 -1 -497 -101 -686 -301
@@ -271,55 +271,55 @@ c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
 0 -46 6 -275 236 -206 206 -235 239 -235 266 0 48 43 93 88 93 33 0 49 -13
 208 -170 169 -168 172 -170 215 -170 l43 0 411 410 c374 374 414 410 444 410
 23 0 41 -9 62 -29z"></path>
-                        <path d="M841 3984 c-24 -30 -26 -52 -9 -89 18 -41 64 -47 349 -43 252 3 259
+                    <path d="M841 3984 c-24 -30 -26 -52 -9 -89 18 -41 64 -47 349 -43 252 3 259
 4 281 25 28 28 29 84 3 113 -17 19 -28 20 -311 20 l-293 0 -20 -26z"></path>
-                        <path d="M922 3270 c-113 -57 -166 -144 -166 -275 -1 -65 4 -89 24 -130 113
+                    <path d="M922 3270 c-113 -57 -166 -144 -166 -275 -1 -65 4 -89 24 -130 113
 -232 437 -234 557 -3 23 45 27 65 27 133 0 131 -53 218 -166 275 -52 26 -72
 30 -138 30 -66 0 -86 -4 -138 -30z m216 -152 c34 -21 71 -84 72 -122 1 -67
 -80 -146 -150 -146 -50 0 -107 37 -130 85 -25 51 -25 69 0 122 35 79 133 108
 208 61z"></path>
-                        <path d="M1495 3215 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 489
+                    <path d="M1495 3215 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 489
 0 489 0 21 23 c32 34 30 89 -4 116 -26 21 -36 21 -511 21 l-484 0 -24 -25z"></path>
-                        <path d="M1495 2865 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 484
+                    <path d="M1495 2865 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 484
 0 c475 0 485 0 511 21 34 27 37 88 4 119 -21 20 -32 20 -510 20 l-489 0 -24
 -25z"></path>
-                        <path d="M957 2366 c-135 -49 -221 -189 -202 -330 14 -108 70 -187 167 -236
+                    <path d="M957 2366 c-135 -49 -221 -189 -202 -330 14 -108 70 -187 167 -236
 52 -26 72 -30 138 -30 66 0 86 4 139 31 68 34 130 101 153 166 21 63 16 180
 -12 238 -33 68 -99 129 -166 154 -64 24 -160 27 -217 7z m174 -168 c25 -14 46
 -37 59 -63 25 -51 25 -69 1 -121 -53 -117 -220 -111 -266 10 -49 128 86 242
 206 174z"></path>
-                        <path d="M1495 2305 c-33 -32 -34 -83 -2 -113 l23 -22 651 0 652 0 20 26 c28
+                    <path d="M1495 2305 c-33 -32 -34 -83 -2 -113 l23 -22 651 0 652 0 20 26 c28
 36 27 79 -4 109 l-24 25 -646 0 -646 0 -24 -25z"></path>
-                        <path d="M1495 1955 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 339
+                    <path d="M1495 1955 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 339
 0 339 0 21 23 c30 32 29 87 -1 115 -23 22 -28 22 -361 22 l-337 0 -24 -25z"></path>
-                        <path d="M962 1455 c-77 -24 -134 -75 -179 -160 -23 -42 -27 -63 -27 -130 -1
+                    <path d="M962 1455 c-77 -24 -134 -75 -179 -160 -23 -42 -27 -63 -27 -130 -1
 -68 3 -89 27 -137 112 -228 442 -229 554 0 23 46 27 70 27 132 1 99 -27 163
 -101 230 -82 75 -193 99 -301 65z m157 -160 c41 -20 79 -70 87 -110 9 -47 -29
 -123 -74 -149 -96 -55 -217 15 -217 126 0 104 116 179 204 133z"></path>
-                        <path d="M1515 1409 c-51 -28 -61 -90 -22 -127 23 -22 24 -22 515 -22 479 0
+                    <path d="M1515 1409 c-51 -28 -61 -90 -22 -127 23 -22 24 -22 515 -22 479 0
 493 1 512 20 28 28 27 90 -1 116 -20 18 -45 19 -503 21 -338 2 -487 -1 -501
 -8z"></path>
-                        <path d="M1513 1060 c-47 -19 -58 -92 -20 -128 l23 -22 651 0 652 0 20 26 c26
+                    <path d="M1513 1060 c-47 -19 -58 -92 -20 -128 l23 -22 651 0 652 0 20 26 c26
 33 27 75 2 105 l-19 24 -644 2 c-359 1 -653 -2 -665 -7z"></path>
-                    </g>
-                </svg>
-            </div>
-
-        </button>
-
-        <button type="submit" id="createBid" style="width: 6%;margin-left:3.5%;" class="button-menu form-group btn btn-danger" data-toggle="tooltip" data-placement="top" title="Save and Create Bid">
-            <div style="width:35px; height:30px;">
-                <svg style="width:100%; height:100%" id="Layer_1" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"><g fill="white"><path d="m459.261 429h-.261v-26.258c0-3.314-2.958-5.742-6.271-5.742h-261.799a5.725 5.725 0 0 0 -5.93 5.742v26.258h-.6a33.551 33.551 0 0 0 -33.4 33.83v9.108a5.756 5.756 0 0 0 5.639 6.062h330.381a6.036 6.036 0 0 0 5.98-6.062v-9.108a33.841 33.841 0 0 0 -33.739-33.83zm-262.261-20h250v20h-250zm284 57h-318v-3.17a21.539 21.539 0 0 1 21.4-21.83h274.861a21.827 21.827 0 0 1 21.739 21.83z"></path><path d="m182.244 276.23a6 6 0 0 0 8.485 0l19.876-19.875a6 6 0 0 0 0-8.485l-7.331-7.331 18.126-18.121 27.05 27.051-1.779 1.78a6 6 0 0 0 0 8.485l10.852 10.853-3.305 3.305a6 6 0 0 0 0 8.485l13.21 13.209a18.806 18.806 0 0 0 26.6 0l79.595-79.594a18.83 18.83 0 0 0 0-26.6l-13.21-13.21a6 6 0 0 0 -8.485 0l-3.305 3.305-10.852-10.853a6 6 0 0 0 -8.486 0l-1.78 1.781-84.732-84.727 1.78-1.78a6 6 0 0 0 0-8.485l-10.853-10.853 3.305-3.3a6 6 0 0 0 0-8.485l-13.205-13.215a18.832 18.832 0 0 0 -26.6 0l-79.594 79.6a18.83 18.83 0 0 0 0 26.6l13.21 13.209a6 6 0 0 0 8.485 0l3.305-3.3 10.852 10.853a6 6 0 0 0 8.485 0l1.781-1.78 27.051 27.051-18.122 18.121-7.33-7.331a6 6 0 0 0 -8.486 0l-19.875 19.876a6 6 0 0 0 0 8.485l2.577 2.577-108.194 96.246a36.879 36.879 0 0 0 24.474 64.432c.37 0 .743 0 1.115-.016a36.529 36.529 0 0 0 26.477-12.35l96.256-108.189zm173.922-87.319 8.967 8.967a6.817 6.817 0 0 1 0 9.629l-79.595 79.593a6.809 6.809 0 0 1 -9.629 0l-8.967-8.967zm-22.643-7.548 6.61 6.61-74.133 74.127-6.609-6.61zm-198.469-35.117-8.967-8.967a6.809 6.809 0 0 1 0-9.629l79.595-79.594a6.809 6.809 0 0 1 9.629 0l8.966 8.966zm22.643 7.548-6.61-6.61 74.128-74.128 6.61 6.61zm14.508 2.462 62.083-62.082 84.727 84.726-62.083 62.082zm27.051 44.022 13.654 13.654-18.121 18.122-13.654-13.654zm-38.18 15.034 36.8 36.8-11.39 11.39-36.8-36.8zm-86.631 158.555a24.879 24.879 0 1 1 -35.123-35.125l108.712-96.721 23.134 23.133z"></path><path d="m235.9 114.913a6 6 0 0 0 -8.485 8.485l5.656 5.657a6 6 0 1 0 8.486-8.486z"></path><path d="m290.345 183.845a6 6 0 0 0 4.242-10.243l-40.3-40.305a6 6 0 0 0 -8.486 8.486l40.3 40.3a5.979 5.979 0 0 0 4.244 1.762z"></path></g></svg>
-            </div>
-
-        </button>
-
-
-        <div style="width:75%;">
-            <a href='@ViewData["returnURL"]' @*asp-action="Index"*@ style="float:right; width:10%;" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Return to Employees Page">
-                ←
-            </a>
+                </g>
+            </svg>
         </div>
+
+    </button>
+
+    <button type="submit" id="createBid" style="width: 6%;margin-left:3.5%;" class="button-menu form-group btn btn-danger" data-toggle="tooltip" data-placement="top" title="Save and Create Bid">
+        <div style="width:35px; height:30px;">
+            <svg style="width:100%; height:100%" id="Layer_1" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"><g fill="white"><path d="m459.261 429h-.261v-26.258c0-3.314-2.958-5.742-6.271-5.742h-261.799a5.725 5.725 0 0 0 -5.93 5.742v26.258h-.6a33.551 33.551 0 0 0 -33.4 33.83v9.108a5.756 5.756 0 0 0 5.639 6.062h330.381a6.036 6.036 0 0 0 5.98-6.062v-9.108a33.841 33.841 0 0 0 -33.739-33.83zm-262.261-20h250v20h-250zm284 57h-318v-3.17a21.539 21.539 0 0 1 21.4-21.83h274.861a21.827 21.827 0 0 1 21.739 21.83z"></path><path d="m182.244 276.23a6 6 0 0 0 8.485 0l19.876-19.875a6 6 0 0 0 0-8.485l-7.331-7.331 18.126-18.121 27.05 27.051-1.779 1.78a6 6 0 0 0 0 8.485l10.852 10.853-3.305 3.305a6 6 0 0 0 0 8.485l13.21 13.209a18.806 18.806 0 0 0 26.6 0l79.595-79.594a18.83 18.83 0 0 0 0-26.6l-13.21-13.21a6 6 0 0 0 -8.485 0l-3.305 3.305-10.852-10.853a6 6 0 0 0 -8.486 0l-1.78 1.781-84.732-84.727 1.78-1.78a6 6 0 0 0 0-8.485l-10.853-10.853 3.305-3.3a6 6 0 0 0 0-8.485l-13.205-13.215a18.832 18.832 0 0 0 -26.6 0l-79.594 79.6a18.83 18.83 0 0 0 0 26.6l13.21 13.209a6 6 0 0 0 8.485 0l3.305-3.3 10.852 10.853a6 6 0 0 0 8.485 0l1.781-1.78 27.051 27.051-18.122 18.121-7.33-7.331a6 6 0 0 0 -8.486 0l-19.875 19.876a6 6 0 0 0 0 8.485l2.577 2.577-108.194 96.246a36.879 36.879 0 0 0 24.474 64.432c.37 0 .743 0 1.115-.016a36.529 36.529 0 0 0 26.477-12.35l96.256-108.189zm173.922-87.319 8.967 8.967a6.817 6.817 0 0 1 0 9.629l-79.595 79.593a6.809 6.809 0 0 1 -9.629 0l-8.967-8.967zm-22.643-7.548 6.61 6.61-74.133 74.127-6.609-6.61zm-198.469-35.117-8.967-8.967a6.809 6.809 0 0 1 0-9.629l79.595-79.594a6.809 6.809 0 0 1 9.629 0l8.966 8.966zm22.643 7.548-6.61-6.61 74.128-74.128 6.61 6.61zm14.508 2.462 62.083-62.082 84.727 84.726-62.083 62.082zm27.051 44.022 13.654 13.654-18.121 18.122-13.654-13.654zm-38.18 15.034 36.8 36.8-11.39 11.39-36.8-36.8zm-86.631 158.555a24.879 24.879 0 1 1 -35.123-35.125l108.712-96.721 23.134 23.133z"></path><path d="m235.9 114.913a6 6 0 0 0 -8.485 8.485l5.656 5.657a6 6 0 1 0 8.486-8.486z"></path><path d="m290.345 183.845a6 6 0 0 0 4.242-10.243l-40.3-40.305a6 6 0 0 0 -8.486 8.486l40.3 40.3a5.979 5.979 0 0 0 4.244 1.762z"></path></g></svg>
+        </div>
+
+    </button>
+
+
+    <div style="width:75%;">
+        <a href='@ViewData["returnURL"]' @*asp-action="Index"*@ style="float:right; width:10%;" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Return to Employees Page">
+            ←
+        </a>
+    </div>
 </form>
 
 
