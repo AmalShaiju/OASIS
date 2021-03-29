@@ -13,7 +13,8 @@ namespace OASIS.Models
             IsUser = false;
         }
 
-        Random random = new Random();
+        readonly Random random = new Random();
+
         public int ID { get; set; }
 
         [Display(Name = "Employee")]

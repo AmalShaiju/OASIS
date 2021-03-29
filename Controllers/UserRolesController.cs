@@ -9,18 +9,23 @@ using System.Threading.Tasks;
 using OASIS.ViewModels;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace OASIS.Controllers
 {
     public class UserRolesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly OasisContext _oasisContext;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public UserRolesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<IdentityUser> signInManager)
+        public UserRolesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, 
+            SignInManager<IdentityUser> signInManager, OasisContext oasisContext)
         {
+            _oasisContext = oasisContext;
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
@@ -31,6 +36,7 @@ namespace OASIS.Controllers
         public async Task<IActionResult> Index()
         {
             List<IdentityRoleVM> userRoles = await GetAllRoles();
+            PopulateDropDownLists();
             return View("Index", userRoles);
         }
 
@@ -72,7 +78,7 @@ namespace OASIS.Controllers
 
         }
 
-        // POST: UserRoles/Authorization
+        // POST: UserRoles/LoginUser
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -90,10 +96,41 @@ namespace OASIS.Controllers
             return Json(false);
         }
 
+        // POST: UserRoles/AddUserToRole
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpGet]
+        public async Task<JsonResult> AddUserToRole(string userName, string roleName)
+        {
+            IdentityUser user = await _userManager.FindByNameAsync(userName);
+            var result = _userManager.AddToRoleAsync(user, roleName).Result;
 
+            if (result.Succeeded)
+            {
+                return Json(true);
+            }
 
+            return Json(false);
 
+        }
 
+        // POST: UserRoles/RemoveUserFromRole
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpGet]
+        public async Task<JsonResult> RemoveUserFromRole(string userName, string roleName)
+        {
+            IdentityUser user = await _userManager.FindByNameAsync(userName);
+            var result = _userManager.RemoveFromRoleAsync(user, roleName).Result;
+
+            if (result.Succeeded)
+            {
+                return Json(true);
+            }
+
+            return Json(false);
+
+        }
 
         public async Task<List<IdentityRoleVM>> GetAllRoles()
         {
@@ -143,6 +180,40 @@ namespace OASIS.Controllers
             return users.Where(u => u.Roles.Contains(role.RoleName)).ToList();
         }
 
+        
+
+
+        private SelectList RoleSelectList(int? selectedId)
+        {
+            return new SelectList(_oasisContext.Roles
+                .OrderBy(d => d.Name), "ID", "Name", selectedId);
+        }
+
+        private SelectList EmployeeSelectList(int? RoleID, int? selectedId)
+        {
+            var query = from c in _oasisContext.Employees
+                        .Include(c => c.Role)
+                        .Where(p => p.IsUser != false)
+                        select c;
+
+            if (RoleID.HasValue)
+            {
+                query = query.Where(p => p.RoleID == RoleID);
+            }
+            return new SelectList(query.OrderBy(p => p.LastName).ThenBy(p => p.FirstName), "UserName", "FormalName", selectedId);
+        }
+
+        private void PopulateDropDownLists()
+        {
+            ViewData["RoleID"] = RoleSelectList(null);
+            ViewData["EmployeeID"] = EmployeeSelectList(null, null);
+        }
+
+        [HttpGet]
+        public JsonResult GetEmployees(int? ID)
+        {
+            return Json(EmployeeSelectList(ID, null));
+        }
 
     }
 

@@ -8,7 +8,7 @@
     <ul class="row UserRoleList" id="sortable">
         @foreach (var Role in Model)
         {
-            <li class="col-12 " aria-expanded="true" >
+            <li class="col-12 " aria-expanded="true">
                 <div class="row">
                     <div style="display:flex; cursor:move; justify-content: space-evenly; align-self:start" class="col-1 role-handler">
                         <svg style="width:50%; height:50%;" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" /></svg>
@@ -36,12 +36,15 @@
 
                             </div>
                             <div class="collapse show" id="collapse-@Role.RoleName">
-                                <ul class="list-group list-group-flush">
+                                <ul id="@Role.RoleName-list" class="list-group list-group-flush">
                                     @foreach (var user in Role.AssignedUsers)
                                     {
 
-                                        <li class="col-11">
-                                            <div class="list-group-item ">@Html.DisplayFor(modelItem => user.UserName)</div>
+                                        <li id="@user.UserName-@Role.RoleName" class="col-11 row ml-5">
+                                            <div class="list-group-item col-11">@Html.DisplayFor(modelItem => user.UserName)</div>
+                                            <button class="btn btn-outline-danger col-1 p-0 m-0" onclick="removeUserFromRole(this)" id="delete-@user.UserName-@Role.RoleName">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" /></svg>
+                                            </button>
                                         </li>
                                     }
 
@@ -49,16 +52,16 @@
                                 <div class="input-group" style="margin-top:60px; ">
                                     <div class="input-group m-t-12" style="justify-content: start; padding-left: 20px;">
                                         <div class="input-group-prepend" style="background:White">
-                                            <select class="btn btn-outline-secondary" id="ProductTypeID" @*name="ProductTypeID" asp-items="ViewBag.ProductTypeID"*@>
+                                            <select class="btn btn-outline-secondary" onchange="ChangeEmployee(this)" id="RoleID-@Role.RoleName" name="RoleID" asp-items="ViewBag.RoleID">
                                                 <option value="">All Roles</option>
                                             </select>
                                         </div>
 
                                         <div class="input-group mb-3" style="width:79%; background:white; margin:0px!important;">
-                                            <select style="margin:0" class="form-control" id="ProductID" @*name="ProductID" asp-items="ViewBag.ProductID"*@>
-                                                <option value="">select a Product</option>
+                                            <select style="margin:0" class="form-control" id="EmployeeID-@Role.RoleName" name="EmployeeID" asp-items="ViewBag.EmployeeID">
+                                                <option value="">select an Employee </option>
                                             </select>
-                                            <button id="btnAddProduct" class="btn btn-outline-success" type="button" data-toggle="tooltip" data-placement="top" title="Add Product">+</button>
+                                            <button id="btnAddUser-@Role.RoleName" onclick="addUserToRole(this)" class="btn btn-outline-success" type="button" data-toggle="tooltip" data-placement="top" title="Add Product">+</button>
                                         </div>
                                     </div>
                                 </div>
@@ -88,5 +91,20 @@
             });
             $("ul, li").disableSelection();
         });
+
     </script>
+
+    <script src="~/js/refreshDDL.js"></script>
+    <script src="~/js/addUserToRole.js"></script>
+
+    <script type="text/javascript">
+        function ChangeEmployee(e) {
+
+            var commonID = e.id.split("-")[1];
+            var selectedRole = $(`#${e.id}`).val();
+            var URL = "/UserRoles/GetEmployees/" + selectedRole;
+            refreshDDL(`EmployeeID-${commonID}`, URL, true);
+        }
+    </script>
+
 }

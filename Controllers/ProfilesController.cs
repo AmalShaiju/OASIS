@@ -22,6 +22,7 @@ namespace OASIS.Controllers
 
         public ProfilesController(OasisContext context, UserManager<IdentityUser> userManager, IEmailSender emailSender)
         {
+            _emailSender = emailSender;
             _context = context;
             _userManager = userManager;
         }
@@ -97,44 +98,6 @@ namespace OASIS.Controllers
                     return RedirectToAction("Details", new { employeeToUpdate.UserName });
 
 
-                }
-                catch (DbUpdateConcurrencyException ex)// Added for concurrency
-                {
-                    var exceptionEntry = ex.Entries.Single();
-                    var clientValues = (Employee)exceptionEntry.Entity;
-                    var databaseEntry = exceptionEntry.GetDatabaseValues();
-                    if (databaseEntry == null)
-                    {
-                        ModelState.AddModelError("",
-                            "Unable to save changes. The Role was deleted by another user.");
-                    }
-                    else
-                    {
-                        var databaseValues = (Employee)databaseEntry.ToObject();
-                        if (databaseValues.FirstName != clientValues.FirstName)
-                            ModelState.AddModelError("FirstName", "Current value: "
-                                + databaseValues.FirstName);
-                        if (databaseValues.LastName != clientValues.LastName)
-                            ModelState.AddModelError("LastName", "Current value: "
-                                + databaseValues.LastName);
-                        if (databaseValues.MiddleName != clientValues.LastName)
-                            ModelState.AddModelError("MiddleName", "Current value: "
-                                + databaseValues.MiddleName);
-                        if (databaseValues.Phone != clientValues.Phone)
-                            ModelState.AddModelError("Phone", "Current value: "
-                                + databaseValues.Phone);
-                        if (databaseValues.Email != clientValues.Email)
-                            ModelState.AddModelError("Email", "Current value: "
-                                + databaseValues.Email);
-                     
-                        ModelState.AddModelError(string.Empty, "The record you attempted to edit "
-                                + "was modified by another user after you received your values. The "
-                                + "edit operation was canceled and the current values in the database "
-                                + "have been displayed. If you still want to save your version of this record, click "
-                                + "the Save button again. Otherwise click the 'Back to List' hyperlink.");
-                        employeeToUpdate.RowVersion = (byte[])databaseValues.RowVersion;
-                        ModelState.Remove("RowVersion");
-                    }
                 }
                 catch (DbUpdateException dex)
                 {
