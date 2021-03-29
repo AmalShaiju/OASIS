@@ -104,13 +104,14 @@ namespace OASIS.Controllers
         {
             IdentityUser user = await _userManager.FindByNameAsync(userName);
             var result = _userManager.AddToRoleAsync(user, roleName).Result;
+            var employeeName = _oasisContext.Employees.SingleOrDefault(p => p.UserName == userName).FullName;
 
             if (result.Succeeded)
             {
-                return Json(true);
+                return Json(employeeName);
             }
 
-            return Json(false);
+            return Json(null);
 
         }
 
