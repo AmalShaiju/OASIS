@@ -5,103 +5,94 @@
     ViewBag.Title = "Index";
 }
 
-<div class="container">
-    <ul class="row UserRoleList" id="sortable">
-        @foreach (var Role in Model)
-        {
-            <li class="col-12 " aria-expanded="true">
-                <div class="row">
-                    <div style="display:flex; cursor:move; justify-content: space-evenly; align-self:start" class="col-1 role-handler">
-                        <svg style="width:50%; height:50%;" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" /></svg>
-                    </div>
-                    <div class="col-11">
-                        <div class="card">
-                            <div style="background-color: rgba(184,175,247,0.6);cursor:move" class="card-header">
-                                <div class="row">
-                                    <div class="col-10">
-                                        <h2 style="font-size: 20px; padding-left: 15px;">
-                                            @Html.DisplayFor(modelItem => Role.RoleName)<span> (@Html.DisplayFor(modelItem => Role.AssignedCount))</span>
-                                        </h2>
-                                    </div>
-                                    <div class="col-1">
-                                        <button style="padding:0; width:50%" class="btn btn-outline-light">
-                                            <svg style="width:80%; height:80%;" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><g style="fill:black"><path d="M0 0h24v24H0z" fill="none" /><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" /></g></svg>
-                                        </button>
-                                    </div>
-                                    <div class="col-1" data-toggle="collapse" data-target="#collapse-@Role.RoleName">
-                                        <button style="padding:0;width:50%;" class="btn btn-outline-light">
-                                            <svg style="width:80%;height:80%" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
-                                        </button>
-                                    </div>
+<ul class="row UserRoleList" id="sortable">
+    @foreach (var Role in Model)
+    {
+        <li class="col-4" aria-expanded="true">
+            <div>
+                <div class="col-11" style=" border-top-left-radius: 25px; border-top-right-radius: 25px;">
+                    <div class="card">
+                        <div style="cursor:move; border-top-left-radius: 25px; border-top-right-radius: 25px;" class="card-header">
+                            <div class="row">
+                                <div class="col-10">
+                                    <h2 style="font-size: 20px; padding-left: 15px;">
+                                        @Html.DisplayFor(modelItem => Role.RoleName)<span> (@Html.DisplayFor(modelItem => Role.AssignedCount))</span>
+                                    </h2>
                                 </div>
-
+                                <div class="col-2 p-1">
+                                    <button style="width:50%" class="btn btn-outline-light p-0">
+                                        <svg style="width:80%; height:80%;" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><g style="fill:black"><path d="M0 0h24v24H0z" fill="none" /><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" /></g></svg>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="collapse show" id="collapse-@Role.RoleName">
-                                <ul id="@Role.RoleName-list" class="list-group list-group-flush">
-                                    @foreach (var user in Role.AssignedUsers)
-                                    {
 
-                                        <li id="@user.UserName-@Role.RoleName" class="col-11 row ml-5">
-                                            <div class="list-group-item col-11">
-                                                @if(_context.Employees.Where(p => p.UserName == user.UserName).Any())
-                                                {
-                                                   <p> @_context.Employees.SingleOrDefault(p => p.UserName == user.UserName).FullName</p>
-                                                }
-                                                else
-                                                {
-                                                    <p>@user.UserName</p>
-                                                }
+                        </div>
+                        <div style="position:relative;height:350px" class="collapse show" id="collapse-@Role.RoleName">
+                            <ul style="overflow-y:scroll" id="@Role.RoleName-list" class="list-group list-group-flush">
+                                @foreach (var user in Role.AssignedUsers)
+                                {
 
-                                            </div>
-                                            <button class="btn btn-outline-danger col-1 p-0 m-0" onclick="removeUserFromRole(this)" id="delete-@user.UserName-@Role.RoleName">
-                                                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" /></svg>
-                                            </button>
-                                        </li>
-                                    }
+                                    <li id="@user.UserName-@Role.RoleName" class="col-11 row ml-3 mt-4 pr-0">
+                                        <div class="list-group-item col-10 mr-4">
+                                            @if (_context.Employees.Where(p => p.UserName == user.UserName).Any())
+                                            {
+                                                <p> @_context.Employees.SingleOrDefault(p => p.UserName == user.UserName).FullName</p>
+                                            }
+                                            else
+                                            {
+                                                <p>@user.UserName</p>
+                                            }
 
-                                </ul>
-                                <div class="input-group" style="margin-top:60px; ">
-                                    <div class="input-group m-t-12" style="justify-content: start; padding-left: 20px;">
-                                        <div class="input-group-prepend" style="background:White">
-                                            <select class="btn btn-outline-secondary" onchange="ChangeEmployee(this)" id="RoleID-@Role.RoleName" name="RoleID" asp-items="ViewBag.RoleID">
-                                                <option value="">All Roles</option>
-                                            </select>
                                         </div>
+                                        <button class="btn btn-outline-danger col-1 p-0 m-0" onclick="removeUserFromRole(this)" id="delete-@user.UserName-@Role.RoleName">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" /></svg>
+                                        </button>
+                                    </li>
+                                }
 
-                                        <div class="input-group mb-3" style="width:79%; background:white; margin:0px!important;">
-                                            <select style="margin:0" class="form-control" id="EmployeeID-@Role.RoleName" name="EmployeeID" asp-items="ViewBag.EmployeeID">
-                                                <option value="">select an Employee </option>
-                                            </select>
-                                            <button id="btnAddUser-@Role.RoleName" onclick="addUserToRole(this)" class="btn btn-outline-success" type="button" data-toggle="tooltip" data-placement="top" title="Add Product">+</button>
-                                        </div>
+                            </ul>
+                            <div class="row" style="margin-top:30px; position:absolute; bottom:0; ">
+                                <div class="row mt-12 p-0 ml-3 mr-3" style="justify-content: start; padding-left: 20px;">
+                                    <div class="col-3 pr-0" style="background:White">
+                                        <select style="width:100%;" class="btn btn-outline-secondary" onchange="ChangeEmployee(this)" id="RoleID-@Role.RoleName" name="RoleID" asp-items="ViewBag.RoleID">
+                                            <option value="">Role</option>
+                                        </select>
                                     </div>
+
+                                    <div class="col-7 mb-3 pr-0" style="background:white; margin:0px!important;">
+                                        <select style="margin:0" class="form-control" id="EmployeeID-@Role.RoleName" name="EmployeeID" asp-items="ViewBag.EmployeeID">
+                                            <option value="">select an Employee </option>
+                                        </select>
+                                    </div>
+                                    <button id="btnAddUser-@Role.RoleName" onclick="addUserToRole(this)" class=" col-2 p-0 btn btn-outline-success" type="button" data-toggle="tooltip" data-placement="top" title="Add Product">+</button>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </li>
+            </div>
+        </li>
 
-        }
+    }
 
-    </ul>
-</div>
+</ul>
 
 @section scripts{
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript">
-        $(function () {
-            $("#sortable").sortable({
-                revert: true
-            });
-            $("#draggable").draggable({
-                connectToSortable: "#sortable",
-                helper: "clone",
-                revert: "invalid",
-            });
-            $("ul, li").disableSelection();
-        });
+        //$(function () {
+        //    $("#sortable").sortable({
+        //        revert: true
+        //    });
+        //    $("#draggable").draggable({
+        //        connectToSortable: "#sortable",
+        //        helper: "clone",
+        //        revert: "invalid",
+        //    });
+        //    $("ul, li").disableSelection();
+        //});
 
     </script>
 
