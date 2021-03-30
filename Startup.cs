@@ -74,7 +74,7 @@ namespace OASIS
             });
 
             services.AddDbContext<OasisContext>(options =>
-        options.UseSqlite(Configuration.GetConnectionString("OasisContext")));
+            options.UseSqlite(Configuration.GetConnectionString("OasisContext")));
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
@@ -86,6 +86,31 @@ namespace OASIS
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("EmployeeViewPolicy", policy => policy.RequireClaim("EmployeeViewClaim", "True"));
+                options.AddPolicy("EmployeeCreatePolicy", policy => policy.RequireClaim("EmployeeCreateClaim", "True"));
+                options.AddPolicy("EmployeeEditPolicy", policy => policy.RequireClaim("EmployeeEditClaim", "True"));
+
+                options.AddPolicy("CustomerViewPolicy", policy => policy.RequireClaim("CustomerViewClaim", "True"));
+                options.AddPolicy("CustomerCreatePolicy", policy => policy.RequireClaim("CustomerCreateClaim", "True"));
+                options.AddPolicy("CustomerEditPolicy", policy => policy.RequireClaim("CustomerEditClaim", "True"));
+
+                options.AddPolicy("ProjectViewPolicy", policy => policy.RequireClaim("ProjectViewClaim", "True"));
+                options.AddPolicy("ProjectEditPolicy", policy => policy.RequireClaim("ProjectEditClaim", "True"));
+                options.AddPolicy("ProjectCreatePolicy", policy => policy.RequireClaim("ProjectCreateClaim", "True"));
+
+                options.AddPolicy("BidViewPolicy", policy => policy.RequireClaim("BidViewClaim", "True"));
+                options.AddPolicy("BidEditPolicy", policy => policy.RequireClaim("BidEditClaim", "True"));
+                options.AddPolicy("BidCreatePolicy", policy => policy.RequireClaim("BidCreateClaim", "True"));
+
+                options.AddPolicy("ProductViewPolicy", policy => policy.RequireClaim("ProductViewClaim", "True"));
+                options.AddPolicy("ProductCreatePolicy", policy => policy.RequireClaim("ProductCreateClaim", "True"));
+                options.AddPolicy("ProductEditPolicy", policy => policy.RequireClaim("ProductEditClaim", "True"));
+
+
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

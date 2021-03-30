@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "UIHcjrP9wr3J7MjIMEtE/mwnpn0dnyUH7Zh8zwGRo/HLOG3u1Gq6/3mqyVAKxtv9bmnbWLsu4ZfQqtP+LKxsQg==",
+  "dgSpecHash": "T+c7N23aqqnl96jFuOwfthTsRtG1H+lDokxYvKxYWFunLYYWMaLF7ypDtL+r7wXcn5460wBF60+kZjEYUV+9Ug==",
   "success": true,
   "projectFilePath": "C:\\OASIS\\OASIS.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Amals\\.nuget\\packages\\bootstrap\\2.3.2\\bootstrap.2.3.2.nupkg.sha512",
+    "C:\\Users\\Amals\\.nuget\\packages\\bootstrap-toggle\\2.2.2\\bootstrap-toggle.2.2.2.nupkg.sha512",
     "C:\\Users\\Amals\\.nuget\\packages\\mailkit\\2.11.1\\mailkit.2.11.1.nupkg.sha512",
     "C:\\Users\\Amals\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
     "C:\\Users\\Amals\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",

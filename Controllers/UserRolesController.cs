@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace OASIS.Controllers
 {
@@ -22,7 +23,7 @@ namespace OASIS.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public UserRolesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, 
+        public UserRolesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager,
             SignInManager<IdentityUser> signInManager, OasisContext oasisContext)
         {
             _oasisContext = oasisContext;
@@ -48,6 +49,24 @@ namespace OASIS.Controllers
             return View(role);
         }
 
+        // GET: UserRoles/Edit
+        public async Task<IActionResult> Edit(string roleName)
+        {
+            var roleToUpdate = await _roleManager.FindByNameAsync(roleName);
+
+            if (roleToUpdate != null)
+            {
+                var roleClaims = await _roleManager.GetClaimsAsync(roleToUpdate);
+                var sorted = SortClaims(roleClaims, roleName).AsEnumerable();
+
+                return View(sorted);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         // POST: UserRoles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -62,38 +81,6 @@ namespace OASIS.Controllers
             }
 
             return View(role);
-        }
-
-        public async void CreateRole(string Role)
-        {
-            if (Role != null)
-            {
-                //check if role exist in db
-                if (!await _roleManager.RoleExistsAsync(Role))
-                {
-                    await _roleManager.CreateAsync((new IdentityRole(Role)));
-
-                }
-            }
-
-        }
-
-        // POST: UserRoles/LoginUser
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        public async Task<JsonResult> LoginUser([FromBody] UserAuthenticationVM Loginuser)
-        {
-           
-            var result = await _signInManager.PasswordSignInAsync(Loginuser.Username,
-            Loginuser.Password, Loginuser.RememberMe, false);
-
-            if (result.Succeeded)
-            {
-                return Json(true);
-            }
-
-            return Json(false);
         }
 
         // POST: UserRoles/AddUserToRole
@@ -131,6 +118,106 @@ namespace OASIS.Controllers
 
             return Json(false);
 
+        }
+
+        // POST: UserRoles/LoginUser
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        public async Task<JsonResult> LoginUser([FromBody] UserAuthenticationVM Loginuser)
+        {
+
+            var result = await _signInManager.PasswordSignInAsync(Loginuser.Username,
+            Loginuser.Password, Loginuser.RememberMe, false);
+
+            if (result.Succeeded)
+            {
+                return Json(true);
+            }
+
+            return Json(false);
+        }
+
+        public async void CreateRole(string Role)
+        {
+            if (Role != null)
+            {
+                //check if role exist in db
+                if (!await _roleManager.RoleExistsAsync(Role))
+                {
+                    await _roleManager.CreateAsync((new IdentityRole(Role)));
+
+                }
+            }
+
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> UpdateClaims(string claimType, string claimValue, string roleName)
+        {
+            // get the role taht require claim update
+            var role = await _roleManager.FindByNameAsync(roleName);
+
+            // get all claim of the role
+            var allRoleClaims = await _roleManager.GetClaimsAsync(role);
+
+            // get the claim that need to be changed from all roleclaims
+            var claimToDelete = allRoleClaims.SingleOrDefault(p => p.Type == claimType);
+
+            try
+            {
+                // chcek if there is any change between db and user input
+                if (claimToDelete.Value != claimType || claimToDelete.Value != claimValue)
+                {
+                    try
+                    {
+                        // delete the claim from user
+                        var deleteResult = await _roleManager.RemoveClaimAsync(role, claimToDelete);
+
+                        // Add the claim back in with the new claim value
+                        if (deleteResult.Succeeded)
+                        {
+                            var addResult = await _roleManager.AddClaimAsync(role, new Claim(claimType, claimValue));
+                            return Json("Role Privilage updated sucessfuly");
+                        }
+
+                    }
+                    catch
+                    {
+                        return Json("Could not update Role Privilage");
+                    }
+
+
+                }
+            }
+            catch
+            {
+                return Json("Role does not have the selected Privilage");
+
+            }
+
+            return Json("Could not update Role Privilage");
+
+
+        }
+
+        public List<PageClaims> SortClaims(IList<Claim> claims,string roleName)
+        {
+            List<PageClaims> allClaims = new List<PageClaims>();
+
+            PageClaims empClamis = new PageClaims { PageName = "Employee", Claims = claims.Where(p => p.Type.Contains("Employee")).Select(p => p).ToList(),RoleName= roleName };
+            PageClaims cusClamis = new PageClaims { PageName = "Customer", Claims = claims.Where(p => p.Type.Contains("Customer")).Select(p => p).ToList(), RoleName = roleName };
+            PageClaims projectClamis = new PageClaims { PageName = "Project", Claims = claims.Where(p => p.Type.Contains("Project")).Select(p => p).ToList(), RoleName = roleName };
+            PageClaims bidClamis = new PageClaims { PageName = "Bid", Claims = claims.Where(p => p.Type.Contains("Bid")).Select(p => p).ToList(), RoleName = roleName };
+            PageClaims productClamis = new PageClaims { PageName = "Product", Claims = claims.Where(p => p.Type.Contains("Product")).Select(p => p).ToList(), RoleName = roleName };
+
+            allClaims.Add(empClamis);
+            allClaims.Add(cusClamis);
+            allClaims.Add(projectClamis);
+            allClaims.Add(bidClamis);
+            allClaims.Add(productClamis);
+
+            return allClaims;
         }
 
         public async Task<List<IdentityRoleVM>> GetAllRoles()
@@ -180,9 +267,6 @@ namespace OASIS.Controllers
 
             return users.Where(u => u.Roles.Contains(role.RoleName)).ToList();
         }
-
-        
-
 
         private SelectList RoleSelectList(int? selectedId)
         {

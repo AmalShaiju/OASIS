@@ -1673,3 +1673,4 @@ C:\OASIS\bin\Debug\netcoreapp3.1\BouncyCastle.Crypto.dll
 C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_login.cshtml.g.cs
 C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Profiles\Index.cshtml.g.cs
 C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Profiles\Edit.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\UserRoles\Edit.cshtml.g.cs
