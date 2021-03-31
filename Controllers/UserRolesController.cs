@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using OASIS.Utilities;
 
 namespace OASIS.Controllers
 {
@@ -56,6 +57,9 @@ namespace OASIS.Controllers
         {
             var roleToUpdate = await _roleManager.FindByNameAsync(roleName);
 
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "UserRoles");
+
+
             if (roleToUpdate != null)
             {
                 var roleClaims = await _roleManager.GetClaimsAsync(roleToUpdate);
@@ -74,6 +78,9 @@ namespace OASIS.Controllers
         public async Task<IActionResult> UserClaimEdit(string userName)
         {
             var roleToUpdate = await _userManager.FindByNameAsync(userName);
+
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "UserRoles");
+
 
             if (roleToUpdate != null)
             {
@@ -111,20 +118,31 @@ namespace OASIS.Controllers
         public async Task<JsonResult> AddUserToRole(string userName, string roleName)
         {
             IdentityUser user = await _userManager.FindByNameAsync(userName);
-            var result = _userManager.AddToRoleAsync(user, roleName).Result;
             var employeeName = _oasisContext.Employees.SingleOrDefault(p => p.UserName == userName).FullName;
-
-            if (result.Succeeded)
+            if (! await _userManager.IsInRoleAsync(user, roleName))
             {
-                //Add all the claims of the role to the user
-                var role = await _roleManager.FindByNameAsync(roleName);
-                var roleClaims = await _roleManager.GetClaimsAsync(role);
-                await _userManager.AddClaimsAsync(user, roleClaims.AsEnumerable());
+                var result = _userManager.AddToRoleAsync(user, roleName).Result;
+   
 
-                return Json(employeeName);
+                if (result.Succeeded)
+                {
+                    //Add all the claims of the role to the user
+                    var role = await _roleManager.FindByNameAsync(roleName);
+                    var roleClaims = await _roleManager.GetClaimsAsync(role);
+                    await _userManager.AddClaimsAsync(user, roleClaims.AsEnumerable());
+
+                    return Json(employeeName);
+                }
+            }
+            else
+            {
+                return Json($"{employeeName} already exist in the role {roleName}");
             }
 
-            return Json(null);
+
+
+            return Json("Something Went Wrong, Try Again Later");
+
 
         }
 
@@ -135,19 +153,27 @@ namespace OASIS.Controllers
         public async Task<JsonResult> RemoveUserFromRole(string userName, string roleName)
         {
             IdentityUser user = await _userManager.FindByNameAsync(userName);
-            var result = _userManager.RemoveFromRoleAsync(user, roleName).Result;
+            var employeeName = _oasisContext.Employees.SingleOrDefault(p => p.UserName == userName).FullName;
 
-            if (result.Succeeded)
+            if (await _userManager.IsInRoleAsync(user, roleName))
             {
-                //remove all the claims of the role to the user
-                var role = await _roleManager.FindByNameAsync(roleName);
-                var roleClaims = await _roleManager.GetClaimsAsync(role);
-                await _userManager.RemoveClaimsAsync(user, roleClaims.AsEnumerable());
+                var result = _userManager.RemoveFromRoleAsync(user, roleName).Result;
+                if (result.Succeeded)
+                {
+                    //remove all the claims of the role to the user
+                    var role = await _roleManager.FindByNameAsync(roleName);
+                    var roleClaims = await _roleManager.GetClaimsAsync(role);
+                    await _userManager.RemoveClaimsAsync(user, roleClaims.AsEnumerable());
 
-                return Json(true);
+                    return Json($"{employeeName} was successfuly removed to {roleName}");
+                }
+            }
+            else
+            {
+                return Json($"{employeeName} does not exist in the role {roleName}");
             }
 
-            return Json(false);
+            return Json("Something Went Wrong, Try Again Later");
 
         }
 
@@ -258,13 +284,13 @@ namespace OASIS.Controllers
                         if (deleteResult.Succeeded)
                         {
                             var addResult = await _userManager.AddClaimAsync(user, new Claim(claimType, claimValue));
-                            return Json("Role Privilage updated sucessfuly");
+                            return Json("User privilage updated sucessfuly");
                         }
 
                     }
                     catch
                     {
-                        return Json("Could not update Role Privilage");
+                        return Json("Could not update user privilage");
                     }
 
 
@@ -276,7 +302,7 @@ namespace OASIS.Controllers
 
             }
 
-            return Json("Could not update Role Privilage");
+            return Json("Could not update user privilage");
 
 
         }
