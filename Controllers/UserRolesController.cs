@@ -38,6 +38,8 @@ namespace OASIS.Controllers
         {
             List<IdentityRoleVM> userRoles = await GetAllRoles();
             PopulateDropDownLists();
+            var claims = User.Claims.ToList();
+
             return View("Index", userRoles);
         }
 
@@ -60,6 +62,25 @@ namespace OASIS.Controllers
                 var sorted = SortClaims(roleClaims, roleName).AsEnumerable();
 
                 return View(sorted);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+
+        // GET: UserRoles/UserClaimEdit
+        public async Task<IActionResult> UserClaimEdit(string userName)
+        {
+            var roleToUpdate = await _userManager.FindByNameAsync(userName);
+
+            if (roleToUpdate != null)
+            {
+                var userClaims = await _userManager.GetClaimsAsync(roleToUpdate);
+                var sorted = SortClaims(userClaims, userName).AsEnumerable();
+
+                return View("UserClaimsEdit", sorted);
             }
             else
             {
@@ -95,6 +116,11 @@ namespace OASIS.Controllers
 
             if (result.Succeeded)
             {
+                //Add all the claims of the role to the user
+                var role = await _roleManager.FindByNameAsync(roleName);
+                var roleClaims = await _roleManager.GetClaimsAsync(role);
+                await _userManager.AddClaimsAsync(user, roleClaims.AsEnumerable());
+
                 return Json(employeeName);
             }
 
@@ -113,6 +139,11 @@ namespace OASIS.Controllers
 
             if (result.Succeeded)
             {
+                //remove all the claims of the role to the user
+                var role = await _roleManager.FindByNameAsync(roleName);
+                var roleClaims = await _roleManager.GetClaimsAsync(role);
+                await _userManager.RemoveClaimsAsync(user, roleClaims.AsEnumerable());
+
                 return Json(true);
             }
 
@@ -178,6 +209,55 @@ namespace OASIS.Controllers
                         if (deleteResult.Succeeded)
                         {
                             var addResult = await _roleManager.AddClaimAsync(role, new Claim(claimType, claimValue));
+                            return Json("Role Privilage updated sucessfuly");
+                        }
+
+                    }
+                    catch
+                    {
+                        return Json("Could not update Role Privilage");
+                    }
+
+
+                }
+            }
+            catch
+            {
+                return Json("Role does not have the selected Privilage");
+
+            }
+
+            return Json("Could not update Role Privilage");
+
+
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> UpdateUserClaims(string claimType, string claimValue, string userName)
+        {
+            // get the role taht require claim update
+            var user = await _userManager.FindByNameAsync(userName);
+
+            // get all claim of the role
+            var allUserClaims = await _userManager.GetClaimsAsync(user);
+
+            // get the claim that need to be changed from all roleclaims
+            var claimToDelete = allUserClaims.SingleOrDefault(p => p.Type == claimType);
+
+            try
+            {
+                // chcek if there is any change between db and user input
+                if (claimToDelete.Value != claimType || claimToDelete.Value != claimValue)
+                {
+                    try
+                    {
+                        // delete the claim from user
+                        var deleteResult = await _userManager.RemoveClaimAsync(user, claimToDelete);
+
+                        // Add the claim back in with the new claim value
+                        if (deleteResult.Succeeded)
+                        {
+                            var addResult = await _userManager.AddClaimAsync(user, new Claim(claimType, claimValue));
                             return Json("Role Privilage updated sucessfuly");
                         }
 

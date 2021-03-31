@@ -113,6 +113,10 @@ namespace OASIS.Data
                 }
             }
 
+            //var adminUser = await userManager.FindByEmailAsync("admin1@outlook.com");
+            //var sample = new Claim("EmployeeViewClaim", "True");
+
+            //await userManager.AddClaimAsync(adminUser, sample);
 
         }
     }

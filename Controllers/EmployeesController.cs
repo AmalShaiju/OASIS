@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,7 @@ namespace OASIS.Controllers
         }
 
         // GET: Employees
+        [Authorize(Policy = "EmployeeViewPolicy")]
         public async Task<IActionResult> Index(string SearchName, string SearchEmail, int? RoleID,
             string actionButton, int? page, int? pageSizeID, string sortDirection = "asc", string sortField = "Employee")
         {
