@@ -163,14 +163,17 @@ namespace OASIS.Controllers
         }
 
         // GET: Employees/Create
+        [Authorize(Policy = "EmployeeCreatePolicy")]
         public IActionResult Create(int? roleID)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+            if (!TempData.ContainsKey("fromRole"))
+                TempData["fromRole"] = "False";
+
             Employee employee = new Employee();
             if (roleID != null)
             {
                 employee.RoleID = (int)roleID;
-
             }
             PopulateDropDownLists(employee);
             return View();
@@ -181,6 +184,8 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "EmployeeCreatePolicy")]
+
         public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,MiddleName,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email,RoleID,IsUser")] Employee employee, int customerTrue, int projectTrue, int bidTrue)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
@@ -240,6 +245,8 @@ namespace OASIS.Controllers
         }
 
         // GET: Employees/Edit/5
+        [Authorize(Policy = "EmployeeEditPolicy")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -263,6 +270,8 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "EmployeeEditPolicy")]
+
         public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");

@@ -98,9 +98,19 @@
 
                         <div class="form-group col-5">
                             <label asp-for="ProjectID" class="control-label"></label>
-                            <select asp-for="ProjectID" class="form-control" asp-items="ViewBag.ProjectID">
-                                <option value="">Select a project</option>
-                            </select>
+                            @if (TempData["fromProject"].ToString() == "True")
+                            {
+                                <select disabled asp-for="ProjectID" class="form-control" asp-items="ViewBag.ProjectID">
+                                    <option value="">Select a project</option>
+                                </select>
+                            }
+                            else
+                            {
+                                <select asp-for="ProjectID" class="form-control" asp-items="ViewBag.ProjectID">
+                                    <option value="">Select a project</option>
+                                </select>
+                            }
+
                             <span asp-validation-for="ProjectID" class="text-danger"></span>
 
                         </div>

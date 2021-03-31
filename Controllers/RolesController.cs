@@ -72,6 +72,8 @@ namespace OASIS.Controllers
         public IActionResult Create()
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Roles");
+            if (!TempData.ContainsKey("fromProject"))
+                TempData["fromProject"] = "False";
 
             return View();
         }
@@ -94,20 +96,11 @@ namespace OASIS.Controllers
                     //return RedirectToAction(nameof(Index));
                     if (employeeTrue == 1)
                     {
+                        TempData["fromRole"] = "True";
                         return RedirectToAction(actionName: "Create", controllerName: "Employees", new {roleID = role.ID });
                     }
-                    if (customerTrue == 1)
-                    {
-                        return RedirectToAction(actionName: "Create", controllerName: "Customers");
-                    }
-                    if (projectTrue == 1)
-                    {
-                        return RedirectToAction(actionName: "Create", controllerName: "Projects");
-                    }
-                    if (bidTrue == 1)
-                    {
-                        return RedirectToAction(actionName: "Create", controllerName: "Bids");
-                    }
+
+                    TempData["fromRole"] = "False";
 
                     return RedirectToAction("Details", new { role.ID });
 

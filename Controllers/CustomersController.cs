@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ namespace OASIS.Controllers
         }
 
         // GET: Customers
+        [Authorize(Policy = "CustomerViewPolicy")]
+
         public async Task<IActionResult> Index(string SearchName, string SearchProject, string SearchOrg, string SearchEmail,
             int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "Customer")
         {
@@ -163,6 +166,8 @@ namespace OASIS.Controllers
         }
 
         // GET: Customers/Create
+        [Authorize(Policy = "CustomerCreatePolicy")]
+
         public IActionResult Create()
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
@@ -175,6 +180,8 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "CustomerCreatePolicy")]
+
         public async Task<IActionResult> Create([Bind("ID,OrgName,FirstName,LastName,MiddleName,Position,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email")] Customer customer, int employeeTrue, int projectTrue, int bidTrue)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
@@ -182,23 +189,22 @@ namespace OASIS.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                  
+
 
                     _context.Add(customer);
                     await _context.SaveChangesAsync();
                     //return RedirectToAction(nameof(Index));
-                    if (employeeTrue == 1)
-                    {
-                        return RedirectToAction(actionName: "Create", controllerName: "Employees");
-                    }
+                 
                     if (projectTrue == 1)
                     {
+                        TempData["fromCustomer"] = "True";
+
                         return RedirectToAction(actionName: "Create", controllerName: "Projects", new { customerID = customer.ID });
                     }
-                    if (bidTrue == 1)
-                    {
-                        return RedirectToAction(actionName: "Create", controllerName: "Bids");
-                    }
+
+                    TempData["fromCustomer"] = "False";
+
+
                     return RedirectToAction("Details", new { customer.ID });
 
                 }
@@ -219,6 +225,7 @@ namespace OASIS.Controllers
         }
 
         // GET: Customers/Edit/5
+        [Authorize(Policy = "CustomerEditPolicy")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -242,6 +249,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "CustomerEditPolicy")]
         public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");

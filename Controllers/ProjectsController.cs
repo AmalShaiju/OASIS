@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ namespace OASIS.Controllers
         }
 
         // GET: Projects
+        [Authorize(Policy = "ProjectViewPolicy")]
+
         public async Task<IActionResult> Index(string SearchProjectName, string SearchCustomerName, string SearchOrg, string SearchCity,
             string actionButton, int? page, int? pageSizeID,  string sortDirection = "asc", string sortField = "Project")
         {
@@ -158,10 +161,17 @@ namespace OASIS.Controllers
         }
 
         // GET: Projects/Create
+        [Authorize(Policy = "ProjectCreatePolicy")]
+
         public IActionResult Create(int? customerID)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
             Project project = new Project();
+
+            if (!TempData.ContainsKey("fromCustomer"))
+                TempData["fromCustomer"] = "False";
+
+
             if (customerID != null)
             {
                 project.CustomerID = (int)customerID;
@@ -176,7 +186,8 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,SiteAddressLineOne,SiteAddressLineTwo,City,Province,Country,CustomerID")] Project project, int employeeTrue, int customerTrue, int bidTrue)
+        [Authorize(Policy = "ProjectCreatePolicy")]
+        public async Task<IActionResult> Create([Bind("ID,Name,SiteAddressLineOne,SiteAddressLineTwo,City,Province,Country,CustomerID")] Project project, int bidTrue)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
 
@@ -187,19 +198,16 @@ namespace OASIS.Controllers
                     _context.Add(project);
                     await _context.SaveChangesAsync();
                     //return RedirectToAction(nameof(Index));
-                    if (employeeTrue == 1)
-                    {
-                        return RedirectToAction(actionName: "Create", controllerName: "Employees");
-                    }
-                    if (customerTrue == 1)
-                    {
-                        return RedirectToAction(actionName: "Create", controllerName: "Customers");
-                    }
-                   
+                  
                     if (bidTrue == 1)
                     {
+                        TempData["fromProject"] = "True";
+
                         return RedirectToAction(actionName: "Create", controllerName: "Bids", new {projectID = project.ID });
                     }
+
+                    TempData["fromProject"] = "False";
+
 
                     return RedirectToAction("Details", new { project.ID });
                 }
@@ -221,6 +229,8 @@ namespace OASIS.Controllers
         }
 
         // GET: Projects/Edit/5
+        [Authorize(Policy = "ProjectEditPolicy")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -244,6 +254,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "ProjectEditPolicy")]
         public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
