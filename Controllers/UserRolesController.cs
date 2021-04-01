@@ -39,8 +39,6 @@ namespace OASIS.Controllers
         {
             List<IdentityRoleVM> userRoles = await GetAllRoles();
             PopulateDropDownLists();
-            var claims = User.Claims.ToList();
-
             return View("Index", userRoles);
         }
 
@@ -414,16 +412,20 @@ namespace OASIS.Controllers
             return new SelectList(query.OrderBy(p => p.LastName).ThenBy(p => p.FirstName), "UserName", "FormalName", selectedId);
         }
 
+
         private void PopulateDropDownLists()
         {
             ViewData["RoleID"] = RoleSelectList(null);
             ViewData["EmployeeID"] = EmployeeSelectList(null, null);
+            ViewData["UserRoleID"] = new SelectList(_roleManager.Roles.OrderBy(p => p.Name), "Name", "Name");
+
         }
 
         [HttpGet]
         public JsonResult GetEmployees(int? ID)
         {
             return Json(EmployeeSelectList(ID, null));
+
         }
 
     }

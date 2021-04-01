@@ -5,6 +5,27 @@
     ViewBag.Title = "Index";
 }
 
+<div class="row ml-4">
+    <div class="col-1 mr-2">
+        <select class="btn btn-primary pr-0" onchange="ChangeEmployeeOnRole()" id="role-select" name="RoleID" asp-items="ViewBag.RoleID">
+            <option value="">Position</option>
+        </select>
+    </div>
+    <div class="col-1 mr-5">
+        <select class="btn btn-secondary" id="employee-select" name="EmployeeID" asp-items="ViewBag.EmployeeID">
+            <option value="">Select an Employee </option>
+        </select>
+    </div>
+    <div class="col-1 mr-5">
+        <select class="btn btn-info" id="userRole-select" name="UserRoleID" asp-items="ViewBag.UserRoleID">
+            <option value="">Select a Role</option>
+        </select>
+    </div>
+
+    <button onclick="addUserToRole()" class=" col-sm-1 p-0 btn btn-success" type="button" data-toggle="tooltip" data-placement="top" title="Add employee to role">+</button>
+
+</div>
+
 <ul class="row UserRoleList" id="sortable">
     @foreach (var Role in Model)
     {
@@ -27,53 +48,36 @@
                             </div>
 
                         </div>
-                        <div style="position:relative;height:350px" class="collapse show" id="collapse-@Role.RoleName">
-                            <ul style="overflow-y:scroll" id="@Role.RoleName-list" class="list-group list-group-flush">
+                        <div style="position:relative;height:350px; overflow-y:scroll" class="collapse show" id="collapse-@Role.RoleName">
+                            <ul id="@Role.RoleName-list" class="list-group list-group-flush">
                                 @foreach (var user in Role.AssignedUsers)
                                 {
 
-                                <li id="@user.UserName-@Role.RoleName" class="col-11 row ml-3 mt-4 pr-0">
-                                    <div class="list-group-item col-8 mr-4">
-                                        @if (_context.Employees.Where(p => p.UserName == user.UserName).Any())
-                                        {
-                                            <p> @_context.Employees.SingleOrDefault(p => p.UserName == user.UserName).FullName</p>
-                                        }
-                                        else
-                                        {
-                                            <p>@user.UserName</p>
-                                        }
+                                    <li id="@user.UserName-@Role.RoleName" class="col-12 row pl-5 mt-4 pr-0">
+                                        <div class="list-group-item col-8 mr-4">
+                                            @if (_context.Employees.Where(p => p.UserName == user.UserName).Any())
+                                            {
+                                                <p> @_context.Employees.SingleOrDefault(p => p.UserName == user.UserName).FullName</p>
+                                            }
+                                            else
+                                            {
+                                                <p>@user.UserName</p>
+                                            }
 
-                                    </div>
+                                        </div>
 
-                                    <a class="btn btn-outline-danger col-1 p-0 mr-4" asp-controller="UserRoles" asp-action="UserClaimEdit" asp-route-userName="@user.UserName" id="Edit-@user.UserName">
-                                        <svg style="width:80%; height:80%;" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><g style="fill:black"><path d="M0 0h24v24H0z" fill="none" /><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" /></g></svg>
-                                    </a>
+                                        <a class="btn btn-outline-danger col-1 p-0 mr-4" asp-controller="UserRoles" asp-action="UserClaimEdit" asp-route-userName="@user.UserName" id="Edit-@user.UserName">
+                                            <svg style="width:80%; height:80%;" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><g style="fill:black"><path d="M0 0h24v24H0z" fill="none" /><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" /></g></svg>
+                                        </a>
 
-                                    <button class="btn btn-outline-danger col-1 p-0 m-0" onclick="removeUserFromRole(this)" id="delete-@user.UserName-@Role.RoleName">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" /></svg>
-                                    </button>
+                                        <button class="btn btn-outline-danger col-1 p-0 m-0" onclick="removeUserFromRole(this)" id="delete-@user.UserName-@Role.RoleName">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" /></svg>
+                                        </button>
 
-                                </li>
+                                    </li>
                                 }
 
                             </ul>
-                            <div class="row" style="margin-top:30px; position:absolute; bottom:0; ">
-                                <div class="row mt-12 p-0 ml-3 mr-3" style="justify-content: start; padding-left: 20px;">
-                                    <div class="col-3 pr-0" style="background:White">
-                                        <select style="width:100%;" class="btn btn-outline-secondary" onchange="ChangeEmployee(this)" id="RoleID-@Role.RoleName" name="RoleID" asp-items="ViewBag.RoleID">
-                                            <option value="">Role</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-7 mb-3 pr-0" style="background:white; margin:0px!important;">
-                                        <select style="margin:0" class="form-control" id="EmployeeID-@Role.RoleName" name="EmployeeID" asp-items="ViewBag.EmployeeID">
-                                            <option value="">select an Employee </option>
-                                        </select>
-                                    </div>
-                                    <button id="btnAddUser-@Role.RoleName" onclick="addUserToRole(this)" class=" col-2 p-0 btn btn-outline-success" type="button" data-toggle="tooltip" data-placement="top" title="Add Product">+</button>
-
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -106,13 +110,13 @@
     <script src="~/js/addUserToRole.js"></script>
 
     <script type="text/javascript">
-        function ChangeEmployee(e) {
-
-            var commonID = e.id.split("-")[1];
-            var selectedRole = $(`#${e.id}`).val();
+        function ChangeEmployeeOnRole() {
+            console.log("entered");
+            var selectedRole = $("#role-select").val();
             var URL = "/UserRoles/GetEmployees/" + selectedRole;
-            refreshDDL(`EmployeeID-${commonID}`, URL, true);
+            refreshDDL("employee-select", URL, true);
         }
+
     </script>
 
 }
