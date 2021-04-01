@@ -5,7 +5,7 @@ $("#btn-login").click(function () {
     console.log('clicked');
 
     var UserToLogin = new Object();
-    UserToLogin.Username = ($('#txtUserName').val()).toString();
+    UserToLogin.Username = ($('#txtUserName').val()).toString().trim();
     UserToLogin.Password = ($('#txtPassword').val()).toString();
     UserToLogin.RememberMe = false;
     UserToLogin.ReturnUrl = "http://localhost:63341/Employees"
@@ -24,30 +24,81 @@ $("#btn-login").click(function () {
             success: function (response) {
                 if (response != null) {
 
-                    console.log(JSON.parse(response));
+                    if (response.success) {
 
-                    // if user logged in 
-                    if (JSON.parse(response)) {
-                        window.location.replace(getBaseUrl() + "Employees");
+                        showStatusMsg(response.success, response.msg, 2000)
+                        setTimeout(2000)
+                        window.location.replace(getBaseUrl());
+
                     }
                     else {
-                        $("#login-error").css({ "display": "block"})
+                        showStatusMsg(response.success, response.msg, 4000)
                     }
 
 
                 } else {
-                    alert("Something went wrong");
+                    showStatusMsg(false, "Something went wrong", 4000);
                 }
             },
             failure: function (response) {
-                alert("failed");
+                showStatusMsg(false, "Something went wrong", 4000);
             },
             error: function (response) {
-                alert(response);
-                console.log(response);
-
+                showStatusMsg(false, "Something went wrong", 4000);
             }
         });
     }
 });  
+
+
+function ShowForgotPasswordForm() {
+    $('#login-form').slideUp(300).fadeOut(100);
+
+    $('#forgot-password-form').slideDown(500).delay(300).fadeIn(500);
+
+}
+
+function loginFormShow() {
+    $('#login-form').slideDown(500).delay(300).fadeIn(500);
+
+    $('#forgot-password-form').slideUp(300).fadeOut(100);
+}
+
+$('#send-password').click(function () {
+    console.log("password reset started")
+
+    var email = $("#ForgotEmail").val().trim();
+
+    if (email != null) {
+        $.ajax({
+            type: "POST",
+            url: "/UserRoles/ForgotPassword",
+            data: JSON.stringify(email),
+            contentType: "application/json;",
+            success: function (response) {
+                if (response != null) {
+
+                    if (response.success) {
+                        showStatusMsg(response.success, response.msg, 4000)
+                        setTimeout(1000)
+                        window.location.replace(getBaseUrl());
+                    }
+                    else {
+                        showStatusMsg(response.success, response.msg,4000)
+
+                    }
+
+                } else {
+                    showStatusMsg(false, "Something went wrong",4000);
+                }
+            },
+            failure: function (response) {
+                showStatusMsg(false, "Something went wrong",4000);
+            },
+            error: function (response) {
+                    showStatusMsg(false, "Something went wrong",4000);
+            }
+        });
+    }
+});
 

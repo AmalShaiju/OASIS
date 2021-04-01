@@ -189,6 +189,7 @@ namespace OASIS.Controllers
         public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,MiddleName,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email,RoleID,IsUser")] Employee employee, int customerTrue, int projectTrue, int bidTrue)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+            TempData["fromRole"] = "False";
 
             try
             {
