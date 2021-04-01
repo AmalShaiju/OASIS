@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.1": {
+      "bootstrap/2.3.2": {
+        "type": "package"
+      },
+      "bootstrap-toggle/2.2.2": {
+        "type": "package",
+        "dependencies": {
+          "bootstrap": "2.3.2"
+        }
+      },
       "MailKit/2.11.1": {
         "type": "package",
         "dependencies": {
@@ -3188,6 +3197,15 @@
       }
     },
     ".NETCoreApp,Version=v3.1/win-x86": {
+      "bootstrap/2.3.2": {
+        "type": "package"
+      },
+      "bootstrap-toggle/2.2.2": {
+        "type": "package",
+        "dependencies": {
+          "bootstrap": "2.3.2"
+        }
+      },
       "MailKit/2.11.1": {
         "type": "package",
         "dependencies": {
@@ -6432,6 +6450,46 @@
     }
   },
   "libraries": {
+    "bootstrap/2.3.2": {
+      "sha512": "LF309o8BZa2IzBfQHeQmweAXSpGefltx0fSN/CXdyMpU1vvLFzd4OHkQ/blq3rGET3p3h4AxAc3SRKr35DiSSw==",
+      "type": "package",
+      "path": "bootstrap/2.3.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Content/Content/bootstrap-responsive.css",
+        "Content/Content/bootstrap-responsive.min.css",
+        "Content/Content/bootstrap.css",
+        "Content/Content/bootstrap.min.css",
+        "Content/Scripts/bootstrap.js",
+        "Content/Scripts/bootstrap.min.js",
+        "Content/img/glyphicons-halflings-white.png",
+        "Content/img/glyphicons-halflings.png",
+        "bootstrap.2.3.2.nupkg.sha512",
+        "bootstrap.nuspec"
+      ]
+    },
+    "bootstrap-toggle/2.2.2": {
+      "sha512": "V72GUkeilTJ/rMfQi0jvGh9ILs43/GOx0CB7QkGAJrE+hSIiKruwu532CiidD/u9xwjMwNVvqQX24abs9qM5og==",
+      "type": "package",
+      "path": "bootstrap-toggle/2.2.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "bootstrap-toggle.2.2.2.nupkg.sha512",
+        "bootstrap-toggle.nuspec",
+        "content/Content/bootstrap-toggle.css",
+        "content/Content/bootstrap-toggle.min.css",
+        "content/Content/bootstrap2-toggle.css",
+        "content/Content/bootstrap2-toggle.min.css",
+        "content/Scripts/bootstrap-toggle.js",
+        "content/Scripts/bootstrap-toggle.min.js",
+        "content/Scripts/bootstrap-toggle.min.js.map",
+        "content/Scripts/bootstrap2-toggle.js",
+        "content/Scripts/bootstrap2-toggle.min.js",
+        "content/Scripts/bootstrap2-toggle.min.js.map"
+      ]
+    },
     "MailKit/2.11.1": {
       "sha512": "Z/MjVOicmCCLMgOQ3pr7MKQ9fsIrMt5qA2qqTO7Uux7Q6y4pYQFV4HBeJcc/oTjNxngiLzFlUoF9oSuQdFD/ig==",
       "type": "package",
@@ -13782,7 +13840,8 @@
       "Microsoft.EntityFrameworkCore.Sqlite >= 3.1.12",
       "Microsoft.EntityFrameworkCore.Tools >= 3.1.12",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 3.1.5",
-      "Newtonsoft.Json >= 12.0.3"
+      "Newtonsoft.Json >= 12.0.3",
+      "bootstrap-toggle >= 2.2.2"
     ]
   },
   "packageFolders": {
@@ -13870,6 +13929,10 @@
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[12.0.3, )"
+          },
+          "bootstrap-toggle": {
+            "target": "Package",
+            "version": "[2.2.2, )"
           }
         },
         "imports": [

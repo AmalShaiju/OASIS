@@ -573,3 +573,5 @@ C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Profiles\Index.cshtml.g.c
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Shared\_login.cshtml.g.cs
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\UserRoles\Create.cshtml.g.cs
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\UserRoles\Index.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\UserRoles\Edit.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\UserRoles\UserClaimsEdit.cshtml.g.cs

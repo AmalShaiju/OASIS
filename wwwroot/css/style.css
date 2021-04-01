@@ -456,7 +456,6 @@ header a {
     display: flex;
     width: 40%;
     height: 50%;
-    margin-left: 4%;
     border-radius: 18px;
     margin-top: 0.35%;
     border: 2px solid rgba(116,96,238,0.2);
@@ -806,4 +805,14 @@ tbody tr:nth-child(even) {
 .UserRoleList li {
     list-style: none;
 }
+/*User Roles*/
 
+/*Status Message*/
+.status-msg-bar {
+    position: absolute;
+    right: 1.7%;
+    top: 0.6%;
+    width: 30%;
+    z-index: 99;
+}
+/*Status Message*/

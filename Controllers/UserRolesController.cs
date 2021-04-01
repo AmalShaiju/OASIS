@@ -131,19 +131,26 @@ namespace OASIS.Controllers
                     var roleClaims = await _roleManager.GetClaimsAsync(role);
                     await _userManager.AddClaimsAsync(user, roleClaims.AsEnumerable());
 
-                    return Json(employeeName);
+                    var returnVal = new { success = true, employeeName= employeeName, msg = $"{employeeName} was successfully added to {roleName}" };
+                    return Json(returnVal);
+
                 }
+                else
+                {
+                    var returnVal = new { success = false, msg = $"Failed to add {employeeName} to {roleName}" };
+                    return Json(returnVal);
+
+                }
+
+
+
             }
             else
             {
-                return Json($"{employeeName} already exist in the role {roleName}");
+                var returnVal = new { success = false, msg = $"{employeeName} already exist in the role {roleName}" };
+
+                return Json(returnVal);
             }
-
-
-
-            return Json("Something Went Wrong, Try Again Later");
-
-
         }
 
         // POST: UserRoles/RemoveUserFromRole
@@ -165,15 +172,20 @@ namespace OASIS.Controllers
                     var roleClaims = await _roleManager.GetClaimsAsync(role);
                     await _userManager.RemoveClaimsAsync(user, roleClaims.AsEnumerable());
 
-                    return Json($"{employeeName} was successfuly removed to {roleName}");
+                    var returnVal = new { success = true, employeeName = employeeName, msg = $"{employeeName} was successfully removed from {roleName}" };
+                    return Json(returnVal);
+                }
+                else
+                {
+                    var returnVal = new { success = false, msg = $"Failed to remove {employeeName} from {roleName}" };
+                    return Json(returnVal);
                 }
             }
             else
             {
-                return Json($"{employeeName} does not exist in the role {roleName}");
+                var returnVal = new { success = false, msg = $"{employeeName}  does not exist in the role {roleName}" };
+                return Json(returnVal);
             }
-
-            return Json("Something Went Wrong, Try Again Later");
 
         }
 
@@ -235,13 +247,16 @@ namespace OASIS.Controllers
                         if (deleteResult.Succeeded)
                         {
                             var addResult = await _roleManager.AddClaimAsync(role, new Claim(claimType, claimValue));
-                            return Json("Role Privilage updated sucessfuly");
+
+                            var returnVal = new { success = true, msg = $"{roleName} permission updated successfully" };
+                            return Json(returnVal);
                         }
 
                     }
                     catch
                     {
-                        return Json("Could not update Role Privilage");
+                        var returnVal = new { success = false, msg = $"Failed to update {roleName} Privilage"};
+                        return Json(returnVal);
                     }
 
 
@@ -249,11 +264,12 @@ namespace OASIS.Controllers
             }
             catch
             {
-                return Json("Role does not have the selected Privilage");
+                var returnVal = new { success = false, msg = $"{roleName} does not have the selected Privilage" };
+                return Json(returnVal);
 
             }
 
-            return Json("Could not update Role Privilage");
+            return Json(new { success = false, msg = $"Something went wrong, Please try again later" });
 
 
         }
@@ -284,13 +300,16 @@ namespace OASIS.Controllers
                         if (deleteResult.Succeeded)
                         {
                             var addResult = await _userManager.AddClaimAsync(user, new Claim(claimType, claimValue));
-                            return Json("User privilage updated sucessfuly");
+
+                            var returnVal = new { success = true, msg = $"{userName} permissions updated successfully" };
+                            return Json(returnVal);
                         }
 
                     }
                     catch
                     {
-                        return Json("Could not update user privilage");
+                        var returnVal = new { success = false, msg = $"Failed to update {userName} permissions" };
+                        return Json(returnVal);
                     }
 
 
@@ -298,11 +317,12 @@ namespace OASIS.Controllers
             }
             catch
             {
-                return Json("Role does not have the selected Privilage");
+                var returnVal = new { success = false, msg = $"{userName} does not contain selected permission" };
+                return Json(returnVal);
 
             }
 
-            return Json("Could not update user privilage");
+            return Json(new { success = false, msg = $"Something went Wrong, please try again later" });
 
 
         }
@@ -311,11 +331,11 @@ namespace OASIS.Controllers
         {
             List<PageClaims> allClaims = new List<PageClaims>();
 
-            PageClaims empClamis = new PageClaims { PageName = "Employee", Claims = claims.Where(p => p.Type.Contains("Employee")).Select(p => p).ToList(),RoleName= roleName };
-            PageClaims cusClamis = new PageClaims { PageName = "Customer", Claims = claims.Where(p => p.Type.Contains("Customer")).Select(p => p).ToList(), RoleName = roleName };
-            PageClaims projectClamis = new PageClaims { PageName = "Project", Claims = claims.Where(p => p.Type.Contains("Project")).Select(p => p).ToList(), RoleName = roleName };
-            PageClaims bidClamis = new PageClaims { PageName = "Bid", Claims = claims.Where(p => p.Type.Contains("Bid")).Select(p => p).ToList(), RoleName = roleName };
-            PageClaims productClamis = new PageClaims { PageName = "Product", Claims = claims.Where(p => p.Type.Contains("Product")).Select(p => p).ToList(), RoleName = roleName };
+            PageClaims empClamis = new PageClaims { PageName = "Employee", Claims = claims.Where(p => p.Type.Contains("Employee")).Select(p => p).OrderBy(p => p.Type).ToList(),RoleName= roleName };
+            PageClaims cusClamis = new PageClaims { PageName = "Customer", Claims = claims.Where(p => p.Type.Contains("Customer")).Select(p => p).OrderBy(p => p.Type).ToList(), RoleName = roleName };
+            PageClaims projectClamis = new PageClaims { PageName = "Project", Claims = claims.Where(p => p.Type.Contains("Project")).Select(p => p).OrderBy(p => p.Type).ToList(), RoleName = roleName };
+            PageClaims bidClamis = new PageClaims { PageName = "Bid", Claims = claims.Where(p => p.Type.Contains("Bid")).Select(p => p).OrderBy(p => p.Type).ToList(), RoleName = roleName };
+            PageClaims productClamis = new PageClaims { PageName = "Product", Claims = claims.Where(p => p.Type.Contains("Product")).Select(p => p).OrderBy(p => p.Type).ToList(), RoleName = roleName };
 
             allClaims.Add(empClamis);
             allClaims.Add(cusClamis);

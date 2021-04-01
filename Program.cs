@@ -24,17 +24,14 @@ namespace OASIS
 
                 try
                 {
-                    var identityContext = services.GetRequiredService<ApplicationDbContext>();
-                    identityContext.Database.Migrate();
-                    IdentitySeedData.SeedAsync(identityContext, services).Wait();
-
 
                     var context = services.GetRequiredService<OasisContext>();
                     context.Database.Migrate();
                     OASeedData.Initialize(services);
 
-                   
-
+                    var identityContext = services.GetRequiredService<ApplicationDbContext>();
+                    identityContext.Database.Migrate();
+                    IdentitySeedData.SeedAsync(identityContext, services).Wait();
 
                 }
                 catch (Exception ex)

@@ -208,7 +208,7 @@ namespace OASIS.Data
             {
                 IdentityUser user = new IdentityUser
                 {
-                    UserName = "admin1@outlook.com",
+                    UserName = "Admin1",
                     Email = "admin1@outlook.com"
                 };
 

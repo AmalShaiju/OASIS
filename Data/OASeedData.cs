@@ -58,18 +58,6 @@ namespace OASIS.Data
                     },
                     new Role
                     {
-                        Name = "Production Worker",
-                        LabourCostPerHr = Convert.ToDecimal(18.0),
-                        LabourPricePerHr = Convert.ToDecimal(30.0)
-                    },
-                    new Role
-                    {
-                        Name = "Equipment Operator",
-                        LabourCostPerHr = Convert.ToDecimal(45.0),
-                        LabourPricePerHr = Convert.ToDecimal(65.0)
-                    },
-                    new Role
-                    {
                         Name = "Botanist",
                         LabourCostPerHr = Convert.ToDecimal(50.0),
                         LabourPricePerHr = Convert.ToDecimal(75.0)

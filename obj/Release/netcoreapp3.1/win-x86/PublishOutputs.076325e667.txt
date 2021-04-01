@@ -8,6 +8,7 @@ C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\image\images.png
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\accesiblity.js
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\addProducts.js
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\addRoles.js
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\addUserToRole.js
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\budgetLock.js
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\getProduct.js
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\headerMenu.js
@@ -17,6 +18,7 @@ C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\moreOption.js
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\multiselect.js
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\refreshDDL.js
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\site.js
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\updateClaim.js
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
