@@ -335,6 +335,9 @@ namespace OASIS.Data.OASISMigrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(50);
 
+                    b.Property<bool>("IsUser")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -343,6 +346,9 @@ namespace OASIS.Data.OASISMigrations
                     b.Property<string>("MiddleName")
                         .HasColumnType("TEXT")
                         .HasMaxLength(50);
+
+                    b.Property<string>("Password")
+                        .HasColumnType("TEXT");
 
                     b.Property<long>("Phone")
                         .HasColumnType("INTEGER");
@@ -365,6 +371,9 @@ namespace OASIS.Data.OASISMigrations
                         .HasMaxLength(256);
 
                     b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserName")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");

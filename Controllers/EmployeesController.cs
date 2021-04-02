@@ -2,31 +2,42 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OASIS.Data;
 using OASIS.Models;
 using OASIS.Utilities;
+using OASIS.ViewModels;
 
 namespace OASIS.Controllers
 {
     public class EmployeesController : Controller
     {
+        private readonly ApplicationDbContext _applicationContext;
         private readonly OasisContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
-        public EmployeesController(OasisContext context)
+        public EmployeesController(ApplicationDbContext applicationContext, OasisContext context, UserManager<IdentityUser> userManager, IEmailSender emailSender)
         {
+            _applicationContext = applicationContext;
             _context = context;
+            _userManager = userManager;
+            _emailSender = emailSender;
         }
 
         // GET: Employees
+        [Authorize(Policy = "EmployeeViewPolicy")]
         public async Task<IActionResult> Index(string SearchName, string SearchEmail, int? RoleID,
             string actionButton, int? page, int? pageSizeID, string sortDirection = "asc", string sortField = "Employee")
         {
             var employee = from p in _context.Employees
-                           .Include(p=> p.Role)
-                          select p;
+                           .Include(p => p.Role)
+                           select p;
 
             ViewData["RoleID"] = new SelectList(_context
                  .Roles
@@ -85,7 +96,7 @@ namespace OASIS.Controllers
                         .ThenByDescending(p => p.FirstName);
                 }
             }
-           
+
             else //Sorting by Patient Name
             {
                 if (sortDirection == "asc")
@@ -124,7 +135,7 @@ namespace OASIS.Controllers
 
             return View(pagedData);
 
-        
+
         }
 
         // GET: Employees/Details/5
@@ -152,14 +163,17 @@ namespace OASIS.Controllers
         }
 
         // GET: Employees/Create
+        [Authorize(Policy = "EmployeeCreatePolicy")]
         public IActionResult Create(int? roleID)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+            if (!TempData.ContainsKey("fromRole"))
+                TempData["fromRole"] = "False";
+
             Employee employee = new Employee();
-            if(roleID != null)
+            if (roleID != null)
             {
                 employee.RoleID = (int)roleID;
-
             }
             PopulateDropDownLists(employee);
             return View();
@@ -170,16 +184,34 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,MiddleName,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email,RoleID")] Employee employee, int customerTrue, int projectTrue, int bidTrue)
+        [Authorize(Policy = "EmployeeCreatePolicy")]
+
+        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,MiddleName,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email,RoleID,IsUser")] Employee employee, int customerTrue, int projectTrue, int bidTrue)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+            TempData["fromRole"] = "False";
 
             try
             {
                 if (ModelState.IsValid)
                 {
                     _context.Add(employee);
+
+                    if (employee.IsUser)
+                    {
+                        try
+                        {
+                            employee.UserName = employee.SetUserName;
+                            UpdateUserAccount(employee);
+                        }
+                        catch
+                        {
+                            ModelState.AddModelError("", "Employee User Account Could not be created");
+                        }
+                    }
+
                     await _context.SaveChangesAsync();
+
                     //return RedirectToAction(nameof(Index));
                     if (customerTrue == 1)
                     {
@@ -214,6 +246,8 @@ namespace OASIS.Controllers
         }
 
         // GET: Employees/Edit/5
+        [Authorize(Policy = "EmployeeEditPolicy")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -237,6 +271,8 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "EmployeeEditPolicy")]
+
         public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
@@ -249,11 +285,13 @@ namespace OASIS.Controllers
             }
             _context.Entry(employeeToUpdate).Property("RowVersion").OriginalValue = RowVersion;
             if (await TryUpdateModelAsync<Employee>(employeeToUpdate, "", p => p.FirstName, p => p.LastName, p => p.MiddleName, p =>
-                 p.AddressLineOne, p => p.AddressLineTwo, p => p.Province, p => p.Country, p => p.City, p => p.Phone, p => p.Email, p => p.RoleID))
+                 p.AddressLineOne, p => p.AddressLineTwo, p => p.Province, p => p.Country, p => p.City, p => p.Phone, p => p.Email, p => p.RoleID, p => p.Password, p => p.IsUser))
             {
                 try
                 {
+                    UpdateUserAccount(employeeToUpdate);
                     await _context.SaveChangesAsync();
+
                     //return RedirectToAction(nameof(Index));
                     return RedirectToAction("Details", new { employeeToUpdate.ID });
 
@@ -328,9 +366,9 @@ namespace OASIS.Controllers
                     {
                         ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                     }
-                }
+                } 
 
-             
+
             }
             PopulateDropDownLists(employeeToUpdate);
             return View(employeeToUpdate);
@@ -383,7 +421,7 @@ namespace OASIS.Controllers
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                 }
             }
-         
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -396,10 +434,76 @@ namespace OASIS.Controllers
         private void PopulateDropDownLists(Employee employee = null)
         {
             var dQuery = from d in _context.Roles
-                         orderby  d.Name
+                         orderby d.Name
                          select d;
             ViewData["RoleID"] = new SelectList(dQuery, "ID", "Name", employee?.RoleID);
         }
+
+        private async void UpdateUserAccount(Employee employee)
+        {
+            if (employee.IsUser)
+            {
+                // check if user exist in db
+                if (_userManager.FindByEmailAsync(employee.Email).Result == null && _userManager.FindByNameAsync(employee.UserName).Result == null)
+                {
+                    try
+                    {
+                        // Create a new user
+                        IdentityUser user = new IdentityUser
+                        {
+                            UserName = employee.UserName,
+                            Email = employee.Email
+                        };
+
+                        await _userManager.CreateAsync(user, "password");
+
+                        var msg = new EmailMessage()
+                        {
+                            ToAddress = user.Email,
+                            Subject = "Set up user account for OASIS",
+                            Content = "<p> Congragulation You have been invited to set up an account with OASIS.</P>" +
+                                  "<p>Follow the link given below to get started</p>" +
+                                  "<a>http://oasis-analytics.azurewebsites.net/</a>" +
+                                  $"<p>UserName : {user.UserName}</p>" +
+                                  $"<p>Password : password </p>"
+                        };
+
+                        await _emailSender.SendEmailAsync(msg.ToAddress, msg.Subject, msg.Content);
+                    }
+                    catch
+                    {
+                        ModelState.AddModelError("IsUser", "User Creation Failed");
+                    }
+
+
+                }
+                else
+                {
+                    try
+                    {
+                        // Update user password
+                        IdentityUser user = await _userManager.FindByEmailAsync(employee.Email);
+
+                        // update user password
+                        var passResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                        await _userManager.ResetPasswordAsync(user, passResetToken, employee.Password);
+                        await _userManager.UpdateAsync(user);
+
+                        _applicationContext.SaveChanges();
+                    }
+                    catch
+                    {
+                        ModelState.AddModelError("Password", "User Updation Failed");
+                    }
+
+
+                }
+            }
+
+
+        }
+
+    
 
     }
 }

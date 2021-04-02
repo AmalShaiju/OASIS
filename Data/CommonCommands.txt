@@ -1,6 +1,7 @@
 ﻿Add-Migration -Context OasisContext -o Data\OASISMigrations Initial
 Update-Database -Context OasisContext 
 Update-Database -Context ApplicationDbContext
+Add-Migration -Context ApplicationDbContext -o Data\IdentityMigration Initial
 
 // Customer Auditing Fields Updation
              migrationBuilder.Sql(

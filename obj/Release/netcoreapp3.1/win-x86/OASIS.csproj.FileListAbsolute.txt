@@ -562,3 +562,16 @@ C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\ProductTypes\Edit.cshtml.
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\ProductTypes\Index.cshtml.g.cs
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Shared\_CreateMenu.cshtml.g.cs
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Shared\_DetailsMenu.cshtml.g.cs
+C:\OASIS\bin\Release\netcoreapp3.1\win-x86\MailKit.dll
+C:\OASIS\bin\Release\netcoreapp3.1\win-x86\MimeKit.dll
+C:\OASIS\bin\Release\netcoreapp3.1\win-x86\BouncyCastle.Crypto.dll
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Bids\BidApprovals.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Bids\BidLabour.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Bids\BidProduct.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Profiles\Edit.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Profiles\Index.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Shared\_login.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\UserRoles\Create.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\UserRoles\Index.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\UserRoles\Edit.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\UserRoles\UserClaimsEdit.cshtml.g.cs

@@ -168,7 +168,10 @@ namespace OASIS.Data.OASISMigrations
                     Country = table.Column<string>(maxLength: 100, nullable: false),
                     Phone = table.Column<long>(nullable: false),
                     Email = table.Column<string>(maxLength: 255, nullable: false),
-                    RoleID = table.Column<int>(nullable: false)
+                    RoleID = table.Column<int>(nullable: false),
+                    UserName = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true),
+                    IsUser = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -453,8 +456,6 @@ namespace OASIS.Data.OASISMigrations
                 principalTable: "Approvals",
                 principalColumn: "ID",
                 onDelete: ReferentialAction.Restrict);
-
-            ExtraMigration.Steps(migrationBuilder);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

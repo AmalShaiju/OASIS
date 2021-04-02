@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ namespace OASIS.Controllers
         }
 
         // GET: Products
+        [Authorize(Policy = "ProductViewPolicy")]
+
         public async Task<IActionResult> Index(string SearchProdCode, string SearchProdSize ,int? ProductTypeID,
             int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "Price")
         {
@@ -166,6 +169,8 @@ namespace OASIS.Controllers
         }
 
         // GET: Products/Create
+        [Authorize(Policy = "ProductCreatePolicy")]
+
         public IActionResult Create(string returnURL, int? productTypeID)
         {
             Product product = new Product();
@@ -192,6 +197,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "ProductCreatePolicy")]
         public async Task<IActionResult> Create([Bind("ID,Code,Description,size,Price,ProductTypeID")] Product product ,string returnURL, int employeeTrue, int customerTrue, int projectTrue, int bidTrue)
         {
             ViewData["returnURL"] = returnURL;
@@ -249,6 +255,8 @@ namespace OASIS.Controllers
         }
 
         // GET: Products/Edit/5
+        [Authorize(Policy = "ProductEditPolicy")]
+
         public async Task<IActionResult> Edit(int? id ,string returnURL)
         {
             if (id == null)
@@ -277,6 +285,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "ProductEditPolicy")]
         public async Task<IActionResult> Edit(int id, string returnURL ,Byte[] RowVersion)
         {
             ViewData["returnURL"] = returnURL;

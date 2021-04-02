@@ -251,3 +251,13 @@ C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\Shared\_DetailsMenu.cshtml.g.cs
 C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\Bids\BidProduct.cshtml.g.cs
 C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\Bids\BidLabour.cshtml.g.cs
 C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\Bids\BidApprovals.cshtml.g.cs
+C:\OASIS\bin\Release\netcoreapp3.1\MailKit.dll
+C:\OASIS\bin\Release\netcoreapp3.1\MimeKit.dll
+C:\OASIS\bin\Release\netcoreapp3.1\BouncyCastle.Crypto.dll
+C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\Profiles\Edit.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\Profiles\Index.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\Shared\_login.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\UserRoles\Create.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\UserRoles\Index.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\UserRoles\Edit.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\Razor\Views\UserRoles\UserClaimsEdit.cshtml.g.cs

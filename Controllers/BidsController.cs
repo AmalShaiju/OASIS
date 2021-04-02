@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,8 @@ namespace OASIS.Controllers
         }
 
         // GET: Bids
+        [Authorize(Policy = "BidViewPolicy")]
+
         public async Task<IActionResult> Index(string SearchProjectName, string BidAmountBelow, string BidAmountAbove,
             string EstStartDateAbove, string EstStartDateBelow, string EstFinishDateBelow, string EstFinishDateAbove,
             int? BidstatusID, int? DesignerStatusID, int? ClientStatusID, int? DesignerID, int? SalesAsscID,
@@ -334,9 +337,14 @@ namespace OASIS.Controllers
         }
 
         // GET: Bids/Create
+        [Authorize(Policy = "BidCreatePolicy")]
+
         public IActionResult Create(int? projectID)
         {
             var bid = new Bid();
+            if (!TempData.ContainsKey("fromProject"))
+                TempData["fromProject"] = "False";
+
             if (projectID != null)
             {
                 bid.ProjectID = (int)projectID;
@@ -353,6 +361,8 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "BidCreatePolicy")]
+
         public async Task<IActionResult> Create([Bind("ID,DateCreated,ProjectStartDate,ProjectEndDate,EstBidStartDate,Budget,EstBidEndDate,Comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
             int DesignerStatusID, int ClientStatusID, string approvalComment, string ProductsAssigned, string RolesAssigned, int employeeTrue, int customerTrue, int projectTrue)
         {
@@ -396,6 +406,8 @@ namespace OASIS.Controllers
         }
 
         // GET: Bids/Edit/5
+        [Authorize(Policy = "BidEditPolicy")]
+
         public async Task<IActionResult> Edit(int? id)
         {
 
@@ -428,6 +440,8 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "BidEditPolicy")]
+
         public async Task<IActionResult> Edit(int id, int DesignerStatusID, int ClientStatusID, string approvalComment, string ProductsAssigned,
             string RolesAssigned, Byte[] RowVersion)
         {

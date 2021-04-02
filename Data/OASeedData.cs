@@ -49,37 +49,25 @@ namespace OASIS.Data
                 if (!context.Roles.Any())
                 {
                     context.Roles.AddRange(
-                     new Role
-                     {
-                         Name = "Designer",
-                         LabourCostPerHr = Convert.ToDecimal(40.0),
-                         LabourPricePerHr = Convert.ToDecimal(65.0)
-                     },
 
-                     new Role
-                     {
-                         Name = "Production Worker",
-                         LabourCostPerHr = Convert.ToDecimal(18.0),
-                         LabourPricePerHr = Convert.ToDecimal(30.0)
-                     },
-                     new Role
-                     {
-                         Name = "Equipment Operator",
-                         LabourCostPerHr = Convert.ToDecimal(45.0),
-                         LabourPricePerHr = Convert.ToDecimal(65.0)
-                     },
-                     new Role
-                     {
-                         Name = "Botanist",
-                         LabourCostPerHr = Convert.ToDecimal(50.0),
-                         LabourPricePerHr = Convert.ToDecimal(75.0)
-                     },
-                      new Role
-                      {
-                          Name = "Sales Associate",
-                          LabourCostPerHr = Convert.ToDecimal(50.0),
-                          LabourPricePerHr = Convert.ToDecimal(75.0)
-                      }
+                    new Role
+                    {
+                        Name = "Designer",
+                        LabourCostPerHr = Convert.ToDecimal(40.0),
+                        LabourPricePerHr = Convert.ToDecimal(65.0)
+                    },
+                    new Role
+                    {
+                        Name = "Botanist",
+                        LabourCostPerHr = Convert.ToDecimal(50.0),
+                        LabourPricePerHr = Convert.ToDecimal(75.0)
+                    },
+                    new Role
+                    {
+                        Name = "Sales Associate",
+                        LabourCostPerHr = Convert.ToDecimal(50.0),
+                        LabourPricePerHr = Convert.ToDecimal(75.0)
+                    }
                 );
                     context.SaveChanges();
                 }
@@ -104,7 +92,8 @@ namespace OASIS.Data
                             Country = countryList[random.Next(countryList.Count())],
                             Phone = 1234567890,
                             Email = _firstName[random.Next(_firstName.Count())] + _lastName[random.Next(_lastName.Count())] + "@outlook.com",
-                            RoleID = roleID[random.Next(roleID.Count())]
+                            RoleID = roleID[random.Next(roleID.Count())],
+                            IsUser = true,
                         };
 
                         try
@@ -783,7 +772,7 @@ namespace OASIS.Data
                                 EstAmount = 0,
                                 EstBidStartDate = DateTime.Today.AddDays(random.Next(range)),
                                 EstBidEndDate = DateTime.Today.AddDays(random.Next(range)),
-                                Comments = baconNotes[random.Next(5)],
+                                Comments = baconNotes[random.Next(4)],
                                 DesignerID = designerID[random.Next(designerCount)],
                                 SalesAsscociateID = salesAssociateID[random.Next(salesAssociateCount)],
                                 ProjectID = projectID[random.Next(ProjectCount)],
@@ -887,7 +876,7 @@ namespace OASIS.Data
 
                 Thread.Sleep(2000);
                 //loop over bids 
-                if (context.BidProducts.Any())
+                if (context.Bids.Where(p => p.EstAmount == 0).Any())
                 {
                     var allBids = context.Bids.ToList();
 
