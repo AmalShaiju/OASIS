@@ -530,7 +530,7 @@ namespace OASIS.Controllers
                     }
                     else
                     {
-                        var returnVal = new { success = true, msg = $"There is no user registered with the email {userEmail}" };
+                        var returnVal = new { success = false, msg = $"There is no user registered with the email {userEmail}" };
 
                         return (Json(returnVal));
                     }
