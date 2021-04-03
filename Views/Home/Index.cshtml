@@ -1,9 +1,250 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<OASIS.Models.Project>
+@inject OASIS.Data.OasisContext _context
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    <div class="card text-center col-6 ">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a style="width:100%;" class="nav-link active" data-toggle="pill" data-target="#bids-tab" role="tab">Bids</a>
+                </li>
+                <li class="nav-item">
+                    <a style="width:100%;" class="nav-link" data-toggle="pill" data-target="#announcement-tab" role="tab">Announcements</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="card-body tab-pane fade show active p-0" id="bids-tab" role="tabpanel">
+                @if (Model != null)
+                {
+                    <table class="table table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Project Name</th>
+                                <th scope="col">Customer</th>
+                                <th scope="col">Latest Bid</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var project in Model)
+                            {
+                                <tr style="background:#343a40">
+                                    <th scope="row">@project.Name</th>
+                                    <td>@project.Customer.OrgName</td>
+                                    <td>@project.Bids.OrderByDescending(p => p.DateCreated).First().DateCreated.ToShortDateString()</td>
+                                    <td>
+                                        <button style="height:28px" class="btn btn-outline-light p-0" data-toggle="collapse" data-target="#@project.Name[0]@project.ID" aria-expanded="true">
+                                            <span class="material-icons md-36">
+                                                expand_more
+                                            </span>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr id="@project.Name[0]@project.ID" class="collapse">
+                                    <td colspan="4">
+                                        <table class="table table-light">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Creation Date</th>
+                                                    <th scope="col">Estimated Amount</th>
+                                                    <th scope="col">Status</th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var bid in project.Bids.OrderByDescending(p => p.DateCreated))
+                                                {
+                                                    <tr>
+                                                        <th scope="row">@bid.DateCreated.ToShortDateString()</th>
+                                                        <td>$@bid.EstAmount.ToString("0.##")</td>
+                                                        <td>True</td>
+                                                        <td>
+                                                            <a asp-controller="Bids" asp-action="Edit" asp-route-id="@bid.ID" style="height:28px; width:24%" class="btn btn-outline-primary p-0 mr-3">
+                                                                <span class="material-icons">
+                                                                    edit
+                                                                </span>
+                                                            </a>
+                                                            <a asp-controller="Bids" asp-action="Details" asp-route-id="@bid.ID" style="height:28px; width:24%" class="btn btn-outline-info p-0">
+                                                                <span class="material-icons">
+                                                                    info
+                                                                </span>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+
+
+                            }
+
+                        </tbody>
+                    </table>
+                }
+            </div>
+            <div class="card tab-pane fade" id="announcement-tab" role="tabpanel">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card text-center col-6 p-0">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a style="width:100%;" class="nav-link active" data-toggle="pill" data-target="#overView-tab">OverView </a>
+                </li>
+                <li class="nav-item">
+                    <a style="width:100%" class="nav-link" data-toggle="pill" data-target="#lookup-tab">Lookup's</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="tab-content">
+
+            <div class="card-body tab-pane fade show active p-0" id="overView-tab" role="tabpanel">
+
+                <div class="row ml-5 pr-5 pl-1 mt-5">
+                    <div class="col-5 mr-4 p-0 row">
+                        <div class="col-4 p-0">
+                            <label class="form-control">From:</label>
+
+                        </div>
+                        <div class="col-8 p-0">
+                            <input class="form-control p-0" type="date" name="StartDate">
+                        </div>
+                    </div>
+                    <div class="col-5 mr-5 p-0 row">
+                        <div class="col-4 p-0">
+                            <label class="form-control">From:</label>
+
+                        </div>
+                        <div class="col-8 p-0">
+                            <input class="form-control p-0" type="date" name="EndDate">
+                        </div>
+                    </div>
+
+                    <div class="col-1">
+                        <button class="btn btn-success">GO</button>
+                    </div>
+                </div>
+
+                <div class="row ml-5">
+                    <div class="card col-5 mt-5  pr-0" style="width: 18rem;">
+                        <div class="card-header">
+                            Overview
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <span style="float:left">Approved</span>
+                                <span style="float:right" class="badge badge-pill badge-success">11</span>
+                            </li>
+                            <li class="list-group-item">
+                                <span style="float:left">Disapproved</span>
+                                <span style="float:right" class="badge badge-pill badge-danger">22</span>
+                            </li>
+                            <li class="list-group-item">
+                                <span style="float:left">RequiresApproval</span>
+                                <span style="float:right" class="badge badge-pill badge-warning">1</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card col-5 ml-5 mt-5  pr-0" style="width: 18rem;">
+                        <div class="card-header">
+                            Bid Status
+                        </div>
+                        <ul class="list-group" style="overflow-y:scroll;height: 148px;">
+                            <li class="list-group-item">
+                                <span style="float:left">Stopped</span>
+                                <span style="float:right" class="badge badge-pill badge-success">11</span>
+                            </li>
+                            <li class="list-group-item">
+                                <span style="float:left">Finished</span>
+                                <span style="float:right" class="badge badge-pill badge-danger">22</span>
+                            </li>
+                            <li class="list-group-item">
+                                <span style="float:left">In Progress</span>
+                                <span style="float:right" class="badge badge-pill badge-warning">1</span>
+                            </li>
+                            <li class="list-group-item">
+                                <span style="float:left">Problem</span>
+                                <span style="float:right" class="badge badge-pill badge-warning">1</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card col-5 mt-5  pr-0" style="width: 18rem;">
+                        <div class="card-header">
+                            Start Date Approching
+                        </div>
+                        <ul class="list-group" style="overflow-y:scroll;height: 148px;">
+                            <li class="list-group-item">
+                                <span style="float:left">A&W Canada</span>
+                                <span style="float:right" class="badge badge-pill badge-warning">2020-01-12</span>
+                            </li>
+                            <li class="list-group-item">
+                                <span style="float:left">Alpha</span>
+                                <span style="float:right" class="badge badge-pill badge-warning">2020-01-12</span>
+                            </li>
+                            <li class="list-group-item">
+                                <span style="float:left">BestBuy</span>
+                                <span style="float:right" class="badge badge-pill badge-warning">2020-01-12</span>
+                            </li>
+                            <li class="list-group-item">
+                                <span style="float:left">Mall</span>
+                                <span style="float:right" class="badge badge-pill badge-warning">2020-01-12</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card col-5 ml-5 mt-5 pr-0" style="width: 18rem;">
+                        <div class="card-header">
+                            Finish Date Approching
+                        </div>
+                        <ul class="list-group" style="overflow-y:scroll;height: 148px;">
+                            <li class="list-group-item">
+                                <span style="float:left">A&W Canada</span>
+                                <span style="float:right" class="badge badge-pill badge-success">2020-01-12</span>
+                            </li>
+                            <li class="list-group-item">
+                                <span style="float:left">Alpha</span>
+                                <span style="float:right" class="badge badge-pill badge-success">2020-01-12</span>
+                            </li>
+                            <li class="list-group-item">
+                                <span style="float:left">BestBuy</span>
+                                <span style="float:right" class="badge badge-pill badge-success">2020-01-12</span>
+                            </li>
+                            <li class="list-group-item">
+                                <span style="float:left">Mall</span>
+                                <span style="float:right" class="badge badge-pill badge-success">2020-01-12</span>
+                            </li>
+                        </ul>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+            <div class="card tab-pane fade" id="lookup-tab" role="tabpanel">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
 </div>
-

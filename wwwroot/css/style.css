@@ -15,7 +15,7 @@
 
 /*Bootstrap*/
 .card-header {
-    height: 70px;
+   /* height: 70px;*/
     background: rgba(184,175,247,1.2);
 }
 
@@ -221,6 +221,7 @@ quickLink-tab {
             }
 
 /*NAVIGATION*/
+
 /*INDEX*/
 tr {
     background-color: white;
