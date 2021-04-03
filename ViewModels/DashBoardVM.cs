@@ -13,7 +13,11 @@ namespace OASIS.ViewModels
             this.ApprovedBids = new List<Bid>();
             this.DisApprovedBids = new List<Bid>();
             this.ReqApprovalBids = new List<Bid>();
+
             this.Projects = new List<Project>();
+            this.StartApprochBids = new List<ProjectBidDateVM>();
+            this.EndApprochBids = new List<ProjectBidDateVM>();
+
             this.BidBidStatusVMs = new List<BidBidStatusVM>();
         }
 
@@ -21,7 +25,9 @@ namespace OASIS.ViewModels
        public List<Bid> ApprovedBids { get; set; }
        public List<Bid> DisApprovedBids { get; set; }
        public List<Bid> ReqApprovalBids { get; set; }
-       public List<BidBidStatusVM> BidBidStatusVMs { get; set; }
+       public List<ProjectBidDateVM> StartApprochBids { get; set; }
+       public List<ProjectBidDateVM> EndApprochBids { get; set; }
+        public List<BidBidStatusVM> BidBidStatusVMs { get; set; }
 
     }
 }

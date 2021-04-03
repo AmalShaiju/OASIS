@@ -9,7 +9,7 @@ using OASIS.Data;
 namespace OASIS.Data.OASISMigrations
 {
     [DbContext(typeof(OasisContext))]
-    [Migration("20210327203419_Initial")]
+    [Migration("20210403150907_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -107,6 +107,9 @@ namespace OASIS.Data.OASISMigrations
 
                     b.Property<DateTime>("EstBidStartDate")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFinal")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("ProjectEndDate")
                         .HasColumnType("TEXT");

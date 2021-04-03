@@ -76,6 +76,8 @@ namespace OASIS.Models
         public int SalesAsscociateID { get; set; }
         public virtual Employee SalesAsscociate { get; set; }
 
+        public bool IsFinal { get; set; }
+
 
         [Required(ErrorMessage = "Please select a project")]
         [Display(Name = "Project")]

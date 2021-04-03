@@ -9,6 +9,7 @@ namespace OASIS.ViewModels
     public class BidBidStatusVM
     {
         public string BidStatusName { get; set; }
+        public int  BidStatusID{ get; set; }
         public List<Bid> Bids { get; set; }
     }
 }

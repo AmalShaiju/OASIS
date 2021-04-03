@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OASIS.Models.Project>
+﻿@model OASIS.ViewModels.DashBoardVM
 @inject OASIS.Data.OasisContext _context
 
 <div class="row">
@@ -15,7 +15,7 @@
         </div>
         <div class="tab-content">
             <div class="card-body tab-pane fade show active p-0" id="bids-tab" role="tabpanel">
-                @if (Model != null)
+                @if (Model.Projects.Count() != 0)
                 {
                     <table class="table table-dark">
                         <thead>
@@ -27,7 +27,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var project in Model)
+                            @foreach (var project in Model.Projects)
                             {
                                 <tr style="background:#343a40">
                                     <th scope="row">@project.Name</th>
@@ -54,12 +54,29 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach (var bid in project.Bids.OrderByDescending(p => p.DateCreated))
+                                                @foreach (var bid in project.Bids.Where(p => p.DesignerID == 1).OrderByDescending(p => p.DateCreated))
                                                 {
                                                     <tr>
                                                         <th scope="row">@bid.DateCreated.ToShortDateString()</th>
                                                         <td>$@bid.EstAmount.ToString("0.##")</td>
-                                                        <td>True</td>
+                                                        <td>
+                                                            @{ if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID)
+                                                                {
+                                                                    <span class="dot success-dot"></span>
+
+                                                                }
+
+                                                                else if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID || bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID)
+                                                                {
+                                                                    <span class="dot danger-dot"></span>
+                                                                }
+
+                                                                else
+                                                                {
+                                                                    <span class="dot warning-dot"></span>
+                                                                }
+                                                            }
+                                                        </td>
                                                         <td>
                                                             <a asp-controller="Bids" asp-action="Edit" asp-route-id="@bid.ID" style="height:28px; width:24%" class="btn btn-outline-primary p-0 mr-3">
                                                                 <span class="material-icons">
@@ -85,6 +102,13 @@
                         </tbody>
                     </table>
                 }
+                else
+                {
+                    <div class="list-group-item">
+                        <span style="float:left">No Projects To Show</span>
+                        <span style="float:right" class="badge badge-pill badge-danger">0</span>
+                    </div>
+                }
             </div>
             <div class="card tab-pane fade" id="announcement-tab" role="tabpanel">
                 <h5 class="card-title">Special title treatment</h5>
@@ -109,50 +133,84 @@
         <div class="tab-content">
 
             <div class="card-body tab-pane fade show active p-0" id="overView-tab" role="tabpanel">
+                @if (Model.Projects.Count() != 0)
+                {
+                    <div class="row ml-5 pr-5 pl-1 mt-5">
+                        <div class="col-5 mr-4 p-0 row">
+                            <div class="col-4 p-0">
+                                <label class="form-control">From:</label>
 
-                <div class="row ml-5 pr-5 pl-1 mt-5">
-                    <div class="col-5 mr-4 p-0 row">
-                        <div class="col-4 p-0">
-                            <label class="form-control">From:</label>
-
+                            </div>
+                            <div class="col-8 p-0">
+                                <input class="form-control p-0" type="date" name="StartDate">
+                            </div>
                         </div>
-                        <div class="col-8 p-0">
-                            <input class="form-control p-0" type="date" name="StartDate">
+                        <div class="col-5 mr-5 p-0 row">
+                            <div class="col-4 p-0">
+                                <label class="form-control">From:</label>
+
+                            </div>
+                            <div class="col-8 p-0">
+                                <input class="form-control p-0" type="date" name="EndDate">
+                            </div>
+                        </div>
+
+                        <div class="col-1">
+                            <button class="btn btn-success">GO</button>
                         </div>
                     </div>
-                    <div class="col-5 mr-5 p-0 row">
-                        <div class="col-4 p-0">
-                            <label class="form-control">From:</label>
-
-                        </div>
-                        <div class="col-8 p-0">
-                            <input class="form-control p-0" type="date" name="EndDate">
-                        </div>
-                    </div>
-
-                    <div class="col-1">
-                        <button class="btn btn-success">GO</button>
-                    </div>
-                </div>
-
+                }
                 <div class="row ml-5">
                     <div class="card col-5 mt-5  pr-0" style="width: 18rem;">
                         <div class="card-header">
                             Overview
                         </div>
                         <ul class="list-group">
-                            <li class="list-group-item">
-                                <span style="float:left">Approved</span>
-                                <span style="float:right" class="badge badge-pill badge-success">11</span>
-                            </li>
-                            <li class="list-group-item">
-                                <span style="float:left">Disapproved</span>
-                                <span style="float:right" class="badge badge-pill badge-danger">22</span>
-                            </li>
-                            <li class="list-group-item">
-                                <span style="float:left">RequiresApproval</span>
-                                <span style="float:right" class="badge badge-pill badge-warning">1</span>
-                            </li>
+                            @if (Model.ApprovedBids.Count() != 0)
+                            {
+                                <li class="list-group-item">
+                                    <span style="float:left">Approved</span>
+                                    <span style="float:right" class="badge badge-pill badge-success">@Model.ApprovedBids.Count()</span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item">
+                                    <span style="float:left">Approved</span>
+                                    <span style="float:right" class="badge badge-pill badge-success">0</span>
+                                </li>
+                            }
+
+                            @if (Model.DisApprovedBids.Count() != 0)
+                            {
+                                <li class="list-group-item">
+                                    <span style="float:left">Disapproved</span>
+                                    <span style="float:right" class="badge badge-pill badge-danger">@Model.DisApprovedBids.Count()</span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item">
+                                    <span style="float:left">Approved</span>
+                                    <span style="float:right" class="badge badge-pill badge-danger">0</span>
+                                </li>
+                            }
+
+                            @if (Model.ReqApprovalBids.Count() != 0)
+                            {
+                                <li class="list-group-item">
+                                    <span style="float:left">RequiresApproval</span>
+                                    <span style="float:right" class="badge badge-pill badge-warning">@Model.ReqApprovalBids.Count()</span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item">
+                                    <span style="float:left">Approved</span>
+                                    <span style="float:right" class="badge badge-pill badge-warning">0</span>
+                                </li>
+                            }
+
                         </ul>
                     </div>
 
@@ -161,22 +219,24 @@
                             Bid Status
                         </div>
                         <ul class="list-group" style="overflow-y:scroll;height: 148px;">
-                            <li class="list-group-item">
-                                <span style="float:left">Stopped</span>
-                                <span style="float:right" class="badge badge-pill badge-success">11</span>
-                            </li>
-                            <li class="list-group-item">
-                                <span style="float:left">Finished</span>
-                                <span style="float:right" class="badge badge-pill badge-danger">22</span>
-                            </li>
-                            <li class="list-group-item">
-                                <span style="float:left">In Progress</span>
-                                <span style="float:right" class="badge badge-pill badge-warning">1</span>
-                            </li>
-                            <li class="list-group-item">
-                                <span style="float:left">Problem</span>
-                                <span style="float:right" class="badge badge-pill badge-warning">1</span>
-                            </li>
+                            @if (Model.DisApprovedBids.Count() != 0)
+                            {
+                                @foreach (var status in Model.BidBidStatusVMs.OrderBy(p => p.BidStatusName))
+                                {
+                                    <li class="list-group-item">
+                                        <span style="float:left">@status.BidStatusName</span>
+                                        <span style="float:right" class="badge badge-pill badge-primary">@status.Bids.Count()</span>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="list-group-item">
+                                    <span style="float:left">No Projects To Show</span>
+                                    <span style="float:right" class="badge badge-pill badge-danger">0</span>
+                                </li>
+                            }
+
                         </ul>
                     </div>
 
@@ -185,22 +245,23 @@
                             Start Date Approching
                         </div>
                         <ul class="list-group" style="overflow-y:scroll;height: 148px;">
-                            <li class="list-group-item">
-                                <span style="float:left">A&W Canada</span>
-                                <span style="float:right" class="badge badge-pill badge-warning">2020-01-12</span>
-                            </li>
-                            <li class="list-group-item">
-                                <span style="float:left">Alpha</span>
-                                <span style="float:right" class="badge badge-pill badge-warning">2020-01-12</span>
-                            </li>
-                            <li class="list-group-item">
-                                <span style="float:left">BestBuy</span>
-                                <span style="float:right" class="badge badge-pill badge-warning">2020-01-12</span>
-                            </li>
-                            <li class="list-group-item">
-                                <span style="float:left">Mall</span>
-                                <span style="float:right" class="badge badge-pill badge-warning">2020-01-12</span>
-                            </li>
+                            @if (Model.StartApprochBids.Count() != 0)
+                            {
+                                @foreach (var project in Model.StartApprochBids.OrderBy(p => p.ApprovedBidDate))
+                                {
+                                    <li class="list-group-item">
+                                        <span style="float:left">@project.ProjectName</span>
+                                        <span style="float:right" class="badge badge-pill badge-warning">@project.ApprovedBidDate.ToShortDateString()</span>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="list-group-item">
+                                    <span style="float:left">No Projects To Show</span>
+                                    <span style="float:right" class="badge badge-pill badge-danger">0</span>
+                                </li>
+                            }
                         </ul>
                     </div>
 
@@ -209,22 +270,23 @@
                             Finish Date Approching
                         </div>
                         <ul class="list-group" style="overflow-y:scroll;height: 148px;">
-                            <li class="list-group-item">
-                                <span style="float:left">A&W Canada</span>
-                                <span style="float:right" class="badge badge-pill badge-success">2020-01-12</span>
-                            </li>
-                            <li class="list-group-item">
-                                <span style="float:left">Alpha</span>
-                                <span style="float:right" class="badge badge-pill badge-success">2020-01-12</span>
-                            </li>
-                            <li class="list-group-item">
-                                <span style="float:left">BestBuy</span>
-                                <span style="float:right" class="badge badge-pill badge-success">2020-01-12</span>
-                            </li>
-                            <li class="list-group-item">
-                                <span style="float:left">Mall</span>
-                                <span style="float:right" class="badge badge-pill badge-success">2020-01-12</span>
-                            </li>
+                            @if (Model.EndApprochBids.Count() != 0)
+                            {
+                                @foreach (var project in Model.EndApprochBids.OrderBy(p => p.ApprovedBidDate))
+                                {
+                                    <li class="list-group-item">
+                                        <span style="float:left">@project.ProjectName</span>
+                                        <span style="float:right" class="badge badge-pill badge-success">@project.ApprovedBidDate.ToShortDateString()</span>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="list-group-item">
+                                    <span style="float:left">No Projects To Show</span>
+                                    <span style="float:right" class="badge badge-pill badge-danger">0</span>
+                                </li>
+                            }
                         </ul>
                     </div>
 

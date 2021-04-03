@@ -378,6 +378,7 @@ namespace OASIS.Controllers
                 total += UpdateBidProducts(ProductsToAdd, bid);
                 total += UpdateBidLabours(rolesToAdd, bid);
                 UpdateApprovalStatus(bid, DesignerStatusID, ClientStatusID, approvalComment);
+                CheckIfFinalaized(bid);
                 //total += UpdateBidLabours(selectedRoles, requiredHours, bid);
                 bid.EstAmount = total;
 
@@ -478,7 +479,8 @@ namespace OASIS.Controllers
                 {
                     await _context.SaveChangesAsync();
                     UpdateApprovalStatus(bidToUpdate, DesignerStatusID, ClientStatusID, approvalComment);
-                   // return RedirectToAction(nameof(Index)); 
+                    CheckIfFinalaized(bidToUpdate);
+                    // return RedirectToAction(nameof(Index)); 
                     return RedirectToAction("Details", new { bidToUpdate.ID });
 
 
@@ -757,6 +759,34 @@ namespace OASIS.Controllers
             }
 
             _context.SaveChangesAsync();
+
+        }
+
+        private void CheckIfFinalaized(Bid bid)
+        {
+            try
+            {
+                var clientStatusID = _context.Approvals.SingleOrDefault(p => p.BidID == bid.ID).ClientStatusID;
+                var designerStatusID = _context.Approvals.SingleOrDefault(p => p.BidID == bid.ID).ClientStatusID;
+                var approvalStatusID = _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID;
+
+                if (clientStatusID == approvalStatusID && designerStatusID == approvalStatusID)
+                {
+                    bid.IsFinal = true;
+                }
+                else
+                {
+                    bid.IsFinal = false;
+                }
+
+                _context.Update(bid);
+                _context.SaveChangesAsync();
+            }
+            catch
+            {
+
+            }
+         
 
         }
 

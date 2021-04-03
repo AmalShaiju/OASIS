@@ -816,4 +816,24 @@ tbody tr:nth-child(even) {
     width: 30%;
     z-index: 9999;
 }
+
+.dot {
+    height: 25px;
+    width: 25px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.warning-dot {
+    background: rgb(253,191,7)
+}
+
+.danger-dot {
+    background: rgb(220,53,69)
+}
+
+.success-dot {
+    background: rgb(65,177,91)
+}
 /*Status Message*/

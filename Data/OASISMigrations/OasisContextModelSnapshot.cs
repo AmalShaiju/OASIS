@@ -106,6 +106,9 @@ namespace OASIS.Data.OASISMigrations
                     b.Property<DateTime>("EstBidStartDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsFinal")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime?>("ProjectEndDate")
                         .HasColumnType("TEXT");
 
