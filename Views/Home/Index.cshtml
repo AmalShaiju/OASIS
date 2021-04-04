@@ -11,6 +11,13 @@
                 <li class="nav-item">
                     <a style="width:100%;" class="nav-link" data-toggle="pill" data-target="#announcement-tab" role="tab">Announcements</a>
                 </li>
+                <li class="nav-item">
+                    <a style="height: 37px;width:100%;" asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                        <span class="material-icons">
+                            restart_alt
+                        </span>
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="tab-content">
@@ -18,7 +25,7 @@
                 @if (Model.Projects.Count() != 0)
                 {
                     <table class="table table-dark">
-                        <thead>
+                        <thead id="dashboard-thead">
                             <tr>
                                 <th scope="col">Project Name</th>
                                 <th scope="col">Customer</th>
@@ -26,7 +33,7 @@
                                 <th scope="col"></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="dashboard-tbody">
                             @foreach (var project in Model.Projects)
                             {
                                 <tr style="background:#343a40">
@@ -169,14 +176,14 @@
                             @if (Model.ApprovedBids.Count() != 0)
                             {
                                 <li class="list-group-item">
-                                    <span style="float:left">Approved</span>
+                                    <span style="float:left; cursor:pointer" id="approvalStatus-Approved" onclick="FilterDashBoard(this)">Approved</span>
                                     <span style="float:right" class="badge badge-pill badge-success">@Model.ApprovedBids.Count()</span>
                                 </li>
                             }
                             else
                             {
                                 <li class="list-group-item">
-                                    <span style="float:left">Approved</span>
+                                    <span style="float:left;">Approved</span>
                                     <span style="float:right" class="badge badge-pill badge-success">0</span>
                                 </li>
                             }
@@ -184,7 +191,7 @@
                             @if (Model.DisApprovedBids.Count() != 0)
                             {
                                 <li class="list-group-item">
-                                    <span style="float:left">Disapproved</span>
+                                    <span style="float:left ;cursor:pointer" id="approvalStatus-Disapproved" onclick="FilterDashBoard(this)">Disapproved</span>
                                     <span style="float:right" class="badge badge-pill badge-danger">@Model.DisApprovedBids.Count()</span>
                                 </li>
                             }
@@ -199,7 +206,7 @@
                             @if (Model.ReqApprovalBids.Count() != 0)
                             {
                                 <li class="list-group-item">
-                                    <span style="float:left">RequiresApproval</span>
+                                    <span style="float:left;cursor:pointer" id="approvalStatus-RequiresApproval" onclick="FilterDashBoard(this)">RequiresApproval</span>
                                     <span style="float:right" class="badge badge-pill badge-warning">@Model.ReqApprovalBids.Count()</span>
                                 </li>
                             }
@@ -224,7 +231,7 @@
                                 @foreach (var status in Model.BidBidStatusVMs.OrderBy(p => p.BidStatusName))
                                 {
                                     <li class="list-group-item">
-                                        <span style="float:left">@status.BidStatusName</span>
+                                        <span style="float:left;cursor:pointer " id="bidStatus-@status.BidStatusID" onclick="FilterDashBoard(this)">@status.BidStatusName</span>
                                         <span style="float:right" class="badge badge-pill badge-primary">@status.Bids.Count()</span>
                                     </li>
                                 }
@@ -250,7 +257,7 @@
                                 @foreach (var project in Model.StartApprochBids.OrderBy(p => p.ApprovedBidDate))
                                 {
                                     <li class="list-group-item">
-                                        <span style="float:left">@project.ProjectName</span>
+                                        <span style="float:left;cursor:pointer" id="Startproject-@project.ProjectID" onclick="FilterDashBoard(this)">@project.ProjectName</span>
                                         <span style="float:right" class="badge badge-pill badge-warning">@project.ApprovedBidDate.ToShortDateString()</span>
                                     </li>
                                 }
@@ -275,7 +282,7 @@
                                 @foreach (var project in Model.EndApprochBids.OrderBy(p => p.ApprovedBidDate))
                                 {
                                     <li class="list-group-item">
-                                        <span style="float:left">@project.ProjectName</span>
+                                        <span style="float:left;cursor:pointer" id="Endproject-@project.ProjectID" onclick="FilterDashBoard(this)">@project.ProjectName</span>
                                         <span style="float:right" class="badge badge-pill badge-success">@project.ApprovedBidDate.ToShortDateString()</span>
                                     </li>
                                 }
@@ -310,3 +317,9 @@
 
 
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/DashBoardFilter.js"></script>
+
+}

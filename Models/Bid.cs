@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace OASIS.Models
@@ -82,11 +83,13 @@ namespace OASIS.Models
         [Required(ErrorMessage = "Please select a project")]
         [Display(Name = "Project")]
         public int ProjectID { get; set; }
+
         public Project Project { get; set; }
 
         [Display(Name = "Status")]
         public int? BidStatusID { get; set; }
         public BidStatus BidStatus { get; set; }
+
         public Approval Approval { get; set; }
 
         public ICollection<BidProduct> BidProducts { get; set; }

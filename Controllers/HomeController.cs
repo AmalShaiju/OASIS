@@ -101,7 +101,7 @@ namespace OASIS.Controllers
               .Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID
               || p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID
               );
-            
+
 
             dashvm.ReqApprovalBids = reqApprovals.ToList();
 
@@ -159,6 +159,7 @@ namespace OASIS.Controllers
                 {
                     ProjectBidDateVM s = new ProjectBidDateVM();
                     s.ProjectName = project.Name;
+                    s.ProjectID = project.ID;
 
                     foreach (var bid in project.Bids.Where(p => p.DesignerID == employeeProfile.ID))
                     {
@@ -177,43 +178,44 @@ namespace OASIS.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> DashFilter(string ApprovalStatus, int? BidStatusID, int? ProjectID)
+        public async Task<JsonResult> DashFilter(string userName, string ApprovalStatus, int? BidStatusID, int? ProjectID)
         {
 
             try
             {
-                var user = await _userManager.GetUserAsync(User);
-                var employeeProfile = await _context.Employees.FirstOrDefaultAsync(p => p.UserName == user.UserName);
+                var statusID = 0;
 
-                var projectsUserWorkedOn =
-                  _context.Projects
-                  .Include(project => project.Customer)
-                  .Include(p => p.Bids).ThenInclude(p => p.Approval)
-                  .Where(project => project.Bids.Where(bid => bid.DesignerID == employeeProfile.ID).Any());
+                var employeeProfile = await _context.Employees.FirstOrDefaultAsync(p => p.UserName == userName);
 
+                var bidsUserWorkedOn =
+                    _context.Bids.Where(p => p.DesignerID == employeeProfile.ID);
 
 
                 if (ApprovalStatus != null)
                 {
                     if (ApprovalStatus == "Approved")
                     {
-                        projectsUserWorkedOn =  projectsUserWorkedOn.Where(p => p.Bids.Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID
-                        && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID).Any());
+                        bidsUserWorkedOn = bidsUserWorkedOn
+                        .Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID 
+                        && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID);
+
 
                     }
                     else if (ApprovalStatus == "Disapproved")
                     {
-                        projectsUserWorkedOn = projectsUserWorkedOn.Where(p => p.Bids.Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID
-                        || p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID).Any());
+                        bidsUserWorkedOn = bidsUserWorkedOn
+                              .Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID 
+                              || p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID);
 
                     }
                     else
                     {
-                        projectsUserWorkedOn = projectsUserWorkedOn.Where(p => p.Bids.Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID &&
-                        p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID
-                        || p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID &&
-                        p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID).Any()
-                        );
+                        bidsUserWorkedOn = bidsUserWorkedOn
+                           .Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID 
+                           && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID
+                          || p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID 
+                          && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID
+                          );
                     }
 
 
@@ -221,29 +223,40 @@ namespace OASIS.Controllers
 
                 if (BidStatusID != null)
                 {
-                    var statusID = _context.ApprovalStatuses.SingleOrDefaultAsync(p => p.Name == ApprovalStatus).Id;
-                    projectsUserWorkedOn = projectsUserWorkedOn.Where(p => p.Bids.Where(p => p.BidStatusID == statusID).Any());
+                    bidsUserWorkedOn = bidsUserWorkedOn.Where(p => p.BidStatusID == BidStatusID);
                 }
 
                 if (ProjectID != null)
                 {
-                    projectsUserWorkedOn = projectsUserWorkedOn.Where(p => p.ID == ProjectID);
+                    bidsUserWorkedOn = bidsUserWorkedOn.Where(p => p.ProjectID == ProjectID);
+
                 }
 
-                 var successReturnVal = new { success = true, msg = $"Filter Success!", objects = projectsUserWorkedOn };
+                if(!(bidsUserWorkedOn.Count() < 1))
+                {
+                    var successReturnVal = new { success = true, msg = $"Filter Success!", objects = bidsUserWorkedOn };
 
-                return Json(successReturnVal);
+                    return Json(successReturnVal);
+                }
+                else
+                {
+                    var successReturnVal = new { success = false, msg = $"No Bids Matching the Filter" };
+
+                    return Json(successReturnVal);
+                }
+
+             
             }
             catch
             {
-                
+
             }
 
-            var FailureReturnVal = new { success = true, msg = $"Filter Failed!" };
+            var FailureReturnVal = new { success = false, msg = $"Filter Failed!" };
 
             return Json(FailureReturnVal);
 
         }
-       
+
     }
 }

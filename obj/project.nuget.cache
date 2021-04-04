@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "T+c7N23aqqnl96jFuOwfthTsRtG1H+lDokxYvKxYWFunLYYWMaLF7ypDtL+r7wXcn5460wBF60+kZjEYUV+9Ug==",
+  "dgSpecHash": "i0S2iZwOtHUFNc3o0bcX4jvplU5/tj3GH7l5yvXzsZGaLt1TtY3PrHEKYWyev4y+29s13b7j3b4j+hLWpYqq6g==",
   "success": true,
   "projectFilePath": "C:\\OASIS\\OASIS.csproj",
   "expectedPackageFiles": [
@@ -91,7 +91,7 @@
     "C:\\Users\\Amals\\.nuget\\packages\\microsoft.win32.registry\\4.5.0\\microsoft.win32.registry.4.5.0.nupkg.sha512",
     "C:\\Users\\Amals\\.nuget\\packages\\mimekit\\2.11.0\\mimekit.2.11.0.nupkg.sha512",
     "C:\\Users\\Amals\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
-    "C:\\Users\\Amals\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
+    "C:\\Users\\Amals\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\Amals\\.nuget\\packages\\nuget.frameworks\\4.7.0\\nuget.frameworks.4.7.0.nupkg.sha512",
     "C:\\Users\\Amals\\.nuget\\packages\\portable.bouncycastle\\1.8.10\\portable.bouncycastle.1.8.10.nupkg.sha512",
     "C:\\Microsoft\\Xamarin\\NuGet\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
