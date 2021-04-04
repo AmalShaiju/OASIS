@@ -1,0 +1,27 @@
+﻿@model OASIS.Models.Role
+    <form asp-action="Create" asp-controller="Roles" id="createRoleForm">
+        <div class="row">
+            <div style="margin-top:0px;" class="col-md-12">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group col-5">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" tabindex="1" placeholder="Example: Supervisor" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6">
+                    <label asp-for="LabourCostPerHr" class="control-label"></label>
+                    <input asp-for="LabourCostPerHr" tabindex="2" placeholder="Example: $50" class="form-control" />
+                    <span asp-validation-for="LabourCostPerHr" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6">
+                    <label asp-for="LabourPricePerHr" class="control-label"></label>
+                    <input asp-for="LabourPricePerHr" tabindex="3" placeholder="Example: $25" class="form-control" />
+                    <span asp-validation-for="LabourPricePerHr" class="text-danger"></span>
+                </div>
+            <div class="form-group">
+                <input type="submit" value="Create" id="submitCreate" class="btn btn-outline-dark" />
+            </div>
+
+        </div>
+        </div>
+    </form>

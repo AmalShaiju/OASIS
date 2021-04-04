@@ -682,14 +682,19 @@ namespace OASIS.Controllers
             return new SelectList(query.OrderBy(p => p.Display), "ID", "Display", selectedId);
         }
 
+        private SelectList StatusSelectList(int? selectdID)
+        {
+            return new SelectList(_context.BidStatuses
+                .OrderBy(d => d.Name), "ID", "Name", selectdID);
+        }
 
         private void PopulateDropDownLists(Bid bid = null, int designerStatusID = 1, int clientStatusID = 1, string note = "No Comment")
         {
             // Bid Status
-            var bidStatusQuery = from d in _context.BidStatuses
-                                 orderby d.Name
-                                 select d;
-            ViewData["BidStatusID"] = new SelectList(bidStatusQuery, "ID", "Name", bid?.BidStatusID);
+            //var bidStatusQuery = from d in _context.BidStatuses
+            //                     orderby d.Name
+            //                     select d;
+            ViewData["BidStatusID"] = StatusSelectList(bid?.BidStatusID);
 
             // Project
             var projectQuery = from d in _context.Projects
@@ -982,6 +987,11 @@ namespace OASIS.Controllers
 
 
             }
+        }
+        [HttpGet]
+        public JsonResult GetStatus(int? id)
+        {
+            return Json(StatusSelectList(id));
         }
 
     }

@@ -6,6 +6,7 @@
 @{
     ViewData["Title"] = "Create";
 }
+<partial name="_AddRoleModal" />
 <form asp-action="Edit">
     <input type="hidden" asp-for="RowVersion" />
     <input type="hidden" id="employeeTrue" name="employeeTrue" value="0" />
@@ -56,16 +57,28 @@
             </div>
 
             <div class="form-group row ml-3">
-                <label class="col-sm-3 col-form-label">Role</label>
+                <label asp-for="RoleID" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-8">
-                    <select asp-for="RoleID" tabindex="7" class="form-control" asp-items="ViewBag.RoleID">
-                        <option value="Choose option">Select a Role</option>
-                    </select>
-                    <span asp-validation-for="RoleID" class="text-danger"></span>
-
+                    <div class="input-group-prepend">
+                        <button class="btn btn-outline-secondary" id="nowAddRole" data-toggle="modal" data-target="#addRoleModal" type="button"><strong>+</strong></button>
+                        <select asp-for="RoleID" class="form-control" asp-items="ViewBag.RoleID"></select>
+                    </div>
+       
                 </div>
-
+                <span asp-validation-for="RoleID" class="text-danger"></span>
             </div>
+
+            @*<div class="form-group row ml-3">
+                    <label class="col-sm-3 col-form-label">Role</label>
+                    <div class="col-sm-8">
+                        <select asp-for="RoleID" tabindex="7" class="form-control" asp-items="ViewBag.RoleID">
+                            <option value="Choose option">Select a Role</option>
+                        </select>
+                        <span asp-validation-for="RoleID" class="text-danger"></span>
+
+                    </div>
+
+                </div>*@
 
             <div class="form-group row ml-3">
                 <label asp-for="Phone" class="col-sm-3 col-form-label"></label>
@@ -310,6 +323,33 @@ c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
     </div>
 </form>
 
-
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/refreshDDL.js"></script>
+    <script type="text/javascript">
+            $('#submitCreate').click(function (event) {
+                event.preventDefault();
+                var form = $('#createRoleForm');
+                if (form.valid()) {
+                    $.ajax({
+                        type: "POST",
+                        url: form.attr('action'),
+                        data: form.serialize(),
+                        success: function () {
+                            $('#addRoleModal').modal('hide');
+                        },
+                        error: function () {
+                            alert("Create Failed.  There was a problem adding the record.");
+                        }
+                    });
+                }
+                return false;
+            });
+            $('#addDoctorModal').on('hide.bs.modal', function () {
+                $('#createRoleForm').find("input[type=text], textarea, select").val("");//to clear the data in the popup
+                refreshDDL('RoleID', 'Employee/GetRoles', false, '');
+            });
+    </script>
+}
 
 

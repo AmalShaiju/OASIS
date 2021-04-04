@@ -1,0 +1,17 @@
+﻿@model OASIS.Models.BidStatus
+<form asp-action="Create" asp-controller="BidStatus" id="createStatusForm">
+    <div class="row">
+        <div style="margin-top:0px;" class="col-md-12">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" tabindex="1" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" id="submitCreate" class="btn btn-outline-dark" />
+            </div>
+        </div>
+
+        </div>
+</form>

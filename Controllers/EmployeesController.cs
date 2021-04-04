@@ -431,14 +431,24 @@ namespace OASIS.Controllers
         }
 
         // Order Role drop down list by name
+        private SelectList RoleSelectList(int? selectedID)
+        {
+            return new SelectList(_context.Roles
+                .OrderBy(d => d.Name), "ID", "Name", selectedID);
+        }
         private void PopulateDropDownLists(Employee employee = null)
         {
-            var dQuery = from d in _context.Roles
-                         orderby d.Name
-                         select d;
-            ViewData["RoleID"] = new SelectList(dQuery, "ID", "Name", employee?.RoleID);
-        }
+            //var dQuery = from d in _context.Roles
+            //             orderby d.Name
+            //             select d;
 
+            ViewData["RoleID"] = RoleSelectList(employee?.RoleID);
+        }
+        [HttpGet]
+        public JsonResult GetRoles(int? id)
+        {
+            return Json(RoleSelectList(id));
+        }
         private async void UpdateUserAccount(Employee employee)
         {
             if (employee.IsUser)
