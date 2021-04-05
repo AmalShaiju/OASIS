@@ -18,6 +18,9 @@
                         </span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <input type="checkbox" checked data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
+                </li>
             </ul>
         </div>
         <div class="tab-content">
@@ -142,30 +145,32 @@
             <div class="card-body tab-pane fade show active p-0" id="overView-tab" role="tabpanel">
                 @if (Model.Projects.Count() != 0)
                 {
-                    <div class="row ml-5 pr-5 pl-1 mt-5">
-                        <div class="col-5 mr-4 p-0 row">
-                            <div class="col-4 p-0">
-                                <label class="form-control">From:</label>
+                    <form asp-action="Index">
+                        <div class="row ml-5 pr-5 pl-1 mt-5">
+                            <div class="col-5 mr-4 p-0 row">
+                                <div class="col-4 p-0">
+                                    <label class="form-control">From:</label>
 
+                                </div>
+                                <div class="col-8 p-0">
+                                    <input class="form-control p-0" asp-for="FromDate">
+                                </div>
                             </div>
-                            <div class="col-8 p-0">
-                                <input class="form-control p-0" type="date" name="StartDate">
+                            <div class="col-5 mr-5 p-0 row">
+                                <div class="col-4 p-0">
+                                    <label class="form-control">From:</label>
+
+                                </div>
+                                <div class="col-8 p-0">
+                                    <input class="form-control p-0" asp-for="ToDate" />
+                                </div>
+                            </div>
+
+                            <div class="col-1">
+                                <button type="submit" class="btn btn-success">GO</button>
                             </div>
                         </div>
-                        <div class="col-5 mr-5 p-0 row">
-                            <div class="col-4 p-0">
-                                <label class="form-control">From:</label>
-
-                            </div>
-                            <div class="col-8 p-0">
-                                <input class="form-control p-0" type="date" name="EndDate">
-                            </div>
-                        </div>
-
-                        <div class="col-1">
-                            <button class="btn btn-success">GO</button>
-                        </div>
-                    </div>
+                    </form>
                 }
                 <div class="row ml-5">
                     <div class="card col-5 mt-5  pr-0" style="width: 18rem;">
