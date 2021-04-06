@@ -401,12 +401,33 @@ namespace OASIS.Controllers
             return _context.Projects.Any(e => e.ID == id);
         }
 
+        //private void PopulateDropDownLists(Project project = null)
+        //{
+        //    var dQuery = from d in _context.Customers
+        //                 orderby d.LastName, d.FirstName
+        //                 select d;
+        //    ViewData["CustomerID"] = new SelectList(dQuery, "ID", "FormalName", project?.CustomerID);
+        //}
+        private SelectList CustomerSelectList(int? selectedId)
+        {
+            return new SelectList(_context.Customers
+                .OrderBy(d => d.LastName)
+                .ThenBy(d => d.FirstName), "ID", "FormalName", selectedId);
+        }
+
+       
+
         private void PopulateDropDownLists(Project project = null)
         {
-            var dQuery = from d in _context.Customers
-                         orderby d.LastName, d.FirstName
-                         select d;
-            ViewData["CustomerID"] = new SelectList(dQuery, "ID", "FormalName", project?.CustomerID);
+            ViewData["CustomerID"] = CustomerSelectList(project?.CustomerID);
+         
+        }
+        //Now we can use the SelectList method to get the data
+        //for our Pop-up
+        [HttpGet]
+        public JsonResult GetCustomers(int? id)
+        {
+            return Json(CustomerSelectList(id));
         }
     }
 }
