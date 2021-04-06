@@ -30,7 +30,7 @@ namespace OASIS.Controllers
 
         public async Task<ActionResult> Index()
         {
-
+            ViewData["UserRole"] = "NotAssigned";
             DashBoardVM dashVm = new DashBoardVM();
 
             try
@@ -43,6 +43,14 @@ namespace OASIS.Controllers
                 if (User.IsInRole("Designer"))
                 {
                     dashVm = DesignerDashView(employeeProfile);
+                    ViewData["UserRole"] = "Designer";
+
+                }
+                else if (User.IsInRole("Sales"))
+                {
+                    dashVm = SalesDashVM(employeeProfile);
+                    ViewData["UserRole"] = "Sales";
+
                 }
 
 
@@ -189,6 +197,22 @@ namespace OASIS.Controllers
             return (dashvm);
         }
 
+        public DashBoardVM SalesDashVM(Employee employeeProfile)
+        {
+            DashBoardVM dashvm = new DashBoardVM();
+
+            // get all projects made by the logged in designer
+            var projectsUserWorkedOn =
+                _context.Projects
+                .Include(project => project.Customer)
+                .Where(project => project.Bids.Where(bid => bid.SalesAsscociateID == employeeProfile.ID).Any());
+
+            dashvm.Projects = projectsUserWorkedOn.ToList();
+
+            return dashvm;
+
+        }
+
         [HttpGet]
         public async Task<JsonResult> DashFilter(string userName, string ApprovalStatus, int? BidStatusID, int? ProjectID, DateTime? FromDate, DateTime? ToDate)
         {
@@ -217,7 +241,7 @@ namespace OASIS.Controllers
 
                 }
 
-                if(bidsUserWorkedOn.Count() == 0)
+                if (bidsUserWorkedOn.Count() == 0)
                 {
                     var FailurereturnVal = new { success = false, msg = $"No Bids Matching the filter" };
                     return Json(FailurereturnVal);
@@ -346,7 +370,7 @@ namespace OASIS.Controllers
 
             if (FromDate.HasValue)
             {
-                disApprovals =  disApprovals.Where(p => p.DateCreated >= FromDate);
+                disApprovals = disApprovals.Where(p => p.DateCreated >= FromDate);
             }
 
             if (ToDate.HasValue)
@@ -365,7 +389,7 @@ namespace OASIS.Controllers
 
             if (FromDate.HasValue)
             {
-                reqApprovals  =  reqApprovals.Where(p => p.DateCreated >= FromDate);
+                reqApprovals = reqApprovals.Where(p => p.DateCreated >= FromDate);
             }
 
             if (ToDate.HasValue)
@@ -374,7 +398,7 @@ namespace OASIS.Controllers
 
             }
 
-            List <BidBidStatusVM> bidsByStatus = new List<BidBidStatusVM>();
+            List<BidBidStatusVM> bidsByStatus = new List<BidBidStatusVM>();
 
             // get all bids grouped by bid status
             foreach (var status in _context.BidStatuses)
@@ -387,7 +411,7 @@ namespace OASIS.Controllers
                     bidBidStatus.BidStatusID = status.ID;
                     bidBidStatus.BidsCount = bidsUserWorkedOn.Where(p => p.BidStatusID == status.ID).Count();
                     bidsByStatus.Add(bidBidStatus);
-                   
+
                 }
                 catch
                 {
@@ -403,7 +427,7 @@ namespace OASIS.Controllers
                     .Where(p => p.Bids.Where(p => p.IsFinal == true && p.EstBidStartDate > DateTime.Today).Any())
                     .Where(project => project.Bids.Where(bid => bid.DesignerID == employeeProfile.ID).Any());
 
-              
+
 
 
                 List<ProjectBidDateVM> StartProjectByDate = new List<ProjectBidDateVM>();
@@ -439,7 +463,7 @@ namespace OASIS.Controllers
                     {
 
                     }
-                   
+
                 }
 
                 // all projects with End date after today's date
@@ -450,7 +474,7 @@ namespace OASIS.Controllers
                       .Where(project => project.Bids.Where(bid => bid.DesignerID == employeeProfile.ID).Any());
 
 
-               
+
 
                 List<ProjectBidDateVM> EndProjectByDate = new List<ProjectBidDateVM>();
                 // get all bids grouped by projcet
@@ -486,12 +510,15 @@ namespace OASIS.Controllers
                     {
 
                     }
-                   
+
                 }
 
 
                 //var withDateReturn = new { success = true, msg = $"Filter Success!" ,  Bids = bidsUserWorkedOn, Approvals = approvals.Count(), disapprovals = disApprovals.Count(),  RequireApproval = reqApprovals.Count(), StartDateApproch = ApprochProjectByDate, EndDateApproch = EndProjectByDate };
-                var withDateReturn = new { success = true, msg = "Filter Success!",
+                var withDateReturn = new
+                {
+                    success = true,
+                    msg = "Filter Success!",
                     approvalsCount = approvals.Count(),
                     disapprovalsCount = disApprovals.Count(),
                     reqapprovalsCount = reqApprovals.Count(),
@@ -513,8 +540,31 @@ namespace OASIS.Controllers
 
             }
 
-            var withoutDateReturn = new { success = true, msg = $"Filter Success!", bids= bidsUserWorkedOn.Select(p => new BidDashVM { ID = p.ID, DateCreated = p.DateCreated, EstAmount = p.EstAmount })};
+            var withoutDateReturn = new { success = true, msg = $"Filter Success!", bids = bidsUserWorkedOn.Select(p => new BidDashVM { ID = p.ID, DateCreated = p.DateCreated, EstAmount = p.EstAmount }) };
             return Json(withoutDateReturn);
+
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> ShowCustomer(int Id)
+        {
+            try
+            {
+                var customer = _context.Customers.SingleOrDefault(p => p.ID == Id);
+
+                var successResult = new { success = true, msg = $"Successfully customer found!", customer = customer };
+                return Json(successResult);
+            }
+            catch
+            {
+
+            }
+
+
+            var failureResult = new { success = false, msg = $"Failed to find customer!" };
+            return Json(failureResult);
+
+
 
         }
     }

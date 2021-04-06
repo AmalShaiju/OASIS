@@ -298,3 +298,49 @@ function DateFilter(e) {
         showStatusMsg(false, "Please fill in one of the dates to filter", 3000);
     }
 }
+
+function ShowCustomer(e) {
+
+    var id = e.id.split("-")[1];
+    
+    if (id != null) {
+        $.ajax({
+            type: "GET",
+            url: "Home/ShowCustomer",
+            data: {
+                'Id': id
+            },
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+                if (response != null) {
+                    console.log(response);
+
+                    if (response.success) {
+                        $('#cus-First').text(response.customer.firstName);
+                        $('#cus-Last').text(response.customer.lastName);
+                        $('#cus-Middle').text(response.customer.middleName);
+                        $('#cus-Pos').text(response.customer.position);
+                        $('#cus-Phone').text(response.customer.phone);
+                        $('#cus-Email').text(response.customer.email);
+                        $('#cusFullName').text(response.customer.fullName)
+
+                        showStatusMsg(response.success, response.msg, 500);
+                    }
+                    else {
+                        showStatusMsg(response.success, response.msg, 2000);
+                    }
+                }
+                else {
+                    showStatusMsg(false, "Something went wrong", 3000);
+                }
+            },
+            failure: function (response) {
+                showStatusMsg(false, "Something went wrong", 3000);
+            },
+            error: function (response) {
+                showStatusMsg(false, "Something went wrong", 3000);
+            }
+        });
+    }
+
+}
