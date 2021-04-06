@@ -9,6 +9,8 @@
 // fadeOutIn - Boolean for visual effect after refresh
 function refreshDDL(ddl_ID, URL, showNoDataMsg, noDataMsg, addDefault, defaultText, fadeOutIn) {
     var theDDL = $("#" + ddl_ID);
+    var selectedOption = theDDL.val();
+    var URL = "/" + uri + "/" + selectedOption;
     $(function () {
         $.getJSON(URL, function (data) {
             if (data !== null && !jQuery.isEmptyObject(data)) {
