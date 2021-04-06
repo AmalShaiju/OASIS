@@ -22,15 +22,6 @@ namespace OASIS.ViewModels
             this.BidBidStatusVMs = new List<BidBidStatusVM>();
         }
 
-        [Display(Name = "From Date")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime? FromDate { get; set; }
-
-        [Display(Name = "To Date")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime? ToDate { get; set; }
         public List<Project> Projects { get; set; }
         public List<Bid> ApprovedBids { get; set; }
         public List<Bid> DisApprovedBids { get; set; }

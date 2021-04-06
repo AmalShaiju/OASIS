@@ -12,15 +12,16 @@
                     <a style="width:100%;" class="nav-link" data-toggle="pill" data-target="#announcement-tab" role="tab">Announcements</a>
                 </li>
                 <li class="nav-item">
+                    <input type="checkbox" id="toggle-bids" data-on="Show Bids" data-off="Hide Bids" onchange="ShowAllBids(this)" data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
+                </li>
+                <li class="nav-item">
                     <a style="height: 37px;width:100%;" asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
                         <span class="material-icons">
                             restart_alt
                         </span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <input type="checkbox" checked data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
-                </li>
+
             </ul>
         </div>
         <div class="tab-content">
@@ -64,42 +65,83 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach (var bid in project.Bids.Where(p => p.DesignerID == 1).OrderByDescending(p => p.DateCreated))
+                                                @foreach (var bid in project.Bids.OrderByDescending(p => p.DateCreated))
                                                 {
-                                                    <tr>
-                                                        <th scope="row">@bid.DateCreated.ToShortDateString()</th>
-                                                        <td>$@bid.EstAmount.ToString("0.##")</td>
-                                                        <td>
-                                                            @{ if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID)
-                                                                {
-                                                                    <span class="dot success-dot"></span>
+                                                    if (bid.DesignerID == Convert.ToInt32(ViewData["EmployeeID"]))
+                                                    {
+                                                        <tr>
+                                                            <th scope="row">@bid.DateCreated.ToShortDateString()</th>
+                                                            <td>$@bid.EstAmount.ToString("0.##")</td>
+                                                            <td>
+                                                                @{ if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID)
+                                                                    {
+                                                                        <span class="dot success-dot"></span>
 
-                                                                }
+                                                                    }
 
-                                                                else if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID || bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID)
-                                                                {
-                                                                    <span class="dot danger-dot"></span>
-                                                                }
+                                                                    else if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID || bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID)
+                                                                    {
+                                                                        <span class="dot danger-dot"></span>
+                                                                    }
 
-                                                                else
-                                                                {
-                                                                    <span class="dot warning-dot"></span>
+                                                                    else
+                                                                    {
+                                                                        <span class="dot warning-dot"></span>
+                                                                    }
                                                                 }
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            <a asp-controller="Bids" asp-action="Edit" asp-route-id="@bid.ID" style="height:28px; width:24%" class="btn btn-outline-primary p-0 mr-3">
-                                                                <span class="material-icons">
-                                                                    edit
-                                                                </span>
-                                                            </a>
-                                                            <a asp-controller="Bids" asp-action="Details" asp-route-id="@bid.ID" style="height:28px; width:24%" class="btn btn-outline-info p-0">
-                                                                <span class="material-icons">
-                                                                    info
-                                                                </span>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
+                                                            </td>
+                                                            <td>
+                                                                <a asp-controller="Bids" asp-action="Edit" asp-route-id="@bid.ID" style="height:28px; width:24%" class="btn btn-outline-primary p-0 mr-3">
+                                                                    <span class="material-icons">
+                                                                        edit
+                                                                    </span>
+                                                                </a>
+                                                                <a asp-controller="Bids" asp-action="Details" asp-route-id="@bid.ID" style="height:28px; width:24%" class="btn btn-outline-info p-0">
+                                                                    <span class="material-icons">
+                                                                        info
+                                                                    </span>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr style="display:none; background:#a2b3bb;" class="NotDesigned">
+                                                            <th scope="row">@bid.DateCreated.ToShortDateString()</th>
+                                                            <td>$@bid.EstAmount.ToString("0.##")</td>
+                                                            <td>
+                                                                @{ if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID)
+                                                                    {
+                                                                        <span class="dot success-dot"></span>
+
+                                                                    }
+
+                                                                    else if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID || bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID)
+                                                                    {
+                                                                        <span class="dot danger-dot"></span>
+                                                                    }
+
+                                                                    else
+                                                                    {
+                                                                        <span class="dot warning-dot"></span>
+                                                                    }
+                                                                }
+                                                            </td>
+                                                            <td>
+                                                                <a asp-controller="Bids" asp-action="Edit" asp-route-id="@bid.ID" style="height:28px; width:24%" class="btn btn-outline-primary p-0 mr-3">
+                                                                    <span class="material-icons">
+                                                                        edit
+                                                                    </span>
+                                                                </a>
+                                                                <a asp-controller="Bids" asp-action="Details" asp-route-id="@bid.ID" style="height:28px; width:24%" class="btn btn-outline-info p-0">
+                                                                    <span class="material-icons">
+                                                                        info
+                                                                    </span>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+
                                                 }
                                             </tbody>
                                         </table>
@@ -145,39 +187,39 @@
             <div class="card-body tab-pane fade show active p-0" id="overView-tab" role="tabpanel">
                 @if (Model.Projects.Count() != 0)
                 {
-                    <form asp-action="Index">
-                        <div class="row ml-5 pr-5 pl-1 mt-5">
-                            <div class="col-5 mr-4 p-0 row">
-                                <div class="col-4 p-0">
-                                    <label class="form-control">From:</label>
+                    <div class="row ml-5 pr-5 pl-1 mt-5">
 
-                                </div>
-                                <div class="col-8 p-0">
-                                    <input class="form-control p-0" asp-for="FromDate">
-                                </div>
+                        <div class="col-5 mr-4 p-0 row">
+                            <div class="col-4 p-0">
+                                <label class="form-control">From:</label>
+
                             </div>
-                            <div class="col-5 mr-5 p-0 row">
-                                <div class="col-4 p-0">
-                                    <label class="form-control">From:</label>
-
-                                </div>
-                                <div class="col-8 p-0">
-                                    <input class="form-control p-0" asp-for="ToDate" />
-                                </div>
-                            </div>
-
-                            <div class="col-1">
-                                <button type="submit" class="btn btn-success">GO</button>
+                            <div class="col-8 p-0">
+                                <input class="form-control p-0" id="date-FromDate" type="date">
                             </div>
                         </div>
-                    </form>
+                        <div class="col-5 mr-5 p-0 row">
+                            <div class="col-4 p-0">
+                                <label class="form-control">TO:</label>
+
+                            </div>
+                            <div class="col-8 p-0">
+                                <input class="form-control p-0" id="date-Todate" type="date" />
+
+                            </div>
+                        </div>
+
+                        <div class="col-1">
+                            <button onclick="DateFilter(this)" class="btn btn-success">GO</button>
+                        </div>
+                    </div>
                 }
                 <div class="row ml-5">
                     <div class="card col-5 mt-5  pr-0" style="width: 18rem;">
                         <div class="card-header">
                             Overview
                         </div>
-                        <ul class="list-group">
+                        <ul class="list-group" id="approval-list">
                             @if (Model.ApprovedBids.Count() != 0)
                             {
                                 <li class="list-group-item">
@@ -203,7 +245,7 @@
                             else
                             {
                                 <li class="list-group-item">
-                                    <span style="float:left">Approved</span>
+                                    <span style="float:left">Disapproved</span>
                                     <span style="float:right" class="badge badge-pill badge-danger">0</span>
                                 </li>
                             }
@@ -218,7 +260,7 @@
                             else
                             {
                                 <li class="list-group-item">
-                                    <span style="float:left">Approved</span>
+                                    <span style="float:left">RequiresApproval</span>
                                     <span style="float:right" class="badge badge-pill badge-warning">0</span>
                                 </li>
                             }
@@ -230,14 +272,14 @@
                         <div class="card-header">
                             Bid Status
                         </div>
-                        <ul class="list-group" style="overflow-y:scroll;height: 148px;">
-                            @if (Model.DisApprovedBids.Count() != 0)
+                        <ul id="bidStatus-list" class="list-group" style="overflow-y:scroll;height: 148px;">
+                            @if (Model.BidBidStatusVMs.Count() != 0)
                             {
                                 @foreach (var status in Model.BidBidStatusVMs.OrderBy(p => p.BidStatusName))
                                 {
                                     <li class="list-group-item">
                                         <span style="float:left;cursor:pointer " id="bidStatus-@status.BidStatusID" onclick="FilterDashBoard(this)">@status.BidStatusName</span>
-                                        <span style="float:right" class="badge badge-pill badge-primary">@status.Bids.Count()</span>
+                                        <span style="float:right" class="badge badge-pill badge-primary">@status.BidsCount</span>
                                     </li>
                                 }
                             }
@@ -252,11 +294,11 @@
                         </ul>
                     </div>
 
-                    <div class="card col-5 mt-5  pr-0" style="width: 18rem;">
+                    <div  class="card col-5 mt-5  pr-0" style="width: 18rem;">
                         <div class="card-header">
                             Start Date Approching
                         </div>
-                        <ul class="list-group" style="overflow-y:scroll;height: 148px;">
+                        <ul id="startApproch-list" class="list-group" style="overflow-y:scroll;height: 148px;">
                             @if (Model.StartApprochBids.Count() != 0)
                             {
                                 @foreach (var project in Model.StartApprochBids.OrderBy(p => p.ApprovedBidDate))
@@ -281,7 +323,7 @@
                         <div class="card-header">
                             Finish Date Approching
                         </div>
-                        <ul class="list-group" style="overflow-y:scroll;height: 148px;">
+                        <ul id="EndApproch-list" class="list-group" style="overflow-y:scroll;height: 148px;">
                             @if (Model.EndApprochBids.Count() != 0)
                             {
                                 @foreach (var project in Model.EndApprochBids.OrderBy(p => p.ApprovedBidDate))
@@ -326,5 +368,16 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/DashBoardFilter.js"></script>
+
+    <script type="text/javascript">
+        function ShowAllBids() {
+            console.log('show bids')
+
+            if ($('#toggle-bids').prop('checked'))
+                $('.NotDesigned').show();
+            else
+                $('.NotDesigned').hide();
+        }
+    </script>
 
 }

@@ -10,6 +10,6 @@ namespace OASIS.ViewModels
     {
         public string BidStatusName { get; set; }
         public int  BidStatusID{ get; set; }
-        public List<Bid> Bids { get; set; }
+        public int BidsCount { get; set; }
     }
 }
