@@ -369,10 +369,10 @@ function PreviewBid(e) {
                                 bidProductsToAdd += ` <tr>
                                                             <td class="column1">${response.bidProducts[i].code}</td>
                                                             <td class="column2">${response.bidProducts[i].description}</td>
-                                                            <td class="column3">${response.bidProducts[i].price.toFixed(2)}</td>
+                                                            <td class="column3">$${response.bidProducts[i].price.toFixed(2)}</td>
                                                             <td class="column4">${response.bidProducts[i].quantity}</td>
                                                             <td class="column5">${response.bidProducts[i].size}</td>
-                                                            <td class="column6">${response.bidProducts[i].total.toFixed(2)}</td>
+                                                            <td class="column6">$${response.bidProducts[i].total.toFixed(2)}</td>
                                                         </tr>`
                                 productSubTotal += response.bidProducts[i].total;
                             }
@@ -383,7 +383,7 @@ function PreviewBid(e) {
                                                             <td class="column3"></td>
                                                             <td class="column4"></td>
                                                             <td class="column5" style="color:#7460ee"><strong>SubTotal:</strong></td>
-                                                            <td class="column6" style="color:#7460ee"><strong>${productSubTotal.toFixed(2)}</strong></td>
+                                                            <td class="column6" style="color:#7460ee"><strong>$${productSubTotal.toFixed(2)}</strong></td>
                                                         </tr>`
 
 
@@ -392,7 +392,7 @@ function PreviewBid(e) {
                         }
 
                         // Labours 
-                        if (response.bidLabours.length !=0) {
+                        if (response.bidLabours.length != 0) {
 
                             var bidLaboursToAdd;
                             var labourSubTotal = 0;
@@ -401,8 +401,8 @@ function PreviewBid(e) {
                                 bidLaboursToAdd += ` <tr>
                                                             <td class="column1">${response.bidLabours[i].name}</td>
                                                             <td class="column4">${response.bidLabours[i].hours}</td>
-                                                            <td class="column5">${response.bidLabours[i].price.toFixed(2)}</td>
-                                                            <td class="column6">${response.bidLabours[i].total.toFixed(2)}</td>
+                                                            <td class="column5">$${response.bidLabours[i].price.toFixed(2)}</td>
+                                                            <td class="column6">$${response.bidLabours[i].total.toFixed(2)}</td>
                                                         </tr>`
                                 labourSubTotal += response.bidLabours[i].total;
                             }
@@ -411,7 +411,7 @@ function PreviewBid(e) {
                                                             <td class="column1"></td>
                                                             <td class="column4"></td>
                                                             <td class="column5" style="color:#7460ee"><strong>SubTotal:</strong></td>
-                                                            <td class="column6" style="color:#7460ee"><strong>${labourSubTotal.toFixed(2)}</strong></td>
+                                                            <td class="column6" style="color:#7460ee"><strong>$${labourSubTotal.toFixed(2)}</strong></td>
                                                         </tr>`
 
                             $('#bidLabour-dash').empty();
@@ -428,7 +428,7 @@ function PreviewBid(e) {
                                 $('#bid-Budget').text(`Budget: $${response.bid.budge.toFixed(2)}`)
 
                             }
-                          
+
 
                             if (response.bid.estBidEndDate != null) {
                                 $('#bid-EndDate').text(`Estimated End Date: ${response.bid.estBidEndDate.split("T")[0]}`)
@@ -452,6 +452,55 @@ function PreviewBid(e) {
                                 $('#bid-updateOn').text(`Updated On: ${response.bid.updatedOn.split("T")[0]}`)
 
                             }
+
+                        }
+
+                        $('#bid-ManDisApproveBid').empty();
+                        $('#bid-ManApproveBid').empty();
+                        $('#bid-ClientDisapproveBid').empty()
+                        $('#bid-ClientApproveBid').empty();
+
+                        if (response.bid.approval != null) {
+
+                            if (response.bid.approval.clientStatus.name == "RequiresApproval") {
+                                var btnClientApprove = `<a href="/Home/UpdateApproval?approvalType=client&bidId=${response.bid.id}&approvalStatusName=Approved" class="btn btn-outline-success">Approve</a>`
+                                $('#bid-ClientApproveBid').append(btnClientApprove);
+
+                                var btnClientDisApprove = `<a href="/Home/UpdateApproval?approvalType=client&bidId=${response.bid.id}&approvalStatusName=Disapproved" class="btn btn-outline-danger">DisApprove</a>`
+                                $('#bid-ClientDisapproveBid').append(btnClientDisApprove);
+
+                            }
+                            else {
+                                if (response.bid.approval.clientStatus.name == "Disapproved") {
+                                    var btnClientApprove = `<a href="/Home/UpdateApproval?approvalType=client&bidId=${response.bid.id}&approvalStatusName=Approved" class="btn btn-outline-success">Approve</a>`
+                                    $('#bid-ClientApproveBid').append(btnClientApprove);
+                                }
+                                else {
+                                    var btnClientDisApprove = `<a href="/Home/UpdateApproval?approvalType=client&bidId=${response.bid.id}&approvalStatusName=Disapproved" class="btn btn-outline-danger">DisApprove</a>`
+                                    $('#bid-ClientDisapproveBid').append(btnClientDisApprove);
+                                }
+                            }
+
+                            if (response.bid.approval.designerStatus.name == "RequiresApproval") {
+
+                                var btnManApprove = `<a href="/Home/UpdateApproval?approvalType=designer&bidId=${response.bid.id}&approvalStatusName=Approved" class="btn btn-outline-success">Approve</a>`
+                                $('#bid-ManApproveBid').append(btnManApprove);
+
+                                var btnManDisApprove = `<a  href="/Home/UpdateApproval?approvalType=designer&bidId=${response.bid.id}&approvalStatusName=Disapproved" class="btn btn-outline-danger">DisApprove</a>`
+                                $('#bid-ManDisApproveBid').append(btnManDisApprove);
+                            }
+                            else {
+                                if (response.bid.approval.designerStatus.name == "Disapproved") {
+                                    var btnManApprove = `<a href="/Home/UpdateApproval?approvalType=designer&bidId=${response.bid.id}&approvalStatusName=Approved"  class="btn btn-outline-success">Approve</a>`
+                                    $('#bid-ManApproveBid').append(btnManApprove);
+                                }
+                                else {
+                                    var btnManDisApprove = `<a href="/Home/UpdateApproval?approvalType=designer&bidId=${response.bid.id}&approvalStatusName=Disapproved"  class="btn btn-outline-danger">DisApprove</a>`
+                                    $('#bid-ManDisApproveBid').append(btnManDisApprove);
+                                }
+                            }
+
+
 
                         }
 

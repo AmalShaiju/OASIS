@@ -188,7 +188,7 @@
                     <div class="card-body tab-pane fade show active p-0" id="project-tab" role="tabpanel">
                         @if (Model.Projects.Count() != 0)
                         {
-                            <table class="table table-dark">
+                            <table class="table table-hover table-dark">
                                 <thead id="dashboard-thead">
                                     <tr>
                                         <th scope="col">Project Name</th>
@@ -200,7 +200,7 @@
                                 <tbody id="dashboard-tbody">
                                     @foreach (var project in Model.Projects)
                                     {
-                                        <tr style="background:#343a40">
+                                        <tr>
                                             <th scope="row">@project.Name</th>
                                             <td>@project.Customer.OrgName</td>
                                             <td style="cursor:pointer;" onclick="ShowCustomer(this)" id="customer-@project.CustomerID">@project.Customer.FullName</td>
@@ -231,7 +231,7 @@
                     <div class="card-body tab-pane fade show active p-0" id="project-tab" role="tabpanel">
                         @if (Model.ReqApprovalBids.Count() != 0)
                         {
-                            <table class="table table-dark">
+                            <table class="table table-hover table-dark">
                                 <thead id="dashboard-thead">
                                     <tr>
                                         <th scope="col">Date Created</th>
@@ -244,7 +244,7 @@
                                 <tbody id="dashboard-tbody">
                                     @foreach (var bid in Model.ReqApprovalBids)
                                     {
-                                        <tr id="bidInfo-@bid.ID" onclick="PreviewBid(this)" style="background:#343a40;cursor:pointer;">
+                                        <tr id="bidInfo-@bid.ID" onclick="PreviewBid(this)" style="cursor:pointer;">
                                             <th scope="row">@bid.DateCreated.ToShortDateString()</th>
                                             <td>@bid.Project.Name</td>
                                             <td>$@bid.EstAmount.ToString("0.##")</td>
@@ -631,7 +631,7 @@
                 else if (ViewData["UserRole"].ToString() == "Management")
                 {
                     <div class="card mt-5 text-left" style="border: 1px solid rgba(0,0,0.2);">
-                        <div style="background:#a2b3bb;" class="card-header">
+                        <div style="background: #454d55; color:white;" class="card-header">
                             <h6 id="bidHeading" class="m-0 text-center">Start Up : 2020-12-01</h6>
                         </div>
                         <div id="bidInfo-body" class="card-body">
@@ -785,7 +785,26 @@
                                 </div>
                             </div>
 
+                            <div class="row mt-4">
+                                <div class="col-5 ml-3 row text-center">
+                                    <h6 class="col-12 mb-2">Client Status</h6>
+                                    <div id="bid-ClientApproveBid" class="col-6">
+                                       
+                                    </div>
+                                    <div id="bid-ClientDisapproveBid" class="col-6">
+                                    </div>
+                                </div>
 
+                                <div class="col-6 ml-3 row text-center">
+                                    <h6 class="col-12 mb-2">Management Status</h6>
+                                    <div id="bid-ManApproveBid" class="col-6">
+                                        
+                                    </div>
+                                    <div id="bid-ManDisApproveBid" class="col-6">
+                                        
+                                    </div>
+                                </div>
+                            </div>
 
 
 

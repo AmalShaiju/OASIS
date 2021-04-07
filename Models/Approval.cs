@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace OASIS.Models
@@ -19,6 +20,7 @@ namespace OASIS.Models
         public virtual ApprovalStatus DesignerStatus { get; set; }
         public ICollection<ApprovalStatus> ApprovalStatuses { get; set; }
         public int BidID { get; set; }
+        [JsonIgnore]
         public Bid Bid { get; set; }
 
 

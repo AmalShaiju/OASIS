@@ -230,7 +230,7 @@ namespace OASIS.Controllers
               .Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID || p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID
               );
 
-            dashVm.ReqApprovalBids = ReqApprovalBids.ToList();
+            dashVm.ReqApprovalBids = ReqApprovalBids.OrderBy(p => p.DateCreated).ToList();
 
             return dashVm;
         }
@@ -595,7 +595,9 @@ namespace OASIS.Controllers
         {
             try
             {
-                var bid = await _context.Bids.SingleOrDefaultAsync(p => p.ID == Id);
+                var bid = await _context.Bids.Include(p => p.Approval).SingleOrDefaultAsync(p => p.ID == Id);
+                bid.Approval.ClientStatus = _context.ApprovalStatuses.SingleOrDefault(p => p.ID == bid.Approval.ClientStatusID);
+                bid.Approval.DesignerStatus = _context.ApprovalStatuses.SingleOrDefault(p => p.ID == bid.Approval.DesignerStatusID);
 
                 List<BidProductDetails> bidProducts = _context.BidProducts.Where(p => p.BidID == Id)
                     .Select(p => new BidProductDetails
@@ -627,6 +629,41 @@ namespace OASIS.Controllers
                 return Json(returnVal);
             }
           
+
+        }
+
+        public async Task<ActionResult> UpdateApproval(int bidId, string approvalStatusName, string approvalType)
+        {
+            try
+            {
+                var ApprovalToUpdate = await _context.Approvals.SingleOrDefaultAsync(p => p.BidID == bidId);
+
+                if (approvalType == "client")
+                {
+                    ApprovalToUpdate.ClientStatusID =  _context.ApprovalStatuses.SingleOrDefault(p=>p.Name == approvalStatusName).ID;
+                    _context.Update(ApprovalToUpdate);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ApprovalToUpdate.DesignerStatusID = _context.ApprovalStatuses.SingleOrDefault(p => p.Name == approvalStatusName).ID;
+                    _context.Update(ApprovalToUpdate);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction("Index");
+                }
+
+
+            }
+            catch
+            {
+                return RedirectToAction("Index");
+            }
+
+            
+           
 
         }
     }
