@@ -13,7 +13,7 @@ namespace OASIS.Models
         public string CreatedBy { get; set; }
 
         [ScaffoldColumn(false)]
-        public DateTime? CreatedOn { get; set; }
+        public DateTime? CreatedOn { get; set; } 
 
         [ScaffoldColumn(false)]
         [StringLength(256)]

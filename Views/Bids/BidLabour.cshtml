@@ -21,7 +21,7 @@
                                 <tr id=labourRow-@i.Role.ID>
                                     <td class="column1">@i.Role.Name</td>
                                     <td class="column4" id="labourPrice-@i.Role.ID">$@i.Role.LabourPricePerHr</td>
-                                    <td class="column5"><input type="text" disabled id="labourTxt-@i.Role.ID" value="@i.Hours" /></td>
+                                    <td class="column5"><input type="number" disabled id="labourTxt-@i.Role.ID" value="@i.Hours" /></td>
                                     <td class="column6" id="labourTotal-@i.Role.ID">$@((double)i.Role.LabourPricePerHr * i.Hours)</td>
                                     <td class="column7"><input type="button" id="labourEdit-@i.Role.ID" class="btn btn-primary" onclick="labourEditRow(this.id)" value="Edit" /><input type="button" style="display:none" id="labourSave-@i.Role.ID" class="btn btn-success" onclick="labourSaveRow(this.id)" value="Save" /></td>
                                     <td class="column7"><input type="button" id="labourDelete-@i.Role.ID" class="btn btn-danger" onclick="labourDeleteRow(this.id)" value="Delete" /></td>

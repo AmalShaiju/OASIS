@@ -786,6 +786,11 @@ namespace OASIS.Data
                             a.Approval.DesignerStatusID = approvalStatusID[random.Next(approvalStatusID.Count())];
                             try
                             {
+                                if(a.Approval.ClientStatusID == context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && a.Approval.DesignerStatusID == context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID)
+                                {
+                                    a.IsFinal = true;
+                                }
+
                                 context.Add(a);
                                 context.SaveChanges();
 

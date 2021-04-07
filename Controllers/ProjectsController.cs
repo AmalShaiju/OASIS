@@ -177,7 +177,8 @@ namespace OASIS.Controllers
                 project.CustomerID = (int)customerID;
 
             }
-            PopulateDropDownLists(project);
+                PopulateDropDownLists(project);
+
             return View();
         }
 
@@ -190,6 +191,8 @@ namespace OASIS.Controllers
         public async Task<IActionResult> Create([Bind("ID,Name,SiteAddressLineOne,SiteAddressLineTwo,City,Province,Country,CustomerID")] Project project, int bidTrue)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
+            //if (!TempData.ContainsKey("fromCustomer"))
+            //    TempData["fromCustomer"] = "False";
 
             try
             {

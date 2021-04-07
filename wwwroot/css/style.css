@@ -15,7 +15,7 @@
 
 /*Bootstrap*/
 .card-header {
-    height: 70px;
+   /* height: 70px;*/
     background: rgba(184,175,247,1.2);
 }
 
@@ -221,9 +221,10 @@ quickLink-tab {
             }
 
 /*NAVIGATION*/
+
 /*INDEX*/
 tr {
-    background-color: white;
+    /*background-color: white;*/
     border: 0;
     margin: auto;
     width: 50%;
@@ -513,7 +514,7 @@ col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .co
 }
 
 .form-control {
-    border: none;
+   /* border: none;*/
 }
 
     .form-control input[type=text]:-webkit-autofill {
@@ -758,7 +759,7 @@ tbody tr:nth-child(even) {
     padding-right: 62px;
 }
 
-.column5 input[type=text] {
+.column5 input[type=number] {
     background: transparent;
     width: 59px;
     border: none;
@@ -814,5 +815,25 @@ tbody tr:nth-child(even) {
     top: 0.6%;
     width: 30%;
     z-index: 9999;
+}
+
+.dot {
+    height: 25px;
+    width: 25px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.warning-dot {
+    background: rgb(253,191,7)
+}
+
+.danger-dot {
+    background: rgb(220,53,69)
+}
+
+.success-dot {
+    background: rgb(65,177,91)
 }
 /*Status Message*/

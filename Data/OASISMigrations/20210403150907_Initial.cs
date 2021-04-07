@@ -205,6 +205,7 @@ namespace OASIS.Data.OASISMigrations
                     Budget = table.Column<double>(type: "decimal(9,2)", nullable: true),
                     DesignerID = table.Column<int>(nullable: false),
                     SalesAsscociateID = table.Column<int>(nullable: false),
+                    IsFinal = table.Column<bool>(nullable: false),
                     ProjectID = table.Column<int>(nullable: false),
                     BidStatusID = table.Column<int>(nullable: true)
                 },

@@ -42,6 +42,7 @@ namespace OASIS.Data
             adminClaim.Add(new Claim("ProductViewClaim", "True"));
             adminClaim.Add(new Claim("ProductCreateClaim", "True"));
             adminClaim.Add(new Claim("ProductEditClaim", "True"));
+            adminClaim.Add(new Claim("UserRolesViewClaim", "True"));
 
             List<Claim> salesClaim = new List<Claim>();
 

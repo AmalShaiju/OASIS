@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -18,10 +19,12 @@ namespace OASIS.Controllers
     public class BidsController : Controller
     {
         private readonly OasisContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public BidsController(OasisContext context)
+        public BidsController(OasisContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Bids
@@ -273,7 +276,7 @@ namespace OASIS.Controllers
             }
 
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Bids");
-
+            ViewData["BidDetails"] = "True";
             var bid = await _context.Bids
                 .Include(b => b.BidStatus)
                 .Include(b => b.Designer)
@@ -339,7 +342,7 @@ namespace OASIS.Controllers
         // GET: Bids/Create
         [Authorize(Policy = "BidCreatePolicy")]
 
-        public IActionResult Create(int? projectID)
+        public IActionResult Create(int? projectID, int? bidID)
         {
             var bid = new Bid();
             if (!TempData.ContainsKey("fromProject"))
@@ -350,6 +353,15 @@ namespace OASIS.Controllers
                 bid.ProjectID = (int)projectID;
 
             }
+
+            if (bidID.HasValue)
+            {
+                bid = _context.Bids.SingleOrDefault(p => p.ID == bidID);
+                PopuateSelectedProducts(bid);
+                PopuateSelectedRoles(bid);
+            }
+
+
             PopulateDropDownLists(bid);
             PopuateSelectedProducts(bid);
             PopuateSelectedRoles(bid);
@@ -363,14 +375,19 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "BidCreatePolicy")]
 
-        public async Task<IActionResult> Create([Bind("ID,DateCreated,ProjectStartDate,ProjectEndDate,EstBidStartDate,Budget,EstBidEndDate,Comments,DesignerID,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
+        public async Task<IActionResult> Create([Bind("ID,DateCreated,ProjectStartDate,ProjectEndDate,EstBidStartDate,Budget,EstBidEndDate,Comments,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
             int DesignerStatusID, int ClientStatusID, string approvalComment, string ProductsAssigned, string RolesAssigned, int employeeTrue, int customerTrue, int projectTrue)
         {
 
             double total = 0;
             if (ModelState.IsValid)
             {
-                
+
+                var user = await _userManager.GetUserAsync(User);
+                var employeeProfile = await _context.Employees.FirstOrDefaultAsync(p => p.UserName == user.UserName);
+
+
+                bid.DesignerID = employeeProfile.ID;
                 _context.Add(bid);
                 await _context.SaveChangesAsync();
                 List<ProductDeserialize> ProductsToAdd = JsonConvert.DeserializeObject<List<ProductDeserialize>>(ProductsAssigned);
@@ -378,6 +395,7 @@ namespace OASIS.Controllers
                 total += UpdateBidProducts(ProductsToAdd, bid);
                 total += UpdateBidLabours(rolesToAdd, bid);
                 UpdateApprovalStatus(bid, DesignerStatusID, ClientStatusID, approvalComment);
+                CheckIfFinalaized(bid);
                 //total += UpdateBidLabours(selectedRoles, requiredHours, bid);
                 bid.EstAmount = total;
 
@@ -478,7 +496,8 @@ namespace OASIS.Controllers
                 {
                     await _context.SaveChangesAsync();
                     UpdateApprovalStatus(bidToUpdate, DesignerStatusID, ClientStatusID, approvalComment);
-                   // return RedirectToAction(nameof(Index)); 
+                    CheckIfFinalaized(bidToUpdate);
+                    // return RedirectToAction(nameof(Index)); 
                     return RedirectToAction("Details", new { bidToUpdate.ID });
 
 
@@ -760,16 +779,44 @@ namespace OASIS.Controllers
 
         }
 
+        private void CheckIfFinalaized(Bid bid)
+        {
+            try
+            {
+                var clientStatusID = _context.Approvals.SingleOrDefault(p => p.BidID == bid.ID).ClientStatusID;
+                var designerStatusID = _context.Approvals.SingleOrDefault(p => p.BidID == bid.ID).ClientStatusID;
+                var approvalStatusID = _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID;
+
+                if (clientStatusID == approvalStatusID && designerStatusID == approvalStatusID)
+                {
+                    bid.IsFinal = true;
+                }
+                else
+                {
+                    bid.IsFinal = false;
+                }
+
+                _context.Update(bid);
+                _context.SaveChangesAsync();
+            }
+            catch
+            {
+
+            }
+
+
+        }
+
         private void PopuateSelectedProducts(Bid bid)
         {
 
             var query = _context.BidProducts.Include(p => p.Product).Where(p => p.BidID == bid.ID).ToList();
 
             ViewData["AssignedBidProducts"] = query;
-          
+
         }
 
-        private double UpdateBidProducts(List<ProductDeserialize> ProductsToAdd , Bid bidToUpdate)
+        private double UpdateBidProducts(List<ProductDeserialize> ProductsToAdd, Bid bidToUpdate)
         {
             List<string> a = new List<string>();
             List<string> b = new List<string>();
@@ -865,7 +912,7 @@ namespace OASIS.Controllers
             ViewData["AssignedBidlabours"] = query;
         }
 
-        private double UpdateBidLabours(List<RoleDeserialize> rolesToAdd , Bid bidToUpdate)
+        private double UpdateBidLabours(List<RoleDeserialize> rolesToAdd, Bid bidToUpdate)
         {
 
             List<string> a = new List<string>();

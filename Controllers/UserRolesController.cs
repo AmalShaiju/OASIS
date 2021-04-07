@@ -15,6 +15,7 @@ using System.Security.Claims;
 using OASIS.Utilities;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OASIS.Controllers
 {
@@ -40,6 +41,7 @@ namespace OASIS.Controllers
         }
 
         // GET: UserRoles
+        [Authorize(Policy = "UserRolesViewPolicy")]
         public async Task<IActionResult> Index()
         {
             List<IdentityRoleVM> userRoles = await GetAllRoles();
@@ -48,6 +50,7 @@ namespace OASIS.Controllers
         }
 
         // GET: UserRoles/Create
+        [Authorize(Policy = "UserRolesViewPolicy")]
         public IActionResult Create()
         {
             IdentityRoleVM role = new IdentityRoleVM();
@@ -56,6 +59,7 @@ namespace OASIS.Controllers
         }
 
         // GET: UserRoles/Edit
+        [Authorize(Policy = "UserRolesViewPolicy")]
         public async Task<IActionResult> Edit(string roleName)
         {
             var roleToUpdate = await _roleManager.FindByNameAsync(roleName);
@@ -78,6 +82,7 @@ namespace OASIS.Controllers
 
 
         // GET: UserRoles/UserClaimEdit
+        [Authorize(Policy = "UserRolesViewPolicy")]
         public async Task<IActionResult> UserClaimEdit(string userName)
         {
             var roleToUpdate = await _userManager.FindByNameAsync(userName);
@@ -103,6 +108,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "UserRolesViewPolicy")]
         public IActionResult Create([Bind("RoleName")] IdentityRoleVM role)
         {
             if (ModelState.IsValid)

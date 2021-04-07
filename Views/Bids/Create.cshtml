@@ -161,14 +161,6 @@
                     <div class="form-row col-10">
 
                         <div class="form-group col-5">
-                            <label asp-for="DesignerID" class="control-label"></label>
-                            <select asp-for="DesignerID" class="form-control" asp-items="ViewBag.DesignerID">
-                                <option value="">Select an employee</option>
-                            </select>
-                            <span asp-validation-for="DesignerID" class="text-danger"></span>
-
-                        </div>
-                        <div class="form-group col-6">
                             <label asp-for="SalesAsscociateID" class="control-label"></label>
                             <select asp-for="SalesAsscociateID" class="form-control" asp-items="ViewBag.SalesAsscociateID">
                                 <option value="">Select an employee</option>
@@ -176,11 +168,7 @@
                             <span asp-validation-for="SalesAsscociateID" class="text-danger"></span>
 
                         </div>
-
-
-                    </div>
-                    <div class="form-row col-10 ">
-                        <div class="form-group col-5">
+                        <div class="form-group col-6">
                             <label asp-for="Budget" class="control-label"></label>
                             <div class="input-group mb-3 budget-lock">
                                 <div class="input-group-prepend">
@@ -195,10 +183,9 @@
                             </div>
                         </div>
 
-                       
-
 
                     </div>
+                  
                     <div class="form-row col-9">
 
                         <label asp-for="Comments" class="control-label"></label>

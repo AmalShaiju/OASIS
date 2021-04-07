@@ -32,6 +32,7 @@ namespace OASIS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -108,6 +109,8 @@ namespace OASIS
                 options.AddPolicy("ProductViewPolicy", policy => policy.RequireClaim("ProductViewClaim", "True"));
                 options.AddPolicy("ProductCreatePolicy", policy => policy.RequireClaim("ProductCreateClaim", "True"));
                 options.AddPolicy("ProductEditPolicy", policy => policy.RequireClaim("ProductEditClaim", "True"));
+
+                options.AddPolicy("UserRolesViewPolicy", policy => policy.RequireClaim("UserRolesViewClaim", "True"));
 
 
             });
