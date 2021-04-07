@@ -52,6 +52,12 @@ namespace OASIS.Controllers
                     ViewData["UserRole"] = "Sales";
 
                 }
+                else
+                {
+                    dashVm = ManagementDashVM(employeeProfile);
+                    ViewData["UserRole"] = "Management";
+
+                }
 
 
             }
@@ -211,6 +217,22 @@ namespace OASIS.Controllers
 
             return dashvm;
 
+        }
+
+        public DashBoardVM ManagementDashVM(Employee employeeProfile)
+        {
+            DashBoardVM dashVm = new DashBoardVM();
+
+            var ReqApprovalBids = _context.Bids
+                .Include(p => p.Approval)
+                .Include(p => p.Project)
+                .ThenInclude(p => p.Customer)
+              .Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID || p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID
+              );
+
+            dashVm.ReqApprovalBids = ReqApprovalBids.ToList();
+
+            return dashVm;
         }
 
         [HttpGet]
@@ -550,7 +572,7 @@ namespace OASIS.Controllers
         {
             try
             {
-                var customer = _context.Customers.SingleOrDefault(p => p.ID == Id);
+                var customer = await _context.Customers.SingleOrDefaultAsync(p => p.ID == Id);
 
                 var successResult = new { success = true, msg = $"Successfully customer found!", customer = customer };
                 return Json(successResult);
@@ -565,6 +587,46 @@ namespace OASIS.Controllers
             return Json(failureResult);
 
 
+
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> PreviewBid(int Id)
+        {
+            try
+            {
+                var bid = await _context.Bids.SingleOrDefaultAsync(p => p.ID == Id);
+
+                List<BidProductDetails> bidProducts = _context.BidProducts.Where(p => p.BidID == Id)
+                    .Select(p => new BidProductDetails
+                    {
+                        Code = _context.Products.SingleOrDefault(s => s.ID == p.ProductID).Code,
+                        Size = _context.Products.SingleOrDefault(s => s.ID == p.ProductID).size,
+                        Description = _context.Products.SingleOrDefault(s => s.ID == p.ProductID).Description,
+                        Price = _context.Products.SingleOrDefault(s => s.ID == p.ProductID).Price,
+                        Quantity = p.Quantity,
+                        Total = p.Quantity * (double)_context.Products.SingleOrDefault(s => s.ID == p.ProductID).Price,
+                    }).ToList();
+
+
+
+                List<BidLabourDetails> bidLabours =  _context.BidLabours.Where(p => p.BidID == Id)
+                    .Select(p => new BidLabourDetails {
+                        Hours = p.Hours, 
+                        Name = _context.Roles.SingleOrDefault(r => r.ID == p.RoleID ).Name,
+                        Price = (double)_context.Roles.SingleOrDefault(r => r.ID == p.RoleID).LabourPricePerHr,
+                        Total = (double)_context.Roles.SingleOrDefault(r => r.ID == p.RoleID).LabourPricePerHr * p.Hours,
+                    }).ToList();
+
+                var returnVal = new { success = true, msg = $"Successfully found bid", bid = bid, bidProducts = bidProducts, bidLabours = bidLabours };
+                return Json(returnVal);
+            }
+            catch
+            {
+                var returnVal = new { success = false, msg = $"Something went wrong" };
+                return Json(returnVal);
+            }
+          
 
         }
     }

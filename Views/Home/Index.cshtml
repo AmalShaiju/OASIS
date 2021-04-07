@@ -7,15 +7,18 @@
     <div class="card text-center col-6 ">
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs">
-                @if (ViewData["UserRole"].ToString() == "Designer")
+                @if (ViewData["UserRole"].ToString() == "Designer" || ViewData["UserRole"].ToString() == "Management")
                 {
                     <li class="nav-item">
                         <a style="width:100%;" class="nav-link active" data-toggle="pill" data-target="#bids-tab" role="tab">Bids</a>
                     </li>
+                    if (ViewData["UserRole"].ToString() == "Designer")
+                    {
+                        <li class="nav-item">
+                            <input type="checkbox" id="toggle-bids" data-on="Show Bids" data-off="Hide Bids" onchange="ShowAllBids(this)" data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
+                        </li>
+                    }
 
-                    <li class="nav-item">
-                        <input type="checkbox" id="toggle-bids" data-on="Show Bids" data-off="Hide Bids" onchange="ShowAllBids(this)" data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
-                    </li>
 
                 }
                 @if (ViewData["UserRole"].ToString() == "Sales")
@@ -223,6 +226,85 @@
                     </div>
 
                 }
+                else if (ViewData["UserRole"].ToString() == "Management")
+                {
+                    <div class="card-body tab-pane fade show active p-0" id="project-tab" role="tabpanel">
+                        @if (Model.ReqApprovalBids.Count() != 0)
+                        {
+                            <table class="table table-dark">
+                                <thead id="dashboard-thead">
+                                    <tr>
+                                        <th scope="col">Date Created</th>
+                                        <th scope="col">Project Name</th>
+                                        <th scope="col">Est Amount</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashboard-tbody">
+                                    @foreach (var bid in Model.ReqApprovalBids)
+                                    {
+                                        <tr id="bidInfo-@bid.ID" onclick="PreviewBid(this)" style="background:#343a40;cursor:pointer;">
+                                            <th scope="row">@bid.DateCreated.ToShortDateString()</th>
+                                            <td>@bid.Project.Name</td>
+                                            <td>$@bid.EstAmount.ToString("0.##")</td>
+                                            <td>
+                                                @{ if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID && bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID)
+                                                    {
+                                                        <span data-toggle="tooltip" data-placement="left" title="Client Status" class="dot warning-dot"></span>
+                                                        <span data-toggle="tooltip" data-placement="right" title="Management Status" class="dot warning-dot"></span>
+
+                                                    }
+                                                    else if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID && bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID)
+                                                    {
+                                                        <span data-toggle="tooltip" data-placement="left" title="Client Status" class="dot warning-dot"></span>
+                                                        <span data-toggle="tooltip" data-placement="right" title="Management Status" class="dot success-dot"></span>
+
+                                                    }
+
+                                                    else if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID)
+                                                    {
+                                                        <span data-toggle="tooltip" data-placement="left" title="Client Status" class="dot success-dot"></span>
+                                                        <span data-toggle="tooltip" data-placement="right" title="Management Status" class="dot warning-dot"></span>
+                                                    }
+
+                                                    else
+                                                    {
+                                                        if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID && bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID)
+                                                        {
+                                                            <span data-toggle="tooltip" data-placement="left" title="Client Status" class="dot warning-dot"></span>
+                                                            <span data-toggle="tooltip" data-placement="right" title="Management Status" class="dot danger-dot"></span>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <span data-toggle="tooltip" data-placement="left" title="Client Status" class="dot danger-dot"></span>
+                                                            <span data-toggle="tooltip" data-placement="right" title="Management Status" class="dot warning-dot"></span>
+                                                        }
+                                                    }
+                                                }
+                                            </td>
+                                            <td>
+                                                <a asp-controller="Bids" asp-action="Edit" asp-route-id="@bid.ID" style="height:28px; width:24%" class="btn btn-outline-primary p-0 mr-3">
+                                                    <span class="material-icons">
+                                                        edit
+                                                    </span>
+                                                </a>
+                                                <a asp-controller="Bids" asp-action="Details" asp-route-id="@bid.ID" style="height:28px; width:24%" class="btn btn-outline-info p-0">
+                                                    <span class="material-icons">
+                                                        info
+                                                    </span>
+                                                </a>
+                                            </td>
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                }
 
             }
 
@@ -251,6 +333,15 @@
                 {
                     <li class="nav-item">
                         <a style="width:100%;" class="nav-link active" data-toggle="pill" data-target="#cusLookUp-tab">Customer</a>
+                    </li>
+                }
+                else if (ViewData["UserRole"].ToString() == "Management")
+                {
+                    <li class="nav-item">
+                        <a style="width:100%;" class="nav-link active" data-toggle="pill" data-target="#bidInfo-tab">Bid Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="width:100%;" class="nav-link" data-toggle="pill" data-target="#ManagementReport-tab">OverView</a>
                     </li>
                 }
 
@@ -531,6 +622,181 @@
 
                                         </label>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                else if (ViewData["UserRole"].ToString() == "Management")
+                {
+                    <div class="card mt-5 text-left" style="border: 1px solid rgba(0,0,0.2);">
+                        <div style="background:#a2b3bb;" class="card-header">
+                            <h6 id="bidHeading" class="m-0 text-center">Start Up : 2020-12-01</h6>
+                        </div>
+                        <div id="bidInfo-body" class="card-body">
+                            <div class="row pl-3">
+                                <div class="col-6">
+                                    <h6 id="bid-StartDate">Estimated Start Date: No Start Date</h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 id="bid-EndDate">Estimated End Date: No End Date</h6>
+                                </div>
+
+                                <div class="col-6">
+                                    <h6 id="bid-Budget">Budget: No Budget</h6>
+                                </div>
+
+                                <div class="col-6">
+                                    <h6 id="bid-Amount">Estimate Amount: No Amount</h6>
+                                </div>
+                            </div>
+
+                            <div class="card mt-4">
+                                <div class="card-header" id="headingOne">
+                                    <div class="row ">
+                                        <div class="col-1">
+                                            <svg style="width:100%;height:100%;" id="Layer_1" enable-background="new 0 0 512.002 512.002" height="512" viewBox="0 0 512.002 512.002" width="512" xmlns="http://www.w3.org/2000/svg"><g fill="#7460ee"><path d="m511.994 139.957c-.042-2.496-1.369-4.876-3.481-6.213l-158.6-100.428c-.777-.492-1.638-.837-2.54-1.018l-160.543-32.14c-7.955-1.596-12.335 9.352-5.484 13.69l71.847 45.494-57.841 17.166-48.998-31.026c-2.484-1.573-5.659-1.549-8.12.061l-59.406 38.886c-7.853 5.14.005 17.925 8.215 12.551l55.367-36.241 144.679 91.612-121.055 79.237-144.679-91.612 32.581-21.326c7.853-5.14-.005-17.925-8.215-12.551l-42.327 27.706c-2.082 1.361-3.393 3.79-3.393 6.275v264.004c0 2.57 1.316 4.961 3.488 6.336l158.601 100.428c1.796 1.136 4.112 1.46 6.146.854l274.923-81.589c8.998-2.67 5.139-17.174-4.268-14.38l-265.29 78.73v-248.358l323.399-95.976v248.357l-20.479 6.078c-8.997 2.67-5.141 17.17 4.268 14.38l25.846-7.67c3.183-.944 5.366-3.87 5.366-7.19v-264.004c0-.041-.006-.082-.007-.123zm-168.93-93.223 123.271 78.057-119.54-23.933-123.271-78.057zm-38.109 99.176-92.779-58.748 57.841-17.166 69.929 44.28c.777.492 1.638.837 2.54 1.018l130.882 26.203-260.347 77.263 92.029-60.238c2.134-1.397 3.412-3.782 3.393-6.332s-1.333-4.916-3.488-6.28zm-289.954 7.796 143.601 90.929v246.25l-143.601-90.928z" /><path d="m466.654 293.54c-1.898-1.416-4.354-1.852-6.623-1.176l-253.737 75.506c-3.18.946-5.361 3.87-5.361 7.188v73.185c0 2.368 1.118 4.597 3.016 6.012 1.311.978 2.887 1.488 4.484 1.488.716 0 1.436-.103 2.139-.312l253.737-75.506c3.18-.946 5.361-3.87 5.361-7.188v-73.185c0-2.368-1.118-4.597-3.016-6.012zm-11.984 73.604-238.737 71.042v-57.535l238.737-71.042z" /><path d="m291.679 405.335c4.142 0 7.5-3.358 7.5-7.5v-21.253c0-9.385-15-9.813-15 0v21.253c0 4.143 3.358 7.5 7.5 7.5z" /><path d="m391.21 374.829c4.142 0 7.5-3.358 7.5-7.5v-21.254c0-9.385-15-9.813-15 0v21.254c0 4.142 3.358 7.5 7.5 7.5z" /><path d="m413.346 368.829c4.142 0 7.5-3.358 7.5-7.5v-21.254c0-9.385-15-9.813-15 0v21.254c0 4.142 3.358 7.5 7.5 7.5z" /><path d="m435.482 362.829c4.142 0 7.5-3.358 7.5-7.5v-21.254c0-9.385-15-9.813-15 0v21.254c0 4.142 3.358 7.5 7.5 7.5z" /><path d="m235.335 422.099c4.142 0 7.5-3.358 7.5-7.5v-21.253c0-9.385-15-9.813-15 0v21.253c0 4.142 3.358 7.5 7.5 7.5z" /><path d="m257.013 416.765c4.142 0 7.5-3.358 7.5-7.5v-21.253c0-9.385-15-9.813-15 0v21.253c0 4.142 3.358 7.5 7.5 7.5z" /><path d="m330.843 393.227c4.142 0 7.5-3.358 7.5-7.5v-21.253c0-9.385-15-9.813-15 0v21.253c0 4.142 3.358 7.5 7.5 7.5z" /><path d="m352.046 387.797c4.142 0 7.5-3.358 7.5-7.5v-21.253c0-9.385-15-9.813-15 0v21.253c0 4.142 3.358 7.5 7.5 7.5z" /></g></svg>
+                                        </div>
+                                        <div style="align-self:center" class="col-10">
+                                            <h4 class="mb-0 pl-2">Products</h4>
+                                        </div>
+                                        <div class="col-1">
+                                            <button class="btn btn-light pb-0" data-toggle="collapse" data-target="#productCollapse">
+                                                <span class="material-icons">
+                                                    expand_more
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="productCollapse" class="collapse" aria-labelledby="headingOne">
+                                    <div class="container-table100">
+
+                                        <div class="wrap-table100">
+                                            <div class="table100">
+                                                <table>
+                                                    <thead>
+                                                        <tr class="table100-head">
+                                                            <th class="column1">Code</th>
+                                                            <th class="column2">Description </th>
+                                                            <th class="column3">Size</th>
+                                                            <th class="column4">Price</th>
+                                                            <th class="column5">Quantity</th>
+                                                            <th class="column6">Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="bidProduct-dash" style="overflow-y:scroll; height:200px">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card mt-4">
+                                <div class="card-header" id="headingOne">
+                                    <div class="row">
+                                        <div class="col-1">
+                                            <svg style="width:100%; height:100%" version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+                                                <metadata>
+                                                    Created by potrace 1.16, written by Peter Selinger 2001-2019
+                                                </metadata>
+                                                <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#7460ee" stroke="none">
+                                                    <path d="M1660 5109 c-132 -20 -240 -95 -267 -184 -7 -21 -38 -188 -69 -374
+                                        -32 -185 -61 -341 -66 -348 -5 -7 -33 -19 -61 -29 -112 -36 -240 -107 -303
+                                        -169 -74 -73 -96 -118 -96 -202 1 -124 82 -219 267 -308 319 -156 832 -237
+                                        1495 -237 663 0 1176 81 1495 237 185 89 266 184 267 308 0 84 -22 129 -96
+                                        202 -63 62 -191 133 -303 169 -28 10 -56 22 -61 29 -5 7 -28 125 -51 262 -74
+                                        443 -80 471 -113 519 -39 59 -103 100 -189 121 -112 28 -338 17 -609 -30 -319
+                                        -54 -337 -54 -655 -5 -288 44 -472 56 -585 39z m240 -219 c63 -6 217 -26 342
+                                        -45 290 -45 362 -45 633 -1 116 19 254 40 307 46 122 15 262 9 304 -13 28 -14
+                                        32 -23 42 -84 7 -37 34 -195 60 -350 44 -250 47 -283 33 -287 -52 -15 -247
+                                        -48 -381 -65 -440 -56 -1011 -53 -1440 9 -92 13 -122 7 -155 -32 -43 -51 -30
+                                        -139 25 -168 20 -11 168 -32 360 -52 201 -21 913 -17 1120 5 205 23 417 58
+                                        556 93 94 24 111 25 148 14 99 -30 246 -122 246 -155 0 -40 -146 -124 -300
+                                        -173 -316 -100 -737 -152 -1240 -152 -503 0 -924 52 -1240 152 -154 49 -300
+                                        133 -300 173 0 39 142 122 300 174 102 34 121 44 138 76 7 15 142 761 142 790
+                                        0 13 57 38 102 45 76 11 72 11 198 0z"></path>
+                                                    <path d="M1514 3170 c-12 -4 -30 -20 -42 -34 -39 -51 -61 -268 -42 -427 22
+                                        -189 68 -282 171 -349 187 -121 428 -54 521 145 33 72 38 131 24 278 -7 64 -5
+                                        107 4 159 13 66 12 73 -6 107 -36 68 -139 76 -182 13 -39 -56 -53 -171 -39
+                                        -323 10 -112 10 -117 -11 -151 -61 -99 -205 -78 -241 34 -14 45 -31 215 -26
+                                        258 2 19 9 73 16 120 10 76 10 90 -5 118 -27 51 -88 74 -142 52z"></path>
+                                                    <path d="M3504 3161 c-49 -30 -59 -66 -43 -164 18 -106 16 -264 -5 -349 -54
+                                        -228 -189 -432 -368 -555 -97 -67 -152 -94 -277 -134 -122 -40 -168 -75 -201
+                                        -151 -19 -44 -22 -64 -17 -128 6 -89 -5 -123 -52 -163 -60 -50 -159 -28 -197
+                                        45 -23 43 -31 183 -14 257 41 188 183 330 390 391 111 32 206 86 285 162 151
+                                        143 222 342 195 546 -14 110 -34 152 -83 175 -33 17 -42 17 -80 5 -33 -10 -46
+                                        -21 -61 -52 -17 -35 -18 -44 -6 -106 7 -38 11 -100 8 -139 -9 -126 -93 -261
+                                        -203 -326 -22 -12 -90 -39 -150 -60 -138 -45 -230 -100 -315 -184 -184 -185
+                                        -258 -451 -194 -700 29 -112 121 -211 229 -247 70 -24 176 -21 247 6 79 29
+                                        150 96 190 178 30 61 33 75 33 161 l0 95 105 36 c58 20 141 55 185 79 398 213
+                                        634 657 587 1105 -15 147 -28 184 -71 213 -41 28 -76 29 -117 4z"></path>
+                                                    <path d="M2377 1099 c-107 -25 -208 -114 -248 -217 -16 -42 -22 -80 -22 -143
+                                        0 -75 3 -94 30 -152 37 -78 98 -141 173 -176 48 -23 68 -26 155 -26 87 0 107
+                                        3 150 25 61 30 136 103 164 158 50 99 50 246 0 347 -71 142 -244 221 -402 184z
+                                        m141 -229 c74 -34 103 -137 57 -207 -38 -57 -116 -78 -176 -48 -71 37 -94 154
+                                        -42 216 27 31 74 58 103 58 8 0 34 -8 58 -19z"></path>
+                                                    <path d="M1590 791 c-380 -82 -561 -195 -562 -352 -1 -70 20 -116 72 -167 176
+                                        -169 690 -272 1360 -272 746 0 1289 125 1404 323 95 163 -24 321 -309 410
+                                        -100 31 -303 77 -341 77 -99 0 -148 -128 -75 -194 10 -9 69 -27 132 -41 205
+                                        -45 375 -108 387 -143 5 -17 -120 -74 -233 -105 -250 -70 -582 -107 -966 -107
+                                        -346 0 -663 33 -912 94 -129 32 -287 96 -287 116 0 29 241 117 401 146 82 15
+                                        98 22 128 51 31 31 33 37 28 79 -10 95 -72 118 -227 85z"></path>
+                                                </g>
+                                            </svg>
+                                        </div>
+                                        <div style="align-self:center" class="col-10">
+                                            <h4 class="mb-0 pl-2">Labour</h4>
+                                        </div>
+                                        <div class="col-1">
+                                            <button class="btn btn-light pb-0" data-toggle="collapse" data-target="#labourCollapse">
+                                                <span class="material-icons">
+                                                    expand_more
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="labourCollapse" class="collapse" aria-labelledby="headingOne">
+                                    <div class="container-table100">
+
+                                        <div class="wrap-table100">
+                                            <div class="table100">
+                                                <table>
+                                                    <thead>
+                                                        <tr class="table100-head">
+                                                            <th class="column1">Role</th>
+                                                            <th class="column4">Hours </th>
+                                                            <th class="column5">Price</th>
+                                                            <th class="column6">Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="bidLabour-dash">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+                        <div class="card-footer text-muted">
+                            <div class="row">
+                                <div id="bid-createdOn" class="col-6 text-left">
+
+                                </div>
+                                <div id="bid-updateOn" class="col-6 text-right">
+
                                 </div>
                             </div>
                         </div>

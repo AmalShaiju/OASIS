@@ -120,7 +120,6 @@ function FilterDashBoard(e) {
     }
 }
 
-
 function DateFilter(e) {
 
     var fromDate = null;
@@ -302,7 +301,7 @@ function DateFilter(e) {
 function ShowCustomer(e) {
 
     var id = e.id.split("-")[1];
-    
+
     if (id != null) {
         $.ajax({
             type: "GET",
@@ -343,4 +342,137 @@ function ShowCustomer(e) {
         });
     }
 
+}
+
+function PreviewBid(e) {
+    var id = e.id.split("-")[1];
+
+    if (id != null) {
+        $.ajax({
+            type: "GET",
+            url: "Home/PreviewBid",
+            data: {
+                'Id': id
+            },
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+                if (response != null) {
+                    console.log(response);
+
+                    if (response.success) {
+
+                        if (response.bidProducts.length != 0) {
+                            // products 
+                            var bidProductsToAdd;
+                            var productSubTotal = 0;
+                            for (var i = 0; i < response.bidProducts.length; i++) {
+                                bidProductsToAdd += ` <tr>
+                                                            <td class="column1">${response.bidProducts[i].code}</td>
+                                                            <td class="column2">${response.bidProducts[i].description}</td>
+                                                            <td class="column3">${response.bidProducts[i].price.toFixed(2)}</td>
+                                                            <td class="column4">${response.bidProducts[i].quantity}</td>
+                                                            <td class="column5">${response.bidProducts[i].size}</td>
+                                                            <td class="column6">${response.bidProducts[i].total.toFixed(2)}</td>
+                                                        </tr>`
+                                productSubTotal += response.bidProducts[i].total;
+                            }
+
+                            bidProductsToAdd += ` <tr>
+                                                            <td class="column1"></td>
+                                                            <td class="column2"></td>
+                                                            <td class="column3"></td>
+                                                            <td class="column4"></td>
+                                                            <td class="column5" style="color:#7460ee"><strong>SubTotal:</strong></td>
+                                                            <td class="column6" style="color:#7460ee"><strong>${productSubTotal.toFixed(2)}</strong></td>
+                                                        </tr>`
+
+
+                            $('#bidProduct-dash').empty();
+                            $('#bidProduct-dash').append(bidProductsToAdd);
+                        }
+
+                        // Labours 
+                        if (response.bidLabours.length !=0) {
+
+                            var bidLaboursToAdd;
+                            var labourSubTotal = 0;
+
+                            for (var i = 0; i < response.bidLabours.length; i++) {
+                                bidLaboursToAdd += ` <tr>
+                                                            <td class="column1">${response.bidLabours[i].name}</td>
+                                                            <td class="column4">${response.bidLabours[i].hours}</td>
+                                                            <td class="column5">${response.bidLabours[i].price.toFixed(2)}</td>
+                                                            <td class="column6">${response.bidLabours[i].total.toFixed(2)}</td>
+                                                        </tr>`
+                                labourSubTotal += response.bidLabours[i].total;
+                            }
+
+                            bidLaboursToAdd += ` <tr>
+                                                            <td class="column1"></td>
+                                                            <td class="column4"></td>
+                                                            <td class="column5" style="color:#7460ee"><strong>SubTotal:</strong></td>
+                                                            <td class="column6" style="color:#7460ee"><strong>${labourSubTotal.toFixed(2)}</strong></td>
+                                                        </tr>`
+
+                            $('#bidLabour-dash').empty();
+                            $('#bidLabour-dash').append(bidLaboursToAdd);
+                        }
+
+                        if (response.bid.length != 0) {
+                            if (response.bid.estAmount != null) {
+                                $('#bid-Amount').text(`Estimate: $${response.bid.estAmount.toFixed(2)}`)
+
+                            }
+
+                            if (response.bid.budget != null) {
+                                $('#bid-Budget').text(`Budget: $${response.bid.budge.toFixed(2)}`)
+
+                            }
+                          
+
+                            if (response.bid.estBidEndDate != null) {
+                                $('#bid-EndDate').text(`Estimated End Date: ${response.bid.estBidEndDate.split("T")[0]}`)
+
+                            }
+
+                            if (response.bid.estBidStartDate != null) {
+                                $('#bid-StartDate').text(`Estimated Start Date: ${response.bid.estBidStartDate.split("T")[0]}`)
+
+                            }
+                            if (response.bid.createdOn != null) {
+                                $('#bid-CreatedOn').text(`Estimated Start Date: ${response.bid.createdOn.split("T")[0]}`)
+
+                            }
+                            if (response.bid.dateCreated != null) {
+                                $('#bid-createdOn').text(`Created On: ${response.bid.dateCreated.split("T")[0]}`)
+
+                            }
+
+                            if (response.bid.updatedOn != null) {
+                                $('#bid-updateOn').text(`Updated On: ${response.bid.updatedOn.split("T")[0]}`)
+
+                            }
+
+                        }
+
+
+
+                        showStatusMsg(response.success, response.msg, 500);
+                    }
+                    else {
+                        showStatusMsg(response.success, response.msg, 2000);
+                    }
+                }
+                else {
+                    showStatusMsg(false, "Something went wrong", 3000);
+                }
+            },
+            failure: function (response) {
+                showStatusMsg(false, "Something went wrong", 3000);
+            },
+            error: function (response) {
+                showStatusMsg(false, "Something went wrong", 3000);
+            }
+        });
+    }
 }
