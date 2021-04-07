@@ -1940,3 +1940,5 @@ C:\Users\Asus\Source\Repos\OASIS\obj\Debug\netcoreapp3.1\OASIS.csproj.CopyComple
 C:\Users\Asus\Source\Repos\OASIS\obj\Debug\netcoreapp3.1\OASIS.dll
 C:\Users\Asus\Source\Repos\OASIS\obj\Debug\netcoreapp3.1\OASIS.pdb
 C:\Users\Asus\Source\Repos\OASIS\obj\Debug\netcoreapp3.1\OASIS.genruntimeconfig.cache
+C:\Users\Asus\Source\Repos\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Projects\_CustomerCreate.cshtml.g.cs
+C:\Users\Asus\Source\Repos\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Projects\_AddCustomerModal.cshtml.g.cs
