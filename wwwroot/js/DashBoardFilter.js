@@ -437,7 +437,7 @@ function PreviewBid(e) {
 
                             if (response.bid.estBidStartDate != null) {
                                 $('#bid-StartDate').text(`Estimated Start Date: ${response.bid.estBidStartDate.split("T")[0]}`)
-
+                                $('#bidHeading').text(`${e.id.split("-")[0]}: ${response.bid.estBidStartDate.split("T")[0]}`)
                             }
                             if (response.bid.createdOn != null) {
                                 $('#bid-CreatedOn').text(`Estimated Start Date: ${response.bid.createdOn.split("T")[0]}`)
@@ -452,6 +452,7 @@ function PreviewBid(e) {
                                 $('#bid-updateOn').text(`Updated On: ${response.bid.updatedOn.split("T")[0]}`)
 
                             }
+
 
                         }
 
@@ -503,6 +504,8 @@ function PreviewBid(e) {
 
 
                         }
+
+                        
 
 
 

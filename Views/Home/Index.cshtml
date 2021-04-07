@@ -244,7 +244,7 @@
                                 <tbody id="dashboard-tbody">
                                     @foreach (var bid in Model.ReqApprovalBids)
                                     {
-                                        <tr id="bidInfo-@bid.ID" onclick="PreviewBid(this)" style="cursor:pointer;">
+                                        <tr id="@bid.Project.Name-@bid.ID" onclick="PreviewBid(this)" style="cursor:pointer;">
                                             <th scope="row">@bid.DateCreated.ToShortDateString()</th>
                                             <td>@bid.Project.Name</td>
                                             <td>$@bid.EstAmount.ToString("0.##")</td>
@@ -632,7 +632,7 @@
                 {
                     <div class="card mt-5 text-left" style="border: 1px solid rgba(0,0,0.2);">
                         <div style="background: #454d55; color:white;" class="card-header">
-                            <h6 id="bidHeading" class="m-0 text-center">Start Up : 2020-12-01</h6>
+                            <h6 id="bidHeading" class="m-0 text-center"></h6>
                         </div>
                         <div id="bidInfo-body" class="card-body">
                             <div class="row pl-3">
