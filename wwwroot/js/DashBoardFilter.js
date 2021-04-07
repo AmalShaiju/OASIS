@@ -45,7 +45,6 @@ function FilterDashBoard(e) {
                 'ApprovalStatus': approvalID,
                 'BidStatusID': bidStatusID,
                 'ProjectID': projectID,
-                'userName': $('#userName').html(),
                 'FromDate': fromDate,
                 'ToDate': toDate
 
@@ -63,9 +62,9 @@ function FilterDashBoard(e) {
                             console.log(response.objects);
 
                             for (var i = 0; i < response.objects.length; i++) {
-                                tbodyToAdd += `<tr style="background:#343a40">
-                                <th scope="row">${response.objects[i].dateCreated.split("T")[0]}</th>
-                                <th scope="row">${response.objects[i].projectName}</th>
+                                tbodyToAdd += `<tr id="${response.objects[i].projectName}-${response.objects[i].id}" onclick="PreviewBid(this)" style="cursor:pointer;">
+                                <th scope="row">${response.objects[i].dateCreated.split("T")[0]} </th>
+                                <td>${response.objects[i].projectName}</td>
                                 <td>$${response.objects[i].estAmount.toFixed(2)}</td>
                                 <td>
                                     <a href="${getBaseUrl()}Bids/Edit/${response.objects[i].id}" style="height:28px; width:24%" class="btn btn-outline-primary p-0 mr-3">
@@ -160,7 +159,7 @@ function DateFilter(e) {
 
                         if (response.bids != null) {
                             for (var i = 0; i < response.bids.length; i++) {
-                                tbodyToAdd += `<tr style="background:#343a40">
+                                tbodyToAdd += `<tr id="${response.bids[i].projectName}-${response.bids[i].id}" onclick="PreviewBid(this)" style="cursor:pointer;" style="background:#343a40">
                                 <th scope="row">${response.bids[i].dateCreated.split("T")[0]}</th>
                                 <th scope="row">${response.bids[i].projectName}</th>
                                 <td>$${response.bids[i].estAmount.toFixed(2)}</td>

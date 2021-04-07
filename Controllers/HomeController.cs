@@ -98,8 +98,6 @@ namespace OASIS.Controllers
             dashvm.Projects = projectsUserWorkedOn.OrderBy(p => p.Name).ToList();
 
 
-
-
             // get all bids which was approved by both the client and NBD
             var approvals =
                 _context.Bids.Where(p => p.DesignerID == employeeProfile.ID)
@@ -221,7 +219,7 @@ namespace OASIS.Controllers
 
         public DashBoardVM ManagementDashVM(Employee employeeProfile)
         {
-            DashBoardVM dashVm = new DashBoardVM();
+            DashBoardVM dashvm = new DashBoardVM();
 
             var ReqApprovalBids = _context.Bids
                 .Include(p => p.Approval)
@@ -230,26 +228,127 @@ namespace OASIS.Controllers
               .Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID || p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID
               );
 
-            dashVm.ReqApprovalBids = ReqApprovalBids.OrderBy(p => p.DateCreated).ToList();
+            dashvm.ReqApprovalBids = ReqApprovalBids.OrderBy(p => p.DateCreated).ToList();
 
-            return dashVm;
+            // get all bids which was approved by both the client and NBD
+            var approvals =
+                _context.Bids
+                .Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID);
+
+            dashvm.ApprovedBids = approvals.ToList();
+
+
+            // get all bids which was approved by either the client and NBD
+            var disApprovals =
+                _context.Bids
+                .Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID || p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID);
+
+
+            dashvm.DisApprovedBids = disApprovals.ToList();
+
+
+
+
+            // get all bids grouped by bid status
+            foreach (var status in _context.BidStatuses)
+            {
+                // bids might be null
+                BidBidStatusVM bidBidStatus = new BidBidStatusVM();
+                try
+                {
+
+
+                    bidBidStatus.BidStatusName = status.Name;
+                    bidBidStatus.BidStatusID = status.ID;
+                    bidBidStatus.BidsCount = _context.Bids.Where(p => p.BidStatusID == status.ID).Count();
+
+                    dashvm.BidBidStatusVMs.Add(bidBidStatus);
+
+
+                }
+                catch
+                {
+
+                }
+            }
+
+            try
+            {
+                // all projects with start date after today's date
+                var startApproch = _context.Projects
+                    .Where(p => p.Bids.Where(p => p.IsFinal == true && p.EstBidStartDate > DateTime.Today).Any());
+
+
+                // get all bids grouped by projcet
+                foreach (var project in startApproch)
+                {
+                    ProjectBidDateVM s = new ProjectBidDateVM();
+                    s.ProjectName = project.Name;
+                    s.ProjectID = project.ID;
+
+                    foreach (var bid in project.Bids)
+                    {
+                        s.ApprovedBidDate = bid.EstBidStartDate;
+                        dashvm.StartApprochBids.Add(s);
+                    }
+                }
+
+                // all projects with End date after today's date
+                var endApproch = _context.Projects
+                      .Where(p => p.Bids
+                      .Where(p => p.IsFinal == true && p.EstBidEndDate > DateTime.Today).Any());
+
+
+                // get all bids grouped by projcet
+                foreach (var project in endApproch)
+                {
+                    ProjectBidDateVM s = new ProjectBidDateVM();
+                    s.ProjectName = project.Name;
+                    s.ProjectID = project.ID;
+
+                    foreach (var bid in project.Bids)
+                    {
+                        s.ApprovedBidDate = bid.EstBidEndDate;
+                        dashvm.EndApprochBids.Add(s);
+                    }
+                }
+
+            }
+            catch
+            {
+
+            }
+
+
+
+            return dashvm;
         }
 
         [HttpGet]
-        public async Task<JsonResult> DashFilter(string userName, string ApprovalStatus, int? BidStatusID, int? ProjectID, DateTime? FromDate, DateTime? ToDate)
+        public async Task<JsonResult> DashFilter(string ApprovalStatus, int? BidStatusID, int? ProjectID, DateTime? FromDate, DateTime? ToDate)
         {
 
             try
             {
                 var statusID = 0;
 
-
-                var employeeProfile = await _context.Employees.FirstOrDefaultAsync(p => p.UserName == userName);
+                var user = await _userManager.GetUserAsync(User);
+                var employeeProfile = await _context.Employees.FirstOrDefaultAsync(p => p.UserName == user.UserName);
 
                 var bidsUserWorkedOn =
-                  _context.Bids
-                  .Include(p => p.Project)
-                  .Where(p => p.DesignerID == employeeProfile.ID);
+                     _context.Bids
+                     .Include(p => p.Project).Select(p => p);
+
+                if (!await _userManager.IsInRoleAsync(user, "Management"))
+                {
+                     bidsUserWorkedOn =
+                     _context.Bids
+                     .Include(p => p.Project)
+                     .Where(p => p.DesignerID == employeeProfile.ID);
+                }
+              
+
+
 
                 if (FromDate.HasValue)
                 {
@@ -612,10 +711,11 @@ namespace OASIS.Controllers
 
 
 
-                List<BidLabourDetails> bidLabours =  _context.BidLabours.Where(p => p.BidID == Id)
-                    .Select(p => new BidLabourDetails {
-                        Hours = p.Hours, 
-                        Name = _context.Roles.SingleOrDefault(r => r.ID == p.RoleID ).Name,
+                List<BidLabourDetails> bidLabours = _context.BidLabours.Where(p => p.BidID == Id)
+                    .Select(p => new BidLabourDetails
+                    {
+                        Hours = p.Hours,
+                        Name = _context.Roles.SingleOrDefault(r => r.ID == p.RoleID).Name,
                         Price = (double)_context.Roles.SingleOrDefault(r => r.ID == p.RoleID).LabourPricePerHr,
                         Total = (double)_context.Roles.SingleOrDefault(r => r.ID == p.RoleID).LabourPricePerHr * p.Hours,
                     }).ToList();
@@ -628,7 +728,7 @@ namespace OASIS.Controllers
                 var returnVal = new { success = false, msg = $"Something went wrong" };
                 return Json(returnVal);
             }
-          
+
 
         }
 
@@ -640,7 +740,7 @@ namespace OASIS.Controllers
 
                 if (approvalType == "client")
                 {
-                    ApprovalToUpdate.ClientStatusID =  _context.ApprovalStatuses.SingleOrDefault(p=>p.Name == approvalStatusName).ID;
+                    ApprovalToUpdate.ClientStatusID = _context.ApprovalStatuses.SingleOrDefault(p => p.Name == approvalStatusName).ID;
                     _context.Update(ApprovalToUpdate);
                     await _context.SaveChangesAsync();
 
@@ -662,8 +762,8 @@ namespace OASIS.Controllers
                 return RedirectToAction("Index");
             }
 
-            
-           
+
+
 
         }
     }
