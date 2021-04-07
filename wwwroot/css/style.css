@@ -514,7 +514,7 @@ col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .co
 }
 
 .form-control {
-    border: none;
+   /* border: none;*/
 }
 
     .form-control input[type=text]:-webkit-autofill {
@@ -759,7 +759,7 @@ tbody tr:nth-child(even) {
     padding-right: 62px;
 }
 
-.column5 input[type=text] {
+.column5 input[type=number] {
     background: transparent;
     width: 59px;
     border: none;

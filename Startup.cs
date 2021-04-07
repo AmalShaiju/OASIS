@@ -110,6 +110,8 @@ namespace OASIS
                 options.AddPolicy("ProductCreatePolicy", policy => policy.RequireClaim("ProductCreateClaim", "True"));
                 options.AddPolicy("ProductEditPolicy", policy => policy.RequireClaim("ProductEditClaim", "True"));
 
+                options.AddPolicy("UserRolesViewPolicy", policy => policy.RequireClaim("UserRolesViewClaim", "True"));
+
 
             });
         }

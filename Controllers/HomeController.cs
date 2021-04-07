@@ -37,9 +37,14 @@ namespace OASIS.Controllers
             {
                 // get signed in user profile and employee profie 
                 var user = await _userManager.GetUserAsync(User);
+                if (User.IsInRole("Admin"))
+                {
+                    return RedirectToAction("Index", "UserRoles");
+                }
+
                 var employeeProfile = await _context.Employees.FirstOrDefaultAsync(p => p.UserName == user.UserName);
                 ViewData["EmployeeID"] = employeeProfile.ID;
-
+                
                 if (User.IsInRole("Designer"))
                 {
                     dashVm = DesignerDashView(employeeProfile);

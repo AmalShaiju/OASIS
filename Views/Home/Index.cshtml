@@ -3,6 +3,9 @@
 @inject OASIS.Data.OasisContext _context
 @inject UserManager<IdentityUser> UserManager
 
+
+
+
 <div class="row">
     <div class="card text-center col-6 ">
         <div class="card-header">
@@ -15,7 +18,7 @@
                     if (ViewData["UserRole"].ToString() == "Designer")
                     {
                         <li class="nav-item">
-                            <input type="checkbox" id="toggle-bids" data-on="Show Bids" data-off="Hide Bids" onchange="ShowAllBids(this)" data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
+                            <input type="checkbox" id="toggle-bids" data-on="Show Bids" data-off="Designed" onchange="ShowAllBids(this)" data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
                         </li>
                     }
 
@@ -340,9 +343,9 @@
                     <li class="nav-item">
                         <a style="width:100%;" class="nav-link" data-toggle="pill" data-target="#bidInfo-tab">Bid Info</a>
                     </li>
-                    <li class="nav-item">
+                    @*<li class="nav-item">
                         <a style="width:100%;" class="nav-link" data-toggle="pill" data-target="#ManagementReport-tab">Report</a>
-                    </li>
+                    </li>*@
                 }
 
 
@@ -355,33 +358,33 @@
                 if (ViewData["UserRole"].ToString() == "Designer" || ViewData["UserRole"].ToString() == "Management")
                 {
                     <div class="card-body tab-pane fade show active p-0" id="overView-tab" role="tabpanel">
-                       
-                            <div class="row ml-5 mr-5 pl-1 mt-3" style=" border: 1px solid; ">
 
-                                <div class="col-5 mr-4 p-0 row">
-                                    <div class="col-4 p-0">
-                                        <label class="form-control">From:</label>
+                        <div class="row ml-5 mr-5 pl-1 mt-3" style=" border: 1px solid; ">
 
-                                    </div>
-                                    <div class="col-8 p-0">
-                                        <input class="form-control p-0" id="date-FromDate" type="date">
-                                    </div>
+                            <div class="col-5 mr-4 p-0 row">
+                                <div class="col-4 p-0">
+                                    <label style="border:none" class="form-control">From:</label>
+
                                 </div>
-                                <div class="col-5 mr-5 p-0 row">
-                                    <div class="col-4 p-0">
-                                        <label class="form-control">TO:</label>
-
-                                    </div>
-                                    <div class="col-8 p-0">
-                                        <input class="form-control p-0" id="date-Todate" type="date" />
-
-                                    </div>
-                                </div>
-
-                                <div class="col-1">
-                                    <button onclick="DateFilter(this)" class="btn btn-success">GO</button>
+                                <div class="col-8 p-0">
+                                    <input style="border:none" class="form-control p-0" id="date-FromDate" type="date">
                                 </div>
                             </div>
+                            <div class="col-5 mr-5 p-0 row">
+                                <div class="col-4 p-0">
+                                    <label style="border:none" class="form-control">TO:</label>
+
+                                </div>
+                                <div class="col-8 p-0">
+                                    <input class="form-control p-0" id="date-Todate" type="date" />
+
+                                </div>
+                            </div>
+
+                            <div class="col-1">
+                                <button onclick="DateFilter(this)" class="btn btn-success">GO</button>
+                            </div>
+                        </div>
                         <div class="row ml-5">
                             <div class="card col-5 mt-5  pr-0" style="width: 18rem;">
                                 <div class="card-header">
@@ -523,7 +526,7 @@
                 {
                     <div class="card-body tab-pane fade show active p-0" id="cusLookUp-tab" role="tabpanel">
                         <div style="text-align: left; " class="card mt-5 pt-0 pr-5 pl-5">
-                            <div style="background:#a2b3bb;" class="card-header">
+                            <div style="color:white background: #454d55;" class="card-header">
                                 <div class="row">
                                     <div style="align-self:center" class="col-1 ml-5">
                                         <span class="material-icons">
