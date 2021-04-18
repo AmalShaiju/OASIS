@@ -18,7 +18,7 @@
                     if (ViewData["UserRole"].ToString() == "Designer")
                     {
                         <li class="nav-item">
-                            <input type="checkbox" id="toggle-bids" data-on="Show Bids" data-off="Designed" onchange="ShowAllBids(this)" data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
+                            <input type="checkbox" id="toggle-bids" data-on="All Bids" data-off="Designed" onchange="ShowAllBids(this)" data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
                         </li>
                     }
 
@@ -376,7 +376,7 @@
 
                                 </div>
                                 <div class="col-8 p-0">
-                                    <input class="form-control p-0" id="date-Todate" type="date" />
+                                    <input style="border:none" class="form-control p-0" id="date-Todate" type="date" />
 
                                 </div>
                             </div>

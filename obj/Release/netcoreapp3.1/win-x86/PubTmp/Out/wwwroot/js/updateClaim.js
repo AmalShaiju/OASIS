@@ -30,24 +30,23 @@ function UpdateClaim(e) {
             success: function (response) {
                 if (response != null) {
 
-                    if (response) {
-                        alert("sucess")
+                    if (response.success) {
+                        showStatusMsg(response.success, response.msg, 1000);
                     }
                     else {
-                        alert("Failed")
+                        showStatusMsg(response.success, response.msg, 1000);
                     }
 
 
                 } else {
-                    alert("Something went wrong");
+                    showStatusMsg(false, "Something went wrong", 2000);
                 }
             },
             failure: function (response) {
-                alert("failed");
+                showStatusMsg(false, "Something went wrong", 2000);
             },
             error: function (response) {
-                alert(response);
-                console.log(response);
+                showStatusMsg(false, "Something went wrong", 2000);
 
             }
         });
@@ -85,26 +84,21 @@ function UpdateUserClaim(e) {
             contentType: "application/json; charset=utf-8",
             success: function (response) {
                 if (response != null) {
-
-                    if (response) {
-                        alert("sucess")
+                    if (response.success) {
+                        showStatusMsg(response.success, response.msg,1000);
                     }
                     else {
-                        alert("Failed")
+                        showStatusMsg(response.success, response.msg,1000);
                     }
-
-
                 } else {
-                    alert("Something went wrong");
+                    showStatusMsg(false, "Something went wrong", 2000);
                 }
             },
             failure: function (response) {
-                alert("failed");
+                showStatusMsg(false, "Something went wrong", 2000);
             },
             error: function (response) {
-                alert(response);
-                console.log(response);
-
+                showStatusMsg(false, "Something went wrong",2000);
             }
         });
     }

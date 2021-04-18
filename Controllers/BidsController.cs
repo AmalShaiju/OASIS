@@ -345,6 +345,7 @@ namespace OASIS.Controllers
         public IActionResult Create(int? projectID, int? bidID)
         {
             var bid = new Bid();
+            bid.BidStatusID = _context.BidStatuses.SingleOrDefault(p => p.Name == "Design stage").ID;
             if (!TempData.ContainsKey("fromProject"))
                 TempData["fromProject"] = "False";
 

@@ -73,7 +73,7 @@ $("#btnAddRole").click(function () {
                     .append($(`<tr id=labourRow-${response.id} >`)
                         .append($('<td class="column1">').append(`${response.name}`))
                         .append($(`<td class="column4" id="labourPrice-${response.id}">`).append(`$${response.labourPricePerHr}`))
-                        .append($('<td class="column5">').append(`<input type="text" disabled id="labourTxt-${response.id}" value="${hours}" />`))
+                        .append($('<td class="column5">').append(`<input type="number" disabled id="labourTxt-${response.id}" value="${hours}" />`))
                         .append($(`<td class="column6" id="labourTotal-${response.id}">`).append(`$${response.labourPricePerHr * hours}`))
                         .append($('<td class="column7">').append(`<input type="button" id="labourEdit-${response.id}" class="btn btn-primary" onclick="labourEditRow(this.id)" value="Edit"/><input type="button" style="display:none" id="labourSave-${response.id}" class="btn btn-success" onclick="labourSaveRow(this.id)" value="Save"/>`))
                         .append($('<td class="column7">').append(`<input type="button" id="labourDelete-${response.id}" class="btn btn-danger" onclick="labourDeleteRow(this.id)"  value="Delete" />`))

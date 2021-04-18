@@ -416,6 +416,25 @@ c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
                                                         </p>
                                                     </div>
                                                 }
+                                                <div class="w-100"></div>
+
+                                                <div class="col">
+                                                    <label>
+                                                        Finalized
+                                                    </label>
+                                                </div>
+                                                <div class="col">
+                                                    @if (Model.IsFinal == true)
+                                                    {
+                                                        <span class="dot success-dot"></span>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="dot danger-dot"></span>
+                                                    }
+                                                </div>
+                                                <div class="w-100"></div>
 
 
 
@@ -850,7 +869,7 @@ c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
                                                     </p>
                                                 </div>
                                                 <div class="w-100"></div>
-
+                                               
 
                                             </div>
 

@@ -365,38 +365,52 @@ namespace OASIS.Controllers
         {
             IdentityUser user = await _userManager.FindByNameAsync(userName);
             var employeeName = _oasisContext.Employees.SingleOrDefault(p => p.UserName == userName).FullName;
-            if (!await _userManager.IsInRoleAsync(user, roleName))
+            var UserRole =  await _userManager.GetRolesAsync(user);
+            
+            //user is no other role
+            if (UserRole.Count == 0)
             {
-                var result = _userManager.AddToRoleAsync(user, roleName).Result;
-
-
-                if (result.Succeeded)
+                if (!await _userManager.IsInRoleAsync(user, roleName))
                 {
-                    //Add all the claims of the role to the user
-                    var role = await _roleManager.FindByNameAsync(roleName);
-                    var roleClaims = await _roleManager.GetClaimsAsync(role);
-                    await _userManager.AddClaimsAsync(user, roleClaims.AsEnumerable());
+                    var result = _userManager.AddToRoleAsync(user, roleName).Result;
 
-                    var returnVal = new { success = true, employeeName = employeeName, msg = $"{employeeName} was successfully added to {roleName}" };
-                    return Json(returnVal);
+
+                    if (result.Succeeded)
+                    {
+                        //Add all the claims of the role to the user
+                        var role = await _roleManager.FindByNameAsync(roleName);
+                        var roleClaims = await _roleManager.GetClaimsAsync(role);
+                        await _userManager.AddClaimsAsync(user, roleClaims.AsEnumerable());
+
+                        var returnVal = new { success = true, employeeName = employeeName, msg = $"{employeeName} was successfully added to {roleName}" };
+                        return Json(returnVal);
+
+                    }
+                    else
+                    {
+                        var returnVal = new { success = false, msg = $"Failed to add {employeeName} to {roleName}" };
+                        return Json(returnVal);
+
+                    }
+
+
 
                 }
                 else
                 {
-                    var returnVal = new { success = false, msg = $"Failed to add {employeeName} to {roleName}" };
+                    var returnVal = new { success = false, msg = $"{employeeName} already exist in the role {roleName}" };
+
                     return Json(returnVal);
-
                 }
-
-
-
             }
             else
             {
-                var returnVal = new { success = false, msg = $"{employeeName} already exist in the role {roleName}" };
-
+                var returnVal = new { success = false, msg = $"{employeeName} is already in a role, edit user privileges" };
                 return Json(returnVal);
+
             }
+
+
         }
 
         [HttpGet]
@@ -410,10 +424,9 @@ namespace OASIS.Controllers
                 var result = _userManager.RemoveFromRoleAsync(user, roleName).Result;
                 if (result.Succeeded)
                 {
-                    //remove all the claims of the role to the user
-                    var role = await _roleManager.FindByNameAsync(roleName);
-                    var roleClaims = await _roleManager.GetClaimsAsync(role);
-                    await _userManager.RemoveClaimsAsync(user, roleClaims.AsEnumerable());
+                    //remove all the claims of the user 
+                    var userClaims = await _userManager.GetClaimsAsync(user);
+                    await _userManager.RemoveClaimsAsync(user, userClaims.AsEnumerable());
 
                     var returnVal = new { success = true, employeeName = employeeName, msg = $"{employeeName} was successfully removed from {roleName}" };
                     return Json(returnVal);
