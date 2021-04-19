@@ -54,7 +54,6 @@ namespace OASIS.Controllers
                 {
                     customers = customers.Where(p => p.LastName.ToUpper().Contains(QuickSearchName.ToUpper())
                                            || p.FirstName.ToUpper().Contains(QuickSearchName.ToUpper()));
-                    ViewData["Filtering"] = "show";
                 }
             }
               
