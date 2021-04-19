@@ -8,190 +8,88 @@
     <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
     <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
 
-    <div class="flex-container">
 
-
-        <div class="inner-flex-container-right">
-
-            <button type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" data-toggle="tooltip" data-placement="top" title="Filter" class="inner-flex-container-right-items" style=" width:15%; background-color:white">
-
-
-                <div style="width:40%;">
-                    <svg style="width:50%; height:50%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg" version="1.1" width="400" height="400" viewBox="0, 0, 400,400">
-                        <g id="svgg">
-                            <path id="path0" d="M0.000 89.000 L 0.000 112.000 200.000 112.000 L 400.000 112.000 400.000 89.000 L 400.000 66.000 200.000 66.000 L 0.000 66.000 0.000 89.000 M66.000 200.000 L 66.000 223.200 200.000 223.200 L 334.000 223.200 334.000 200.000 L 334.000 176.800 200.000 176.800 L 66.000 176.800 66.000 200.000 M155.200 311.000 L 155.200 334.000 200.000 334.000 L 244.800 334.000 244.800 311.000 L 244.800 288.000 200.000 288.000 L 155.200 288.000 155.200 311.000 " stroke="none" fill="#040404" fill-rule="evenodd" />
-                            <path id="path1" d="" stroke="none" fill="#080404" fill-rule="evenodd" />
-                            <path id="path2" d="" stroke="none" fill="#080404" fill-rule="evenodd" />
-                            <path id="path3" d="" stroke="none" fill="#080404" fill-rule="evenodd" />
-                            <path id="path4" d="" stroke="none" fill="#080404" fill-rule="evenodd" />
-                        </g>
-                    </svg>
-                </div>
-
+    <div class="row pb-3 pr-5 pl-5" style=" margin-left: 0.01%; background:#3f4853; align-items:center">
+        <div class="col-1">
+            <button  type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" data-placement="top" title="Filter" class="btn btn-light">
+                <span class="material-icons">
+                    filter_list
+                </span>
             </button>
+        </div>
 
-            <a asp-action="Create" class="inner-flex-container-right-items" style=" width:24%; background-color:#27a9f8">
-                <div style="width:40%;text-align:right">
-                    <svg style="width:50%; height:50%;" version="1.0" xmlns="http://www.w3.org/2000/svg"
-                         width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
-                         preserveAspectRatio="xMidYMid meet">
-
-                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                           fill="#f4f8f9" stroke="none">
-                            <path d="M2360 5105 c-303 -68 -555 -275 -667 -547 -56 -138 -65 -188 -72
--428 -6 -214 -7 -227 -29 -254 -35 -45 -56 -129 -48 -199 15 -143 110 -252
-250 -288 37 -9 47 -16 52 -38 18 -79 29 -113 58 -176 40 -85 110 -180 171
--229 l45 -37 0 -97 0 -97 -428 -165 c-534 -206 -561 -219 -668 -326 -66 -65
--91 -99 -123 -166 -72 -150 -71 -135 -71 -1074 0 -836 0 -838 21 -882 15 -29
-37 -54 67 -73 l46 -29 406 0 407 0 21 23 c29 31 29 77 -1 105 -21 19 -34 22
--120 22 l-97 0 0 754 c0 722 -1 755 -19 777 -25 31 -83 32 -114 1 l-22 -23 -3
--755 -2 -755 -206 3 c-169 2 -206 6 -214 18 -14 22 -13 1624 1 1692 24 116
-115 249 215 315 48 32 568 243 597 243 7 0 68 -111 137 -247 85 -168 134 -253
-152 -267 38 -28 115 -27 154 1 l30 21 27 -43 28 -44 -110 -654 c-61 -359 -111
--671 -111 -693 0 -51 17 -76 148 -219 l109 -120 -163 -3 c-162 -2 -163 -3
--183 -29 -27 -33 -27 -63 0 -97 l20 -26 1053 0 1052 0 46 29 c30 19 52 44 67
-73 20 43 21 56 21 434 -1 303 -3 393 -14 406 -34 45 -113 40 -135 -8 -7 -17
--11 -138 -11 -387 0 -210 -4 -368 -10 -377 -8 -12 -45 -16 -214 -18 l-206 -3
--2 755 -3 755 -22 23 c-31 31 -89 30 -114 -1 -18 -22 -19 -55 -19 -777 l0
--754 -401 0 -401 0 83 91 c175 192 179 197 179 255 0 20 -50 331 -111 690
-l-111 654 28 44 28 44 30 -21 c39 -28 116 -29 154 -1 18 14 67 99 152 267 69
-136 130 247 136 247 25 0 532 -203 583 -233 106 -63 204 -202 230 -325 7 -32
-11 -170 11 -346 0 -282 1 -294 21 -320 29 -37 89 -37 118 0 20 26 21 38 21
-326 0 335 -8 402 -64 523 -59 127 -184 252 -313 313 -32 15 -251 102 -485 192
-l-428 165 0 102 0 103 46 42 c96 88 176 229 204 360 13 56 13 56 59 68 155 39
-251 159 251 315 0 67 -29 163 -55 185 -12 10 -15 42 -15 154 0 257 -23 389
--90 533 -95 203 -221 337 -413 438 -144 76 -228 97 -407 101 -111 3 -173 0
--220 -11z m376 -165 c236 -61 417 -212 518 -432 49 -106 66 -190 73 -348 l6
--140 -27 0 c-17 0 -29 7 -32 18 -16 52 -42 88 -138 192 -166 180 -185 184
--363 85 -231 -128 -436 -183 -703 -189 -154 -4 -185 -14 -215 -69 -13 -25 -27
--36 -47 -39 l-28 -5 0 129 c0 162 19 256 74 373 104 221 301 379 531 430 95
-21 258 19 351 -5z m287 -829 l87 -95 0 -290 c0 -211 -4 -309 -14 -357 -44
--208 -209 -375 -419 -424 -174 -41 -366 10 -499 133 -76 71 -120 138 -154 239
--27 76 -27 86 -32 363 l-4 285 113 2 c251 3 510 73 734 198 44 24 85 43 90 42
-6 -1 50 -44 98 -96z m-1183 -411 l0 -160 -25 10 c-47 18 -74 42 -95 84 -24 52
--25 84 -3 131 15 32 92 95 115 95 4 0 8 -72 8 -160z m1490 138 c18 -13 41 -39
-51 -58 38 -70 15 -162 -51 -207 -59 -41 -60 -39 -60 132 0 171 1 173 60 133z
-m-957 -1045 c86 -23 281 -24 362 -1 33 10 70 20 83 24 21 6 22 4 22 -56 l0
--63 -136 -169 c-76 -93 -141 -167 -146 -166 -6 2 -70 78 -144 168 l-134 165 0
-64 c0 53 3 62 15 57 9 -3 44 -13 78 -23z m-60 -397 c71 -87 125 -161 120 -165
--27 -24 -245 -173 -247 -170 -2 2 -51 99 -109 215 l-105 210 91 36 c51 20 98
-36 106 35 8 -1 73 -73 144 -161z m735 128 c50 -19 92 -37 92 -40 0 -2 -47 -99
--105 -214 l-105 -211 -48 33 c-113 77 -197 140 -197 147 0 12 249 320 260 320
-6 1 52 -15 103 -35z m-422 -450 c35 -25 66 -49 68 -53 3 -4 -6 -24 -20 -44
-l-25 -37 -89 0 -90 0 -27 41 c-22 34 -24 42 -12 49 7 5 39 27 69 49 30 22 56
-40 58 41 2 0 32 -21 68 -46z m103 -906 c57 -337 105 -624 108 -638 3 -21 -20
--51 -133 -175 -75 -82 -140 -150 -144 -150 -7 0 -168 173 -263 282 -18 21 -16
-37 87 646 58 343 106 629 106 636 0 7 23 11 68 11 l68 0 103 -612z" />
-                        </g>
-                    </svg>
-                </div>
-
-                <div style="width:100%;text-align:center">
-                    <p>Add Employee</p>
-                </div>
+        <div class="col-1">
+            <a asp-controller="roles" style="width:auto" class="btn btn-info">
+                <span class="material-icons">
+                    school
+                </span>
             </a>
+        </div>
 
-            <div class="inner-flex-container-right-items" id="moreOptions" style="width:5%;background-color: rgba(39,169,248,0.25)">
-                <a asp-controller="roles" asp-action="Index" style="width:100%" data-toggle="tooltip" data-placement="top" title="Roles">
-                    <svg style="width:100%; height:100%" version="1.0" xmlns="http://www.w3.org/2000/svg"
-                         width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
-                         preserveAspectRatio="xMidYMid meet">
-                        <metadata>
-                            Created by potrace 1.16, written by Peter Selinger 2001-2019
-                        </metadata>
-                        <g id="roleLogo" transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                           fill="#27a9f8" stroke="none">
-                            <path d="M1660 5109 c-132 -20 -240 -95 -267 -184 -7 -21 -38 -188 -69 -374
-                                        -32 -185 -61 -341 -66 -348 -5 -7 -33 -19 -61 -29 -112 -36 -240 -107 -303
-                                        -169 -74 -73 -96 -118 -96 -202 1 -124 82 -219 267 -308 319 -156 832 -237
-                                        1495 -237 663 0 1176 81 1495 237 185 89 266 184 267 308 0 84 -22 129 -96
-                                        202 -63 62 -191 133 -303 169 -28 10 -56 22 -61 29 -5 7 -28 125 -51 262 -74
-                                        443 -80 471 -113 519 -39 59 -103 100 -189 121 -112 28 -338 17 -609 -30 -319
-                                        -54 -337 -54 -655 -5 -288 44 -472 56 -585 39z m240 -219 c63 -6 217 -26 342
-                                        -45 290 -45 362 -45 633 -1 116 19 254 40 307 46 122 15 262 9 304 -13 28 -14
-                                        32 -23 42 -84 7 -37 34 -195 60 -350 44 -250 47 -283 33 -287 -52 -15 -247
-                                        -48 -381 -65 -440 -56 -1011 -53 -1440 9 -92 13 -122 7 -155 -32 -43 -51 -30
-                                        -139 25 -168 20 -11 168 -32 360 -52 201 -21 913 -17 1120 5 205 23 417 58
-                                        556 93 94 24 111 25 148 14 99 -30 246 -122 246 -155 0 -40 -146 -124 -300
-                                        -173 -316 -100 -737 -152 -1240 -152 -503 0 -924 52 -1240 152 -154 49 -300
-                                        133 -300 173 0 39 142 122 300 174 102 34 121 44 138 76 7 15 142 761 142 790
-                                        0 13 57 38 102 45 76 11 72 11 198 0z" />
-                            <path d="M1514 3170 c-12 -4 -30 -20 -42 -34 -39 -51 -61 -268 -42 -427 22
-                                        -189 68 -282 171 -349 187 -121 428 -54 521 145 33 72 38 131 24 278 -7 64 -5
-                                        107 4 159 13 66 12 73 -6 107 -36 68 -139 76 -182 13 -39 -56 -53 -171 -39
-                                        -323 10 -112 10 -117 -11 -151 -61 -99 -205 -78 -241 34 -14 45 -31 215 -26
-                                        258 2 19 9 73 16 120 10 76 10 90 -5 118 -27 51 -88 74 -142 52z" />
-                            <path d="M3504 3161 c-49 -30 -59 -66 -43 -164 18 -106 16 -264 -5 -349 -54
-                                        -228 -189 -432 -368 -555 -97 -67 -152 -94 -277 -134 -122 -40 -168 -75 -201
-                                        -151 -19 -44 -22 -64 -17 -128 6 -89 -5 -123 -52 -163 -60 -50 -159 -28 -197
-                                        45 -23 43 -31 183 -14 257 41 188 183 330 390 391 111 32 206 86 285 162 151
-                                        143 222 342 195 546 -14 110 -34 152 -83 175 -33 17 -42 17 -80 5 -33 -10 -46
-                                        -21 -61 -52 -17 -35 -18 -44 -6 -106 7 -38 11 -100 8 -139 -9 -126 -93 -261
-                                        -203 -326 -22 -12 -90 -39 -150 -60 -138 -45 -230 -100 -315 -184 -184 -185
-                                        -258 -451 -194 -700 29 -112 121 -211 229 -247 70 -24 176 -21 247 6 79 29
-                                        150 96 190 178 30 61 33 75 33 161 l0 95 105 36 c58 20 141 55 185 79 398 213
-                                        634 657 587 1105 -15 147 -28 184 -71 213 -41 28 -76 29 -117 4z" />
-                            <path d="M2377 1099 c-107 -25 -208 -114 -248 -217 -16 -42 -22 -80 -22 -143
-                                        0 -75 3 -94 30 -152 37 -78 98 -141 173 -176 48 -23 68 -26 155 -26 87 0 107
-                                        3 150 25 61 30 136 103 164 158 50 99 50 246 0 347 -71 142 -244 221 -402 184z
-                                        m141 -229 c74 -34 103 -137 57 -207 -38 -57 -116 -78 -176 -48 -71 37 -94 154
-                                        -42 216 27 31 74 58 103 58 8 0 34 -8 58 -19z" />
-                            <path d="M1590 791 c-380 -82 -561 -195 -562 -352 -1 -70 20 -116 72 -167 176
-                                        -169 690 -272 1360 -272 746 0 1289 125 1404 323 95 163 -24 321 -309 410
-                                        -100 31 -303 77 -341 77 -99 0 -148 -128 -75 -194 10 -9 69 -27 132 -41 205
-                                        -45 375 -108 387 -143 5 -17 -120 -74 -233 -105 -250 -70 -582 -107 -966 -107
-                                        -346 0 -663 33 -912 94 -129 32 -287 96 -287 116 0 29 241 117 401 146 82 15
-                                        98 22 128 51 31 31 33 37 28 79 -10 95 -72 118 -227 85z" />
-                        </g>
-                    </svg>
-                </a>
-
+        <div class="col-6 pl-0">
+            <partial name="_PagingNavBar" />
+        </div>
+        <div class="col-2 justify-content-end mt-3">
+            <div class="input-group" style=" float: right;">
+                <button style="width:auto" type="submit" name="actionButton" value="Filter" class="btn btn-outline-light pb-0 pr-1 pl-1">
+                    <span class="material-icons">
+                        search
+                    </span>
+                </button>
+                @Html.TextBox("QuickSearchName", null, new { @class = "form-control", placeholder = "Employee Name", })
             </div>
         </div>
 
-    </div>
+        <a asp-action="Create" style="display:flex; align-items:center; justify-content:center" class="btn btn-success col-2 align-items-center">
+            <span class="material-icons mr-2">
+                control_point
+            </span>
+            Add Employee
+        </a>
 
-    <div class="collapse @(ViewData["Filtering"])" id="collapseFilter">
-        <div class="filter-div">
+        <div class="col-12 collapse @(ViewData["Filtering"])" id="collapseFilter">
+            <div class="filter-div">
 
-            <div style="background-color:white!important; border: 1px solid rgba(39,169,248,0.3)" class="card card-body bg-light">
-                <div class="form-row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Employee Name:</label>
-                            @Html.TextBox("SearchName", null, new { @class = "form-control" })
+                <div style="background-color:white!important; border: 1px solid rgba(39,169,248,0.3)" class="card card-body bg-light">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Employee Name:</label>
+                                @Html.TextBox("SearchName", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Email:</label>
+                                @Html.TextBox("SearchEmail", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Designation:</label>
+                                @Html.DropDownList("RoleID", null, "All Roles", htmlAttributes: new { @class = "form-control" })
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Email:</label>
-                            @Html.TextBox("SearchEmail", null, new { @class = "form-control" })
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Designation:</label>
-                            @Html.DropDownList("RoleID", null, "All Roles", htmlAttributes: new { @class = "form-control" })
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-md-6  align-self-end">
-                        <div class="form-group">
-                            <input style="width:20%;" type="submit" name="actionButton" value="Filter" class="btn btn-warning" />
-                            <a style="width:20%; margin-left:2%;" asp-action="Index" class="btn btn-dark ">Clear</a>
+                    <div class="form-row">
+                        <div class="col-md-6  align-self-end">
+                            <div class="form-group">
+                                <input style="width:20%;" type="submit" name="actionButton" value="Filter" class="btn btn-warning" />
+                                <a style="width:20%; margin-left:2%;" asp-action="Index" class="btn btn-dark ">Clear</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
     </div>
 
-    <table class="table table-dark p-3" style="border-radius:50px;">
+    <table class="table" style="background:white;">
         <thead>
             <tr>
-                <th>
+                <th class="pl-5 pt-3">
                     @if (ViewData["sortField"].ToString().Contains("Employee"))
                     {
                         <input type="submit" style="color:gold" name="actionButton" value="Employee (@Model.Count())" class="btn btn-link" />
@@ -204,7 +102,7 @@ l-25 -37 -89 0 -90 0 -27 41 c-22 34 -24 42 -12 49 7 5 39 27 69 49 30 22 56
                 </th>
 
 
-                <th>
+                <th class="pl-0">
                     @if (ViewData["sortField"].ToString() == "Designation")
                     {
 
@@ -225,144 +123,31 @@ l-25 -37 -89 0 -90 0 -27 41 c-22 34 -24 42 -12 49 7 5 39 27 69 49 30 22 56
                 <tr>
 
 
-                    <td>
-                        <div style="display:flex; align-items:center">
-
-                            @Html.DisplayFor(modelItem => item.FullName)
-
-
-                        </div>
+                    <td class="pl-5">
                         <div>
-
-
-                            @Html.DisplayFor(modelItem => item.Email)
-
-
+                            @Html.DisplayFor(modelItem => item.FullName)
                         </div>
-
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Role.Name)
                     </td>
 
+                    <td style="text-align:center">
+                        <a style="width:auto" asp-action="Edit" asp-route-id="@item.ID"  class="btn btn-outline-primary mr-3">
+                            <span class="material-icons">
+                                edit
+                            </span>
+                        </a>
 
-                    <td style="padding-top:0px; position:relative" class="table-row-img">
-                        <img id="@item.ID" src="~/resources/moreOptions.png" class="ddl-icon" onclick="divVisibility(@item.ID)" alt="Alternate Text" />
-                        <div id="@item.ID-ddl" class="index-drop-down-menu">
-                            <a asp-action="Edit" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
-                                <div class="index-drop-down-menu-flex-container-img">
-
-                                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                                         width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
-                                         preserveAspectRatio="xMidYMid meet">
-                                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                                           fill="#000000" stroke="none">
-                                            <path d="M3625 5106 c-63 -29 -98 -90 -110 -192 l-7 -61 -99 -40 -99 -40 -59
-                        43 c-82 61 -166 74 -236 36 -11 -6 -68 -59 -126 -119 -103 -104 -129 -145
-                        -129 -203 0 -38 24 -91 64 -145 l44 -59 -28 -60 c-15 -34 -32 -77 -39 -97 -12
-                        -36 -13 -37 -87 -48 -87 -13 -122 -28 -157 -71 -38 -44 -47 -89 -47 -230 0
-                        -144 9 -187 51 -234 35 -41 83 -61 166 -71 60 -7 62 -8 74 -43 6 -21 24 -64
-                        39 -98 l27 -61 -43 -58 c-67 -90 -78 -159 -37 -240 23 -44 171 -193 223 -223
-                        34 -21 58 -27 102 -27 53 0 63 4 131 51 68 48 75 51 98 38 13 -7 56 -25 96
-                        -40 l71 -26 7 -62 c13 -116 62 -184 148 -207 64 -17 314 -8 353 14 66 35 94
-                        87 109 204 6 49 9 53 43 64 21 6 64 24 98 39 l61 27 58 -43 c54 -40 107 -64
-                        145 -64 58 0 99 26 203 129 60 58 114 117 121 131 38 74 26 146 -39 233 l-42
-                        57 40 99 40 99 61 7 c112 13 187 65 201 138 4 18 5 105 3 193 -3 158 -3 161
-                        -31 197 -37 48 -70 65 -161 78 l-74 11 -18 47 c-9 25 -27 68 -40 95 -13 27
-                        -21 54 -17 60 4 6 23 34 44 61 59 79 70 154 33 225 -22 45 -227 238 -259 245
-                        -17 4 -35 8 -41 10 -33 10 -111 -18 -167 -60 l-60 -44 -36 15 c-50 22 -123 51
-                        -142 57 -12 4 -20 27 -28 82 -13 92 -29 125 -78 162 -36 28 -37 28 -212 30
-                        -132 2 -184 -1 -206 -11z m280 -273 c8 -72 30 -126 63 -156 11 -10 60 -33 109
-                        -51 48 -18 113 -46 143 -62 41 -21 69 -28 110 -28 58 0 85 11 158 66 l43 32
-                        51 -52 52 -51 -32 -43 c-55 -73 -66 -100 -66 -158 0 -41 7 -69 28 -110 16 -30
-                        44 -95 62 -143 18 -49 41 -98 51 -109 27 -31 90 -56 161 -64 l62 -7 0 -77 0
-                        -78 -62 -7 c-77 -8 -141 -37 -168 -76 -12 -16 -31 -59 -44 -96 -13 -38 -38
-                        -97 -56 -133 -57 -110 -47 -181 42 -293 l22 -27 -49 -50 c-27 -28 -53 -50 -58
-                        -50 -4 0 -31 18 -60 39 -92 69 -152 73 -262 18 -33 -16 -90 -40 -128 -53 -122
-                        -42 -159 -86 -173 -211 l-7 -63 -77 0 -78 0 -7 63 c-12 112 -64 183 -150 203
-                        -16 4 -75 27 -130 52 -145 66 -192 63 -303 -20 l-43 -32 -51 52 -52 51 32 43
-                        c83 111 86 158 20 303 -25 55 -48 114 -52 130 -20 86 -91 138 -203 150 l-63 7
-                        0 78 0 77 63 7 c76 9 140 38 167 77 12 16 31 59 44 96 13 38 37 95 53 128 55
-                        110 51 170 -18 262 -21 29 -39 56 -39 60 0 5 22 31 50 58 l50 49 27 -22 c112
-                        -89 183 -99 293 -42 36 18 95 43 133 56 37 13 80 32 96 44 39 27 68 91 76 168
-                        l7 62 78 0 78 0 7 -67z" />
-                                            <path d="M3699 4272 c-350 -92 -465 -527 -208 -784 181 -181 477 -182 658 -1
-                        183 184 185 480 2 661 -69 70 -139 108 -228 127 -88 19 -142 18 -224 -3z m204
-                        -216 c94 -34 156 -116 164 -220 9 -104 -43 -192 -139 -240 -164 -82 -357 39
-                        -358 224 0 171 172 293 333 236z" />
-                                            <path d="M1195 3390 c-68 -17 -352 -143 -378 -168 -72 -68 -84 -154 -43 -306
-                        l24 -89 -37 -30 c-42 -36 -191 -189 -191 -197 0 -3 -52 7 -117 23 -107 27
-                        -121 28 -171 17 -44 -10 -64 -21 -101 -59 -39 -40 -56 -71 -114 -214 -75 -186
-                        -84 -245 -48 -322 23 -50 45 -69 152 -133 l85 -51 0 -166 -1 -165 -85 -51
-                        c-101 -60 -126 -82 -151 -131 -36 -71 -27 -138 42 -304 74 -179 90 -213 121
-                        -240 65 -60 145 -68 294 -30 l90 23 54 -62 c29 -34 81 -86 115 -115 l62 -54
-                        -23 -90 c-39 -153 -28 -243 38 -302 30 -28 57 -41 231 -113 167 -69 234 -78
-                        305 -42 49 25 71 50 131 151 l51 85 165 1 165 1 52 -86 c64 -107 83 -129 133
-                        -152 78 -36 137 -27 323 48 141 58 174 75 213 114 38 37 49 57 59 101 11 50
-                        10 64 -17 171 -16 65 -26 117 -23 117 8 0 161 149 197 191 l30 37 89 -24 c152
-                        -41 238 -29 306 43 30 31 162 339 173 402 10 61 -16 138 -62 182 -21 20 -74
-                        57 -117 83 l-80 45 0 166 -1 166 79 46 c144 85 180 133 180 238 -1 51 -11 85
-                        -72 230 -84 199 -118 242 -211 265 -49 12 -62 10 -166 -15 l-112 -28 -117 118
-                        -118 118 27 111 c25 100 26 115 15 165 -21 94 -64 129 -263 211 -194 80 -219
-                        86 -285 70 -69 -16 -114 -58 -176 -163 l-54 -92 -166 1 -167 0 -45 80 c-62
-                        106 -106 151 -168 169 -54 16 -75 17 -121 5z m106 -341 c45 -75 66 -100 104
-                        -124 l48 -30 226 -1 c124 -1 242 3 261 9 59 16 98 54 156 152 30 52 56 95 58
-                        95 6 0 237 -97 242 -102 2 -3 -7 -52 -21 -109 -42 -165 -23 -227 103 -332 39
-                        -32 97 -90 129 -129 105 -126 163 -145 328 -103 59 14 109 24 113 21 4 -5 102
-                        -236 102 -242 0 -2 -43 -28 -95 -58 -98 -58 -135 -97 -153 -156 -5 -20 -9
-                        -134 -8 -261 l1 -226 30 -48 c24 -38 49 -59 119 -101 49 -29 93 -57 97 -61 7
-                        -7 -79 -234 -94 -250 -3 -2 -47 7 -98 21 -185 51 -198 46 -410 -166 -161 -161
-                        -168 -170 -180 -223 -11 -51 -10 -65 15 -166 16 -61 26 -112 24 -114 -4 -4
-                        -104 -47 -200 -85 l-46 -19 -55 92 c-99 166 -98 165 -414 163 l-241 -1 -44
-                        -30 c-30 -22 -60 -59 -100 -125 -32 -53 -63 -94 -70 -92 -14 3 -231 92 -236
-                        97 -2 1 8 47 22 101 49 187 47 193 -164 404 -211 211 -217 213 -404 164 -54
-                        -14 -100 -24 -101 -22 -5 5 -94 222 -97 236 -2 7 39 38 92 70 66 40 103 70
-                        125 100 l30 44 1 241 c2 316 3 315 -163 414 l-92 55 19 46 c39 98 81 196 85
-                        200 2 3 54 -8 115 -23 102 -26 114 -27 168 -15 52 11 63 19 132 92 41 44 98
-                        101 125 127 168 155 179 188 129 370 -14 51 -24 95 -22 97 10 9 234 102 243
-                        100 5 -1 35 -45 66 -97z" />
-                                            <path d="M1530 2464 c-233 -50 -431 -205 -536 -419 -64 -131 -79 -196 -78
-                        -350 0 -104 4 -146 22 -208 77 -270 278 -471 548 -549 103 -30 304 -32 404 -5
-                        338 91 572 379 588 723 15 342 -174 642 -485 769 -131 53 -324 69 -463 39z
-                        m351 -256 c216 -80 359 -284 359 -513 0 -293 -250 -544 -542 -545 -294 -1
-                        -549 254 -548 548 1 238 174 460 411 527 81 23 235 14 320 -17z" />
-                                        </g>
-                                    </svg>
-                                </div>
-                                <p>Edit</p>
-                            </a>
-
-                            <a asp-action="Details" asp-route-id="@item.ID" class="index-drop-down-menu-flex-container">
-                                <div class="index-drop-down-menu-flex-container-img">
-                                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                                         width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
-                                         preserveAspectRatio="xMidYMid meet">
-
-                                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                                           fill="#000000" stroke="none">
-                                            <path d="M1770 5109 c-201 -26 -461 -104 -634 -191 -623 -313 -1042 -899
-                                -1126 -1578 -15 -125 -12 -405 5 -529 64 -442 265 -841 582 -1157 224 -223
-                                468 -375 777 -483 610 -214 1321 -105 1852 285 l71 52 724 -725 c398 -399 742
-                                -738 763 -754 29 -22 50 -29 84 -29 44 0 48 3 149 103 100 101 103 105 103
-                                149 0 34 -7 55 -29 84 -16 21 -355 365 -754 763 l-725 724 52 71 c170 232 292
-                                507 350 788 138 671 -66 1356 -548 1841 -316 317 -715 518 -1157 582 -115 16
-                                -425 19 -539 4z m513 -444 c512 -81 970 -430 1188 -903 282 -612 156 -1316
-                                -321 -1792 -626 -627 -1626 -626 -2251 2 -238 240 -389 535 -446 870 -19 115
-                                -21 375 -4 478 63 371 216 669 472 916 277 266 611 416 999 448 74 6 269 -4
-                                363 -19z" />
-                                        </g>
-                                    </svg>
-                                </div>
-                                <p>Details</p>
-                            </a>
-
-
-                        </div>
+                         <a style="width:auto"  asp-action="Details" asp-route-id="@item.ID"  class="btn btn-outline-info">
+                             <span class="material-icons">
+                                 info
+                             </span>
+                        </a>
                     </td>
-
                 </tr>
             }
         </tbody>
     </table>
-    <partial name="_PagingNavBar" />
+    
 </form>

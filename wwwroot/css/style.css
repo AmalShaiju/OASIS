@@ -11,6 +11,9 @@
     --ghostwhite: #f9fafa;
 }
 
+* {
+    font-family: 'Poppins', sans-serif;
+}
 
 
 /*Bootstrap*/
@@ -223,9 +226,9 @@ quickLink-tab {
 /*NAVIGATION*/
 
 /*INDEX*/
-tr {
+/*tr {*/
     /*background-color: white;*/
-    border: 0;
+    /*border: 0;
     margin: auto;
     width: 50%;
     padding: 10px;
@@ -251,7 +254,7 @@ table {
 .table > tbody > tr > th {
     border: none;
     vertical-align: inherit;
-}
+}*/
 
 td a {
     color: #007bff;
@@ -712,9 +715,9 @@ focusedin {
     font-weight: unset;
 }
 
-tbody tr:nth-child(even) {
+/*tbody tr:nth-child(even) {
     background-color: rgba(116,96,238,0.1)
-}
+}*/
 
 #BidproductTable tr:nth-child(even) {
     background-color: rgba(116,96,238,0.1)

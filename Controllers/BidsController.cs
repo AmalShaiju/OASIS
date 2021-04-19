@@ -30,7 +30,7 @@ namespace OASIS.Controllers
         // GET: Bids
         [Authorize(Policy = "BidViewPolicy")]
 
-        public async Task<IActionResult> Index(string SearchProjectName, string BidAmountBelow, string BidAmountAbove,
+        public async Task<IActionResult> Index(string QuickSearchName, string SearchProjectName, string BidAmountBelow, string BidAmountAbove,
             string EstStartDateAbove, string EstStartDateBelow, string EstFinishDateBelow, string EstFinishDateAbove,
             int? BidstatusID, int? DesignerStatusID, int? ClientStatusID, int? DesignerID, int? SalesAsscID,
             int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "DateCreated")
@@ -78,6 +78,14 @@ namespace OASIS.Controllers
             {
                 bids = bids.Where(p => p.Project.Name.ToUpper().Contains(SearchProjectName.ToUpper()));
                 ViewData["Filtering"] = "show";
+            }
+
+            if (String.IsNullOrEmpty(SearchProjectName))
+            {
+                if (!String.IsNullOrEmpty(QuickSearchName))
+                {
+                    bids = bids.Where(p => p.Project.Name.ToUpper().Contains(QuickSearchName.ToUpper()));
+                }
             }
 
             //Estimated Amount

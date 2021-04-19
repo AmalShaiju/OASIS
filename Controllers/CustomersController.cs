@@ -24,7 +24,7 @@ namespace OASIS.Controllers
         // GET: Customers
         [Authorize(Policy = "CustomerViewPolicy")]
 
-        public async Task<IActionResult> Index(string SearchName, string SearchProject, string SearchOrg, string SearchEmail,
+        public async Task<IActionResult> Index(string QuickSearchName, string SearchName, string SearchProject, string SearchOrg, string SearchEmail,
             int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "Customer")
         {
             var customers = from p in _context.Customers
@@ -48,6 +48,16 @@ namespace OASIS.Controllers
                 customers = customers.Where(p => p.OrgName.ToUpper().Contains(SearchOrg.ToUpper()));
                 ViewData["Filtering"] = "show";
             }
+            if (String.IsNullOrEmpty(SearchName))
+            {
+                if (!String.IsNullOrEmpty(QuickSearchName))
+                {
+                    customers = customers.Where(p => p.LastName.ToUpper().Contains(QuickSearchName.ToUpper())
+                                           || p.FirstName.ToUpper().Contains(QuickSearchName.ToUpper()));
+                    ViewData["Filtering"] = "show";
+                }
+            }
+              
 
             if (!String.IsNullOrEmpty(SearchEmail))
             {

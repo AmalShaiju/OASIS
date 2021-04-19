@@ -24,7 +24,7 @@ namespace OASIS.Controllers
         // GET: Products
         [Authorize(Policy = "ProductViewPolicy")]
 
-        public async Task<IActionResult> Index(string SearchProdCode, string SearchProdSize ,int? ProductTypeID,
+        public async Task<IActionResult> Index(string QuickSearchName, string SearchProdCode, string SearchProdSize ,int? ProductTypeID,
             int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "Price")
         {
             //Start with Includes
@@ -48,6 +48,14 @@ namespace OASIS.Controllers
             {
                 products = products.Where(p => p.Code.ToUpper().Contains(SearchProdCode.ToUpper()));
                 ViewData["Filtering"] = "show";
+            }
+
+            if (String.IsNullOrEmpty(SearchProdCode))
+            {
+                if (!String.IsNullOrEmpty(QuickSearchName))
+                {
+                    products = products.Where(p => p.Code.ToUpper().Contains(QuickSearchName.ToUpper()));
+                }
             }
 
             if (!String.IsNullOrEmpty(SearchProdSize))

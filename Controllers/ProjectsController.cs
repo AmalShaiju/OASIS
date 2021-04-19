@@ -24,7 +24,7 @@ namespace OASIS.Controllers
         // GET: Projects
         [Authorize(Policy = "ProjectViewPolicy")]
 
-        public async Task<IActionResult> Index(string SearchProjectName, string SearchCustomerName, string SearchOrg, string SearchCity,
+        public async Task<IActionResult> Index(string QuickSearchName, string SearchProjectName, string SearchCustomerName, string SearchOrg, string SearchCity,
             string actionButton, int? page, int? pageSizeID,  string sortDirection = "asc", string sortField = "Project")
         {
             var project = from p in _context.Projects
@@ -42,6 +42,14 @@ namespace OASIS.Controllers
                 ViewData["Filtering"] = " show";
             }
 
+            if (String.IsNullOrEmpty(SearchProjectName))
+            {
+                if (!String.IsNullOrEmpty(QuickSearchName))
+                {
+                    project = project.Where(p => p.Name.ToUpper().Contains(QuickSearchName.ToUpper()));
+                }
+            }
+              
             if (!String.IsNullOrEmpty(SearchCity))
             {
                 project = project.Where(p => p.City.ToUpper().Contains(SearchCity.ToUpper()));

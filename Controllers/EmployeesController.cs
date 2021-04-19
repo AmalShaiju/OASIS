@@ -32,7 +32,7 @@ namespace OASIS.Controllers
 
         // GET: Employees
         [Authorize(Policy = "EmployeeViewPolicy")]
-        public async Task<IActionResult> Index(string SearchName, string SearchEmail, int? RoleID,
+        public async Task<IActionResult> Index(string QuickSearchName, string SearchName, string SearchEmail, int? RoleID,
             string actionButton, int? page, int? pageSizeID, string sortDirection = "asc", string sortField = "Employee")
         {
             var employee = from p in _context.Employees
@@ -52,6 +52,16 @@ namespace OASIS.Controllers
             {
                 employee = employee.Where(p => p.RoleID == RoleID);
                 ViewData["Filtering"] = " show";
+            }
+
+            if (String.IsNullOrEmpty(SearchName))
+            {
+                if (!String.IsNullOrEmpty(QuickSearchName))
+                {
+                    employee = employee.Where(p => p.LastName.ToUpper().Contains(QuickSearchName.ToUpper())
+                                            || p.FirstName.ToUpper().Contains(QuickSearchName.ToUpper()));
+                }
+
             }
 
 
