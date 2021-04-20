@@ -124,6 +124,7 @@ namespace OASIS.Controllers
               _context.Bids.Where(p => p.DesignerID == employeeProfile.ID)
               .Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID
               || p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID
+              || p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID
               );
 
 
@@ -171,8 +172,12 @@ namespace OASIS.Controllers
 
                     foreach (var bid in project.Bids.Where(p => p.DesignerID == employeeProfile.ID))
                     {
-                        s.ApprovedBidDate = bid.EstBidStartDate;
-                        dashvm.StartApprochBids.Add(s);
+                        if (bid.IsFinal)
+                        {
+                            s.ApprovedBidDate = bid.EstBidStartDate;
+                            dashvm.StartApprochBids.Add(s);
+                        }
+                       
                     }
                 }
 
@@ -192,8 +197,11 @@ namespace OASIS.Controllers
 
                     foreach (var bid in project.Bids.Where(p => p.DesignerID == employeeProfile.ID))
                     {
-                        s.ApprovedBidDate = bid.EstBidEndDate;
-                        dashvm.EndApprochBids.Add(s);
+                        if (bid.IsFinal)
+                        {
+                            s.ApprovedBidDate = bid.EstBidEndDate;
+                            dashvm.EndApprochBids.Add(s);
+                        }
                     }
                 }
 
@@ -499,7 +507,7 @@ namespace OASIS.Controllers
 
             if (!User.IsInRole("Management"))
             {
-                approvals.Where(p => p.DesignerID == employeeProfile.ID);
+                approvals = approvals.Where(p => p.DesignerID == employeeProfile.ID);
             }
 
 
@@ -523,7 +531,7 @@ namespace OASIS.Controllers
 
             if (!User.IsInRole("Management"))
             {
-                disApprovals.Where(p => p.DesignerID == employeeProfile.ID);
+                disApprovals =  disApprovals.Where(p => p.DesignerID == employeeProfile.ID);
             }
 
 
@@ -549,7 +557,7 @@ namespace OASIS.Controllers
 
             if (!User.IsInRole("Management"))
             {
-                reqApprovals.Where(p => p.DesignerID == employeeProfile.ID);
+                reqApprovals =  reqApprovals.Where(p => p.DesignerID == employeeProfile.ID);
             }
 
 
@@ -594,7 +602,7 @@ namespace OASIS.Controllers
 
                 if (!User.IsInRole("Management"))
                 {
-                    startApproch.Where(project => project.Bids.Where(bid => bid.DesignerID == employeeProfile.ID).Any());
+                    startApproch =  startApproch.Where(project => project.Bids.Where(bid => bid.DesignerID == employeeProfile.ID).Any());
                 }
 
 
@@ -622,7 +630,7 @@ namespace OASIS.Controllers
                         s.ProjectName = project.Name;
                         s.ProjectID = project.ID;
 
-                        foreach (var bid in project.Bids)
+                        foreach (var bid in project.Bids.Where(p => p.DesignerID == employeeProfile.ID))
                         {
                             if (bid.IsFinal)
                             {
@@ -648,7 +656,7 @@ namespace OASIS.Controllers
 
                 if (!User.IsInRole("Management"))
                 {
-                    endApproch.Where(project => project.Bids.Where(bid => bid.DesignerID == employeeProfile.ID).Any());
+                    endApproch = endApproch.Where(project => project.Bids.Where(bid => bid.DesignerID == employeeProfile.ID).Any());
                 }
 
                 if (FromDate.HasValue)
@@ -675,7 +683,7 @@ namespace OASIS.Controllers
                         s.ProjectName = project.Name;
                         s.ProjectID = project.ID;
 
-                        foreach (var bid in project.Bids)
+                        foreach (var bid in project.Bids.Where(p => p.DesignerID == employeeProfile.ID))
                         {
                             if (bid.IsFinal)
                             {
