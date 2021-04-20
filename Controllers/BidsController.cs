@@ -354,13 +354,18 @@ namespace OASIS.Controllers
         {
             var bid = new Bid();
             bid.BidStatusID = _context.BidStatuses.SingleOrDefault(p => p.Name == "Design stage").ID;
-            if (!TempData.ContainsKey("fromProject"))
-                TempData["fromProject"] = "False";
+         
 
             if (projectID != null)
             {
                 bid.ProjectID = (int)projectID;
 
+                //save the customer ID
+                TempData["ProjectID"] = projectID;
+            }
+            else
+            {
+                TempData["ProjectID"] = 0;
             }
 
             if (bidID.HasValue)
@@ -385,8 +390,21 @@ namespace OASIS.Controllers
         [Authorize(Policy = "BidCreatePolicy")]
 
         public async Task<IActionResult> Create([Bind("ID,DateCreated,EstBidStartDate,Budget,EstBidEndDate,Comments,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
-            int DesignerStatusID, int ClientStatusID, string approvalComment, string ProductsAssigned, string RolesAssigned, int employeeTrue, int customerTrue, int projectTrue)
+            int DesignerStatusID, int ClientStatusID, string approvalComment, string ProductsAssigned, string RolesAssigned, int projectTrue, int fromProjectID)
         {
+
+            if (fromProjectID != 0)
+            {
+                //set the tempdata again for post back after error
+                TempData["ProjectID"] = fromProjectID;
+
+                bid.ProjectID = fromProjectID;
+            }
+            else
+            {
+                //set the tempdata again for post back after error
+                TempData["ProjectID"] = 0;
+            }
 
             double total = 0;
             if (ModelState.IsValid)
@@ -409,18 +427,7 @@ namespace OASIS.Controllers
                 bid.EstAmount = total;
 
                 await _context.SaveChangesAsync();
-                if (employeeTrue == 1)
-                {
-                    return RedirectToAction(actionName: "Create", controllerName: "Employees");
-                }
-                if (customerTrue == 1)
-                {
-                    return RedirectToAction(actionName: "Create", controllerName: "Customers");
-                }
-                if (projectTrue == 1)
-                {
-                    return RedirectToAction(actionName: "Create", controllerName: "Projects");
-                }
+                
 
                 return RedirectToAction("Details", new { bid.ID });
             }

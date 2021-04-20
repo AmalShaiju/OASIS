@@ -191,28 +191,21 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "CustomerCreatePolicy")]
 
-        public async Task<IActionResult> Create([Bind("ID,OrgName,FirstName,LastName,MiddleName,Position,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email")] Customer customer, int employeeTrue, int projectTrue, int bidTrue)
+        public async Task<IActionResult> Create([Bind("ID,OrgName,FirstName,LastName,MiddleName,Position,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email")] Customer customer,int projectTrue)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
             try
             {
                 if (ModelState.IsValid)
                 {
-
-
                     _context.Add(customer);
                     await _context.SaveChangesAsync();
                     //return RedirectToAction(nameof(Index));
-                 
+
                     if (projectTrue == 1)
                     {
-                        TempData["fromCustomer"] = "True";
-
                         return RedirectToAction(actionName: "Create", controllerName: "Projects", new { customerID = customer.ID });
                     }
-
-                    TempData["fromCustomer"] = "False";
-
 
                     return RedirectToAction("Details", new { customer.ID });
 

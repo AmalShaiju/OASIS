@@ -177,14 +177,19 @@ namespace OASIS.Controllers
         public IActionResult Create(int? roleID)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
-            if (!TempData.ContainsKey("fromRole"))
-                TempData["fromRole"] = "False";
-
             Employee employee = new Employee();
+
             if (roleID != null)
             {
-                employee.RoleID = (int)roleID;
+                //save the roleID
+                TempData["RoleID"] = roleID;
             }
+            else
+            {
+                TempData["RoleID"] = 0;
+
+            }
+
             PopulateDropDownLists(employee);
             return View();
         }
@@ -196,10 +201,24 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "EmployeeCreatePolicy")]
 
-        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,MiddleName,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email,RoleID,IsUser")] Employee employee, int customerTrue, int projectTrue, int bidTrue)
+        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,MiddleName,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email,RoleID,IsUser")] Employee employee, int fromRoleID)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
-            TempData["fromRole"] = "False";
+
+            if (fromRoleID != 0)
+            {
+                //set the tempdata again for post back after error
+                TempData["RoleID"] = fromRoleID;
+
+                employee.RoleID = fromRoleID;
+            }
+            else
+            {
+                //set the tempdata again for post back after error
+                TempData["RoleID"] = 0;
+            }
+
+
 
             try
             {
@@ -223,18 +242,7 @@ namespace OASIS.Controllers
                     await _context.SaveChangesAsync();
 
                     //return RedirectToAction(nameof(Index));
-                    if (customerTrue == 1)
-                    {
-                        return RedirectToAction(actionName: "Create", controllerName: "Customers");
-                    }
-                    if (projectTrue == 1)
-                    {
-                        return RedirectToAction(actionName: "Create", controllerName: "Projects");
-                    }
-                    if (bidTrue == 1)
-                    {
-                        return RedirectToAction(actionName: "Create", controllerName: "Bids");
-                    }
+                  
                     return RedirectToAction("Details", new { employee.ID });
 
                 }

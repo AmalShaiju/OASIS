@@ -6,10 +6,13 @@
 
 <div class="container-fluid">
     <form asp-action="Create">
-        <input type="hidden" id="employeeTrue" name="employeeTrue" value="0" />
-        <input type="hidden" id="customerTrue" name="customerTrue" value="0" />
-        <input type="hidden" id="projectTrue" name="projectTrue" value="0" />
-        <input type="hidden" id="bidTrue" name="bidTrue" value="0" />
+        @{
+            if (TempData.ContainsKey("projectID"))
+            {
+                <input type="hidden" name="fromProjectID" value="@TempData["projectID"]" />
+            }
+        }
+
         <input type="hidden" id="ProductsAssigned" name="ProductsAssigned" />
         <input type="hidden" id="RolesAssigned" name="RolesAssigned" />
         <div class="row">
@@ -91,21 +94,30 @@
 
                             <div class="form-group col-5">
                                 <label asp-for="ProjectID" class="control-label"></label>
-                                @if (TempData["fromProject"].ToString() == "True")
-                                {
-                                    <select disabled asp-for="ProjectID" class="form-control" asp-items="ViewBag.ProjectID">
-                                        <option value="">Select a project</option>
-                                    </select>
-                                }
-                                else
-                                {
-                                    <select asp-for="ProjectID" class="form-control" asp-items="ViewBag.ProjectID">
-                                        <option value="">Select a project</option>
-                                    </select>
-                                }
 
-                                <span asp-validation-for="ProjectID" class="text-danger"></span>
-
+                                @{ if (TempData.ContainsKey("ProjectID"))
+                                    {
+                                        if ((int)TempData["ProjectID"] != 0)
+                                        {
+                                            <select disabled asp-for="ProjectID" tabindex="3" class="form-control" asp-items="ViewBag.ProjectID">
+                                                <option value="">Select an project</option>
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <select asp-for="ProjectID" tabindex="3" class="form-control" asp-items="ViewBag.ProjectID">
+                                                <option value="">Select an project</option>
+                                            </select>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <select asp-for="ProjectID" tabindex="3" class="form-control" asp-items="ViewBag.ProjectID">
+                                            <option value="">Select an project</option>
+                                        </select>
+                                    }
+                                    <span asp-validation-for="ProjectID" class="text-danger"></span>
+                                }
                             </div>
                             <div class="form-group col-6">
                                 <label asp-for="BidStatusID" class="control-label"></label>
@@ -120,19 +132,19 @@
                         </div>
 
                         @*<div class="form-row col-10">
-                            <div class="form-group col-5">
-                                <label asp-for="ProjectStartDate" class="control-label"></label>
-                                <input asp-for="ProjectStartDate" placeholder="Example :2020-01-23" class="form-control" />
-                                <span asp-validation-for="ProjectStartDate" class="text-danger"></span>
-                            </div>
+                                <div class="form-group col-5">
+                                    <label asp-for="ProjectStartDate" class="control-label"></label>
+                                    <input asp-for="ProjectStartDate" placeholder="Example :2020-01-23" class="form-control" />
+                                    <span asp-validation-for="ProjectStartDate" class="text-danger"></span>
+                                </div>
 
-                            <div class="form-group col-6">
-                                <label asp-for="ProjectEndDate" class="control-label"></label>
-                                <input asp-for="ProjectEndDate" placeholder="Example :2020-01-23" class="form-control" />
-                                <span asp-validation-for="ProjectEndDate" class="text-danger"></span>
-                            </div>
+                                <div class="form-group col-6">
+                                    <label asp-for="ProjectEndDate" class="control-label"></label>
+                                    <input asp-for="ProjectEndDate" placeholder="Example :2020-01-23" class="form-control" />
+                                    <span asp-validation-for="ProjectEndDate" class="text-danger"></span>
+                                </div>
 
-                        </div>*@
+                            </div>*@
 
 
                         <div class="form-row col-10">
@@ -290,22 +302,6 @@
             e.preventDefault()
             $(this).tab('show')
         })
-
-        $('#createEmployee').click(function () {
-            $('#employeeTrue').val(1)
-        });
-
-        $('#createBid').click(function () {
-            $('#bidTrue').val(1)
-        });
-
-        $('#createProject').click(function () {
-            $('#projectTrue').val(1)
-        });
-
-        $('#createCustomer').click(function () {
-            $('#customerTrue').val(1)
-        });
 
     </script>
 }
