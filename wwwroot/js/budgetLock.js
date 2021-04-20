@@ -23,6 +23,8 @@ $('#Budget').change(function () {
 
 function Updatelock() {
 
+    console.log($(".lock").css("background-image").replace('url(', '').replace(')', '').replace(/\"/gi, "").includes("lock-open.svg"))
+
     if (($(".lock").css("background-image").replace('url(', '').replace(')', '').replace(/\"/gi, "")).includes("lock-open.svg")) {
 
 

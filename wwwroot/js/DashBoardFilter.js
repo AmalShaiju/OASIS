@@ -169,7 +169,7 @@ function DateFilter(e) {
                                             edit
                                                                 </span>
                                     </a>
-                                    <ahref="${getBaseUrl()}Bids/Details/${response.bids[i].id}" style="height:28px; width:24%" class="btn btn-outline-info p-0">
+                                    <a href="${getBaseUrl()}Bids/Details/${response.bids[i].id}" style="height:28px; width:24%" class="btn btn-outline-info p-0">
                                         <span class="material-icons">
                                             info
                                                                 </span>

@@ -44,7 +44,7 @@ namespace OASIS.Controllers
 
                 var employeeProfile = await _context.Employees.FirstOrDefaultAsync(p => p.UserName == user.UserName);
                 ViewData["EmployeeID"] = employeeProfile.ID;
-                
+
                 if (User.IsInRole("Designer"))
                 {
                     dashVm = DesignerDashView(employeeProfile);
@@ -230,7 +230,9 @@ namespace OASIS.Controllers
                 .Include(p => p.Approval)
                 .Include(p => p.Project)
                 .ThenInclude(p => p.Customer)
-              .Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID || p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID
+                  .Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID
+              || p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID
+              || p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID
               );
 
             dashvm.ReqApprovalBids = ReqApprovalBids.OrderBy(p => p.DateCreated).ToList();
@@ -291,10 +293,15 @@ namespace OASIS.Controllers
                     s.ProjectName = project.Name;
                     s.ProjectID = project.ID;
 
+                    // should only have one approved but some cases may have more than one 
                     foreach (var bid in project.Bids)
                     {
-                        s.ApprovedBidDate = bid.EstBidStartDate;
-                        dashvm.StartApprochBids.Add(s);
+                        if (bid.IsFinal)
+                        {
+                            s.ApprovedBidDate = bid.EstBidStartDate;
+                            dashvm.StartApprochBids.Add(s);
+                        }
+                       
                     }
                 }
 
@@ -313,8 +320,12 @@ namespace OASIS.Controllers
 
                     foreach (var bid in project.Bids)
                     {
-                        s.ApprovedBidDate = bid.EstBidEndDate;
-                        dashvm.EndApprochBids.Add(s);
+                        if (bid.IsFinal)
+                        {
+                            s.ApprovedBidDate = bid.EstBidEndDate;
+                            dashvm.EndApprochBids.Add(s);
+                        }
+                       
                     }
                 }
 
@@ -346,12 +357,12 @@ namespace OASIS.Controllers
 
                 if (!await _userManager.IsInRoleAsync(user, "Management"))
                 {
-                     bidsUserWorkedOn =
-                     _context.Bids
-                     .Include(p => p.Project)
-                     .Where(p => p.DesignerID == employeeProfile.ID);
+                    bidsUserWorkedOn =
+                    _context.Bids
+                    .Include(p => p.Project)
+                    .Where(p => p.DesignerID == employeeProfile.ID);
                 }
-              
+
 
 
 
@@ -424,9 +435,9 @@ namespace OASIS.Controllers
                 }
                 else
                 {
-                    var successReturnVal = new { success = false, msg = $"No Bids Matching the Filter" };
+                    var failureReturnVal = new { success = false, msg = $"No Bids Matching the Filter" };
 
-                    return Json(successReturnVal);
+                    return Json(failureReturnVal);
                 }
 
 
@@ -449,11 +460,21 @@ namespace OASIS.Controllers
 
             var employeeProfile = await _context.Employees.FirstOrDefaultAsync(p => p.UserName == userName);
 
+            // get all bids
             var bidsUserWorkedOn =
               _context.Bids
-              .Include(p => p.Project)
-              .Where(p => p.DesignerID == employeeProfile.ID);
+             .Include(p => p.Project).Select(p => p);
 
+            // filter using the designer
+            if (!(User.IsInRole("Management")))
+            {
+                bidsUserWorkedOn =
+               _context.Bids
+                .Include(p => p.Project)
+               .Where(p => p.DesignerID == employeeProfile.ID);
+            }
+
+            // filter dates
             if (FromDate.HasValue)
             {
                 bidsUserWorkedOn = bidsUserWorkedOn.Where(p => p.DateCreated >= FromDate);
@@ -464,6 +485,7 @@ namespace OASIS.Controllers
                 bidsUserWorkedOn = bidsUserWorkedOn.Where(p => p.DateCreated <= ToDate);
             }
 
+            // return err msg if no bids
             if (bidsUserWorkedOn.Count() == 0)
             {
                 var FailurereturnVal = new { success = false, msg = $"No Bids Matching the filter" };
@@ -473,8 +495,13 @@ namespace OASIS.Controllers
 
             // get all bids which was approved by both the client and NBD
             var approvals =
-                _context.Bids.Where(p => p.DesignerID == employeeProfile.ID)
-                .Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID);
+             _context.Bids.Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID);
+
+            if (!User.IsInRole("Management"))
+            {
+                approvals.Where(p => p.DesignerID == employeeProfile.ID);
+            }
+
 
             if (FromDate.HasValue)
             {
@@ -491,8 +518,14 @@ namespace OASIS.Controllers
 
             // get all bids which was approved by either the client and NBD
             var disApprovals =
-                _context.Bids.Where(p => p.DesignerID == employeeProfile.ID)
+                _context.Bids
                 .Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID || p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID);
+
+            if (!User.IsInRole("Management"))
+            {
+                disApprovals.Where(p => p.DesignerID == employeeProfile.ID);
+            }
+
 
             if (FromDate.HasValue)
             {
@@ -508,10 +541,17 @@ namespace OASIS.Controllers
 
             // get all bids that reuires approval
             var reqApprovals =
-              _context.Bids.Where(p => p.DesignerID == employeeProfile.ID)
+              _context.Bids
               .Where(p => p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID
               || p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID
+              || p.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID && p.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "RequiresApproval").ID
               );
+
+            if (!User.IsInRole("Management"))
+            {
+                reqApprovals.Where(p => p.DesignerID == employeeProfile.ID);
+            }
+
 
             if (FromDate.HasValue)
             {
@@ -550,8 +590,24 @@ namespace OASIS.Controllers
                 // all projects with start date after today's date
                 var startApproch = _context.Projects
                     .Include(p => p.Bids)
-                    .Where(p => p.Bids.Where(p => p.IsFinal == true && p.EstBidStartDate > DateTime.Today).Any())
-                    .Where(project => project.Bids.Where(bid => bid.DesignerID == employeeProfile.ID).Any());
+                    .Where(p => p.Bids.Where(p => p.IsFinal == true && p.EstBidStartDate > DateTime.Today).Any());
+
+                if (!User.IsInRole("Management"))
+                {
+                    startApproch.Where(project => project.Bids.Where(bid => bid.DesignerID == employeeProfile.ID).Any());
+                }
+
+
+                if (FromDate.HasValue)
+                {
+                    startApproch = startApproch.Where(p => p.Bids.Where(p => p.DateCreated >= FromDate).Any());
+                }
+
+                if (ToDate.HasValue)
+                {
+                    startApproch = startApproch.Where(p => p.Bids.Where(p => p.DateCreated <= ToDate).Any());
+                }
+
 
 
 
@@ -566,23 +622,14 @@ namespace OASIS.Controllers
                         s.ProjectName = project.Name;
                         s.ProjectID = project.ID;
 
-                        var tempBids = project.Bids.Where(p => p.DesignerID == employeeProfile.ID);
-
-                        if (FromDate.HasValue)
+                        foreach (var bid in project.Bids)
                         {
-                            tempBids = tempBids.Where(p => p.DateCreated >= FromDate);
-                        }
+                            if (bid.IsFinal)
+                            {
+                                s.ApprovedBidDate = bid.EstBidStartDate;
+                                StartProjectByDate.Add(s);
+                            }
 
-                        if (ToDate.HasValue)
-                        {
-                            tempBids = tempBids.Where(p => p.DateCreated <= ToDate);
-
-                        }
-
-                        foreach (var bid in tempBids)
-                        {
-                            s.ApprovedBidDate = bid.EstBidStartDate;
-                            StartProjectByDate.Add(s);
                         }
                     }
                     catch
@@ -596,8 +643,24 @@ namespace OASIS.Controllers
                 var endApproch = _context.Projects
                      .Include(p => p.Bids)
                       .Where(p => p.Bids
-                      .Where(p => p.IsFinal == true && p.EstBidEndDate > DateTime.Today).Any())
-                      .Where(project => project.Bids.Where(bid => bid.DesignerID == employeeProfile.ID).Any());
+                      .Where(p => p.IsFinal == true && p.EstBidEndDate > DateTime.Today).Any());
+
+
+                if (!User.IsInRole("Management"))
+                {
+                    endApproch.Where(project => project.Bids.Where(bid => bid.DesignerID == employeeProfile.ID).Any());
+                }
+
+                if (FromDate.HasValue)
+                {
+                    endApproch = startApproch.Where(p => p.Bids.Where(p => p.DateCreated >= FromDate).Any());
+                }
+
+                if (ToDate.HasValue)
+                {
+                    endApproch = startApproch.Where(p => p.Bids.Where(p => p.DateCreated <= ToDate).Any());
+                }
+
 
 
 
@@ -612,24 +675,14 @@ namespace OASIS.Controllers
                         s.ProjectName = project.Name;
                         s.ProjectID = project.ID;
 
-                        var tempBids = project.Bids.Where(p => p.DesignerID == employeeProfile.ID);
-
-                        if (FromDate.HasValue)
+                        foreach (var bid in project.Bids)
                         {
-                            tempBids = tempBids.Where(p => p.DateCreated >= FromDate);
-                        }
-
-                        if (ToDate.HasValue)
-                        {
-                            tempBids = tempBids.Where(p => p.DateCreated <= ToDate);
-
-
-                        }
-
-                        foreach (var bid in tempBids)
-                        {
-                            s.ApprovedBidDate = bid.EstBidEndDate;
-                            EndProjectByDate.Add(s);
+                            if (bid.IsFinal)
+                            {
+                                s.ApprovedBidDate = bid.EstBidEndDate;
+                                EndProjectByDate.Add(s);
+                            }
+                                
                         }
                     }
                     catch
@@ -651,7 +704,7 @@ namespace OASIS.Controllers
                     bidStatusByBids = bidsByStatus.OrderBy(p => p.BidStatusName),
                     endApprochBids = EndProjectByDate.OrderBy(p => p.ProjectName),
                     startApprochBids = StartProjectByDate.OrderBy(p => p.ProjectName),
-                    bids = bidsUserWorkedOn.Select(p => new BidDashVM { ID = p.ID, DateCreated = p.DateCreated, EstAmount = p.EstAmount, ProjectName = p.Project.Name })
+                    bids = bidsUserWorkedOn.OrderBy(p => p.DateCreated).Select(p => new BidDashVM { ID = p.ID, DateCreated = p.DateCreated, EstAmount = p.EstAmount, ProjectName = p.Project.Name })
 
 
 
