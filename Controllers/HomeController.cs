@@ -630,7 +630,14 @@ namespace OASIS.Controllers
                         s.ProjectName = project.Name;
                         s.ProjectID = project.ID;
 
-                        foreach (var bid in project.Bids.Where(p => p.DesignerID == employeeProfile.ID))
+                        var temp = project.Bids.AsEnumerable();
+
+                        if (!User.IsInRole("Management")) 
+                        {
+                             temp = temp.Where(p => p.DesignerID == employeeProfile.ID);
+                        }
+
+                        foreach (var bid in temp)
                         {
                             if (bid.IsFinal)
                             {
@@ -683,7 +690,15 @@ namespace OASIS.Controllers
                         s.ProjectName = project.Name;
                         s.ProjectID = project.ID;
 
-                        foreach (var bid in project.Bids.Where(p => p.DesignerID == employeeProfile.ID))
+                        var temp = project.Bids.AsEnumerable();
+
+                        if (!User.IsInRole("Management"))
+                        {
+                            temp = temp.Where(p => p.DesignerID == employeeProfile.ID);
+                        }
+
+
+                        foreach (var bid in temp)
                         {
                             if (bid.IsFinal)
                             {
