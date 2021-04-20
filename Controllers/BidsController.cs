@@ -384,7 +384,7 @@ namespace OASIS.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "BidCreatePolicy")]
 
-        public async Task<IActionResult> Create([Bind("ID,DateCreated,ProjectStartDate,ProjectEndDate,EstBidStartDate,Budget,EstBidEndDate,Comments,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
+        public async Task<IActionResult> Create([Bind("ID,DateCreated,EstBidStartDate,Budget,EstBidEndDate,Comments,SalesAsscociateID,ProjectID,BidStatusID,approvalComment")] Bid bid,
             int DesignerStatusID, int ClientStatusID, string approvalComment, string ProductsAssigned, string RolesAssigned, int employeeTrue, int customerTrue, int projectTrue)
         {
 
@@ -432,7 +432,7 @@ namespace OASIS.Controllers
             return View(bid);
         }
 
-        // GET: Bids/Edit/5
+       
         [Authorize(Policy = "BidEditPolicy")]
 
         public async Task<IActionResult> Edit(int? id)
@@ -461,6 +461,7 @@ namespace OASIS.Controllers
             PopuateSelectedRoles(bid);
             return View(bid);
         }
+
 
         // POST: Bids/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
@@ -497,7 +498,7 @@ namespace OASIS.Controllers
 
             bidToUpdate.EstAmount = total;
 
-            if (await TryUpdateModelAsync<Bid>(bidToUpdate, "", p => p.DateCreated, p => p.ProjectStartDate, p => p.ProjectEndDate, p => p.EstBidEndDate, p => p.EstBidStartDate, p => p.Comments, P => P.Budget
+            if (await TryUpdateModelAsync<Bid>(bidToUpdate, "", p => p.DateCreated, p => p.EstBidEndDate, p => p.EstBidStartDate, p => p.Comments, P => P.Budget
            , p => p.DesignerID, p => p.SalesAsscociateID, p => p.BidStatusID, p => p.ProjectID))
 
             {
@@ -1038,6 +1039,61 @@ namespace OASIS.Controllers
 
 
             }
+        }
+
+        // GET: Bids/PopulateStartDate/5
+        [HttpGet]
+        public async Task<JsonResult> PopulateStartDate(int? id)
+        {
+            var bidToUpdate = await _context.Bids.SingleOrDefaultAsync(p => p.ID == id);
+
+            if (!bidToUpdate.IsFinal)
+            {
+                var faliurereturnVal = new { success = false, msg = $"Failed to start bid, The Bid requires approval" };
+                return Json(faliurereturnVal);
+            }
+
+            if (bidToUpdate.ProjectStartDate == null)
+            {
+                bidToUpdate.ProjectStartDate = DateTime.Today;
+                var successreturnVal = new { success = true, msg = $"Bid sucessfully started" };
+
+                try
+                {
+                    _context.Update(bidToUpdate);
+                    await _context.SaveChangesAsync();
+                    return Json(successreturnVal);
+
+                }
+                catch
+                {
+                    var faliurereturnVal = new { success = false, msg = $"Failed to start bid" };
+                    return Json(faliurereturnVal);
+
+                }
+
+            }
+            else
+            {
+                bidToUpdate.ProjectEndDate = DateTime.Today;
+                var successreturnVal = new { success = true, msg = $"Bid sucessfully Ended" };
+
+                try
+                {
+                    _context.Update(bidToUpdate);
+                    await _context.SaveChangesAsync();
+                    return Json(successreturnVal);
+
+                }
+                catch
+                {
+                    var faliurereturnVal = new { success = false, msg = $"Failed to start bid" };
+                    return Json(faliurereturnVal);
+                }
+            }
+
+          
+
         }
 
     }

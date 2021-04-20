@@ -49,6 +49,11 @@ namespace OASIS.Controllers
             return View("Index", userRoles);
         }
 
+        public IActionResult AccessDenied()
+        {
+            return View("AccessDenied");
+        }
+
         // GET: UserRoles/Create
         [Authorize(Policy = "UserRolesViewPolicy")]
         public IActionResult Create()
@@ -365,8 +370,8 @@ namespace OASIS.Controllers
         {
             IdentityUser user = await _userManager.FindByNameAsync(userName);
             var employeeName = _oasisContext.Employees.SingleOrDefault(p => p.UserName == userName).FullName;
-            var UserRole =  await _userManager.GetRolesAsync(user);
-            
+            var UserRole = await _userManager.GetRolesAsync(user);
+
             //user is no other role
             if (UserRole.Count == 0)
             {
@@ -448,7 +453,7 @@ namespace OASIS.Controllers
         [HttpPost]
         public async Task<JsonResult> LoginUser([FromBody] UserAuthenticationVM Loginuser)
         {
-            if(Loginuser.Username !="" && Loginuser.Password != "")
+            if (Loginuser.Username != "" && Loginuser.Password != "")
             {
                 var user = await _userManager.FindByNameAsync(Loginuser.Username) ?? await _userManager.FindByEmailAsync(Loginuser.Username);
 
@@ -489,21 +494,21 @@ namespace OASIS.Controllers
             }
             else
             {
-                if(Loginuser.Username == "")
+                if (Loginuser.Username == "")
                 {
                     var returnVal = new { success = false, msg = $"Please enter your username!" };
                     return (Json(returnVal));
 
                 }
-                
-                else if(Loginuser.Password == "")
+
+                else if (Loginuser.Password == "")
                 {
                     var returnVal = new { success = false, msg = $"Please enter your password!" };
                     return (Json(returnVal));
                 }
                 else
                 {
-                    return (Json(new { susuccess= false, msg = $"Something went wrong, Try again later" }));
+                    return (Json(new { susuccess = false, msg = $"Something went wrong, Try again later" }));
                 }
 
             }
@@ -515,7 +520,7 @@ namespace OASIS.Controllers
         [HttpPost]
         public async Task<JsonResult> ForgotPassword([FromBody] string userEmail)
         {
-            if(userEmail != "")
+            if (userEmail != "")
             {
                 try
                 {
@@ -524,7 +529,7 @@ namespace OASIS.Controllers
                     // Update user password
                     IdentityUser user = await _userManager.FindByEmailAsync(userEmail);
 
-                    if(user != null)
+                    if (user != null)
                     {
                         var passResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
                         await _userManager.ResetPasswordAsync(user, passResetToken, newPassword);
@@ -534,8 +539,8 @@ namespace OASIS.Controllers
                         {
                             ToAddress = user.Email,
                             Subject = "Forgotten Password - OASIS",
-                            Content = "<p> Please use the password given below to login to your Account and please change it as you wish "+ "<br/>"+
-                                             "<a>http://oasis-analytics.azurewebsites.net/</a>" + "<hr>" +"<b/r>"+
+                            Content = "<p> Please use the password given below to login to your Account and please change it as you wish " + "<br/>" +
+                                             "<a>http://oasis-analytics.azurewebsites.net/</a>" + "<hr>" + "<b/r>" +
                                              $"<p>UserName : {user.UserName}</p>" +
                                              $"<p>Password : {newPassword} </p>"
                         };
@@ -567,9 +572,9 @@ namespace OASIS.Controllers
                 var returnVal = new { success = false, msg = $"Please enter the email registered with the user!" };
 
                 return (Json(returnVal));
-            }   
+            }
         }
-        
+
 
 
     }

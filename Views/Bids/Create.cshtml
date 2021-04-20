@@ -119,7 +119,7 @@
 
                         </div>
 
-                        <div class="form-row col-10">
+                        @*<div class="form-row col-10">
                             <div class="form-group col-5">
                                 <label asp-for="ProjectStartDate" class="control-label"></label>
                                 <input asp-for="ProjectStartDate" placeholder="Example :2020-01-23" class="form-control" />
@@ -132,7 +132,7 @@
                                 <span asp-validation-for="ProjectEndDate" class="text-danger"></span>
                             </div>
 
-                        </div>
+                        </div>*@
 
 
                         <div class="form-row col-10">
@@ -167,7 +167,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">$</span>
                                     </div>
-                                    <input asp-for="Budget" placeholder="Example :$256" class="form-control" aria-label="Text input with checkbox">
+                                    <input asp-for="Budget" placeholder="Example :$256" type="number" class="form-control" aria-label="Text input with checkbox">
 
                                     <div class="input-group-append">
                                         <div class="input-group-text lock" data-toggle="tooltip" data-placement="top" title="Follow Budget Strictly">

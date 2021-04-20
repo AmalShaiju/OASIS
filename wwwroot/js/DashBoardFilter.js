@@ -72,7 +72,7 @@ function FilterDashBoard(e) {
                                             edit
                                                                 </span>
                                     </a>
-                                    <ahref="${getBaseUrl()}Bids/Details/${response.objects[i].id}" style="height:28px; width:24%" class="btn btn-outline-info p-0">
+                                    <a href="${getBaseUrl()}Bids/Details/${response.objects[i].id}" style="height:28px; width:24%" class="btn btn-outline-info p-0">
                                         <span class="material-icons">
                                             info
                                                                 </span>
@@ -417,6 +417,8 @@ function PreviewBid(e) {
                             $('#bidLabour-dash').append(bidLaboursToAdd);
                         }
 
+                        $('#bidHeading').empty();
+
                         if (response.bid.length != 0) {
                             if (response.bid.estAmount != null) {
                                 $('#bid-Amount').text(`Estimate: $${response.bid.estAmount.toFixed(2)}`)
@@ -436,7 +438,9 @@ function PreviewBid(e) {
 
                             if (response.bid.estBidStartDate != null) {
                                 $('#bid-StartDate').text(`Estimated Start Date: ${response.bid.estBidStartDate.split("T")[0]}`)
-                                $('#bidHeading').text(`${e.id.split("-")[0]}: ${response.bid.estBidStartDate.split("T")[0]}`)
+
+                                var bidSummary = `<a class="btn-link" style="Color:white" href="/Bids/Details/${response.bid.id}"> ${e.id.split("-")[0]}: ${response.bid.estBidStartDate.split("T")[0]}</a>`;
+                                $('#bidHeading').append(bidSummary);
                             }
                             if (response.bid.createdOn != null) {
                                 $('#bid-CreatedOn').text(`Estimated Start Date: ${response.bid.createdOn.split("T")[0]}`)
@@ -459,6 +463,7 @@ function PreviewBid(e) {
                         $('#bid-ManApproveBid').empty();
                         $('#bid-ClientDisapproveBid').empty()
                         $('#bid-ClientApproveBid').empty();
+                        $('#bidStartStop').empty();
 
                         if (response.bid.approval != null) {
 
@@ -500,6 +505,29 @@ function PreviewBid(e) {
                                 }
                             }
 
+                            if (response.bid.projectStartDate == null) {
+                                var btnStart = ` <button onclick="UpdateBidActualDate(this)" id="bidStart-${response.bid.id}" class="btn btn-outline-success" style="display:flex">
+                                                <span class="material-icons">
+                                                    play_arrow
+                                                </span>
+                                                Start Bid
+                                            </button>`
+
+
+                                $('#bidStartStop').append(btnStart);
+                            }
+
+                            if (response.bid.projectStartDate != null && response.bid.projectEndDate == null) {
+                                var btnStart = ` <button onclick="UpdateBidActualDate(this)" id="bidStop-${response.bid.id}" class="btn btn-outline-danger" style="display:flex">
+                                               <span class="material-icons">
+                                                    stop
+                                                </span>
+                                                Stop Bid
+                                            </button>`
+
+
+                                $('#bidStartStop').append(btnStart);
+                            }
 
 
                         }
@@ -526,4 +554,42 @@ function PreviewBid(e) {
             }
         });
     }
+}
+
+function UpdateBidActualDate(e) {
+    var id = e.id.split("-")[1];
+    console.log(id);
+    $.ajax({
+        type: "GET",
+        url: "Bids/PopulateStartDate",
+        data: {
+            'id': id
+        },
+        contentType: "application/json; charset=utf-8",
+        success: function (response) {
+            if (response != null) {
+                console.log(response);
+
+                if (response.success) {
+                    var k = { id: e.id };
+                    PreviewBid(k);
+
+                    showStatusMsg(response.success, response.msg, 1000);
+                }
+                else {
+                    showStatusMsg(response.success, response.msg, 2000);
+                }
+            }
+            else {
+                showStatusMsg(false, "Something went wrong", 3000);
+            }
+        },
+        failure: function (response) {
+            showStatusMsg(false, "Something went wrong", 3000);
+        },
+        error: function (response) {
+            showStatusMsg(false, "Something went wrong", 3000);
+        }
+    });
+
 }
