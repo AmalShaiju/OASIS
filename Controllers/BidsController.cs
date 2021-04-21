@@ -353,7 +353,7 @@ namespace OASIS.Controllers
         {
             var bid = new Bid();
             bid.BidStatusID = _context.BidStatuses.SingleOrDefault(p => p.Name == "Design stage").ID;
-         
+            
 
             if (projectID != null)
             {
@@ -374,10 +374,13 @@ namespace OASIS.Controllers
                 PopuateSelectedRoles(bid);
             }
 
-
-            PopulateDropDownLists(bid);
+          
+            var ReqApprovalID = bid.Approval.DesignerStatusID = _context.ApprovalStatuses.FirstOrDefault(p => p.Name == "RequiresApproval").ID;
+            PopulateDropDownLists(bid, ReqApprovalID, ReqApprovalID);
             PopuateSelectedProducts(bid);
             PopuateSelectedRoles(bid);
+
+
             return View();
         }
 
@@ -799,7 +802,7 @@ namespace OASIS.Controllers
             try
             {
                 var clientStatusID = _context.Approvals.SingleOrDefault(p => p.BidID == bid.ID).ClientStatusID;
-                var designerStatusID = _context.Approvals.SingleOrDefault(p => p.BidID == bid.ID).ClientStatusID;
+                var designerStatusID = _context.Approvals.SingleOrDefault(p => p.BidID == bid.ID).DesignerStatusID;
                 var approvalStatusID = _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID;
 
                 if (clientStatusID == approvalStatusID && designerStatusID == approvalStatusID)

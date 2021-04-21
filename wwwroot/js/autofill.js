@@ -35,3 +35,24 @@ function ProjectFill() {
     $('#Province').val("New York");
     $('#Country').val("USA");
 }
+
+function AdminLogin() {
+    $('#txtUserName').val("admin1@outlook.com");
+    $('#txtPassword').val("password");
+}
+
+
+function SalesLogin() {
+    $('#txtUserName').val("bob@outlook.com");
+    $('#txtPassword').val("password");
+}
+
+function Designer() {
+    $('#txtUserName').val("Tamara@outlook.com");
+    $('#txtPassword').val("password");
+}
+
+function ManagementLogin() {
+    $('#txtUserName').val("Cheryl@outlook.com");
+    $('#txtPassword').val("password");
+}

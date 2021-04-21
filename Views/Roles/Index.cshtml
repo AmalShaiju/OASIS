@@ -13,7 +13,7 @@
             <partial name="_PagingNavBar" />
         </div>
         <div class="col-2"></div>
-        <a asp-action="Create" style="display:flex; align-items:center; justify-content:center" class="btn btn-success col-2 align-items-center">
+        <a asp-action="Create" style="display:flex; align-items:center; justify-content:center" class="btn btn-success col-2 align-items-center" data-toggle="tooltip" data-placement="bottom" title="Add Role">
             <span class="material-icons mr-2">
                 control_point
             </span>
@@ -54,13 +54,13 @@
                     @Html.DisplayFor(modelItem => item.LabourCostPerHr)
                 </td>
                 <td style="text-align:center">
-                    <a style="width:auto" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-outline-primary mr-3">
+                    <a style="width:auto" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-outline-primary mr-3" data-toggle="tooltip" data-placement="bottom" title="Edit">
                         <span class="material-icons">
                             edit
                         </span>
                     </a>
 
-                    <a style="width:auto" asp-action="Details" asp-route-id="@item.ID" class="btn btn-outline-info">
+                    <a style="width:auto" asp-action="Details" asp-route-id="@item.ID" class="btn btn-outline-info" data-toggle="tooltip" data-placement="bottom" title="Details">
                         <span class="material-icons">
                             info
                         </span>

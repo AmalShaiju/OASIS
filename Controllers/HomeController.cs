@@ -57,11 +57,15 @@ namespace OASIS.Controllers
                     ViewData["UserRole"] = "Sales";
 
                 }
-                else
+                else if (User.IsInRole("Management"))
                 {
                     dashVm = ManagementDashVM(employeeProfile);
                     ViewData["UserRole"] = "Management";
 
+                }
+                else
+                {
+                    dashVm.NoRole = true;
                 }
 
 

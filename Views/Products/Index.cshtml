@@ -10,15 +10,17 @@
 
     <div class="row pb-3 pr-5 pl-5" style=" margin-left: 0.01%; background:#3f4853; align-items:center">
         <div class="col-1">
-            <button type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" data-placement="top" title="Filter" class="btn btn-light">
-                <span class="material-icons">
-                    filter_list
-                </span>
-            </button>
+            <span data-toggle="tooltip" data-placement="bottom" title="Filter">
+                <button type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" data-placement="top" title="Filter" class="btn btn-light">
+                    <span class="material-icons">
+                        filter_list
+                    </span>
+                </button>
+            </span>
         </div>
 
         <div class="col-2">
-            <a asp-controller="ProductTypes" style="width:auto" class="btn btn-info">
+            <a asp-controller="ProductTypes" style="width:auto" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Product Types">
                 <span class="material-icons">
                     category
                 </span>
@@ -30,7 +32,7 @@
         </div>
         <div class="col-2 justify-content-end mt-3">
             <div class="input-group" style=" float: right;">
-                <button style="width:auto" type="submit" name="actionButton" value="Filter" class="btn btn-outline-light pb-0 pr-1 pl-1">
+                <button style="width:auto" type="submit" name="actionButton" value="Filter" class="btn btn-outline-light pb-0 pr-1 pl-1" data-toggle="tooltip" data-placement="bottom" title="Search">
                     <span class="material-icons">
                         search
                     </span>
@@ -83,7 +85,7 @@
     <table class="table" style="background:white">
         <thead>
             <tr>
-                <th  class="pl-4 pt-3">
+                <th class="pl-4 pt-3">
                     <input type="submit" name="disabled" disabled value="Code  (@Model.Count())" class="btn btn-link" />
                 </th>
                 <th>
@@ -140,36 +142,36 @@
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td  class="pl-5">
-                    @Html.DisplayFor(modelItem => item.Code)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.size)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductType.Name)
-                </td>
-                <td style="text-align:center">
-                    <a style="width:auto" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-outline-primary mr-3">
-                        <span class="material-icons">
-                            edit
-                        </span>
-                    </a>
+                <tr>
+                    <td class="pl-5">
+                        @Html.DisplayFor(modelItem => item.Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.size)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductType.Name)
+                    </td>
+                    <td style="text-align:center">
+                        <a style="width:auto" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-outline-primary mr-3">
+                            <span class="material-icons">
+                                edit
+                            </span>
+                        </a>
 
-                    <a style="width:auto" asp-action="Details" asp-route-id="@item.ID" class="btn btn-outline-info">
-                        <span class="material-icons">
-                            info
-                        </span>
-                    </a>
-                </td>
-            </tr>
+                        <a style="width:auto" asp-action="Details" asp-route-id="@item.ID" class="btn btn-outline-info">
+                            <span class="material-icons">
+                                info
+                            </span>
+                        </a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
