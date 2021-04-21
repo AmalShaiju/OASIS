@@ -576,3 +576,4 @@ C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\UserRoles\Edit.cshtml.g.c
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\UserRoles\UserClaimsEdit.cshtml.g.cs
 C:\OASIS\bin\Release\netcoreapp3.1\win-x86\mscordaccore_x86_x86_4.700.21.11102.dll
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Shared\_StatusMsg.cshtml.g.cs
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\UserRoles\AccessDenied.cshtml.g.cs

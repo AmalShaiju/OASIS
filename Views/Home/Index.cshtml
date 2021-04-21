@@ -52,141 +52,144 @@
                     @{ if (ViewData["UserRole"].ToString() == "Designer")
                         {
                             <div class="card-body tab-pane fade show active p-0" id="bids-tab" role="tabpanel">
-                                @if (Model.Projects.Count() != 0)
-                                {
-                                    <table class="table table-dark">
-                                        <thead id="dashboard-thead">
-                                            <tr>
-                                                <th scope="col">Project Name</th>
-                                                <th scope="col">Customer</th>
-                                                <th scope="col">Latest Bid</th>
-                                                <th scope="col"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="dashboard-tbody">
-                                            @foreach (var project in Model.Projects)
-                                            {
-                                                <tr style="background:#343a40">
-                                                    <th scope="row">@project.Name</th>
-                                                    <td>@project.Customer.OrgName</td>
-                                                    <td>@project.Bids.OrderByDescending(p => p.DateCreated).First().DateCreated.ToShortDateString()</td>
-                                                    <td>
-                                                        <button style="height:28px" class="btn btn-outline-light p-0" data-toggle="collapse" data-target="#@project.Name[0]@project.ID" aria-expanded="true">
-                                                            <span class="material-icons md-36">
-                                                                expand_more
-                                                            </span>
-                                                        </button>
-                                                    </td>
-                                                </tr>
 
-                                                <tr id="@project.Name[0]@project.ID" class="collapse">
-                                                    <td colspan="4">
-                                                        <table class="table table-light">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col">Creation Date</th>
-                                                                    <th scope="col">Estimated Amount</th>
-                                                                    <th scope="col">Status</th>
-                                                                    <th scope="col"></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach (var bid in project.Bids.OrderByDescending(p => p.DateCreated))
+                                                    <table class="table table-dark">
+                                                        <thead id="dashboard-thead">
+                                                            <tr>
+                                                                <th scope="col">Project Name</th>
+                                                                <th scope="col">Customer</th>
+                                                                <th scope="col">Latest Bid</th>
+                                                                <th scope="col"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        @if (Model.Projects.Count() != 0)
+                                                        {
+                                                            <tbody id="dashboard-tbody">
+                                                                @foreach (var project in Model.Projects)
                                                                 {
-                                                                    if (bid.DesignerID == Convert.ToInt32(ViewData["EmployeeID"]))
-                                                                    {
-                                                                        <tr id="@project.Name[0].ToString().ToLower()-@bid.ID" onclick="PreviewBid(this)">
-                                                                            <th scope="row">@bid.DateCreated.ToShortDateString()</th>
-                                                                            <td>$@bid.EstAmount.ToString("0.##")</td>
-                                                                            <td>
-                                                                                @{ if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID)
+                                                                    <tr style="background:#343a40">
+                                                                        <th scope="row">@project.Name</th>
+                                                                        <td>@project.Customer.OrgName</td>
+                                                                        <td>@project.Bids.OrderByDescending(p => p.DateCreated).First().DateCreated.ToShortDateString()</td>
+                                                                        <td>
+                                                                            <button style="height:28px" class="btn btn-outline-light p-0" data-toggle="collapse" data-target="#@project.Name[0]@project.ID" aria-expanded="true">
+                                                                                <span class="material-icons md-36">
+                                                                                    expand_more
+                                                                                </span>
+                                                                            </button>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr id="@project.Name[0]@project.ID" class="collapse">
+                                                                        <td colspan="4">
+                                                                            <table class="table table-light">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th scope="col">Creation Date</th>
+                                                                                        <th scope="col">Estimated Amount</th>
+                                                                                        <th scope="col">Status</th>
+                                                                                        <th scope="col"></th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    @foreach (var bid in project.Bids.OrderByDescending(p => p.DateCreated))
                                                                                     {
-                                                                                        <span class="dot success-dot"></span>
+                                                                                        if (bid.DesignerID == Convert.ToInt32(ViewData["EmployeeID"]))
+                                                                                        {
+                                                                                            <tr style="cursor:pointer" id="@project.Name[0].ToString().ToLower()-@bid.ID" onclick="PreviewBid(this)">
+                                                                                                <th scope="row">@bid.DateCreated.ToShortDateString()</th>
+                                                                                                <td>$@bid.EstAmount.ToString("0.##")</td>
+                                                                                                <td>
+                                                                                                    @{ if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID)
+                                                                                                        {
+                                                                                                            <span class="dot success-dot"></span>
+
+                                                                                                        }
+
+                                                                                                        else if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID || bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID)
+                                                                                                        {
+                                                                                                            <span class="dot danger-dot"></span>
+                                                                                                        }
+
+                                                                                                        else
+                                                                                                        {
+                                                                                                            <span class="dot warning-dot"></span>
+                                                                                                        }
+                                                                                                    }
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <a asp-controller="Bids" asp-action="Edit" asp-route-id="@bid.ID" style="height:28px; width:28%" class="btn btn-outline-primary p-0 mr-3">
+                                                                                                        <span class="material-icons">
+                                                                                                            edit
+                                                                                                        </span>
+                                                                                                    </a>
+                                                                                                    <a asp-controller="Bids" asp-action="Details" asp-route-id="@bid.ID" style="height:28px; width:28%" class="btn btn-outline-info p-0">
+                                                                                                        <span class="material-icons">
+                                                                                                            info
+                                                                                                        </span>
+                                                                                                    </a>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <tr style="display:none; background:#a2b3bb;" class="NotDesigned">
+                                                                                                <th scope="row">@bid.DateCreated.ToShortDateString()</th>
+                                                                                                <td>$@bid.EstAmount.ToString("0.##")</td>
+                                                                                                <td>
+                                                                                                    @{ if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID)
+                                                                                                        {
+                                                                                                            <span class="dot success-dot"></span>
+
+                                                                                                        }
+
+                                                                                                        else if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID || bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID)
+                                                                                                        {
+                                                                                                            <span class="dot danger-dot"></span>
+                                                                                                        }
+
+                                                                                                        else
+                                                                                                        {
+                                                                                                            <span class="dot warning-dot"></span>
+                                                                                                        }
+                                                                                                    }
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <a asp-controller="Bids" asp-action="Edit" asp-route-id="@bid.ID" style="height:28px; width:24%" class="btn btn-outline-primary p-0 mr-3">
+                                                                                                        <span class="material-icons">
+                                                                                                            edit
+                                                                                                        </span>
+                                                                                                    </a>
+                                                                                                    <a asp-controller="Bids" asp-action="Details" asp-route-id="@bid.ID" style="height:28px; width:24%" class="btn btn-outline-info p-0">
+                                                                                                        <span class="material-icons">
+                                                                                                            info
+                                                                                                        </span>
+                                                                                                    </a>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        }
 
                                                                                     }
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
 
-                                                                                    else if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID || bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID)
-                                                                                    {
-                                                                                        <span class="dot danger-dot"></span>
-                                                                                    }
-
-                                                                                    else
-                                                                                    {
-                                                                                        <span class="dot warning-dot"></span>
-                                                                                    }
-                                                                                }
-                                                                            </td>
-                                                                            <td>
-                                                                                <a asp-controller="Bids" asp-action="Edit" asp-route-id="@bid.ID" style="height:28px; width:28%" class="btn btn-outline-primary p-0 mr-3">
-                                                                                    <span class="material-icons">
-                                                                                        edit
-                                                                                    </span>
-                                                                                </a>
-                                                                                <a asp-controller="Bids" asp-action="Details" asp-route-id="@bid.ID" style="height:28px; width:28%" class="btn btn-outline-info p-0">
-                                                                                    <span class="material-icons">
-                                                                                        info
-                                                                                    </span>
-                                                                                </a>
-                                                                            </td>
-                                                                        </tr>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <tr style="display:none; background:#a2b3bb;" class="NotDesigned">
-                                                                            <th scope="row">@bid.DateCreated.ToShortDateString()</th>
-                                                                            <td>$@bid.EstAmount.ToString("0.##")</td>
-                                                                            <td>
-                                                                                @{ if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID && bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID)
-                                                                                    {
-                                                                                        <span class="dot success-dot"></span>
-
-                                                                                    }
-
-                                                                                    else if (bid.Approval.ClientStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID || bid.Approval.DesignerStatusID == _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Disapproved").ID)
-                                                                                    {
-                                                                                        <span class="dot danger-dot"></span>
-                                                                                    }
-
-                                                                                    else
-                                                                                    {
-                                                                                        <span class="dot warning-dot"></span>
-                                                                                    }
-                                                                                }
-                                                                            </td>
-                                                                            <td>
-                                                                                <a asp-controller="Bids" asp-action="Edit" asp-route-id="@bid.ID" style="height:28px; width:24%" class="btn btn-outline-primary p-0 mr-3">
-                                                                                    <span class="material-icons">
-                                                                                        edit
-                                                                                    </span>
-                                                                                </a>
-                                                                                <a asp-controller="Bids" asp-action="Details" asp-route-id="@bid.ID" style="height:28px; width:24%" class="btn btn-outline-info p-0">
-                                                                                    <span class="material-icons">
-                                                                                        info
-                                                                                    </span>
-                                                                                </a>
-                                                                            </td>
-                                                                        </tr>
-                                                                    }
 
                                                                 }
+
                                                             </tbody>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-
-
-                                            }
-
-                                        </tbody>
-                                    </table>
-                                }
-                                else
-                                {
-                                    <div class="list-group-item">
-                                        <span style="float:left">No Projects To Show</span>
-                                        <span style="float:right" class="badge badge-pill badge-danger">0</span>
-                                    </div>
-                                }
+                                                        }
+                                                        else
+                                                        {
+                                                            <tr class="list-group-item">
+                                                                <td style="float:left">No Projects To Show</td>
+                                                                <td style="float:right" class="badge badge-pill badge-danger">0</td>
+                                                            </tr>
+                                                        }
+                                                    </table>
+                                
+                                
                             </div>
                         }
 
@@ -236,19 +239,20 @@
                         if (ViewData["UserRole"].ToString() == "Management")
                         {
                             <div class="card-body tab-pane fade show active p-0" id="project-tab" role="tabpanel">
-                                @if (Model.ReqApprovalBids.Count() != 0)
-                                {
-                                    <table class="table table-hover table-dark">
-                                        <thead id="dashboard-thead">
-                                            <tr>
-                                                <th scope="col">Date Created</th>
-                                                <th scope="col">Project Name</th>
-                                                <th scope="col">Est Amount</th>
-                                                <th scope="col">Status</th>
-                                                <th scope="col"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="dashboard-tbody">
+
+                                <table class="table table-hover table-dark">
+                                    <thead id="dashboard-thead">
+                                        <tr>
+                                            <th scope="col">Date Created</th>
+                                            <th scope="col">Project Name</th>
+                                            <th scope="col">Est Amount</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dashboard-tbody">
+                                        @if (Model.ReqApprovalBids.Count() != 0)
+                                        {
                                             @foreach (var bid in Model.ReqApprovalBids)
                                             {
                                                 <tr id="@bid.Project.Name-@bid.ID" onclick="PreviewBid(this)" style="cursor:pointer;">
@@ -306,10 +310,9 @@
                                                 </tr>
 
                                             }
-
-                                        </tbody>
-                                    </table>
-                                }
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
                         }
 
@@ -334,11 +337,11 @@
                             <li class="nav-item">
                                 <a style="width:100%;" class="nav-link" data-toggle="pill" data-target="#bidInfo-tab">Bid Info</a>
                             </li>
-                                @*<li class="nav-item">
+                            @*<li class="nav-item">
                                 <a style="width:100%;" class="nav-link" data-toggle="pill" data-target="#ManagementReport-tab">Report</a>
                                  </li>*@
                         }
-                        else if(ViewData["UserRole"].ToString() == "Designer")
+                        else if (ViewData["UserRole"].ToString() == "Designer")
                         {
                             <li class="nav-item">
                                 <a style="width:100%;" class="nav-link active" data-toggle="pill" data-target="#overView-tab">OverView </a>
