@@ -24,7 +24,7 @@ namespace OASIS.Controllers
         // GET: Customers
         [Authorize(Policy = "CustomerViewPolicy")]
 
-        public async Task<IActionResult> Index(string SearchName, string SearchProject, string SearchOrg, string SearchEmail,
+        public async Task<IActionResult> Index(string QuickSearchName, string SearchName, string SearchProject, string SearchOrg, string SearchEmail,
             int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "Customer")
         {
             var customers = from p in _context.Customers
@@ -48,6 +48,15 @@ namespace OASIS.Controllers
                 customers = customers.Where(p => p.OrgName.ToUpper().Contains(SearchOrg.ToUpper()));
                 ViewData["Filtering"] = "show";
             }
+            if (String.IsNullOrEmpty(SearchName))
+            {
+                if (!String.IsNullOrEmpty(QuickSearchName))
+                {
+                    customers = customers.Where(p => p.LastName.ToUpper().Contains(QuickSearchName.ToUpper())
+                                           || p.FirstName.ToUpper().Contains(QuickSearchName.ToUpper()));
+                }
+            }
+              
 
             if (!String.IsNullOrEmpty(SearchEmail))
             {
@@ -141,6 +150,7 @@ namespace OASIS.Controllers
         }
 
         // GET: Customers/Details/5
+        [Authorize(Policy = "CustomerViewPolicy")]
         public async Task<IActionResult> Details(int? id)
         {
            
@@ -167,7 +177,6 @@ namespace OASIS.Controllers
 
         // GET: Customers/Create
         [Authorize(Policy = "CustomerCreatePolicy")]
-
         public IActionResult Create()
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
@@ -181,29 +190,21 @@ namespace OASIS.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "CustomerCreatePolicy")]
-
-        public async Task<IActionResult> Create([Bind("ID,OrgName,FirstName,LastName,MiddleName,Position,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email")] Customer customer, int employeeTrue, int projectTrue, int bidTrue)
+        public async Task<IActionResult> Create([Bind("ID,OrgName,FirstName,LastName,MiddleName,Position,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email")] Customer customer,int projectTrue)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
             try
             {
                 if (ModelState.IsValid)
                 {
-
-
                     _context.Add(customer);
                     await _context.SaveChangesAsync();
                     //return RedirectToAction(nameof(Index));
-                 
+
                     if (projectTrue == 1)
                     {
-                        TempData["fromCustomer"] = "True";
-
                         return RedirectToAction(actionName: "Create", controllerName: "Projects", new { customerID = customer.ID });
                     }
-
-                    TempData["fromCustomer"] = "False";
-
 
                     return RedirectToAction("Details", new { customer.ID });
 

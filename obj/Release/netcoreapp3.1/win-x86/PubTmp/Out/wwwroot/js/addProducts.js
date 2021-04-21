@@ -84,7 +84,7 @@ $("#btnAddProduct").click(function () {
                         .append($('<td class="column2">').append(`${response.description}`))
                         .append($('<td class="column3">').append(`${response.size}`))
                         .append($(`<td class="column4" id=price-${response.id}>`).append(`$${response.price}`))
-                        .append($('<td class="column5">').append(`<input type="text" disabled id="txt-${response.id}" value="${quantity}" />`))
+                        .append($('<td class="column5">').append(`<input type="number" disabled id="txt-${response.id}" value="${quantity}" />`))
                         .append($(`<td class="column6" id="total-${response.id}">`).append(`$${response.price * quantity}`))
                         .append($('<td class="column7">').append(`<input type="button" id="edit-${response.id}" class="btn btn-primary" onclick="editRow(this.id)" value="Edit"/><input type="button" style="display:none" id="save-${response.id}" class="btn btn-success" onclick="saveRow(this.id)" value="Save"/>`))
                         .append($('<td class="column7">').append(`<input type="button" id="delete-${response.id}" class="btn btn-danger" onclick="deleteRow(this.id)"  value="Delete" />`))

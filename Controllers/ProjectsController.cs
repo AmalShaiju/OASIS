@@ -18,19 +18,19 @@ namespace OASIS.Controllers
 
         public ProjectsController(OasisContext context)
         {
-            _context = context; 
+            _context = context;
         }
 
         // GET: Projects
         [Authorize(Policy = "ProjectViewPolicy")]
 
-        public async Task<IActionResult> Index(string SearchProjectName, string SearchCustomerName, string SearchOrg, string SearchCity,
-            string actionButton, int? page, int? pageSizeID,  string sortDirection = "asc", string sortField = "Project")
+        public async Task<IActionResult> Index(string QuickSearchName, string SearchProjectName, string SearchCustomerName, string SearchOrg, string SearchCity,
+            string actionButton, int? page, int? pageSizeID, string sortDirection = "asc", string sortField = "Project")
         {
             var project = from p in _context.Projects
               .Include(p => p.Customer)
               .Include(p => p.Bids)
-                            select p;
+                          select p;
 
             ViewData["Filtering"] = "";
 
@@ -42,6 +42,14 @@ namespace OASIS.Controllers
                 ViewData["Filtering"] = " show";
             }
 
+            if (String.IsNullOrEmpty(SearchProjectName))
+            {
+                if (!String.IsNullOrEmpty(QuickSearchName))
+                {
+                    project = project.Where(p => p.Name.ToUpper().Contains(QuickSearchName.ToUpper()));
+                }
+            }
+
             if (!String.IsNullOrEmpty(SearchCity))
             {
                 project = project.Where(p => p.City.ToUpper().Contains(SearchCity.ToUpper()));
@@ -50,7 +58,7 @@ namespace OASIS.Controllers
 
             if (!String.IsNullOrEmpty(SearchOrg))
             {
-                project = project.Where(p=>p.Customer.OrgName.ToUpper().Contains(SearchOrg.ToUpper()));
+                project = project.Where(p => p.Customer.OrgName.ToUpper().Contains(SearchOrg.ToUpper()));
                 ViewData["Filtering"] = "show";
             }
 
@@ -139,6 +147,7 @@ namespace OASIS.Controllers
         }
 
         // GET: Projects/Details/5
+        [Authorize(Policy = "ProjectViewPolicy")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -168,16 +177,23 @@ namespace OASIS.Controllers
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
             Project project = new Project();
 
-            if (!TempData.ContainsKey("fromCustomer"))
-                TempData["fromCustomer"] = "False";
 
 
             if (customerID != null)
             {
                 project.CustomerID = (int)customerID;
 
+                //save the customer ID
+                TempData["CustomerID"] = customerID;
             }
-                PopulateDropDownLists(project);
+            else
+            {
+                TempData["CustomerID"] = 0;
+
+            }
+
+
+            PopulateDropDownLists(project);
 
             return View();
         }
@@ -188,11 +204,22 @@ namespace OASIS.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "ProjectCreatePolicy")]
-        public async Task<IActionResult> Create([Bind("ID,Name,SiteAddressLineOne,SiteAddressLineTwo,City,Province,Country,CustomerID")] Project project, int bidTrue)
+        public async Task<IActionResult> Create([Bind("ID,Name,SiteAddressLineOne,SiteAddressLineTwo,City,Province,Country,CustomerID")] Project project, int bidTrue, int fromCustomerID)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
-            //if (!TempData.ContainsKey("fromCustomer"))
-            //    TempData["fromCustomer"] = "False";
+
+            if (fromCustomerID != 0)
+            {
+                //set the tempdata again for post back after error
+                TempData["CustomerID"] = fromCustomerID;
+
+                project.CustomerID = fromCustomerID;
+            }
+            else
+            {
+                //set the tempdata again for post back after error
+                TempData["CustomerID"] = 0;
+            }
 
             try
             {
@@ -201,16 +228,11 @@ namespace OASIS.Controllers
                     _context.Add(project);
                     await _context.SaveChangesAsync();
                     //return RedirectToAction(nameof(Index));
-                  
+
                     if (bidTrue == 1)
                     {
-                        TempData["fromProject"] = "True";
-
-                        return RedirectToAction(actionName: "Create", controllerName: "Bids", new {projectID = project.ID });
+                        return RedirectToAction(actionName: "Create", controllerName: "Bids", new { projectID = project.ID });
                     }
-
-                    TempData["fromProject"] = "False";
-
 
                     return RedirectToAction("Details", new { project.ID });
                 }
@@ -226,7 +248,7 @@ namespace OASIS.Controllers
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                 }
             }
-          
+
             PopulateDropDownLists(project);
             return View(project);
         }
@@ -262,7 +284,7 @@ namespace OASIS.Controllers
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
 
-            var  projectToUpdate = await _context.Projects.SingleOrDefaultAsync(p => p.ID == id);
+            var projectToUpdate = await _context.Projects.SingleOrDefaultAsync(p => p.ID == id);
 
             if (projectToUpdate == null)
             {
@@ -271,7 +293,7 @@ namespace OASIS.Controllers
 
             _context.Entry(projectToUpdate).Property("RowVersion").OriginalValue = RowVersion;
 
-            if (await TryUpdateModelAsync<Project>(projectToUpdate,"", p=> p.Name, p => p.SiteAddressLineOne, p => p.SiteAddressLineTwo, p => p.City, p => p.Province, p => p.Country, p => p.CustomerID))
+            if (await TryUpdateModelAsync<Project>(projectToUpdate, "", p => p.Name, p => p.SiteAddressLineOne, p => p.SiteAddressLineTwo, p => p.City, p => p.Province, p => p.Country, p => p.CustomerID))
             {
                 try
                 {
@@ -318,7 +340,7 @@ namespace OASIS.Controllers
                             Customer databaseCustomer = await _context.Customers.SingleOrDefaultAsync(i => i.ID == databaseValues.CustomerID);
                             ModelState.AddModelError("CustomerID", $"Current value: {databaseCustomer?.FormalName}");
                         }
-                       
+
                         ModelState.AddModelError(string.Empty, "The record you attempted to edit "
                                 + "was modified by another user after you received your values. The "
                                 + "edit operation was canceled and the current values in the database "
@@ -396,7 +418,7 @@ namespace OASIS.Controllers
                 }
             }
             return View(project);
-           
+
         }
 
         private bool ProjectExists(int id)

@@ -70,7 +70,7 @@ namespace OASIS
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
                 options.LoginPath = "/Identity/Account/Login";
-                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.AccessDeniedPath = "/UserRoles/AccessDenied";
                 options.SlidingExpiration = true;
             });
 

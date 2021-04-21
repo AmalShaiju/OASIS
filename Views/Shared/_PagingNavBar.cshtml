@@ -2,7 +2,7 @@
 @{
     if (Model.TotalPages == 1)
     {
-        <ul class="pagination justify-content-center" style="margin:20px 0">
+        <ul class="pagination justify-content-center m-0" style="margin:20px 0">
             <li class="page-item">
                 <button type="button" title="Click to change page size." data-toggle="modal" data-target="#pageSizeModal" class="btn btn-primary">
                     Page @Model.PageIndex of @Model.TotalPages
@@ -17,7 +17,7 @@
         var nextDisabled = !Model.HasNextPage ? "disabled='disabled'" : "";
         var stepBack = (Model.PageIndex <= jumpAmount) ? 1 : Model.PageIndex - jumpAmount;
         var stepForward = (Model.PageIndex + jumpAmount > Model.TotalPages) ? Model.TotalPages : Model.PageIndex + jumpAmount;
-        <ul class="pagination justify-content-center" style="margin:20px 0">
+        <ul class="pagination justify-content-center m-0" style="margin:20px 0">
             <li class="page-item">
                 <button type="submit" name="page" value="1" @prevDisabled class="btn page-link">
                     <span aria-hidden="true">&lArr;</span>&nbsp;First

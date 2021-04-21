@@ -24,7 +24,7 @@ namespace OASIS.Models
         }
         public int ID { get; set; }
 
-        [Display(Name = "Estimated End Date")]
+        [Display(Name = "Date Created")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateCreated { get; set; }
@@ -36,12 +36,12 @@ namespace OASIS.Models
         [Range(0, 9999999.99, ErrorMessage = "Invalid Amount.")]
         public double EstAmount { get; set; }
 
-        [Display(Name = "Actual Start Date (Optional)")]
+        [Display(Name = "Actual Start Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? ProjectStartDate  { get; set; }
 
-        [Display(Name = "Actual End Date (Optional)")]
+        [Display(Name = "Actual End Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? ProjectEndDate { get; set; }

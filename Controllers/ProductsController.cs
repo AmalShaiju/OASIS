@@ -24,7 +24,7 @@ namespace OASIS.Controllers
         // GET: Products
         [Authorize(Policy = "ProductViewPolicy")]
 
-        public async Task<IActionResult> Index(string SearchProdCode, string SearchProdSize ,int? ProductTypeID,
+        public async Task<IActionResult> Index(string QuickSearchName, string SearchProdCode, string SearchProdSize ,int? ProductTypeID,
             int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "Price")
         {
             //Start with Includes
@@ -48,6 +48,14 @@ namespace OASIS.Controllers
             {
                 products = products.Where(p => p.Code.ToUpper().Contains(SearchProdCode.ToUpper()));
                 ViewData["Filtering"] = "show";
+            }
+
+            if (String.IsNullOrEmpty(SearchProdCode))
+            {
+                if (!String.IsNullOrEmpty(QuickSearchName))
+                {
+                    products = products.Where(p => p.Code.ToUpper().Contains(QuickSearchName.ToUpper()));
+                }
             }
 
             if (!String.IsNullOrEmpty(SearchProdSize))
@@ -143,6 +151,7 @@ namespace OASIS.Controllers
         }
 
         // GET: Products/Details/5
+        [Authorize(Policy = "ProductViewPolicy")]
         public async Task<IActionResult> Details(int? id ,string returnURL)
         {
             if (id == null)
@@ -170,13 +179,18 @@ namespace OASIS.Controllers
 
         // GET: Products/Create
         [Authorize(Policy = "ProductCreatePolicy")]
-
         public IActionResult Create(string returnURL, int? productTypeID)
         {
             Product product = new Product();
             if (productTypeID != null)
             {
                 product.ProductTypeID = (int)productTypeID;
+                //save the customer ID
+                TempData["ProductTypeID"] = productTypeID;
+            }
+            else
+            {
+                TempData["ProductTypeID"] = 0;
 
             }
 
@@ -198,9 +212,22 @@ namespace OASIS.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "ProductCreatePolicy")]
-        public async Task<IActionResult> Create([Bind("ID,Code,Description,size,Price,ProductTypeID")] Product product ,string returnURL, int employeeTrue, int customerTrue, int projectTrue, int bidTrue)
+        public async Task<IActionResult> Create([Bind("ID,Code,Description,size,Price,ProductTypeID")] Product product ,string returnURL, int fromProductTypeID)
         {
             ViewData["returnURL"] = returnURL;
+
+            if (fromProductTypeID != 0)
+            {
+                //set the tempdata again for post back after error
+                TempData["ProductTypeID"] = fromProductTypeID;
+
+                product.ProductTypeID = fromProductTypeID;
+            }
+            else
+            {
+                //set the tempdata again for post back after error
+                TempData["ProductTypeID"] = 0;
+            }
 
             try
             {
@@ -208,24 +235,6 @@ namespace OASIS.Controllers
                 {
                     _context.Add(product);
                     await _context.SaveChangesAsync();
-
-                    if (employeeTrue == 1)
-                    {
-                        return RedirectToAction(actionName: "Create", controllerName: "Employees");
-                    }
-                    if (customerTrue == 1)
-                    {
-                        return RedirectToAction(actionName: "Create", controllerName: "Customers");
-                    }
-                    if (projectTrue == 1)
-                    {
-                        return RedirectToAction(actionName: "Create", controllerName: "Projects");
-                    }
-                    if (bidTrue == 1)
-                    {
-                        return RedirectToAction(actionName: "Create", controllerName: "Bids");
-                    }
-
 
                     //If no referrer then go back to index
                     if (String.IsNullOrEmpty(returnURL))

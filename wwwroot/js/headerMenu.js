@@ -29,6 +29,14 @@ else if (url.includes("projects")) {
     var pagemsg = document.getElementById("page-msg").innerHTML = "Projects";
 
 }
+else if (url.includes("userroles")) {
+    var homeSideBar = document.getElementById("userRole-side-bar").style.backgroundColor = "#7460ee";;
+    var home = document.getElementById("userRole").style.backgroundColor = "rgb(116, 96, 238, 0.2)";
+    $("#useRoleLogo path").css({ "fill": "#7460ee" });
+    var text = document.getElementById("v-pills-userRole-tab").style.color = "#7460ee";
+    var pagemsg = document.getElementById("page-msg").innerHTML = "Admin Panel";
+
+}
 else if (url.includes("roles")) {
     var homeSideBar = document.getElementById("employee-side-bar").style.backgroundColor = "#7460ee";;
     var home = document.getElementById("employee").style.backgroundColor = "rgb(116, 96, 238, 0.2)";

@@ -4,67 +4,75 @@
     ViewData["Title"] = "Create";
 }
 
+<div class="container-fluid">
+    <form asp-action="Create">
 
-<form asp-action="Create">
+        <div class="card col-8 p-0 mb-5" style=" border-radius:25px">
+            <div style=" border-top-left-radius: 25px; border-top-right-radius: 25px;" class="row card-header m-0">
+                <div style="text-align:center" class="col-1">
+                    <span class="material-icons">
+                        flag
+                    </span>
+                </div>
+                <div class="col-10">
+                    <h5>Approval Status Message</h5>
+                </div>
+                <div class="col-1">
+                    <button type="button" style="padding:0;width:50%;" class="btn btn-outline-light" data-toggle="collapse" data-target="#collapse-personal" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+                    </button>
+                </div>
 
-    <div class="row">
-        <div class="form-row col-10">
-            <div style="width:35px; height:37px; align-self:center;">
-                <svg style="width:100%;height:100%;" id="Capa_1" enable-background="new 0 0 512 512" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg"><g fill="#7460ee"><path d="m346.555 65.585-31.819 31.819 53.033 53.033 74.245-74.246-31.819-31.819-42.426 42.426zm74.246 10.606-53.032 53.033-31.82-31.82 10.606-10.606 21.214 21.213 42.426-42.426z"></path><path d="m464.528 89.904h15v15h-15z"></path><path d="m277.221 0v194.808h68.048l33.106 33.107 33.105-33.107h68.048v-74.904h-15v59.904h-59.26l-26.893 26.893-26.894-26.893h-59.26v-164.808h172.307v59.904h15v-74.904z"></path><path d="m389.72 294.5c0-20.678-16.822-37.5-37.5-37.5h-97.499v-34.899c0-20.739-3.378-35.177-10.629-45.438-8.637-12.221-22.332-18.161-41.871-18.161h-22.499v89.636l-17.444 46.362h-129.806v142.5h15v-127.5h59.999v172.499h-59.999v-30h-15v45h89.999v-15h56.623l45 30.001h120.853c20.553 0 37.273-16.822 37.273-37.5 0-10.724-4.532-20.403-11.772-27.244 11.485-6.417 19.272-18.691 19.272-32.756 0-12.254-5.909-23.153-15.026-30 9.117-6.847 15.026-17.746 15.026-30s-5.909-23.152-15.026-30c9.117-6.847 15.026-17.746 15.026-30zm-267.249 15h14.999v157.499h-14.999zm61.164 157.499h-31.165v-157.499h20.191l22.061-58.635v-77.364h7.499c27.336 0 37.5 13.172 37.5 48.6v72.4h15v-22.501h22.521c-4.719 6.272-7.521 14.065-7.521 22.5 0 12.254 5.909 23.153 15.026 30-9.117 6.847-15.026 17.746-15.026 30s5.909 23.153 15.026 30c-9.117 6.847-15.026 17.746-15.026 30 0 14.065 7.787 26.339 19.272 32.756-7.24 6.841-11.772 16.521-11.772 27.244 0 8.436 2.801 16.228 7.521 22.5h-56.106zm161.311 30.001h-30.226c-12.406 0-22.5-10.093-22.5-22.5s10.094-22.5 22.5-22.5h29.999c12.406 0 22.5 10.093 22.5 22.5s-9.991 22.5-22.273 22.5zm29.774-82.5c0 12.407-10.094 22.5-22.5 22.5h-44.999c-12.406 0-22.5-10.093-22.5-22.5s10.094-22.5 22.5-22.5h44.999c12.406 0 22.5 10.093 22.5 22.5zm0-60c0 12.407-10.094 22.5-22.5 22.5h-44.999c-12.406 0-22.5-10.093-22.5-22.5 0-12.406 10.094-22.5 22.5-22.5h44.999c12.406 0 22.5 10.094 22.5 22.5zm-22.5-37.5h-44.999c-12.406 0-22.5-10.093-22.5-22.5s10.094-22.5 22.5-22.5h44.999c12.406 0 22.5 10.094 22.5 22.5 0 12.407-10.094 22.5-22.5 22.5z"></path><path d="m77.471 324.5h15v15h-15z"></path><path d="m77.471 354.5h15v15h-15z"></path></g></svg>
             </div>
-            <h2 style="margin-left: 14px; margin-top:5px; color:#7460ee">Add Approval Status</h2>
+            <div class="card-body" id="collapse-personal" style="background: rgba(184, 175, 247, 0.2); border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;">
+                <div class="form-group row ml-3">
 
-        </div>
-        <div class="col-md-6">
-
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group" style="margin-top:3%">
-                <label class="control-label">Approval Status Message</label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                    <label asp-for="Name" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="Name" tabindex="1" placeholder="Example: Needs Approval" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-
-
         </div>
 
-    </div>
-    <div style="display:flex; margin-top:50px; margin-bottom:20px;">
-        <button  type="submit" style="width: 6%;margin-right:3.5%;" class="button-menu form-group btn btn-success" data-toggle="tooltip" data-placement="top" title="Save Approval">
-            <div style="width:20px; height:22px;">
-                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+        <div style="display:flex; margin-top:50px; margin-bottom:20px;">
+            <button type="submit" style="width: 6%;margin-right:3.5%;" class="button-menu form-group btn btn-success" data-toggle="tooltip" data-placement="top" title="Save Approval">
+                <div style="width:20px; height:22px;">
+                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
 
-                    <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
-                        <path d="M66 5101 c-15 -10 -37 -32 -47 -47 -18 -28 -19 -96 -19 -2494 0
+                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
+                            <path d="M66 5101 c-15 -10 -37 -32 -47 -47 -18 -28 -19 -96 -19 -2494 0
                                 -2398 1 -2466 19 -2494 10 -15 32 -37 47 -47 28 -18 96 -19 2494 -19 2398 0
                                 2466 1 2494 19 15 10 37 32 47 47 18 28 19 88 19 2095 l0 2066 -29 39 c-34 46
                                 -805 814 -841 838 -21 14 -64 16 -332 16 l-307 0 -3 -742 -3 -743 -22 -35
                                 c-12 -19 -37 -44 -55 -55 -33 -20 -51 -20 -1268 -20 l-1235 0 -35 22 c-19 12
                                 -44 37 -55 55 -19 32 -20 53 -23 776 l-3 742 -407 0 c-382 0 -409 -1 -436 -19z
                                 m3844 -3751 l0 -1050 -1350 0 -1350 0 0 1050 0 1050 1350 0 1350 0 0 -1050z"></path>
-                        <path d="M1576 2081 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
+                            <path d="M1576 2081 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
                                 65 -19 984 -19 919 0 956 1 984 19 46 31 66 69 66 131 0 62 -20 100 -66 131
                                 -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z"></path>
-                        <path d="M1576 1481 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
+                            <path d="M1576 1481 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
                                 65 -19 984 -19 919 0 956 1 984 19 46 31 66 69 66 131 0 62 -20 100 -66 131
                                 -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z"></path>
-                        <path d="M1576 881 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
+                            <path d="M1576 881 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
                                 65 -19 984 -19 919 0 956 1 984 19 46 31 66 69 66 131 0 62 -20 100 -66 131
                                 -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z"></path>
-                        <path d="M1210 4470 l0 -650 1050 0 1050 0 0 650 0 650 -1050 0 -1050 0 0
+                            <path d="M1210 4470 l0 -650 1050 0 1050 0 0 650 0 650 -1050 0 -1050 0 0
                                 -650z"></path>
-                    </g>
-                </svg>
+                        </g>
+                    </svg>
 
-            </div>
+                </div>
 
-        </button>
+            </button>
 
-        <button type="reset" style="width: 6%;" class="button-menu form-group btn btn-dark" data-toggle="tooltip" data-placement="top" title="Reset Changes">
-            <div style="width:20px; height:22px;">
-                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+            <button type="reset" style="width: 6%;" class="button-menu form-group btn btn-dark" data-toggle="tooltip" data-placement="top" title="Reset Changes">
+                <div style="width:20px; height:22px;">
+                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
 
-                    <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
-                        <path d="M2265 5109 c-108 -13 -301 -53 -409 -84 -338 -98 -691 -287 -957
+                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
+                            <path d="M2265 5109 c-108 -13 -301 -53 -409 -84 -338 -98 -691 -287 -957
                                 -513 l-106 -90 -214 215 c-248 250 -279 273 -358 273 -89 -1 -154 -38 -202
                                 -115 -18 -29 -19 -65 -19 -838 0 -706 2 -812 15 -845 20 -47 50 -78 100 -105
                                 40 -22 44 -22 805 -25 421 -2 788 0 817 3 62 7 107 36 145 90 42 61 54 121 38
@@ -76,16 +84,17 @@
                                 610 65 352 88 705 261 995 488 116 91 346 328 437 452 286 386 459 820 508
                                 1272 22 205 10 538 -25 728 -74 400 -234 763 -483 1100 -91 124 -321 361 -437
                                 452 -344 270 -755 453 -1190 530 -128 22 -575 33 -710 17z"></path>
-                    </g>
-                </svg>
+                        </g>
+                    </svg>
+                </div>
+
+            </button>
+            <div style="width:75%;">
+                <a asp-action="Index" style="float:right; width:10%; color:white" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Return to Approval Status Page">
+                    ←
+                </a>
             </div>
 
-        </button>
-        <div style="width:75%;">
-            <a asp-action="Index" style="float:right; width:10%; color:white" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Return to Approval Status Page">
-                ←
-            </a>
         </div>
-
-    </div>
-</form>
+    </form>
+</div>

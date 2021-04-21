@@ -1676,3 +1676,4 @@ C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Profiles\Edit.cshtml.g.cs
 C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\UserRoles\Edit.cshtml.g.cs
 C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\UserRoles\UserClaimsEdit.cshtml.g.cs
 C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_StatusMsg.cshtml.g.cs
+C:\OASIS\obj\Debug\netcoreapp3.1\Razor\Views\UserRoles\AccessDenied.cshtml.g.cs

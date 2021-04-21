@@ -174,29 +174,32 @@ namespace OASIS.Data
 
             var allEmployees = oasisContext.Employees.ToList();
 
-            if (allEmployees.Where(p => p.UserName == null).Any())
+            if (allEmployees.Where(p => p.IsUser == true).Where(p => p.UserName == null).Any())
             {
                 foreach (var employee in allEmployees)
                 {
-                    var userName = employee.SetUserName;
-
-                    IdentityUser user = new IdentityUser
+                    if (employee.IsUser)
                     {
-                        UserName = userName,
-                        Email = employee.Email
-                    };
+                        var userName = employee.SetUserName;
+                        IdentityUser user = new IdentityUser
+                        {
+                            UserName = userName,
+                            Email = employee.Email
+                        };
 
-                    IdentityResult result = userManager.CreateAsync(user, "password").Result;
+                        IdentityResult result = userManager.CreateAsync(user, "password").Result;
 
-                    if (result.Succeeded)
-                    {
-                        employee.UserName = userName;
-                        employee.Password = "password";
+                        if (result.Succeeded)
+                        {
+                            employee.UserName = userName;
+                            employee.Password = "password";
 
-                        oasisContext.Update(employee);
-                        await oasisContext.SaveChangesAsync();
+                            oasisContext.Update(employee);
+                            await oasisContext.SaveChangesAsync();
 
+                        }
                     }
+                   
                 }
 
 

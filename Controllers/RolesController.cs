@@ -83,7 +83,7 @@ namespace OASIS.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,LabourCostPerHr,LabourPricePerHr")] Role role, int employeeTrue, int customerTrue, int projectTrue, int bidTrue)
+        public async Task<IActionResult> Create([Bind("ID,Name,LabourCostPerHr,LabourPricePerHr")] Role role, int employeeTrue)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Roles");
 
@@ -96,11 +96,8 @@ namespace OASIS.Controllers
                     //return RedirectToAction(nameof(Index));
                     if (employeeTrue == 1)
                     {
-                        TempData["fromRole"] = "True";
                         return RedirectToAction(actionName: "Create", controllerName: "Employees", new {roleID = role.ID });
                     }
-
-                    TempData["fromRole"] = "False";
 
                     return RedirectToAction("Details", new { role.ID });
 

@@ -28,7 +28,7 @@ namespace OASIS.Controllers
         }
 
         // GET: Profiles/Details/5
-        public async Task<IActionResult> Details(string userName)
+        public  IActionResult Details(string userName)
         {
             if (userName == null)
             {
@@ -45,7 +45,7 @@ namespace OASIS.Controllers
         }
 
         // GET: Profiles/Edit/5
-        public async Task<IActionResult> Edit(string userName)
+        public  IActionResult Edit(string userName)
         {
             if (userName == null)
             {

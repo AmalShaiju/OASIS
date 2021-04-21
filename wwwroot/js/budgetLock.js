@@ -4,7 +4,11 @@ var strict = false;
 var budget = 0;
 
 //lock if the record already has a budget
-Updatelock()
+if (!$("#Budget").val() == "")
+{
+    Updatelock()
+}
+
 Budgeting(budget, runningTotal, strict);
 
 $(".lock").click(function () {
@@ -23,6 +27,8 @@ $('#Budget').change(function () {
 
 function Updatelock() {
 
+    console.log($(".lock").css("background-image").replace('url(', '').replace(')', '').replace(/\"/gi, "").includes("lock-open.svg"))
+
     if (($(".lock").css("background-image").replace('url(', '').replace(')', '').replace(/\"/gi, "")).includes("lock-open.svg")) {
 
 
@@ -31,8 +37,7 @@ function Updatelock() {
 
         if (inputTxt == "") {
 
-            //Empty input add display "$0" 
-            //alert("Please Insert a budget before locking")
+            showStatusMsg(false,"Please input a budget to lock into it",2000)
         }
         else {
 

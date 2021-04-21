@@ -30,5 +30,7 @@ namespace OASIS.ViewModels
         public List<ProjectBidDateVM> EndApprochBids { get; set; }
         public List<BidBidStatusVM> BidBidStatusVMs { get; set; }
 
+        public bool NoRole { get; set; }
+
     }
 }

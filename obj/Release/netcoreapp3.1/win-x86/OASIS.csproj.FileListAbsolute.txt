@@ -331,7 +331,6 @@ C:\OASIS\bin\Release\netcoreapp3.1\win-x86\dbgshim.dll
 C:\OASIS\bin\Release\netcoreapp3.1\win-x86\hostfxr.dll
 C:\OASIS\bin\Release\netcoreapp3.1\win-x86\hostpolicy.dll
 C:\OASIS\bin\Release\netcoreapp3.1\win-x86\mscordaccore.dll
-C:\OASIS\bin\Release\netcoreapp3.1\win-x86\mscordaccore_x86_x86_4.700.20.56602.dll
 C:\OASIS\bin\Release\netcoreapp3.1\win-x86\mscordbi.dll
 C:\OASIS\bin\Release\netcoreapp3.1\win-x86\mscorrc.debug.dll
 C:\OASIS\bin\Release\netcoreapp3.1\win-x86\mscorrc.dll
@@ -575,3 +574,5 @@ C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\UserRoles\Create.cshtml.g
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\UserRoles\Index.cshtml.g.cs
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\UserRoles\Edit.cshtml.g.cs
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\UserRoles\UserClaimsEdit.cshtml.g.cs
+C:\OASIS\bin\Release\netcoreapp3.1\win-x86\mscordaccore_x86_x86_4.700.21.11102.dll
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Shared\_StatusMsg.cshtml.g.cs

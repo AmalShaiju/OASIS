@@ -3,174 +3,205 @@
 @{
     ViewData["Title"] = "Create";
 }
-<form asp-action="Create">
-    <input type="hidden" id="employeeTrue" name="employeeTrue" value="0" />
-    <input type="hidden" id="customerTrue" name="customerTrue" value="0" />
-    <input type="hidden" id="projectTrue" name="projectTrue" value="0" />
-    <input type="hidden" id="bidTrue" name="bidTrue" value="0" />
-    <div class="row">
-        <div class="form-row col-10">
-            <div style="width:35px; height:37px; align-self:center;">
-                <img style="width:100%; height:100%;" src="~/resources/add-user-full-fill.png" alt="Alternate Text" />
-            </div>
-            <h2 style="margin-left: 14px; margin-top:5px; color:#7460ee">Add Customer</h2>
 
-        </div>
-        <div class="col-md-12">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-row col-10">
-
-                <div style=" padding-left: 1px;" class="form-group col-5">
-                    <h3> Personal Information</h3>
+<div class="container-fluid">
+    <div class="position-absolute pr-5" style="right:0;">
+        <span onclick="CustomerFill()" class="dot">
+            <span style="color:rgb(116,96,238)" class="material-icons">
+                vpn_key
+            </span>
+        </span>
+    </div>
+    <form asp-action="Create">
+        <div class="card col-8 p-0 mb-5" style=" border-radius:25px">
+            <div style=" border-top-left-radius: 25px; border-top-right-radius: 25px;" class="row card-header m-0">
+                <div style="text-align:center" class="col-1">
+                    <span class="material-icons">
+                        person
+                    </span>
                 </div>
-                <div style=" padding-left: 1px;" class="form-group col-6">
-                    <h3> Address Information</h3>
+                <div class="col-10">
+                    <h5>Personal information</h5>
+                </div>
+                <div class="col-1">
+                    <button type="button" style="padding:0;width:50%;" class="btn btn-outline-light" data-toggle="collapse" data-target="#collapse-personal" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+                    </button>
                 </div>
 
             </div>
-            <div style="margin-top:0px;" class="col-md-12">
-                <div style="margin-top:0px;" class="form-row col-10">
+            <div class="card-body" id="collapse-personal" style="background: rgba(184, 175, 247, 0.2); border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;">
+                <div class="form-group row ml-3">
 
-                    <div class="form-group col-5">
-                        <label asp-for="FirstName" class="control-label"></label>
+                    <label asp-for="FirstName" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
                         <input asp-for="FirstName" tabindex="1" placeholder="Example: John" class="form-control" />
                         <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-6">
-                        <label asp-for="AddressLineOne" class="control-label"></label>
-                        <input asp-for="AddressLineOne" tabindex="2" placeholder="Example: 123 Road Street" class="form-control" />
-                        <span asp-validation-for="AddressLineOne" class="text-danger"></span>
-                    </div>
-
                 </div>
 
-                <div class="form-row col-10">
-                    <div class="form-group col-5">
-                        <label asp-for="MiddleName" class="control-label"></label>
+                <div class="form-group row ml-3">
+                    <label asp-for="MiddleName" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
                         <input asp-for="MiddleName" tabindex="3" placeholder="Example: James" class="form-control" />
                         <span asp-validation-for="MiddleName" class="text-danger"></span>
                     </div>
-
-                    <div class="form-group col-6">
-                        <label asp-for="AddressLineTwo" class="control-label"></label>
-                        <input asp-for="AddressLineTwo" tabindex="4" placeholder="Example: 124 Apple Road" class="form-control" />
-                        <span asp-validation-for="AddressLineTwo" class="text-danger"></span>
-                    </div>
-
                 </div>
 
-                <div class="form-row col-10">
-
-                    <div class="form-group col-5">
-                        <label asp-for="LastName" class="control-label"></label>
-                        <input asp-for="LastName" tabindex="5" placeholder="Example: Doe" class="form-control" />
+                <div class="form-group row ml-3">
+                    <label asp-for="LastName" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="LastName" tabindex="3" placeholder="Example: Doe" class="form-control" />
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
-
-                    <div class="form-group col-6">
-                        <label asp-for="ApartmentNumber" class="control-label"></label>
-                        <input asp-for="ApartmentNumber" tabindex="6" placeholder="Example: Suite 1 / Suite A " class="form-control" />
-                        <span asp-validation-for="ApartmentNumber" class="text-danger"></span>
-                    </div>
-
                 </div>
-                <div class="form-row col-10">
 
-                    <div class="form-group col-5">
-                        <label asp-for="OrgName" class="control-label"></label>
-                        <input asp-for="OrgName" tabindex="7" placeholder="Example: Company Name" class="form-control" />
+                <div class="form-group row ml-3">
+                    <label asp-for="OrgName" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="OrgName" tabindex="3" placeholder="Example: Company Name" class="form-control" />
                         <span asp-validation-for="OrgName" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-6">
-                        <label asp-for="City" class="control-label"></label>
-                        <input asp-for="City" tabindex="8" placeholder="Example: Welland" class="form-control" />
-                        <span asp-validation-for="City" class="text-danger"></span>
-                    </div>
-
-
                 </div>
 
-                <div class="form-row col-10">
-
-                    <div class="form-group col-5">
-                        <label asp-for="Position" class="control-label"></label>
-                        <input asp-for="Position" tabindex="9" placeholder="Example: Manager" class="form-control" />
+                <div class="form-group row ml-3">
+                    <label asp-for="Position" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="Position" tabindex="3" placeholder="Example: Manager" class="form-control" />
                         <span asp-validation-for="Position" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-6">
-                        <label asp-for="Province" class="control-label"></label>
-                        <input asp-for="Province" tabindex="10" placeholder="Example: Ontario" class="form-control" />
-                        <span asp-validation-for="Province" class="text-danger"></span>
-                    </div>
-
                 </div>
 
-                <div class="form-row col-10">
-
-                    <div class="form-group col-5">
-                        <label asp-for="Phone" class="control-label"></label>
-                        <input asp-for="Phone" tabindex="11" placeholder="Example: 9051234567" class="form-control" />
+                <div class="form-group row ml-3">
+                    <label asp-for="Phone" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="Phone" tabindex="3" placeholder="Example: 9051234567" class="form-control" />
                         <span asp-validation-for="Phone" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-6">
-                        <label asp-for="Country" class="control-label"></label>
-                        <input asp-for="Country" tabindex="12" placeholder="Example: Canada" class="form-control" />
-                        <span asp-validation-for="Country" class="text-danger"></span>
-                    </div>
-
                 </div>
 
-                <div class="form-row col-10">
-
-                    <div class="form-group col-5">
-                        <label asp-for="Email" class="control-label"></label>
-                        <input asp-for="Email" tabindex="13" placeholder="Example: email@address.com" class="form-control" />
+                <div class="form-group row ml-3">
+                    <label asp-for="Email" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="Email" tabindex="3" placeholder="Example: email@address.com" class="form-control" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
-
-
                 </div>
             </div>
+        </div>
 
 
 
-            <div style="display:flex; margin-top:50px; margin-bottom:20px;">
-                <button type="submit" style="width: 6%;margin-right:3.5%;" class="button-menu form-group btn btn-success"  data-toggle="tooltip" data-placement="top" title="Save Customer">
-                    <div style="width:20px; height:22px;">
-                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
 
-                            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
-                                <path d="M66 5101 c-15 -10 -37 -32 -47 -47 -18 -28 -19 -96 -19 -2494 0
+        <div class="card col-8 p-0 mb-5" style=" border-radius:25px">
+            <div style=" border-top-left-radius: 25px; border-top-right-radius: 25px;" class="row card-header m-0">
+                <div style="text-align:center" class="col-1">
+                    <span class="material-icons">
+                        home
+                    </span>
+                </div>
+                <div class="col-10">
+                    <h5>Address information</h5>
+                </div>
+                <div class="col-1">
+                    <button type="button" style="padding:0;width:50%;" class="btn btn-outline-light" data-toggle="collapse" data-target="#collapse-address" aria-expanded="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+                    </button>
+                </div>
+
+            </div>
+            <div class="card-body" id="collapse-address" style="background: rgba(184, 175, 247, 0.2); border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;">
+                <div class="form-group row ml-3">
+
+                    <label asp-for="AddressLineOne" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="AddressLineOne" tabindex="1" placeholder="Example: 123 Road Street" class="form-control" />
+                        <span asp-validation-for="AddressLineOne" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row ml-3">
+                    <label asp-for="AddressLineTwo" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="AddressLineTwo" tabindex="3" placeholder="Example: 124 Apple Road" class="form-control" />
+                        <span asp-validation-for="AddressLineTwo" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row ml-3">
+                    <label asp-for="ApartmentNumber" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="ApartmentNumber" tabindex="3" placeholder="Example: Suite 1 / Suite A" class="form-control" />
+                        <span asp-validation-for="ApartmentNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row ml-3">
+                    <label asp-for="City" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="City" tabindex="3" placeholder="Example: Welland" class="form-control" />
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row ml-3">
+                    <label asp-for="Province" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="Province" tabindex="3" placeholder="Example: Ontario" class="form-control" />
+                        <span asp-validation-for="Province" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row ml-3">
+                    <label asp-for="Country" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="Country" tabindex="3" placeholder="Example: Canada" class="form-control" />
+                        <span asp-validation-for="Country" class="text-danger"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <div style="display:flex; margin-top:50px; margin-bottom:20px;">
+            <button type="submit" style="width: 6%;margin-right:3.5%;" class="button-menu form-group btn btn-success" data-toggle="tooltip" data-placement="top" title="Save Customer">
+                <div style="width:20px; height:22px;">
+                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+
+                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
+                            <path d="M66 5101 c-15 -10 -37 -32 -47 -47 -18 -28 -19 -96 -19 -2494 0
                                 -2398 1 -2466 19 -2494 10 -15 32 -37 47 -47 28 -18 96 -19 2494 -19 2398 0
                                 2466 1 2494 19 15 10 37 32 47 47 18 28 19 88 19 2095 l0 2066 -29 39 c-34 46
                                 -805 814 -841 838 -21 14 -64 16 -332 16 l-307 0 -3 -742 -3 -743 -22 -35
                                 c-12 -19 -37 -44 -55 -55 -33 -20 -51 -20 -1268 -20 l-1235 0 -35 22 c-19 12
                                 -44 37 -55 55 -19 32 -20 53 -23 776 l-3 742 -407 0 c-382 0 -409 -1 -436 -19z
                                 m3844 -3751 l0 -1050 -1350 0 -1350 0 0 1050 0 1050 1350 0 1350 0 0 -1050z"></path>
-                                <path d="M1576 2081 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
+                            <path d="M1576 2081 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
                                 65 -19 984 -19 919 0 956 1 984 19 46 31 66 69 66 131 0 62 -20 100 -66 131
                                 -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z"></path>
-                                <path d="M1576 1481 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
+                            <path d="M1576 1481 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
                                 65 -19 984 -19 919 0 956 1 984 19 46 31 66 69 66 131 0 62 -20 100 -66 131
                                 -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z"></path>
-                                <path d="M1576 881 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
+                            <path d="M1576 881 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
                                 65 -19 984 -19 919 0 956 1 984 19 46 31 66 69 66 131 0 62 -20 100 -66 131
                                 -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z"></path>
-                                <path d="M1210 4470 l0 -650 1050 0 1050 0 0 650 0 650 -1050 0 -1050 0 0
+                            <path d="M1210 4470 l0 -650 1050 0 1050 0 0 650 0 650 -1050 0 -1050 0 0
                                 -650z"></path>
-                            </g>
-                        </svg>
+                        </g>
+                    </svg>
 
-                    </div>
+                </div>
 
-                </button>
+            </button>
 
-                <button type="reset" style="width: 6%;" class="button-menu form-group btn btn-dark" data-toggle="tooltip" data-placement="top" title="Reset Changes">
-                    <div style="width:20px; height:22px;">
-                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+            <button type="reset" style="width: 6%;" class="button-menu form-group btn btn-dark" data-toggle="tooltip" data-placement="top" title="Reset Changes">
+                <div style="width:20px; height:22px;">
+                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
 
-                            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
-                                <path d="M2265 5109 c-108 -13 -301 -53 -409 -84 -338 -98 -691 -287 -957
+                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
+                            <path d="M2265 5109 c-108 -13 -301 -53 -409 -84 -338 -98 -691 -287 -957
                                 -513 l-106 -90 -214 215 c-248 250 -279 273 -358 273 -89 -1 -154 -38 -202
                                 -115 -18 -29 -19 -65 -19 -838 0 -706 2 -812 15 -845 20 -47 50 -78 100 -105
                                 40 -22 44 -22 805 -25 421 -2 788 0 817 3 62 7 107 36 145 90 42 61 54 121 38
@@ -182,20 +213,20 @@
                                 610 65 352 88 705 261 995 488 116 91 346 328 437 452 286 386 459 820 508
                                 1272 22 205 10 538 -25 728 -74 400 -234 763 -483 1100 -91 124 -321 361 -437
                                 452 -344 270 -755 453 -1190 530 -128 22 -575 33 -710 17z"></path>
-                            </g>
-                        </svg>
-                    </div>
+                        </g>
+                    </svg>
+                </div>
 
-                </button>
+            </button>
 
-                <button type="submit" id="createProject" style="width: 6%;margin-left:3.5%;" class="button-menu form-group btn btn-danger"  data-toggle="tooltip" data-placement="top" title="Save and Create Project">
-                    <div style="width:35px; height:30px;">
-                        <svg style="width:100%; height:100%;" version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
-                            <metadata>
-                                Created by potrace 1.16, written by Peter Selinger 2001-2019
-                            </metadata>
-                            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#f8f9fa" stroke="none">
-                                <path d="M1654 5109 c-86 -25 -181 -122 -204 -210 -7 -25 -10 -133 -8 -282 3
+            <button type="submit" asp-action="Create" asp-route-projectTrue="1" id="createProject" style="width: 6%;margin-left:3.5%;" class="button-menu form-group btn btn-danger" data-toggle="tooltip" data-placement="top" title="Save and Create Project">
+                <div style="width:35px; height:30px;">
+                    <svg style="width:100%; height:100%;" version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+                        <metadata>
+                            Created by potrace 1.16, written by Peter Selinger 2001-2019
+                        </metadata>
+                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#f8f9fa" stroke="none">
+                            <path d="M1654 5109 c-86 -25 -181 -122 -204 -210 -7 -25 -10 -133 -8 -282 3
 -235 4 -243 26 -275 13 -18 41 -41 62 -52 38 -19 61 -20 654 -20 410 0 624 4
 643 11 38 14 83 57 99 96 8 18 14 66 14 108 l0 75 401 0 401 0 29 -29 c24 -24
 29 -38 29 -76 l0 -46 -37 8 c-21 4 -92 7 -158 6 -270 -1 -497 -101 -686 -301
@@ -223,76 +254,52 @@ c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
 0 -46 6 -275 236 -206 206 -235 239 -235 266 0 48 43 93 88 93 33 0 49 -13
 208 -170 169 -168 172 -170 215 -170 l43 0 411 410 c374 374 414 410 444 410
 23 0 41 -9 62 -29z"></path>
-                                <path d="M841 3984 c-24 -30 -26 -52 -9 -89 18 -41 64 -47 349 -43 252 3 259
+                            <path d="M841 3984 c-24 -30 -26 -52 -9 -89 18 -41 64 -47 349 -43 252 3 259
 4 281 25 28 28 29 84 3 113 -17 19 -28 20 -311 20 l-293 0 -20 -26z"></path>
-                                <path d="M922 3270 c-113 -57 -166 -144 -166 -275 -1 -65 4 -89 24 -130 113
+                            <path d="M922 3270 c-113 -57 -166 -144 -166 -275 -1 -65 4 -89 24 -130 113
 -232 437 -234 557 -3 23 45 27 65 27 133 0 131 -53 218 -166 275 -52 26 -72
 30 -138 30 -66 0 -86 -4 -138 -30z m216 -152 c34 -21 71 -84 72 -122 1 -67
 -80 -146 -150 -146 -50 0 -107 37 -130 85 -25 51 -25 69 0 122 35 79 133 108
 208 61z"></path>
-                                <path d="M1495 3215 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 489
+                            <path d="M1495 3215 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 489
 0 489 0 21 23 c32 34 30 89 -4 116 -26 21 -36 21 -511 21 l-484 0 -24 -25z"></path>
-                                <path d="M1495 2865 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 484
+                            <path d="M1495 2865 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 484
 0 c475 0 485 0 511 21 34 27 37 88 4 119 -21 20 -32 20 -510 20 l-489 0 -24
 -25z"></path>
-                                <path d="M957 2366 c-135 -49 -221 -189 -202 -330 14 -108 70 -187 167 -236
+                            <path d="M957 2366 c-135 -49 -221 -189 -202 -330 14 -108 70 -187 167 -236
 52 -26 72 -30 138 -30 66 0 86 4 139 31 68 34 130 101 153 166 21 63 16 180
 -12 238 -33 68 -99 129 -166 154 -64 24 -160 27 -217 7z m174 -168 c25 -14 46
 -37 59 -63 25 -51 25 -69 1 -121 -53 -117 -220 -111 -266 10 -49 128 86 242
 206 174z"></path>
-                                <path d="M1495 2305 c-33 -32 -34 -83 -2 -113 l23 -22 651 0 652 0 20 26 c28
+                            <path d="M1495 2305 c-33 -32 -34 -83 -2 -113 l23 -22 651 0 652 0 20 26 c28
 36 27 79 -4 109 l-24 25 -646 0 -646 0 -24 -25z"></path>
-                                <path d="M1495 1955 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 339
+                            <path d="M1495 1955 c-16 -15 -25 -36 -25 -55 0 -19 9 -40 25 -55 l24 -25 339
 0 339 0 21 23 c30 32 29 87 -1 115 -23 22 -28 22 -361 22 l-337 0 -24 -25z"></path>
-                                <path d="M962 1455 c-77 -24 -134 -75 -179 -160 -23 -42 -27 -63 -27 -130 -1
+                            <path d="M962 1455 c-77 -24 -134 -75 -179 -160 -23 -42 -27 -63 -27 -130 -1
 -68 3 -89 27 -137 112 -228 442 -229 554 0 23 46 27 70 27 132 1 99 -27 163
 -101 230 -82 75 -193 99 -301 65z m157 -160 c41 -20 79 -70 87 -110 9 -47 -29
 -123 -74 -149 -96 -55 -217 15 -217 126 0 104 116 179 204 133z"></path>
-                                <path d="M1515 1409 c-51 -28 -61 -90 -22 -127 23 -22 24 -22 515 -22 479 0
+                            <path d="M1515 1409 c-51 -28 -61 -90 -22 -127 23 -22 24 -22 515 -22 479 0
 493 1 512 20 28 28 27 90 -1 116 -20 18 -45 19 -503 21 -338 2 -487 -1 -501
 -8z"></path>
-                                <path d="M1513 1060 c-47 -19 -58 -92 -20 -128 l23 -22 651 0 652 0 20 26 c26
+                            <path d="M1513 1060 c-47 -19 -58 -92 -20 -128 l23 -22 651 0 652 0 20 26 c26
 33 27 75 2 105 l-19 24 -644 2 c-359 1 -653 -2 -665 -7z"></path>
-                            </g>
-                        </svg>
-                    </div>
-
-                </button>
-
-        
-                <div style="width:75%;">
-                    <a href='@ViewData["returnURL"]' @*asp-action="Index"*@ style="float:right; width:10%;" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Return to Customers Page">
-                        ←
-                    </a>
+                        </g>
+                    </svg>
                 </div>
 
+            </button>
+
+            <div style="width:75%;">
+                <a href='@ViewData["returnURL"]' @*asp-action="Index"*@ style="float:right; width:10%;" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Return to Customers Page">
+                    ←
+                </a>
             </div>
         </div>
-    </div>
-</form>
-
+    </form>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <script type="text/javascript">
-        $('#createEmployee').click(function () {
-            $('#employeeTrue').val(1)
-        });
-
-        $('#createBid').click(function () {
-            $('#bidTrue').val(1)
-        });
-
-        $('#createProject').click(function () {
-            $('#projectTrue').val(1)
-        });
-
-        $('#createCustomer').click(function () {
-            $('#customerTrue').val(1)
-        });
-
-
-    </script>
-
+    <script src="~/js/autofill.js"></script>
 }
