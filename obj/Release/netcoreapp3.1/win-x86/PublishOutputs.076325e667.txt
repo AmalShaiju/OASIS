@@ -9,6 +9,7 @@ C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\accesiblity.js
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\addProducts.js
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\addRoles.js
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\addUserToRole.js
+C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\autofill.js
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\budgetLock.js
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\DashBoardFilter.js
 C:\OASIS\obj\Release\netcoreapp3.1\win-x86\PubTmp\Out\wwwroot\js\getProduct.js

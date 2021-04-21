@@ -27,8 +27,8 @@ namespace OASIS
 
                     var context = services.GetRequiredService<OasisContext>();
                     context.Database.Migrate();
-                    //OASeedData.Initialize(services);
-                    OAScriptSeedData.Initialize(services);
+                    OASeedData.Initialize(services);
+                    //OAScriptSeedData.Initialize(services);
 
                     var identityContext = services.GetRequiredService<ApplicationDbContext>();
                     identityContext.Database.Migrate();

@@ -426,7 +426,7 @@ function PreviewBid(e) {
                             }
 
                             if (response.bid.budget != null) {
-                                $('#bid-Budget').text(`Budget: $${response.bid.budge.toFixed(2)}`)
+                                $('#bid-Budget').text(`Budget: $${response.bid.budget.toFixed(2)}`)
 
                             }
 

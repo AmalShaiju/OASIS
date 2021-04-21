@@ -816,18 +816,19 @@ namespace OASIS.Controllers
 
         }
 
+        [HttpGet]
         public async Task<ActionResult> UpdateApproval(int bidId, string approvalStatusName, string approvalType)
         {
             try
             {
                 var ApprovalToUpdate = await _context.Approvals.SingleOrDefaultAsync(p => p.BidID == bidId);
-
+                var bidToUpdate = _context.Bids.SingleOrDefault(p => p.ID == bidId);
                 if (approvalType == "client")
                 {
                     ApprovalToUpdate.ClientStatusID = _context.ApprovalStatuses.SingleOrDefault(p => p.Name == approvalStatusName).ID;
                     _context.Update(ApprovalToUpdate);
                     await _context.SaveChangesAsync();
-
+                    CheckIfFinalaized(bidToUpdate);
                     return RedirectToAction("Index");
                 }
                 else
@@ -835,10 +836,9 @@ namespace OASIS.Controllers
                     ApprovalToUpdate.DesignerStatusID = _context.ApprovalStatuses.SingleOrDefault(p => p.Name == approvalStatusName).ID;
                     _context.Update(ApprovalToUpdate);
                     await _context.SaveChangesAsync();
-
+                    CheckIfFinalaized(bidToUpdate);
                     return RedirectToAction("Index");
                 }
-
 
             }
             catch
@@ -847,6 +847,34 @@ namespace OASIS.Controllers
             }
 
 
+
+
+        }
+
+        private void CheckIfFinalaized(Bid bid)
+        {
+            try
+            {
+                var clientStatusID = _context.Approvals.SingleOrDefault(p => p.BidID == bid.ID).ClientStatusID;
+                var designerStatusID = _context.Approvals.SingleOrDefault(p => p.BidID == bid.ID).DesignerStatusID;
+                var approvalStatusID = _context.ApprovalStatuses.SingleOrDefault(p => p.Name == "Approved").ID;
+
+                if (clientStatusID == approvalStatusID && designerStatusID == approvalStatusID)
+                {
+                    bid.IsFinal = true;
+                }
+                else
+                {
+                    bid.IsFinal = false;
+                }
+
+                _context.Update(bid);
+                _context.SaveChangesAsync();
+            }
+            catch
+            {
+
+            }
 
 
         }

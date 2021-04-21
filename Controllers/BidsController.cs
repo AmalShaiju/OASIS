@@ -738,7 +738,7 @@ namespace OASIS.Controllers
             var designerQuery = from d in _context.Employees.Where(p => p.Role.Name == "Designer")
                                 orderby d.LastName, d.FirstName
                                 select d;
-            var SalesAssociateQuery = from d in _context.Employees.Where(p => p.Role.Name == "Botanist")
+            var SalesAssociateQuery = from d in _context.Employees.Where(p => p.Role.Name == "Sales Associate")
                                       orderby d.LastName, d.FirstName
                                       select d;
 
