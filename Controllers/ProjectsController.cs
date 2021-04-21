@@ -147,6 +147,7 @@ namespace OASIS.Controllers
         }
 
         // GET: Projects/Details/5
+        [Authorize(Policy = "ProjectViewPolicy")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

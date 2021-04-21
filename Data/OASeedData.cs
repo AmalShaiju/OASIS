@@ -774,7 +774,7 @@ namespace OASIS.Data
                                 EstBidEndDate = DateTime.Today.AddDays(random.Next(range)),
                                 Comments = baconNotes[random.Next(4)],
                                 DesignerID = designerID[random.Next(designerCount)],
-                                SalesAsscociateID = salesAssociateID[random.Next(salesAssociateCount-1)],
+                                SalesAsscociateID = salesAssociateID[random.Next(salesAssociateCount)],
                                 ProjectID = projectID[random.Next(ProjectCount)],
                                 BidStatusID = bidStatusID[random.Next(bidStatusCount)],
 

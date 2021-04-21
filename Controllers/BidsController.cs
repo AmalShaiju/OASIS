@@ -29,7 +29,6 @@ namespace OASIS.Controllers
 
         // GET: Bids
         [Authorize(Policy = "BidViewPolicy")]
-
         public async Task<IActionResult> Index(string QuickSearchName, string SearchProjectName, string BidAmountBelow, string BidAmountAbove,
             string EstStartDateAbove, string EstStartDateBelow, string EstFinishDateBelow, string EstFinishDateAbove,
             int? BidstatusID, int? DesignerStatusID, int? ClientStatusID, int? DesignerID, int? SalesAsscID,
@@ -276,6 +275,7 @@ namespace OASIS.Controllers
 
 
         // GET: Bids/Details/5
+        [Authorize(Policy = "BidViewPolicy")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -349,7 +349,6 @@ namespace OASIS.Controllers
 
         // GET: Bids/Create
         [Authorize(Policy = "BidCreatePolicy")]
-
         public IActionResult Create(int? projectID, int? bidID)
         {
             var bid = new Bid();
@@ -441,7 +440,6 @@ namespace OASIS.Controllers
 
        
         [Authorize(Policy = "BidEditPolicy")]
-
         public async Task<IActionResult> Edit(int? id)
         {
 

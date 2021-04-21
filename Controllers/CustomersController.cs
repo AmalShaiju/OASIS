@@ -150,6 +150,7 @@ namespace OASIS.Controllers
         }
 
         // GET: Customers/Details/5
+        [Authorize(Policy = "CustomerViewPolicy")]
         public async Task<IActionResult> Details(int? id)
         {
            
@@ -176,7 +177,6 @@ namespace OASIS.Controllers
 
         // GET: Customers/Create
         [Authorize(Policy = "CustomerCreatePolicy")]
-
         public IActionResult Create()
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");
@@ -190,7 +190,6 @@ namespace OASIS.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "CustomerCreatePolicy")]
-
         public async Task<IActionResult> Create([Bind("ID,OrgName,FirstName,LastName,MiddleName,Position,AddressLineOne,AddressLineTwo,ApartmentNumber,City,Province,Country,Phone,Email")] Customer customer,int projectTrue)
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Customers");

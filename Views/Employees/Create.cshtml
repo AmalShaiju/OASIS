@@ -106,8 +106,13 @@
                 </div>
                 <div class="form-group row ml-3">
                     <label asp-for="IsUser" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-1">
-                        <input asp-for="IsUser" tabindex="11" placeholder="Example: email@address.com" class="form-control col-5" />
+                    <div class="col-sm-8 row pl-3">
+                        <div class="col-1 text-left">
+                            <input asp-for="IsUser" tabindex="11" placeholder="Example: email@address.com" class="form-control" />
+                        </div>
+                        <div style="align-self:center" class="col text-left align">
+                            <span style="font-weight:400; font-size:16px;">* Check if you want to create a user account for the employee</span>
+                        </div>
                     </div>
                 </div>
 

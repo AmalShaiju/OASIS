@@ -149,6 +149,7 @@ namespace OASIS.Controllers
         }
 
         // GET: Employees/Details/5
+        [Authorize(Policy = "EmployeeViewPolicy")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

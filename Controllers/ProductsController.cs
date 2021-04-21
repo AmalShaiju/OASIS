@@ -151,6 +151,7 @@ namespace OASIS.Controllers
         }
 
         // GET: Products/Details/5
+        [Authorize(Policy = "ProductViewPolicy")]
         public async Task<IActionResult> Details(int? id ,string returnURL)
         {
             if (id == null)
