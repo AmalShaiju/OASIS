@@ -24,7 +24,7 @@
 
                     </a>
                 </li>
-                @if (User.IsInRole("Management"))
+                @if (User.IsInRole("Management")|| User.IsInRole("Admin"))
                 {
                     <li class="nav-item">
                         <a style="color:#00adef" class="btn btn-light" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">

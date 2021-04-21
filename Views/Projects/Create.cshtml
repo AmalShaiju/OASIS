@@ -4,6 +4,13 @@
     ViewData["Title"] = "Create";
 }
 <div class="container-fluid">
+    <div class="position-absolute pr-5" style="right:0;">
+        <span onclick="ProjectFill()" class="dot">
+            <span style="color:rgb(116,96,238)" class="material-icons">
+                vpn_key
+            </span>
+        </span>
+    </div>
     <form asp-action="Create">
         @{
             if (TempData.ContainsKey("CustomerID"))
@@ -197,3 +204,8 @@
         </div>
     </form>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/autofill.js"></script>
+}

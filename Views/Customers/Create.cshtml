@@ -5,11 +5,20 @@
 }
 
 <div class="container-fluid">
+    <div class="position-absolute pr-5" style="right:0;">
+        <span onclick="CustomerFill()" class="dot">
+            <span style="color:rgb(116,96,238)" class="material-icons">
+                vpn_key
+            </span>
+        </span>
+    </div>
     <form asp-action="Create">
         <div class="card col-8 p-0 mb-5" style=" border-radius:25px">
             <div style=" border-top-left-radius: 25px; border-top-right-radius: 25px;" class="row card-header m-0">
-                <div class="col-1" data-toggle="collapse">
-                    <svg style="height:50%; width:50%;" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" /></svg>
+                <div style="text-align:center" class="col-1">
+                    <span class="material-icons">
+                        person
+                    </span>
                 </div>
                 <div class="col-10">
                     <h5>Personal information</h5>
@@ -86,14 +95,16 @@
 
         <div class="card col-8 p-0 mb-5" style=" border-radius:25px">
             <div style=" border-top-left-radius: 25px; border-top-right-radius: 25px;" class="row card-header m-0">
-                <div class="col-1" data-toggle="collapse">
-                    <svg style="height:50%; width:50%;" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" /></svg>
+                <div style="text-align:center" class="col-1">
+                    <span class="material-icons">
+                        home
+                    </span>
                 </div>
                 <div class="col-10">
                     <h5>Address information</h5>
                 </div>
                 <div class="col-1">
-                    <button type="button" style="padding:0;width:50%;" class="btn btn-outline-light" data-toggle="collapse" data-target="#collapse-address" aria-expanded="false">
+                    <button type="button" style="padding:0;width:50%;" class="btn btn-outline-light" data-toggle="collapse" data-target="#collapse-address" aria-expanded="true">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
                     </button>
                 </div>
@@ -287,3 +298,8 @@ c0 169 3 212 16 240 20 42 65 75 113 85 54 10 870 10 915 -1z m1887 -749 c20
         </div>
     </form>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/autofill.js"></script>
+}
