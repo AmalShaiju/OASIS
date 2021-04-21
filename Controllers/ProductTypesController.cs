@@ -156,7 +156,7 @@ namespace OASIS.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Details", new { productType.ID , returnURL});
+                        return RedirectToAction("Index", new { productType.ID, returnURL });
                     }
                    
                 }
@@ -232,9 +232,9 @@ namespace OASIS.Controllers
                          }
                      else
                          {
-                    return RedirectToAction("Details", new { productTypeToUpdate.ID, returnURL });
-                    
-                         }
+                        return RedirectToAction("Index", new { productTypeToUpdate.ID, returnURL });
+
+                    }
                 }  
                 catch (DbUpdateConcurrencyException ex)// Added for concurrency
                 {

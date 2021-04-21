@@ -3,98 +3,93 @@
 @{
     ViewData["Title"] = "Create";
 }
+<div class="container-fluid">
 <form asp-action="Create">
-    <div class="row">
-        <div class="form-row col-10">
-            <div style="width:35px; height:37px; align-self:center;">
-                <img style="width:100%; height:100%;" src="~/resources/add-user-full-fill.png" alt="Alternate Text" />
+    <div class="card col-8 p-0 mb-5" style=" border-radius:25px">
+        <div style=" border-top-left-radius: 25px; border-top-right-radius: 25px;" class="row card-header m-0">
+            <div style="text-align:center" class="col-1">
+                <span class="material-icons">
+                    school
+                </span>
             </div>
-            <h2 style="margin-left: 14px; margin-top:5px; color:#7460ee">Add Role</h2>
+            <div class="col-10">
+                <h5>Role Information</h5>
+            </div>
+            <div class="col-1">
+                <button type="button" style="padding:0;width:50%;" class="btn btn-outline-light" data-toggle="collapse" data-target="#collapse-personal" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+                </button>
+            </div>
 
         </div>
-        <div class="col-md-12">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-row col-10">
+        <div class="card-body" id="collapse-personal" style="background: rgba(184, 175, 247, 0.2); border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;">
+            <div class="form-group row ml-3">
 
-                <div style=" padding-left: 1px;" class="form-group col-5">
-                    <h3> Role Information</h3>
+                <label asp-for="Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="Name" tabindex="1" placeholder="Example: Supervisor" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
-                <div style=" padding-left: 1px;" class="form-group col-6">
-                    <h3> Labour Information</h3>
-                </div>
-
-            </div>
-            <div style="margin-top:0px;" class="col-md-12">
-                <div style="margin-top:0px;" class="form-row col-10">
-
-                    <div class="form-group col-5">
-                        <label asp-for="Name" class="control-label"></label>
-                        <input asp-for="Name" tabindex="1" placeholder="Example: Supervisor" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-6">
-                        <label asp-for="LabourCostPerHr" class="control-label"></label>
-                        <input asp-for="LabourCostPerHr" tabindex="2" placeholder="Example: $50" class="form-control" />
-                        <span asp-validation-for="LabourCostPerHr" class="text-danger"></span>
-                    </div>
-
-                </div>
-
-                <div class="form-row col-10">
-                    <div class="form-group col-5">
-
-                    </div>
-
-                    <div class="form-group col-6">
-                        <label asp-for="LabourPricePerHr" class="control-label"></label>
-                        <input asp-for="LabourPricePerHr" tabindex="3" placeholder="Example: $25" class="form-control" />
-                        <span asp-validation-for="LabourPricePerHr" class="text-danger"></span>
-                    </div>
-
-                </div>
-
-
             </div>
 
+            <div class="form-group row ml-3">
+
+                <label asp-for="LabourCostPerHr" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="LabourCostPerHr" tabindex="1" placeholder="Example: $50" class="form-control" />
+                    <span asp-validation-for="LabourCostPerHr" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row ml-3">
+                <label asp-for="LabourPricePerHr" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="LabourPricePerHr" tabindex="3" placeholder="Example: $25" class="form-control" />
+                    <span asp-validation-for="LabourPricePerHr" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 
-            <div style="display:flex; margin-top:50px; margin-bottom:20px;">
-                <button type="submit" style="width: 6%;margin-right:3.5%;" class="button-menu form-group btn btn-success" data-toggle="tooltip" data-placement="top" title="Save Role">
-                    <div style="width:20px; height:22px;">
-                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+    <div style="display:flex; margin-top:50px; margin-bottom:20px;">
+        <button type="submit" style="width: 6%;margin-right:3.5%;" class="button-menu form-group btn btn-success" data-toggle="tooltip" data-placement="top" title="Save Role">
+            <div style="width:20px; height:22px;">
+                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
 
-                            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
-                                <path d="M66 5101 c-15 -10 -37 -32 -47 -47 -18 -28 -19 -96 -19 -2494 0
+                    <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
+                        <path d="M66 5101 c-15 -10 -37 -32 -47 -47 -18 -28 -19 -96 -19 -2494 0
                                 -2398 1 -2466 19 -2494 10 -15 32 -37 47 -47 28 -18 96 -19 2494 -19 2398 0
                                 2466 1 2494 19 15 10 37 32 47 47 18 28 19 88 19 2095 l0 2066 -29 39 c-34 46
                                 -805 814 -841 838 -21 14 -64 16 -332 16 l-307 0 -3 -742 -3 -743 -22 -35
                                 c-12 -19 -37 -44 -55 -55 -33 -20 -51 -20 -1268 -20 l-1235 0 -35 22 c-19 12
                                 -44 37 -55 55 -19 32 -20 53 -23 776 l-3 742 -407 0 c-382 0 -409 -1 -436 -19z
                                 m3844 -3751 l0 -1050 -1350 0 -1350 0 0 1050 0 1050 1350 0 1350 0 0 -1050z"></path>
-                                <path d="M1576 2081 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
+                        <path d="M1576 2081 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
                                 65 -19 984 -19 919 0 956 1 984 19 46 31 66 69 66 131 0 62 -20 100 -66 131
                                 -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z"></path>
-                                <path d="M1576 1481 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
+                        <path d="M1576 1481 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
                                 65 -19 984 -19 919 0 956 1 984 19 46 31 66 69 66 131 0 62 -20 100 -66 131
                                 -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z"></path>
-                                <path d="M1576 881 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
+                        <path d="M1576 881 c-46 -31 -66 -69 -66 -131 0 -62 20 -100 66 -131 28 -18
                                 65 -19 984 -19 919 0 956 1 984 19 46 31 66 69 66 131 0 62 -20 100 -66 131
                                 -28 18 -65 19 -984 19 -919 0 -956 -1 -984 -19z"></path>
-                                <path d="M1210 4470 l0 -650 1050 0 1050 0 0 650 0 650 -1050 0 -1050 0 0
+                        <path d="M1210 4470 l0 -650 1050 0 1050 0 0 650 0 650 -1050 0 -1050 0 0
                                 -650z"></path>
-                            </g>
-                        </svg>
+                    </g>
+                </svg>
 
-                    </div>
+            </div>
 
-                </button>
+        </button>
 
-                <button type="reset" style="width: 6%;" class="button-menu form-group btn btn-dark"  data-toggle="tooltip" data-placement="top" title="Reset Changes">
-                    <div style="width:20px; height:22px;">
-                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+        <button type="reset" style="width: 6%;" class="button-menu form-group btn btn-dark" data-toggle="tooltip" data-placement="top" title="Reset Changes">
+            <div style="width:20px; height:22px;">
+                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
 
-                            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
-                                <path d="M2265 5109 c-108 -13 -301 -53 -409 -84 -338 -98 -691 -287 -957
+                    <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
+                        <path d="M2265 5109 c-108 -13 -301 -53 -409 -84 -338 -98 -691 -287 -957
                                 -513 l-106 -90 -214 215 c-248 250 -279 273 -358 273 -89 -1 -154 -38 -202
                                 -115 -18 -29 -19 -65 -19 -838 0 -706 2 -812 15 -845 20 -47 50 -78 100 -105
                                 40 -22 44 -22 805 -25 421 -2 788 0 817 3 62 7 107 36 145 90 42 61 54 121 38
@@ -106,18 +101,18 @@
                                 610 65 352 88 705 261 995 488 116 91 346 328 437 452 286 386 459 820 508
                                 1272 22 205 10 538 -25 728 -74 400 -234 763 -483 1100 -91 124 -321 361 -437
                                 452 -344 270 -755 453 -1190 530 -128 22 -575 33 -710 17z"></path>
-                            </g>
-                        </svg>
-                    </div>
+                    </g>
+                </svg>
+            </div>
 
-                </button>
+        </button>
 
-                <button type="submit" asp-route-employeeTrue="1" asp-action="Create" id="createEmployee" style="width: 6%;margin-left:3.5%;" class="button-menu form-group btn btn-danger" data-toggle="tooltip" data-placement="top" title="Save and Create Employee">
-                    <div style="width:35px; height:30px;">
-                        <svg style="width:100%; height:100%;" version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+        <button type="submit" asp-route-employeeTrue="1" asp-action="Create" id="createEmployee" style="width: 6%;margin-left:3.5%;" class="button-menu form-group btn btn-danger" data-toggle="tooltip" data-placement="top" title="Save and Create Employee">
+            <div style="width:35px; height:30px;">
+                <svg style="width:100%; height:100%;" version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
 
-                            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#f4f8f9" stroke="none">
-                                <path d="M2360 5105 c-303 -68 -555 -275 -667 -547 -56 -138 -65 -188 -72
+                    <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#f4f8f9" stroke="none">
+                        <path d="M2360 5105 c-303 -68 -555 -275 -667 -547 -56 -138 -65 -188 -72
 -428 -6 -214 -7 -227 -29 -254 -35 -45 -56 -129 -48 -199 15 -143 110 -252
 250 -288 37 -9 47 -16 52 -38 18 -79 29 -113 58 -176 40 -85 110 -180 171
 -229 l45 -37 0 -97 0 -97 -428 -165 c-534 -206 -561 -219 -668 -326 -66 -65
@@ -161,29 +156,26 @@ l-25 -37 -89 0 -90 0 -27 41 c-22 34 -24 42 -12 49 7 5 39 27 69 49 30 22 56
 40 58 41 2 0 32 -21 68 -46z m103 -906 c57 -337 105 -624 108 -638 3 -21 -20
 -51 -133 -175 -75 -82 -140 -150 -144 -150 -7 0 -168 173 -263 282 -18 21 -16
 37 87 646 58 343 106 629 106 636 0 7 23 11 68 11 l68 0 103 -612z"></path>
-                            </g>
-                        </svg>
-                    </div>
-
-                </button>
-
-                <div style="width:75%;">
-                    <a href='@ViewData["returnURL"]' @*asp-action="Index"*@ style="float:right; width:10%;" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Return to Roles Page">
-                        ←
-                    </a>
-                </div>
-
+                    </g>
+                </svg>
             </div>
 
+        </button>
 
+        <div style="width:75%;">
+            <a href='@ViewData["returnURL"]' @*asp-action="Index"*@ style="float:right; width:10%;" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Return to Roles Page">
+                ←
+            </a>
         </div>
+
     </div>
 </form>
+    </div>
 
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-   
+
     <script type="text/javascript">
         $('#createEmployee').click(function () {
             $('#employeeTrue').val(1)
@@ -200,8 +192,8 @@ l-25 -37 -89 0 -90 0 -27 41 c-22 34 -24 42 -12 49 7 5 39 27 69 49 30 22 56
         $('#createCustomer').click(function () {
             $('#customerTrue').val(1)
         });
-        
+
 
     </script>
-   
+
 }

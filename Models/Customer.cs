@@ -66,12 +66,12 @@ namespace OASIS.Models
         public string AddressLineOne { get; set; }
 
         //Optional
-        [Display(Name = "Address Line 2 (Optional)")]
+        [Display(Name = "Address Line 2")]
         [StringLength(100, ErrorMessage = "Address Line 1 cannot be more than 100 characters long.")]
         public string AddressLineTwo { get; set; }
 
         //Optional
-        [Display(Name = "Apartment/Suite Number (Optional)")]
+        [Display(Name = "Apartment/Suite Number")]
         [StringLength(100, ErrorMessage = "Apartment/Suite Number cannot be more than 100 characters long.")]
         public string ApartmentNumber{ get; set; }
 
